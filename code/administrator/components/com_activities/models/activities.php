@@ -32,7 +32,8 @@ class ComActivitiesModelActivities extends ComDefaultModelDefault
 			->insert('distinct'    , 'boolean', false)
 			->insert('column'      , 'cmd')
 			->insert('start_date'  , 'date')
-			->insert('days_back'   , 'int', 14);
+			->insert('end_date'    , 'date')
+			->insert('day_range'   , 'int');
 
 		$this->_state->remove('direction')->insert('direction', 'word', 'desc');
 
@@ -87,11 +88,27 @@ class ComActivitiesModelActivities extends ComDefaultModelDefault
 		if ($this->_state->start_date && $this->_state->start_date != '0000-00-00')
 		{
 			$start_date = $this->getService('koowa:date', array('date' => $this->_state->start_date));
-			$days_back  = clone $start_date;
-			$start      = $start_date->addDays(1)->addSeconds(-1)->getDate();
+			$start      = $start_date->getDate();
 
-			$query->where('tbl.created_on', '<', $start);
-			$query->where('tbl.created_on', '>', $days_back->addDays(-(int)$this->_state->days_back)->getDate());
+			$query->where('tbl.created_on', '>=', $start);
+			
+			if ($day_range = $this->_state->day_range) {
+			    $range = clone $start_date;  
+			    $query->where('tbl.created_on', '<', $range->addDays($day_range)->getDate());
+			}
+		}
+		
+		if ($this->_state->end_date && $this->_state->end_date != '0000-00-00')
+		{
+		    $end_date  = $this->getService('koowa:date', array('date' => $this->_state->end_date));
+		    $end       = $end_date->addDays(1)->addSeconds(-1)->getDate();
+		    
+		    $query->where('tbl.created_on', '<', $end);
+		    
+		    if ($day_range = $this->_state->day_range) {
+		        $range = clone $end_date;
+		        $query->where('tbl.created_on', '>', $range->addDays(-$day_range)->getDate());
+		    }
 		}
 
 		if ($this->_state->user) {
