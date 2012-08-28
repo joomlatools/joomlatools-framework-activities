@@ -122,9 +122,9 @@ class ComActivitiesModelActivities extends ComDefaultModelDefault
 		if ($this->_state->end_date && $this->_state->end_date != '0000-00-00')
 		{
 		    $end_date  = $this->getService('koowa:date', array('date' => $this->_state->end_date));
-		    $end       = $end_date->addDays(1)->addSeconds(-1)->getDate();
-		    
-		    $query->where('tbl.created_on', '<', $end);
+		    $end       = $end_date->getDate();
+
+		    $query->where('tbl.created_on', '<=', $end);
 		    
 		    if ($day_range = $this->_state->day_range) {
 		        $range = clone $end_date;
