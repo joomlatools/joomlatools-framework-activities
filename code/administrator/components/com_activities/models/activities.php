@@ -40,6 +40,27 @@ class ComActivitiesModelActivities extends ComDefaultModelDefault
 		// Force ordering by created_on
 		$this->_state->sort = 'created_on';
 	}
+	
+	public function getListQuery()
+	{
+	    $query  = null;
+	    
+	    if(!$this->_state->isEmpty())
+	    {
+	        $query = $this->getTable()->getDatabase()->getQuery();
+	    
+	        $this->_buildQueryColumns($query);
+	        $this->_buildQueryFrom($query);
+	        $this->_buildQueryJoins($query);
+	        $this->_buildQueryWhere($query);
+	        $this->_buildQueryGroup($query);
+	        $this->_buildQueryHaving($query);
+	        $this->_buildQueryOrder($query);
+	        $this->_buildQueryLimit($query);
+	    }
+	    
+	    return $query;
+	}
 
 	protected function _buildQueryColumns(KDatabaseQuery $query)
 	{
