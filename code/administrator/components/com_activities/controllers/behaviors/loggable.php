@@ -74,9 +74,9 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
 
                     if(!empty($status) && $status !== KDatabase::STATUS_FAILED)
                     {
-                         $identifier = $context->caller->getIdentifier();
+                        $identifier = $this->getActivityIdentifier($context);
 
-                         $log = array(
+                        $log = array(
                             'action'	  => $context->action,
             				'application' => $identifier->application,
             				'type'        => $identifier->type,
@@ -118,6 +118,18 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                 }
             }
         }
+    }
+    
+    /**
+     * This method is called with the current context to determine what identifier generates the event.
+     * 
+     * This is useful in cases where the row is from another package or the actual action happens somewhere else.
+     * 
+     * @param KCommandContext $context
+     */
+    public function getActivityIdentifier(KCommandContext $context)
+    {
+        return $context->caller->getIdentifier();
     }
 
     public function getHandle()

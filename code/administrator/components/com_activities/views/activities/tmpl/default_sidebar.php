@@ -17,7 +17,7 @@ window.addEvent('domready', function(){
 	/* Reset the filter values to blank */
 	document.id('activities-filter').addEvent('reset', function(e){
 		e.target.getElements('input').each(function(el){
-			if(['days_back','start_date', 'user'].contains(el.name)){
+			if(['day_range','end_date', 'user'].contains(el.name)){
 				el.value = '';
 			}
 		});
@@ -48,19 +48,19 @@ window.addEvent('domready', function(){
 
 		<form action="" method="get" id="activities-filter">
 			<fieldset>
-				<h4><?=@text( 'Start Date' )?></h4>
+				<h4><?=@text( 'End Date' )?></h4>
 				<div class="activities-calendar">
 					<?= @helper('behavior.calendar',
 							array(
-								'date' => $state->start_date,
-								'name' => 'start_date',
+								'date' => $state->end_date,
+								'name' => 'end_date',
 								'format' => '%Y-%m-%d'
 							)); ?>
 				</div>
 
 				<h4><?=@text( 'Days Back' )?></h4>
 				<div class="activities-days-back">
-					<input type="text" size="3" name="days_back" value="<?=($state->days_back) ? $state->days_back : '' ?>" />
+					<input type="text" size="3" name="day_range" value="<?=$state->day_range?>" />
 				</div>
 
 				<h4><?=@text( 'User' )?></h4>
