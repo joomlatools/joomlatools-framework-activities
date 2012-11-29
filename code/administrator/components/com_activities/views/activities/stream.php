@@ -18,8 +18,14 @@
  * @see 		http://activitystrea.ms/specs/json/1.0/
  */
 
-class ComActivitiesViewActivitiesJson extends KViewJson
+class ComActivitiesViewActivitiesStream extends KViewJson
 {
+    protected function _initialize(KConfig $config)
+    {
+        $config->append(array('mimetype' => 'application/stream+json'));
+        parent::_initialize($config);
+    }
+    
 	/**
 	 * Get the list data
 	 *
@@ -30,18 +36,10 @@ class ComActivitiesViewActivitiesJson extends KViewJson
 		//Get the model
 	    $model = $this->getModel();
 
-	    //Get the route
-		$route = $this->getRoute();
+        $url   = clone KRequest::url();
 
 		//Get the model state
 		$state = $model->getState();
-
-		//Get the paginator
-		$paginator = new KConfigPaginator(array(
-          	'offset' => (int) $model->offset,
-           	'limit'  => (int) $model->limit,
-		    'total'  => (int) $model->getTotal(),
-        ));
 
 	    $vars = array();
 	    foreach($state->toArray(false) as $var)
@@ -53,16 +51,15 @@ class ComActivitiesViewActivitiesJson extends KViewJson
 
 		$data = array(
 			'version'  => '1.0',
-			'href'     => (string) $route->setQuery($state->toArray()),
+			'href'     => (string) $url->setQuery(array_merge($url->getQuery(true), $state->toArray())),
 			'url'      => array(
-				'type'     => 'application/json',
-				'template' => (string) $route->get(KHttpUrl::BASE).'?{&'.implode(',', $vars).'}',
+				'type'     => 'application/stream+json',
+				'template' => (string) $url->get(KHttpUrl::BASE).'?{&'.implode(',', $vars).'}',
 			),
-			'offset'   => (int) $paginator->offset,
-			'limit'    => (int) $paginator->limit,
+			'offset'   => (int) $state->offset,
+			'limit'    => (int) $state->limit,
 			'total'	   => 0,
-			'items'    => array(),
-			'queries'  => array()
+			'items'    => array()
 		);
 
 		if($list = $model->getList())
@@ -110,28 +107,14 @@ class ComActivitiesViewActivitiesJson extends KViewJson
 				    		'option' => 'com_users',
 				    		'view'   => 'user',
 				    		'id'     => $item->created_by
-				    	))),
+				    	), true)),
 					)
 			    );
 			}
 
-			$queries = array();
-            foreach(array('first', 'prev', 'next', 'last') as $offset)
-            {
-                $page = $paginator->pages->{$offset};
-                if($page->active)
-                {
-                    $queries[] = array(
-		   				'rel' => $page->rel,
-		   				'href' => (string) $this->getRoute('limit='.$page->limit.'&offset='.$page->offset)
-                    );
-                }
-            }
-
             $data = array_merge($data, array(
-				'total'    => $paginator->total,
-				'items'    => $items,
-		        'queries'  => $queries
+				'total'    => $model->getTotal(),
+				'items'    => $items
 			 ));
 		}
 
