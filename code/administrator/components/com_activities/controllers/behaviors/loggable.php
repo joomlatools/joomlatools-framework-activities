@@ -113,11 +113,25 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
 
                         $log['row'] = $row->id;
 
-                        $this->getService('com://admin/activities.database.row.activity', array('data' => $log))->save();
+                        $this->addActivity(array('data' => $log));
                     }
                 }
             }
         }
+    }
+
+    public function addActivity($config = array())
+    {
+        $config = new KConfig($config);
+
+        // TODO Add IP logging support here !.
+
+        $activity = $this->getService('com://admin/activities.model.activities')->getItem()
+            ->setData(KConfig::unbox($config->data));
+
+        $activity->save();
+
+        return $activity;
     }
     
     /**
