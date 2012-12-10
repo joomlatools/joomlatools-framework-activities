@@ -22,13 +22,13 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
 
         if (!in_array($this->application, $applications = array('admin', 'site'))) {
             $this->setStatus(KDatabase::STATUS_FAILED);
-            $this->setStatusMessage('Wrong application value. Allowed values are: ' . implode(', ', $applications));
+            $this->setStatusMessage(JText::sprintf('COM_ACTIVITIES_INVALID_APP', implode(', ', $applications)));
             return false;
         }
 
         if (!in_array($this->type, $types = array('com'))) {
             $this->setStatus(KDatabase::STATUS_FAILED);
-            $this->setStatusMessage('Wrong type value. Allowed values are: ' . implode(', ', $types));
+            $this->setStatusMessage(JText::sprintf('COM_ACTIVITIES_INVALID_TYPE', implode(', ', $types)));
             return false;
         }
 
