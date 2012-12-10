@@ -18,20 +18,30 @@
  * @see 		http://activitystrea.ms/specs/json/1.0/
  */
 
-class ComActivitiesViewActivitiesStream extends KViewJson
+class ComActivitiesViewActivitiesJson extends KViewJson
 {
-    protected function _initialize(KConfig $config)
+    /**
+     * Get the list data
+     *
+     * @return array The array with data to be encoded to json
+     */
+    protected function _getList()
     {
-        $config->append(array('mimetype' => 'application/stream+json'));
-        parent::_initialize($config);
+        if ($this->getLayout() == 'stream') {
+            $list = $this->_getStreams();
+        } else {
+            $list = parent::_getList();
+        }
+        return $list;
     }
-    
-	/**
-	 * Get the list data
-	 *
-	 * @return array 	The array with data to be encoded to json
-	 */
-	protected function _getList()
+
+    /**
+     * Provides a list of activities following the JSON activity streams
+     * 1.0 standard (http://activitystrea.ms/specs/json/1.0/).
+     *
+     * @return array The activities list.
+     */
+    protected function _getStreams()
 	{
 		//Get the model
 	    $model = $this->getModel();
@@ -53,7 +63,7 @@ class ComActivitiesViewActivitiesStream extends KViewJson
 			'version'  => '1.0',
 			'href'     => (string) $url->setQuery(array_merge($url->getQuery(true), $state->toArray())),
 			'url'      => array(
-				'type'     => 'application/stream+json',
+				'type'     => 'application/json',
 				'template' => (string) $url->get(KHttpUrl::BASE).'?{&'.implode(',', $vars).'}',
 			),
 			'offset'   => (int) $state->offset,
@@ -94,20 +104,20 @@ class ComActivitiesViewActivitiesStream extends KViewJson
 				    		'option' => $item->type.'_'.$item->package,
 				    		'view'   => $item->name,
 				    		'id'     => $item->row,
-				    	))),
+				    	)), false),
 	                ),
 			    	'target' => array(
 			    		'url' => JRoute::_($this->getService('koowa:http.url', array('url' => 'index.php'))->setQuery(array(
 				    		'option' => $item->type.'_'.$item->package,
 				    		'view'   => $item->name,
-				    	))),
+				    	)), false),
 				    ),
 				    'actor' => array(
 				    	'url' => JRoute::_($this->getService('koowa:http.url', array('url' => 'index.php'))->setQuery(array(
 				    		'option' => 'com_users',
 				    		'view'   => 'user',
 				    		'id'     => $item->created_by
-				    	), true)),
+				    	), true), false),
 					)
 			    );
 			}
