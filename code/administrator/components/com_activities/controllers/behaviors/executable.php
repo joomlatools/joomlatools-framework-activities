@@ -19,7 +19,11 @@ class ComActivitiesControllerBehaviorExecutable extends ComDefaultControllerBeha
 {
     public function canAdd()
     {
-        return false;
+        $result = false;
+        if (!$this->_mixer->isDispacthed()) {
+            $result = true;
+        }
+        return $result;
     }
 
     public function canEdit()

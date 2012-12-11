@@ -17,6 +17,14 @@
  */
 class ComActivitiesControllerActivity extends ComDefaultControllerDefault
 {
+    public function __construct(KConfig $config)
+    {
+        parent::__construct($config);
+
+        // TODO To be removed as soon as the problem with language files loading on HMVC calls is solved
+        JFactory::getLanguage()->load('com_activities', JPATH_ADMINISTRATOR);
+    }
+
     protected function _actionPurge(KCommandContext $context)
     {
         $db = $this->getModel()->getTable()->getDatabase();
