@@ -32,6 +32,27 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
             return false;
         }
 
+        if (!$this->status) {
+            // Attempt to provide a default status.
+            switch ($this->action) {
+                case 'add':
+                    $status = KDatabase::STATUS_CREATED;
+                    break;
+                case 'edit':
+                    $status = KDatabase::STATUS_UPDATED;
+                    break;
+                case 'delete':
+                    $status = KDatabase::STATUS_DELETED;
+                    break;
+                default:
+                    $status = null;
+            }
+
+            if ($status) {
+                $this->status = $status;
+            }
+        }
+
         return parent::save();
     }
 }
