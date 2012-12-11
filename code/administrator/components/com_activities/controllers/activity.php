@@ -21,7 +21,7 @@ class ComActivitiesControllerActivity extends ComDefaultControllerDefault
     {
         parent::__construct($config);
 
-        // Load component language file (not loaded on HMVC calls).
+        // TODO To be removed as soon as the problem with language files loading on HMVC calls is solved
         JFactory::getLanguage()->load('com_activities', JPATH_ADMINISTRATOR);
     }
 
