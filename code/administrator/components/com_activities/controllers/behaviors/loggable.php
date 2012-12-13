@@ -78,9 +78,9 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
 
                 foreach ($rowset as $row) {
                     //Only log if the row status is valid.
-                    $status = $row->getStatus();
+                    $status = $this->_getStatus($row, $name);
 
-                    if (!empty($status) && $status !== KDatabase::STATUS_FAILED) {
+                    if ($status !== KDatabase::STATUS_FAILED) {
                         $identifier = $this->getActivityIdentifier($context);
 
                         $activity = array(
@@ -121,6 +121,27 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                 }
             }
         }
+    }
+
+    /**
+     * Status getter.
+     *
+     * Loggable support actions other than add, edit and delete. While logging custom actions it may be
+     * useful to somehow translate the returned status to something more meaningful.
+     *
+     * @param KDatabaseRowAbstract       $row
+     * @param string                     $action    The command action being executed.
+     */
+    protected function _getStatus(KDatabaseRowAbstract $row, $action)
+    {
+        $status = $row->getStatus();
+
+        // Commands may change the original status of an action.
+        if ($action == 'after.add' && $status == KDatabase::STATUS_UPDATED) {
+            $status = KDatabase::STATUS_CREATED;
+        }
+
+        return $status;
     }
 
     /**
