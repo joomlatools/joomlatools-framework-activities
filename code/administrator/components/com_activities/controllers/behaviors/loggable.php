@@ -81,6 +81,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                     $status = $this->_getStatus($row, $name);
 
                     if ($status !== KDatabase::STATUS_FAILED) {
+                    if (!empty($status) && $status !== KDatabase::STATUS_FAILED) {
                         $identifier = $this->getActivityIdentifier($context);
 
                         $activity = array(
