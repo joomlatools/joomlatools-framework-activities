@@ -14,8 +14,10 @@ CREATE TABLE IF NOT EXISTS `#__activities_activities` (
 	`created_on` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 	`created_by` INT(11) NOT NULL DEFAULT '0',
 	`indb` tinyint(1) NOT NULL DEFAULT '1',
+	`ip` varchar(45) NOT NULL DEFAULT '',
 	PRIMARY KEY(`activities_activity_id`),
 	KEY `package` (`package`),
     KEY `name` (`name`),
-    KEY `row` (`row`)
+    KEY `row` (`row`),
+    KEY `ip` (`ip`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
