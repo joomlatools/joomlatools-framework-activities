@@ -80,7 +80,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                     //Only log if the row status is valid.
                     $status = $this->_getStatus($row, $name);
 
-                    if ($status !== KDatabase::STATUS_FAILED) {
+                    if (!empty($status) && $status !== KDatabase::STATUS_FAILED) {
                         $identifier = $this->getActivityIdentifier($context);
 
                         $activity = array(
@@ -91,12 +91,6 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                             'name'        => $identifier->name,
                             'status'      => $status
                         );
-
-                        if ($context->action === 'edit') {
-                            $activity['created_by'] = JFactory::getUser()->id;
-                        } elseif (!empty($row->created_by)) {
-                            $activity['created_by'] = $row->created_by;
-                        }
 
                         if (is_array($this->_title_column)) {
                             foreach ($this->_title_column as $title) {
@@ -114,6 +108,8 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                         }
 
                         $activity['row'] = $row->id;
+
+                        $activity['indb'] = $row instanceof KDatabaseRowTable ? 1 : 0;
 
                         $this->getService($this->_activity_controller->identifier,
                             KConfig::unbox($this->_activity_controller->config))->add($activity);

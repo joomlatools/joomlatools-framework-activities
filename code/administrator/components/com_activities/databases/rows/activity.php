@@ -53,6 +53,18 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
             }
         }
 
-        return parent::save();
+        $result = parent::save();
+
+        if ($result && ($this->action == 'delete') && $this->row) {
+            $activities = $this->getService('com://admin/activities.model.activities')->type($this->com)
+                ->package($this->package)->name($this->name)->row($this->row)->getList();
+            if (count($activities)) {
+                // Set resource activities as no longer in database.
+                $activities->setColumn('indb', 0);
+                $activities->save();
+            }
+        }
+
+        return $result;
     }
 }

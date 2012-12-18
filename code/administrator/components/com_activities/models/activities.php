@@ -28,6 +28,7 @@ class ComActivitiesModelActivities extends ComDefaultModelDefault
 			->insert('package'     , 'cmd')
 			->insert('name'        , 'cmd')
 			->insert('action'      , 'cmd')
+            ->insert('row'         , 'int')
 			->insert('user'        , 'cmd')
 			->insert('distinct'    , 'boolean', false)
 			->insert('column'      , 'cmd')
@@ -106,7 +107,11 @@ class ComActivitiesModelActivities extends ComDefaultModelDefault
 			$query->where('tbl.action', 'IN', $this->_state->action);
 		}
 
-		if ($this->_state->start_date && $this->_state->start_date != '0000-00-00')
+        if (is_numeric($this->_state->row)) {
+            $query->where('tbl.row', 'IN', $this->_state->row);
+        }
+
+        if ($this->_state->start_date && $this->_state->start_date != '0000-00-00')
 		{
 			$start_date = $this->getService('koowa:date', array('date' => $this->_state->start_date));
 			$start      = $start_date->getDate();
