@@ -92,12 +92,6 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                             'status'      => $status
                         );
 
-                        if ($context->action === 'edit') {
-                            $activity['created_by'] = JFactory::getUser()->id;
-                        } elseif (!empty($row->created_by)) {
-                            $activity['created_by'] = $row->created_by;
-                        }
-
                         if (is_array($this->_title_column)) {
                             foreach ($this->_title_column as $title) {
                                 if ($row->{$title}) {
