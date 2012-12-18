@@ -53,6 +53,21 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
             }
         }
 
+        $required_columns = array('package','name','action','title', 'status');
+        $empty_columns = array();
+
+        foreach ($required_columns as $column) {
+            if (empty($this->$column)) {
+                $empty_columns[] = $column;
+            }
+        }
+
+        if (count($empty_columns)) {
+            $this->setStatus(KDatabase::STATUS_FAILED);
+            $this->setStatusMessage(JText::sprintf('COM_ACTIVITIES_REQUIRED_COLUMNS', implode(', ', $empty_columns)));
+            return false;
+        }
+
         $result = parent::save();
 
         if ($result && ($this->action == 'delete') && $this->row) {
