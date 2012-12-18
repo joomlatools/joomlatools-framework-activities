@@ -109,6 +109,8 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
 
                         $activity['row'] = $row->id;
 
+                        $activity['indb'] = $row instanceof KDatabaseRowTable ? 1 : 0;
+
                         $this->getService($this->_activity_controller->identifier,
                             KConfig::unbox($this->_activity_controller->config))->add($activity);
                     }
