@@ -34,7 +34,8 @@ class ComActivitiesModelActivities extends ComDefaultModelDefault
 			->insert('column'      , 'cmd')
 			->insert('start_date'  , 'date')
 			->insert('end_date'    , 'date')
-			->insert('day_range'   , 'int');
+			->insert('day_range'   , 'int')
+            ->insert('ip'          , 'ip');
 
 		$this->_state->remove('direction')->insert('direction', 'word', 'desc');
 
@@ -140,6 +141,10 @@ class ComActivitiesModelActivities extends ComDefaultModelDefault
 		if ($this->_state->user) {
 			$query->where('tbl.created_by', '=', $this->_state->user);
 		}
+
+        if ($ip = $this->_state->ip) {
+            $query->where('tbl.ip', 'IN', $ip);
+        }
 	}
 
 	protected function _buildQueryOrder(KDatabaseQuery $query)
