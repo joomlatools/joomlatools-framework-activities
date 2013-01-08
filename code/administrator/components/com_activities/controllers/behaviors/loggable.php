@@ -65,6 +65,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     public function execute($name, KCommandContext $context)
     {
         if (in_array($name, $this->_actions)) {
+
             $data = $context->result;
 
             if ($data instanceof KDatabaseRowAbstract || $data instanceof KDatabaseRowsetAbstract) {
@@ -81,42 +82,60 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                     $status = $this->_getStatus($row, $name);
 
                     if (!empty($status) && $status !== KDatabase::STATUS_FAILED) {
-                        $identifier = $this->getActivityIdentifier($context);
-
-                        $activity = array(
-                            'action'      => $context->action,
-                            'application' => $identifier->application,
-                            'type'        => $identifier->type,
-                            'package'     => $identifier->package,
-                            'name'        => $identifier->name,
-                            'status'      => $status
-                        );
-
-                        if (is_array($this->_title_column)) {
-                            foreach ($this->_title_column as $title) {
-                                if ($row->{$title}) {
-                                    $activity['title'] = $row->{$title};
-                                    break;
-                                }
-                            }
-                        } elseif ($row->{$this->_title_column}) {
-                            $activity['title'] = $row->{$this->_title_column};
-                        }
-
-                        if (!isset($activity['title'])) {
-                            $activity['title'] = '#' . $row->id;
-                        }
-
-                        $activity['row'] = $row->id;
-
-                        $activity['indb'] = $row instanceof KDatabaseRowTable ? 1 : 0;
-
                         $this->getService($this->_activity_controller->identifier,
-                            KConfig::unbox($this->_activity_controller->config))->add($activity);
+                            KConfig::unbox($this->_activity_controller->config))->add($this->_getActivityData($row,
+                            $status, $context));
                     }
                 }
             }
         }
+    }
+
+    /**
+     * Returns activity data given a row and its context.
+     *
+     * This method can be used if the default data mapping does not apply.
+     *
+     * @param KDatabaseRowAbstract $row     The data row.
+     * @param                      string   The row status.
+     * @param KCommandContext      $context The command context.
+     *
+     * @return array Activity data.
+     */
+    protected function _getActivityData(KDatabaseRowAbstract $row, $status, KCommandContext $context)
+    {
+
+        $identifier = $this->getActivityIdentifier($context);
+
+        $activity = array(
+            'action'      => $context->action,
+            'application' => $identifier->application,
+            'type'        => $identifier->type,
+            'package'     => $identifier->package,
+            'name'        => $identifier->name,
+            'status'      => $status
+        );
+
+        if (is_array($this->_title_column)) {
+            foreach ($this->_title_column as $title) {
+                if ($row->{$title}) {
+                    $activity['title'] = $row->{$title};
+                    break;
+                }
+            }
+        } elseif ($row->{$this->_title_column}) {
+            $activity['title'] = $row->{$this->_title_column};
+        }
+
+        if (!isset($activity['title'])) {
+            $activity['title'] = '#' . $row->id;
+        }
+
+        $activity['row'] = $row->id;
+
+        $activity['persisted'] = $activity['row'] ? 1 : 0;
+
+        return $activity;
     }
 
     /**
@@ -142,9 +161,9 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
 
     /**
      * This method is called with the current context to determine what identifier generates the event.
-     * 
+     *
      * This is useful in cases where the row is from another package or the actual action happens somewhere else.
-     * 
+     *
      * @param KCommandContext $context
      */
     public function getActivityIdentifier(KCommandContext $context)
