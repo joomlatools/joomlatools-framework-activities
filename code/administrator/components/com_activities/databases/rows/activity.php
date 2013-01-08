@@ -74,8 +74,8 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
             $activities = $this->getService('com://admin/activities.model.activities')->type($this->com)
                 ->package($this->package)->name($this->name)->row($this->row)->getList();
             if (count($activities)) {
-                // Set resource activities as no longer in database.
-                $activities->setColumn('indb', 0);
+                // Set resource activities as no longer persisted.
+                $activities->setColumn('persisted', 0);
                 $activities->save();
             }
         }
