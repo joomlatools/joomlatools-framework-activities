@@ -73,7 +73,7 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
             $meta = json_encode($this->meta);
             if ($meta === false) {
                 $this->setStatus(KDatabase::STATUS_FAILED);
-                $this->setStatusMessage(JText::_('COM_ACTIVITIES_CONTEXT_ENCODE_FAILED'));
+                $this->setStatusMessage(JText::_('COM_ACTIVITIES_META_ENCODE_FAILED'));
                 return false;
             }
             $this->meta = $meta;
@@ -105,7 +105,7 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
                 $value = $meta;
             }
         }
-        
+
         return $value;
     }
 }
