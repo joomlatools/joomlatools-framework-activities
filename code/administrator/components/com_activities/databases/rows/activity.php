@@ -53,8 +53,8 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
             }
         }
 
-        $required_columns = array('package','name','action','title', 'status');
-        $empty_columns = array();
+        $required_columns = array('package', 'name', 'action', 'title', 'status');
+        $empty_columns    = array();
 
         foreach ($required_columns as $column) {
             if (empty($this->$column)) {
@@ -66,6 +66,17 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
             $this->setStatus(KDatabase::STATUS_FAILED);
             $this->setStatusMessage(JText::sprintf('COM_ACTIVITIES_REQUIRED_COLUMNS', implode(', ', $empty_columns)));
             return false;
+        }
+
+        if ($this->isModified('meta') && !is_null($this->meta)) {
+            // Encode metadata.
+            $meta = json_encode($this->meta);
+            if ($meta === false) {
+                $this->setStatus(KDatabase::STATUS_FAILED);
+                $this->setStatusMessage(JText::_('COM_ACTIVITIES_META_ENCODE_FAILED'));
+                return false;
+            }
+            $this->meta = $meta;
         }
 
         $result = parent::save();
@@ -81,5 +92,20 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
         }
 
         return $result;
+    }
+
+    public function __get($key)
+    {
+        $value = parent::__get($key);
+
+        if ($key == 'meta') {
+            // Try to decode it.
+            $meta = json_decode($value);
+            if ($meta !== null) {
+                $value = $meta;
+            }
+        }
+
+        return $value;
     }
 }
