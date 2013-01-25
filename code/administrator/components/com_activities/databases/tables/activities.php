@@ -21,18 +21,9 @@ class ComActivitiesDatabaseTableActivities extends KDatabaseTableDefault
     protected function _initialize(KConfig $config)
     {
         $config->append(array(
-            'behaviors' => array('creatable', 'identifiable', 'syncable')
+            'behaviors' => array('creatable', 'identifiable')
         ));
 
         parent::_initialize($config);
-    }
-
-    /**
-     * Syncs persisted status of activity rows.
-     */
-    public function sync(KDatabaseQuery $query)
-    {
-        $this->getDatabase()
-            ->update('activities_activities', array('persisted' => 0), (string) $query);
     }
 }
