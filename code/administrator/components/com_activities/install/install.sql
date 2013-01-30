@@ -13,7 +13,6 @@ CREATE TABLE IF NOT EXISTS `#__activities_activities` (
 	`status` varchar(100) NOT NULL,
 	`created_on` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 	`created_by` INT(11) NOT NULL DEFAULT '0',
-	`persisted` tinyint(1) NOT NULL DEFAULT '1',
 	`ip` varchar(45) NOT NULL DEFAULT '',
 	`meta` text NOT NULL,
 	PRIMARY KEY(`activities_activity_id`),

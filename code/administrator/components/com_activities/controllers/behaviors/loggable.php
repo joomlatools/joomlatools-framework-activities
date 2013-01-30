@@ -133,8 +133,6 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
 
         $activity['row'] = $row->id;
 
-        $activity['persisted'] = $activity['row'] ? 1 : 0;
-
         return $activity;
     }
 

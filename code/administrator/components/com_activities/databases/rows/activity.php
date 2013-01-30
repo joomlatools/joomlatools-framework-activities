@@ -79,26 +79,14 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
             $this->meta = $meta;
         }
 
-        $result = parent::save();
-
-        if ($result && ($this->action == 'delete') && $this->row) {
-            $activities = $this->getService('com://admin/activities.model.activities')->type($this->com)
-                ->package($this->package)->name($this->name)->row($this->row)->getList();
-            if (count($activities)) {
-                // Set resource activities as no longer persisted.
-                $activities->setColumn('persisted', 0);
-                $activities->save();
-            }
-        }
-
-        return $result;
+        return parent::save();
     }
 
     public function __get($key)
     {
         $value = parent::__get($key);
 
-        if ($key == 'meta') {
+        if ($key == 'meta' && is_string($value)) {
             // Try to decode it.
             $meta = json_decode($value);
             if ($meta !== null) {
