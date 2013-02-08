@@ -1,0 +1,2 @@
+-- Empty for proper setup of the J!2.5 schemas table entry.
+-- This will ease the schema update process once we drop J!1.5 support.

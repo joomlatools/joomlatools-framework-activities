@@ -22,6 +22,12 @@
 		</sql>
 	</uninstall>
 
+    <update>
+        <schemas>
+            <schemapath type="mysql">updates</schemapath>
+        </schemas>
+    </update>
+
 	<administration>
 		<files folder="admin">
 			<filename>dispatcher.php</filename>
@@ -32,6 +38,7 @@
 			<folder>models</folder>
 			<folder>templates</folder>
 			<folder>views</folder>
+            <folder>updates</folder>
 		</files>
 	</administration>
 </install>
