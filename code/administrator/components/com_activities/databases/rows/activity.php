@@ -17,18 +17,20 @@
  */
 class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
 {
+    protected $_required = array('package', 'name', 'action', 'title', 'status');
+
     public function save()
     {
 
-        if (!in_array($this->application, $applications = array('admin', 'site'))) {
+        if (!in_array($this->application, array('admin', 'site'))) {
             $this->setStatus(KDatabase::STATUS_FAILED);
-            $this->setStatusMessage(JText::sprintf('COM_ACTIVITIES_INVALID_APP', implode(', ', $applications)));
+            $this->setStatusMessage('Invalid application value');
             return false;
         }
 
-        if (!in_array($this->type, $types = array('com'))) {
+        if (!in_array($this->type, array('com'))) {
             $this->setStatus(KDatabase::STATUS_FAILED);
-            $this->setStatusMessage(JText::sprintf('COM_ACTIVITIES_INVALID_TYPE', implode(', ', $types)));
+            $this->setStatusMessage('Invalid type value');
             return false;
         }
 
@@ -53,19 +55,12 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
             }
         }
 
-        $required_columns = array('package', 'name', 'action', 'title', 'status');
-        $empty_columns    = array();
-
-        foreach ($required_columns as $column) {
+        foreach ($this->_required as $column) {
             if (empty($this->$column)) {
-                $empty_columns[] = $column;
+                $this->setStatus(KDatabase::STATUS_FAILED);
+                $this->setStatusMessage('Missing required data');
+                return false;
             }
-        }
-
-        if (count($empty_columns)) {
-            $this->setStatus(KDatabase::STATUS_FAILED);
-            $this->setStatusMessage(JText::sprintf('COM_ACTIVITIES_REQUIRED_COLUMNS', implode(', ', $empty_columns)));
-            return false;
         }
 
         if ($this->isModified('meta') && !is_null($this->meta)) {
@@ -73,7 +68,7 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
             $meta = json_encode($this->meta);
             if ($meta === false) {
                 $this->setStatus(KDatabase::STATUS_FAILED);
-                $this->setStatusMessage(JText::_('COM_ACTIVITIES_META_ENCODE_FAILED'));
+                $this->setStatusMessage('Unable to encode meta data');
                 return false;
             }
             $this->meta = $meta;
