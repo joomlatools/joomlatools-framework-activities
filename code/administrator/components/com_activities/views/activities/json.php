@@ -62,7 +62,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
             'href'    => (string) $url->setQuery(array_merge($url->getQuery(true), $state->toArray())),
             'url'     => array(
                 'type'     => 'application/json',
-                'template' => (string) $url->get(KHttpUrl::BASE) . '?{&' . implode(',', $vars) . '}',
+                'template' => (string) $url->toString(KHttpUrl::BASE) . '?{&' . implode(',', $vars) . '}',
             ),
             'offset'  => (int) $state->offset,
             'limit'   => (int) $state->limit,
