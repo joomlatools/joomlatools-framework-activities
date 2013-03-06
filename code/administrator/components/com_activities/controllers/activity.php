@@ -29,17 +29,13 @@ class ComActivitiesControllerActivity extends ComKoowaControllerDefault
 
     protected function _actionPurge(KCommandContext $context)
     {
-    	// TODO: refactor to new query builder
         $db = $this->getModel()->getTable()->getDatabase();
         
-        $query = $this->getModel()->getListQuery();
-        $query->columns = array();
+        $query = $this->getService('koowa:database.query.delete')
+        	->table(array('tbl' => $this->getModel()->getTable()->getName()))
+        	->join(array('users' => 'users'), 'users.id = tbl.created_by');
         
-        // MySQL doesn't allow limit or order in multi table deletes
-        $query->limit = null;
-        $query->order = null;
-        
-        $query = 'DELETE `tbl` ' .$query;
+        $this->getModel()->buildDeleteQuery($query);
         
         if (!$db->execute($query)) {
             $context->setError(new KControllerException(

@@ -43,28 +43,17 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 		$this->_state->sort = 'created_on';
 	}
 	
-	public function getListQuery()
+	/**
+	 * Used by the purge action to add necessary where clauses
+	 * 
+	 * @param KDatabaseQueryInterface $query
+	 */
+	public function buildDeleteQuery(KDatabaseQueryDelete $query)
 	{
-	    $query  = null;
-	    
-	    if(!$this->_state->isEmpty())
-	    {
-	        $query = $this->getService('koowa:database.query.select');
-
-	        $this->_buildQueryColumns($query);
-	        $this->_buildQueryTable($query);
-	        $this->_buildQueryJoins($query);
-	        $this->_buildQueryWhere($query);
-	        $this->_buildQueryGroup($query);
-	        $this->_buildQueryHaving($query);
-	        $this->_buildQueryOrder($query);
-	        $this->_buildQueryLimit($query);
-	    }
-	    
-	    return $query;
+		$this->_buildQueryWhere($query);
 	}
 
-	protected function _buildQueryColumns(KDatabaseQuerySelect $query)
+	protected function _buildQueryColumns(KDatabaseQueryInterface $query)
 	{
 		if($this->_state->distinct && !empty($this->_state->column))
 		{
@@ -79,12 +68,12 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 		}
 	}
 
-	protected function _buildQueryJoins(KDatabaseQuerySelect $query)
+	protected function _buildQueryJoins(KDatabaseQueryInterface $query)
 	{
 		$query->join(array('users' => 'users'), 'users.id = tbl.created_by');
 	}
 
-	protected function _buildQueryWhere(KDatabaseQuerySelect $query)
+	protected function _buildQueryWhere(KDatabaseQueryInterface $query)
 	{
 		parent::_buildQueryWhere($query);
 		
@@ -149,7 +138,7 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
         }
 	}
 
-	protected function _buildQueryOrder(KDatabaseQuerySelect $query)
+	protected function _buildQueryOrder(KDatabaseQueryInterface $query)
 	{
 		if($this->_state->distinct && !empty($this->_state->column)) {
 			$query->order('package', 'asc');
