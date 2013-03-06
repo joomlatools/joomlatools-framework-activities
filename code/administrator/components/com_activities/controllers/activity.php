@@ -29,6 +29,7 @@ class ComActivitiesControllerActivity extends ComKoowaControllerDefault
 
     protected function _actionPurge(KCommandContext $context)
     {
+    	// TODO: refactor to new query builder
         $db = $this->getModel()->getTable()->getDatabase();
         
         $query = $this->getModel()->getListQuery();
