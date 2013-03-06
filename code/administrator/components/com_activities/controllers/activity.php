@@ -15,20 +15,27 @@
  * @package     Nooku_Server
  * @subpackage  Activities
  */
-class ComActivitiesControllerActivity extends ComDefaultControllerDefault
+class ComActivitiesControllerActivity extends ComKoowaControllerDefault
 {
+    public function __construct(KConfig $config)
+    {
+        parent::__construct($config);
+
+        // TODO To be removed as soon as the problem with language files loading on HMVC calls is solved
+        JFactory::getLanguage()->load('com_activities', JPATH_ADMINISTRATOR);
+
+        $this->registerCallback('before.add', array($this, 'setIp'));
+    }
+
     protected function _actionPurge(KCommandContext $context)
     {
         $db = $this->getModel()->getTable()->getDatabase();
         
-        $query = $this->getModel()->getListQuery();
-        $query->columns = array();
+        $query = $this->getService('koowa:database.query.delete')
+        	->table(array('tbl' => $this->getModel()->getTable()->getName()))
+        	->join(array('users' => 'users'), 'users.id = tbl.created_by');
         
-        // MySQL doesn't allow limit or order in multi table deletes
-        $query->limit = null;
-        $query->order = null;
-        
-        $query = 'DELETE `tbl` ' .$query;
+        $this->getModel()->buildDeleteQuery($query);
         
         if (!$db->execute($query)) {
             $context->setError(new KControllerException(
@@ -37,5 +44,10 @@ class ComActivitiesControllerActivity extends ComDefaultControllerDefault
         } else {
             $context->status = KHttpResponse::NO_CONTENT;
         }
+    }
+
+    public function setIp(KCommandContext $context)
+    {
+        $context->data->ip = KRequest::get('server.REMOTE_ADDR', 'ip');
     }
 }

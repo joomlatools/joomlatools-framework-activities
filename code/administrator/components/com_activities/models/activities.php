@@ -16,7 +16,7 @@
  * @subpackage 	Activities
  */
 
-class ComActivitiesModelActivities extends ComDefaultModelDefault
+class ComActivitiesModelActivities extends ComKoowaModelDefault
 {
 	public function __construct(KConfig $config)
 	{
@@ -28,12 +28,14 @@ class ComActivitiesModelActivities extends ComDefaultModelDefault
 			->insert('package'     , 'cmd')
 			->insert('name'        , 'cmd')
 			->insert('action'      , 'cmd')
+            ->insert('row'         , 'int')
 			->insert('user'        , 'cmd')
 			->insert('distinct'    , 'boolean', false)
 			->insert('column'      , 'cmd')
 			->insert('start_date'  , 'date')
 			->insert('end_date'    , 'date')
-			->insert('day_range'   , 'int');
+			->insert('day_range'   , 'int')
+            ->insert('ip'          , 'ip');
 
 		$this->_state->remove('direction')->insert('direction', 'word', 'desc');
 
@@ -41,103 +43,102 @@ class ComActivitiesModelActivities extends ComDefaultModelDefault
 		$this->_state->sort = 'created_on';
 	}
 	
-	public function getListQuery()
+	/**
+	 * Used by the purge action to add necessary where clauses
+	 * 
+	 * @param KDatabaseQueryInterface $query
+	 */
+	public function buildDeleteQuery(KDatabaseQueryDelete $query)
 	{
-	    $query  = null;
-	    
-	    if(!$this->_state->isEmpty())
-	    {
-	        $query = $this->getTable()->getDatabase()->getQuery();
-	    
-	        $this->_buildQueryColumns($query);
-	        $this->_buildQueryFrom($query);
-	        $this->_buildQueryJoins($query);
-	        $this->_buildQueryWhere($query);
-	        $this->_buildQueryGroup($query);
-	        $this->_buildQueryHaving($query);
-	        $this->_buildQueryOrder($query);
-	        $this->_buildQueryLimit($query);
-	    }
-	    
-	    return $query;
+		$this->_buildQueryWhere($query);
 	}
 
-	protected function _buildQueryColumns(KDatabaseQuery $query)
+	protected function _buildQueryColumns(KDatabaseQueryInterface $query)
 	{
 		if($this->_state->distinct && !empty($this->_state->column))
 		{
 			$query->distinct()
-				->select($this->_state->column)
-				->select($this->_state->column . ' AS activities_activity_id');
+				->columns($this->_state->column)
+				->columns(array('activities_activity_id' => $this->_state->column));
 		}
 		else
 		{
 			parent::_buildQueryColumns($query);
-			$query->select('users.name AS created_by_name');
+			$query->columns(array('created_by_name' => 'users.name'));
 		}
 	}
 
-	protected function _buildQueryJoins(KDatabaseQuery $query)
+	protected function _buildQueryJoins(KDatabaseQueryInterface $query)
 	{
-		$query->join('LEFT', 'users AS users', 'users.id = tbl.created_by');
+		$query->join(array('users' => 'users'), 'users.id = tbl.created_by');
 	}
 
-	protected function _buildQueryWhere(KDatabaseQuery $query)
+	protected function _buildQueryWhere(KDatabaseQueryInterface $query)
 	{
 		parent::_buildQueryWhere($query);
+		
+		$state = $this->_state;
 
-		if ($this->_state->application) {
-			$query->where('tbl.application', '=', $this->_state->application);
+		if ($state->application) {
+			$query->where('tbl.application = :application')->bind(array('application' => $state->application));
 		}
 
-		if ($this->_state->type) {
-			$query->where('tbl.type', '=', $this->_state->type);
+		if ($state->type) {
+			$query->where('tbl.type = :type')->bind(array('type' => $state->type));
 		}
 
-		if ($this->_state->package && !($this->_state->distinct && !empty($this->_state->column))) {
-			$query->where('tbl.package', '=', $this->_state->package);
+		if ($state->package && !($state->distinct && !empty($state->column))) {
+			$query->where('tbl.package = :package')->bind(array('package' => $state->package));
 		}
 
-		if ($this->_state->name) {
-			$query->where('tbl.name', '=', $this->_state->name);
+		if ($state->name) {
+			$query->where('tbl.name = :name')->bind(array('name' => $state->name));
 		}
 
-		if ($this->_state->action) {
-			$query->where('tbl.action', 'IN', $this->_state->action);
+		if ($state->action) {
+			$query->where('tbl.action IN (:action)')->bind(array('action' => $state->action));
 		}
 
-		if ($this->_state->start_date && $this->_state->start_date != '0000-00-00')
+        if (is_numeric($state->row)) {
+        	$query->where('tbl.row IN (:row)')->bind(array('row' => $state->row));
+        }
+
+        if ($state->start_date && $state->start_date != '0000-00-00')
 		{
-			$start_date = $this->getService('koowa:date', array('date' => $this->_state->start_date));
+			$start_date = $this->getService('koowa:date', array('date' => $state->start_date));
 			$start      = $start_date->getDate();
 
-			$query->where('tbl.created_on', '>=', $start);
+			$query->where('tbl.created_on >= :created_on')->bind(array('created_on' => $start));
 			
-			if ($day_range = $this->_state->day_range) {
+			if ($day_range = $state->day_range) {
 			    $range = clone $start_date;  
-			    $query->where('tbl.created_on', '<', $range->addDays($day_range)->getDate());
+			    $query->where('tbl.created_on < :created_on')->bind(array('created_on' => $range->addDays($day_range)->getDate()));
 			}
 		}
 		
-		if ($this->_state->end_date && $this->_state->end_date != '0000-00-00')
+		if ($state->end_date && $state->end_date != '0000-00-00')
 		{
-		    $end_date  = $this->getService('koowa:date', array('date' => $this->_state->end_date));
+		    $end_date  = $this->getService('koowa:date', array('date' => $state->end_date));
 		    $end       = $end_date->getDate();
 
-		    $query->where('tbl.created_on', '<=', $end);
+		    $query->where('tbl.created_on <= :created_on')->bind(array('created_on' => $end));
 		    
-		    if ($day_range = $this->_state->day_range) {
+		    if ($day_range = $state->day_range) {
 		        $range = clone $end_date;
-		        $query->where('tbl.created_on', '>', $range->addDays(-$day_range)->getDate());
+		        $query->where('tbl.created_on > :created_on')->bind(array('created_on' => $range->addDays(-$day_range)->getDate()));
 		    }
 		}
 
-		if ($this->_state->user) {
-			$query->where('tbl.created_by', '=', $this->_state->user);
+		if ($state->user) {
+			$query->where('tbl.created_by = :created_by')->bind(array('created_by' => $state->user));
 		}
+
+        if ($ip = $state->ip) {
+        	$query->where('tbl.ip IN (:ip)')->bind(array('ip' => $state->ip));
+        }
 	}
 
-	protected function _buildQueryOrder(KDatabaseQuery $query)
+	protected function _buildQueryOrder(KDatabaseQueryInterface $query)
 	{
 		if($this->_state->distinct && !empty($this->_state->column)) {
 			$query->order('package', 'asc');

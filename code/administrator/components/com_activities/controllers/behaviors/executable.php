@@ -15,11 +15,15 @@
  * @package     Nooku_Server
  * @subpackage  Activities
  */
-class ComActivitiesControllerBehaviorExecutable extends ComDefaultControllerBehaviorExecutable
+class ComActivitiesControllerBehaviorExecutable extends ComKoowaControllerBehaviorExecutable
 {
     public function canAdd()
     {
-        return false;
+        $result = false;
+        if (!$this->_mixer->isDispacthed()) {
+            $result = true;
+        }
+        return $result;
     }
 
     public function canEdit()
