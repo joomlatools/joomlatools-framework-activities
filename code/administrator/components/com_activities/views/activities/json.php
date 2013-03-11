@@ -99,8 +99,8 @@ class ComActivitiesViewActivitiesJson extends KViewJson
             'id:' . $item->id
         );
 
-        $host = KRequest::url()
-            ->get(KHttpUrl::SCHEME | KHttpUrl::USER | KHttpUrl::PASS | KHttpUrl::HOST | KHttpUrl::PORT);
+        $base = KRequest::url()
+            ->get(KHttpUrl::BASE);
 
         return array(
             'id'        => implode(',', $id),
@@ -110,24 +110,24 @@ class ComActivitiesViewActivitiesJson extends KViewJson
             )),
             'verb'      => $item->action,
             'object'    => array(
-                'url' => $host . JRoute::_($this->getService('koowa:http.url', array('url' => 'index.php'))->setQuery(array(
+                'url' => $this->getService('koowa:http.url', array('url' => $base))->setQuery(array(
                     'option' => $item->type . '_' . $item->package,
                     'view'   => $item->name,
                     'id'     => $item->row,
-                )), false),
+                ))->get()
             ),
             'target'    => array(
-                'url' => $host . JRoute::_($this->getService('koowa:http.url', array('url' => 'index.php'))->setQuery(array(
+                'url' => $this->getService('koowa:http.url', array('url' => $base))->setQuery(array(
                     'option' => $item->type . '_' . $item->package,
                     'view'   => $item->name,
-                )), false),
+                ))->get()
             ),
             'actor'     => array(
-                'url' => $host . JRoute::_($this->getService('koowa:http.url', array('url' => 'index.php'))->setQuery(array(
+                'url' => $this->getService('koowa:http.url', array('url' => $base))->setQuery(array(
                     'option' => 'com_users',
                     'view'   => 'user',
                     'id'     => $item->created_by
-                ), true), false),
+                ))->get()
             )
         );
     }
