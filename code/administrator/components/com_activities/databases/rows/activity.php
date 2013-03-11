@@ -63,15 +63,15 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
             }
         }
 
-        if ($this->isModified('meta') && !is_null($this->meta)) {
-            // Encode metadata.
-            $meta = json_encode($this->meta);
-            if ($meta === false) {
+        if ($this->isModified('metadata') && !is_null($this->metadata)) {
+            // Encode meta data.
+            $metadata = json_encode($this->metadata);
+            if ($metadata === false) {
                 $this->setStatus(KDatabase::STATUS_FAILED);
                 $this->setStatusMessage('Unable to encode meta data');
                 return false;
             }
-            $this->meta = $meta;
+            $this->metadata = $metadata;
         }
 
         return parent::save();
@@ -81,11 +81,11 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
     {
         $value = parent::__get($key);
 
-        if ($key == 'meta' && is_string($value)) {
+        if ($key == 'metadata' && is_string($value)) {
             // Try to decode it.
-            $meta = json_decode($value);
-            if ($meta !== null) {
-                $value = $meta;
+            $metadata = json_decode($value);
+            if ($metadata !== null) {
+                $value = $metadata;
             }
         }
 

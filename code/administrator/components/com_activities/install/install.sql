@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `#__activities_activities` (
 	`created_on` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 	`created_by` INT(11) NOT NULL DEFAULT '0',
 	`ip` varchar(45) NOT NULL DEFAULT '',
-	`meta` text NOT NULL,
+	`metadata` text NOT NULL,
 	PRIMARY KEY(`activities_activity_id`),
 	KEY `package` (`package`),
     KEY `name` (`name`),
