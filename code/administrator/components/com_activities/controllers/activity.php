@@ -29,19 +29,14 @@ class ComActivitiesControllerActivity extends ComKoowaControllerDefault
 
     protected function _actionPurge(KCommandContext $context)
     {
-        $db = $this->getModel()->getTable()->getDatabase();
-        
-        $query = $this->getService('koowa:database.query.delete')
-        	->table(array('tbl' => $this->getModel()->getTable()->getName()))
-        	->join(array('users' => 'users'), 'users.id = tbl.created_by');
-        
-        $this->getModel()->buildDeleteQuery($query);
-        
-        if (!$db->execute($query)) {
+        if (!$this->getModel()->getTable()->getDatabase()->execute($this->getModel()->getPurgeQuery()))
+        {
             $context->setError(new KControllerException(
                 'Delete Action Failed', KHttpResponse::INTERNAL_SERVER_ERROR
             ));
-        } else {
+        }
+        else
+        {
             $context->status = KHttpResponse::NO_CONTENT;
         }
     }
