@@ -17,6 +17,16 @@
  */
 class ComActivitiesControllerActivity extends ComDefaultControllerDefault
 {
+    public function __construct(KConfig $config)
+    {
+        parent::__construct($config);
+
+        // TODO To be removed as soon as the problem with language files loading on HMVC calls is solved
+        JFactory::getLanguage()->load('com_activities', JPATH_ADMINISTRATOR);
+
+        $this->registerCallback('before.add', array($this, 'setIp'));
+    }
+
     protected function _actionPurge(KCommandContext $context)
     {
         $db = $this->getModel()->getTable()->getDatabase();
@@ -37,5 +47,10 @@ class ComActivitiesControllerActivity extends ComDefaultControllerDefault
         } else {
             $context->status = KHttpResponse::NO_CONTENT;
         }
+    }
+
+    public function setIp(KCommandContext $context)
+    {
+        $context->data->ip = KRequest::get('server.REMOTE_ADDR', 'ip');
     }
 }

@@ -8,7 +8,7 @@
 	<license>http://www.gnu.org/licenses/gpl.html GNU/GPL v3</license>
 	<authorEmail>info@nooku.org</authorEmail>
 	<authorUrl>www.nooku.org</authorUrl>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<description>This component provides user activity logging</description>
 
 	<install>
@@ -22,6 +22,12 @@
 		</sql>
 	</uninstall>
 
+    <update>
+        <schemas>
+            <schemapath type="mysql">updates</schemapath>
+        </schemas>
+    </update>
+
 	<administration>
 		<files folder="admin">
 			<filename>dispatcher.php</filename>
@@ -32,6 +38,7 @@
 			<folder>models</folder>
 			<folder>templates</folder>
 			<folder>views</folder>
+            <folder>updates</folder>
 		</files>
 	</administration>
 </install>

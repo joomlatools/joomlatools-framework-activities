@@ -28,12 +28,14 @@ class ComActivitiesModelActivities extends ComDefaultModelDefault
 			->insert('package'     , 'cmd')
 			->insert('name'        , 'cmd')
 			->insert('action'      , 'cmd')
+            ->insert('row'         , 'int')
 			->insert('user'        , 'cmd')
 			->insert('distinct'    , 'boolean', false)
 			->insert('column'      , 'cmd')
 			->insert('start_date'  , 'date')
 			->insert('end_date'    , 'date')
-			->insert('day_range'   , 'int');
+			->insert('day_range'   , 'int')
+            ->insert('ip'          , 'ip');
 
 		$this->_state->remove('direction')->insert('direction', 'word', 'desc');
 
@@ -106,7 +108,11 @@ class ComActivitiesModelActivities extends ComDefaultModelDefault
 			$query->where('tbl.action', 'IN', $this->_state->action);
 		}
 
-		if ($this->_state->start_date && $this->_state->start_date != '0000-00-00')
+        if (is_numeric($this->_state->row)) {
+            $query->where('tbl.row', 'IN', $this->_state->row);
+        }
+
+        if ($this->_state->start_date && $this->_state->start_date != '0000-00-00')
 		{
 			$start_date = $this->getService('koowa:date', array('date' => $this->_state->start_date));
 			$start      = $start_date->getDate();
@@ -122,19 +128,23 @@ class ComActivitiesModelActivities extends ComDefaultModelDefault
 		if ($this->_state->end_date && $this->_state->end_date != '0000-00-00')
 		{
 		    $end_date  = $this->getService('koowa:date', array('date' => $this->_state->end_date));
-		    $end       = $end_date->getDate();
+		    $end       = $end_date->getDate('%Y-%m-%d');
 
-		    $query->where('tbl.created_on', '<=', $end);
+		    $query->where('DATE(tbl.created_on)', '<=', $end);
 		    
 		    if ($day_range = $this->_state->day_range) {
 		        $range = clone $end_date;
-		        $query->where('tbl.created_on', '>', $range->addDays(-$day_range)->getDate());
+		        $query->where('DATE(tbl.created_on)', '>=', $range->addDays(-$day_range)->getDate('%Y-%m-%d'));
 		    }
 		}
 
 		if ($this->_state->user) {
 			$query->where('tbl.created_by', '=', $this->_state->user);
 		}
+
+        if ($ip = $this->_state->ip) {
+            $query->where('tbl.ip', 'IN', $ip);
+        }
 	}
 
 	protected function _buildQueryOrder(KDatabaseQuery $query)
