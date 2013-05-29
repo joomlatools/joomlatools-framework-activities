@@ -43,14 +43,25 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 		$this->_state->sort = 'created_on';
 	}
 	
-	/**
-	 * Used by the purge action to add necessary where clauses
-	 * 
-	 * @param KDatabaseQueryInterface $query
-	 */
-	public function buildDeleteQuery(KDatabaseQueryDelete $query)
+	public function getListQuery()
 	{
-		$this->_buildQueryWhere($query);
+	    $query  = null;
+	    
+	    if(!$this->_state->isEmpty())
+	    {
+	        $query = $this->getTable()->getDatabase()->getQuery();
+	    
+	        $this->_buildQueryColumns($query);
+	        $this->_buildQueryFrom($query);
+	        $this->_buildQueryJoins($query);
+	        $this->_buildQueryWhere($query);
+	        $this->_buildQueryGroup($query);
+	        $this->_buildQueryHaving($query);
+	        $this->_buildQueryOrder($query);
+	        $this->_buildQueryLimit($query);
+	    }
+	    
+	    return $query;
 	}
 
 	protected function _buildQueryColumns(KDatabaseQueryInterface $query)
@@ -108,24 +119,24 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 			$start_date = $this->getService('koowa:date', array('date' => $state->start_date));
 			$start      = $start_date->getDate();
 
-			$query->where('tbl.created_on >= :created_on')->bind(array('created_on' => $start));
+			$query->where('tbl.created_on >= :start')->bind(array('start' => $start));
 			
 			if ($day_range = $state->day_range) {
 			    $range = clone $start_date;  
-			    $query->where('tbl.created_on < :created_on')->bind(array('created_on' => $range->addDays($day_range)->getDate()));
+			    $query->where('tbl.created_on < :range_start')->bind(array('range_start' => $range->addDays($day_range)->getDate()));
 			}
 		}
 		
 		if ($state->end_date && $state->end_date != '0000-00-00')
 		{
 		    $end_date  = $this->getService('koowa:date', array('date' => $state->end_date));
-		    $end       = $end_date->getDate();
+		    $end       = $end_date->getDate('%Y-%m-%d');
 
-		    $query->where('tbl.created_on <= :created_on')->bind(array('created_on' => $end));
+		    $query->where('DATE(tbl.created_on) <= :end')->bind(array('created_on' => $end));
 		    
 		    if ($day_range = $state->day_range) {
 		        $range = clone $end_date;
-		        $query->where('tbl.created_on > :created_on')->bind(array('created_on' => $range->addDays(-$day_range)->getDate()));
+		        $query->where('DATE(tbl.created_on) >= :range_end')->bind(array('range_end' => $range->addDays(-$day_range)->getDate('%Y-%m-%d')));
 		    }
 		}
 
