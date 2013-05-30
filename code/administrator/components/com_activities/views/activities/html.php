@@ -17,7 +17,7 @@
  * @subpackage 	Activities
  */
 
-class ComActivitiesViewActivitiesHtml extends ComKoowaViewHtml
+class ComActivitiesViewActivitiesHtml extends ComDefaultViewHtml
 {
 	public function display()
 	{

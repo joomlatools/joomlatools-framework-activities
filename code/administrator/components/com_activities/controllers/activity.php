@@ -15,7 +15,7 @@
  * @package     Nooku_Server
  * @subpackage  Activities
  */
-class ComActivitiesControllerActivity extends ComKoowaControllerDefault
+class ComActivitiesControllerActivity extends ComDefaultControllerDefault
 {
     public function __construct(KConfig $config)
     {
