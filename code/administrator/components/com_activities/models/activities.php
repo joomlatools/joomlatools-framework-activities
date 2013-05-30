@@ -16,7 +16,7 @@
  * @subpackage 	Activities
  */
 
-class ComActivitiesModelActivities extends ComDefaultModelDefault
+class ComActivitiesModelActivities extends ComKoowaModelDefault
 {
 	public function __construct(KConfig $config)
 	{
@@ -47,71 +47,69 @@ class ComActivitiesModelActivities extends ComDefaultModelDefault
     {
         $state = $this->getState();
 
-        $query = $this->getTable()->getDatabase()->getQuery();
+        $query = $this->getService('koowa:database.query.delete');
 
-        $query->from($this->getTable()->getName());
+        $query->table(array($this->getTable()->getName()));
 
         if ($state->end_date && $state->end_date != '0000-00-00')
         {
             $end_date = $this->getService('koowa:date', array('date' => $state->end_date));
             $end      = $end_date->getDate('%Y-%m-%d');
 
-            $query->where('DATE(created_on)', '<=', $end);
+            $query->where('DATE(created_on) <= :end')->bind(array('end' => $end));
         }
-
-        $query = 'DELETE ' . (string) $query;
 
         return $query;
     }
 
-	protected function _buildQueryColumns(KDatabaseQuery $query)
+	protected function _buildQueryColumns(KDatabaseQueryInterface $query)
 	{
 		if($this->_state->distinct && !empty($this->_state->column))
 		{
-            $query->distinct()
-            ->select($this->_state->column)
-            ->select($this->_state->column . ' AS activities_activity_id');
+			$query->distinct()
+				->columns($this->_state->column)
+				->columns(array('activities_activity_id' => $this->_state->column));
 		}
 		else
 		{
 			parent::_buildQueryColumns($query);
-			$query->select(array('users.name AS created_by_name'));
+			$query->columns(array('created_by_name' => 'users.name'));
 		}
 	}
 
-	protected function _buildQueryJoins(KDatabaseQuery $query)
+	protected function _buildQueryJoins(KDatabaseQueryInterface $query)
 	{
-        $query->join('LEFT', 'users AS users', 'users.id = tbl.created_by');
-    }
+		$query->join(array('users' => 'users'), 'users.id = tbl.created_by');
+	}
 
-	protected function _buildQueryWhere(KDatabaseQuery $query)
+	protected function _buildQueryWhere(KDatabaseQueryInterface $query)
 	{
 		parent::_buildQueryWhere($query);
 		
 		$state = $this->_state;
 
 		if ($state->application) {
-			$query->where('tbl.application','=',$state->application);
+			$query->where('tbl.application = :application')->bind(array('application' => $state->application));
 		}
 
 		if ($state->type) {
-			$query->where('tbl.type','=',$state->type);
+			$query->where('tbl.type = :type')->bind(array('type' => $state->type));
 		}
 
 		if ($state->package && !($state->distinct && !empty($state->column))) {
-			$query->where('tbl.package','=',$state->package);
+			$query->where('tbl.package = :package')->bind(array('package' => $state->package));
 		}
 
 		if ($state->name) {
-			$query->where('tbl.name','=',$state->name);
+			$query->where('tbl.name = :name')->bind(array('name' => $state->name));
 		}
 
 		if ($state->action) {
-			$query->where('tbl.action','IN',$state->action);
+			$query->where('tbl.action IN (:action)')->bind(array('action' => $state->action));
 		}
 
         if (is_numeric($state->row)) {
-        	$query->where('tbl.row','IN',$state->row);
+        	$query->where('tbl.row IN (:row)')->bind(array('row' => $state->row));
         }
 
         if ($state->start_date && $state->start_date != '0000-00-00')
@@ -119,11 +117,11 @@ class ComActivitiesModelActivities extends ComDefaultModelDefault
 			$start_date = $this->getService('koowa:date', array('date' => $state->start_date));
 			$start      = $start_date->getDate();
 
-			$query->where('tbl.created_on','>=',$start);
+			$query->where('tbl.created_on >= :start')->bind(array('start' => $start));
 			
 			if ($day_range = $state->day_range) {
 			    $range = clone $start_date;  
-			    $query->where('tbl.created_on','<',$range->addDays($day_range)->getDate());
+			    $query->where('tbl.created_on < :range_start')->bind(array('range_start' => $range->addDays($day_range)->getDate()));
 			}
 		}
 		
@@ -132,24 +130,24 @@ class ComActivitiesModelActivities extends ComDefaultModelDefault
 		    $end_date  = $this->getService('koowa:date', array('date' => $state->end_date));
 		    $end       = $end_date->getDate('%Y-%m-%d');
 
-		    $query->where('DATE(tbl.created_on)','<=',$end);
+		    $query->where('DATE(tbl.created_on) <= :end')->bind(array('end' => $end));
 		    
 		    if ($day_range = $state->day_range) {
 		        $range = clone $end_date;
-		        $query->where('DATE(tbl.created_on)','>=',$range->addDays(-$day_range)->getDate('%Y-%m-%d'));
+		        $query->where('DATE(tbl.created_on) >= :range_end')->bind(array('range_end' => $range->addDays(-$day_range)->getDate('%Y-%m-%d')));
 		    }
 		}
 
 		if ($state->user) {
-			$query->where('tbl.created_by','=',$state->user);
+			$query->where('tbl.created_by = :created_by')->bind(array('created_by' => $state->user));
 		}
 
         if ($ip = $state->ip) {
-        	$query->where('tbl.ip','IN',$state->ip);
+        	$query->where('tbl.ip IN (:ip)')->bind(array('ip' => $state->ip));
         }
 	}
 
-	protected function _buildQueryOrder(KDatabaseQuery $query)
+	protected function _buildQueryOrder(KDatabaseQueryInterface $query)
 	{
 		if($this->_state->distinct && !empty($this->_state->column)) {
 			$query->order('package', 'asc');
