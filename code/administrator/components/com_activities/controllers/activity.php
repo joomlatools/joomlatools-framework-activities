@@ -29,22 +29,14 @@ class ComActivitiesControllerActivity extends ComDefaultControllerDefault
 
     protected function _actionPurge(KCommandContext $context)
     {
-        $db = $this->getModel()->getTable()->getDatabase();
-        
-        $query = $this->getModel()->getListQuery();
-        $query->columns = array();
-        
-        // MySQL doesn't allow limit or order in multi table deletes
-        $query->limit = null;
-        $query->order = null;
-        
-        $query = 'DELETE `tbl` ' .$query;
-        
-        if (!$db->execute($query)) {
+        if (!$this->getModel()->getTable()->getDatabase()->execute($this->getModel()->getPurgeQuery()))
+        {
             $context->setError(new KControllerException(
                 'Delete Action Failed', KHttpResponse::INTERNAL_SERVER_ERROR
             ));
-        } else {
+        }
+        else
+        {
             $context->status = KHttpResponse::NO_CONTENT;
         }
     }
