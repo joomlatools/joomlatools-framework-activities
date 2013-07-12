@@ -100,7 +100,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
         );
 
         $base = KRequest::url()
-            ->get(KHttpUrl::BASE);
+            ->toString(KHttpUrl::BASE);
 
         return array(
             'id'        => implode(',', $id),
@@ -114,20 +114,20 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                     'option' => $item->type . '_' . $item->package,
                     'view'   => $item->name,
                     'id'     => $item->row,
-                ))->get()
+                ))->toString()
             ),
             'target'    => array(
                 'url' => $this->getService('koowa:http.url', array('url' => $base))->setQuery(array(
                     'option' => $item->type . '_' . $item->package,
                     'view'   => $item->name,
-                ))->get()
+                ))->toString()
             ),
             'actor'     => array(
                 'url' => $this->getService('koowa:http.url', array('url' => $base))->setQuery(array(
                     'option' => 'com_users',
                     'view'   => 'user',
                     'id'     => $item->created_by
-                ))->get()
+                ))->toString()
             )
         );
     }
