@@ -16,7 +16,7 @@
  * @subpackage 	Activities
  */
 
-class ComActivitiesModelActivities extends ComDefaultModelDefault
+class ComActivitiesModelActivities extends ComKoowaModelDefault
 {
 	public function __construct(KConfig $config)
 	{

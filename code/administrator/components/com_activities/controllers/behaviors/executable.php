@@ -15,7 +15,7 @@
  * @package     Nooku_Server
  * @subpackage  Activities
  */
-class ComActivitiesControllerBehaviorExecutable extends ComDefaultControllerBehaviorExecutable
+class ComActivitiesControllerBehaviorExecutable extends ComKoowaControllerBehaviorExecutable
 {
     public function canAdd()
     {

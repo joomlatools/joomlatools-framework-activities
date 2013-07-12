@@ -16,7 +16,7 @@
  * @package    	Nooku_Components
  * @subpackage 	Activities
  */
-class ComActivitiesDispatcher extends ComDefaultDispatcher
+class ComActivitiesDispatcher extends ComKoowaDispatcher
 {
 	protected function _initialize(KConfig $config)
 	{
