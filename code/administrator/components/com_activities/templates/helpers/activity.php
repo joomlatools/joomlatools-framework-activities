@@ -22,7 +22,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault impleme
 	/**
      * Check for overrides of the helper
      *
-     * @param 	object 	An optional KConfig object with configuration options
+     * @param   KConfig $config Configuration options
      * @param 	object	A KServiceInterface object
      * @return ComActivitiesTemplateHelperActivity
      */
