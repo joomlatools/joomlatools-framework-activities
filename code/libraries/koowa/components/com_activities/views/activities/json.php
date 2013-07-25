@@ -105,7 +105,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
             'id'        => implode(',', $id),
             'published' => $this->getService('com://admin/activities.template.helper.date')->format(array(
                 'date'   => $item->created_on,
-                'format' => '%Y-%m-%dT%TZ'
+                'format' => 'C'
             )),
             'verb'      => $item->action,
             'object'    => array(
