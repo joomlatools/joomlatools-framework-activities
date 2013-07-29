@@ -1,6 +1,5 @@
 <?php
 /**
- * @version		$Id: activities.php 1485 2012-02-10 12:32:02Z johanjanssens $
  * @package     Nooku_Components
  * @subpackage  Activities
  * @copyright	Copyright (C) 2010 - 2012 Timble CVBA and Contributors. (http://www.timble.net)
@@ -53,8 +52,8 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 
         if ($state->end_date && $state->end_date != '0000-00-00')
         {
-            $end_date = $this->getService('koowa:date', array('date' => $state->end_date));
-            $end      = $end_date->getDate('%Y-%m-%d');
+            $end_date = new KDate(array('date' => $state->end_date));
+            $end      = $end_date->getDate('Y-m-d');
 
             $query->where('DATE(created_on) <= :end')->bind(array('end' => $end));
         }
@@ -114,8 +113,8 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 
         if ($state->start_date && $state->start_date != '0000-00-00')
 		{
-			$start_date = $this->getService('koowa:date', array('date' => $state->start_date));
-			$start      = $start_date->getDate();
+			$start_date = new KDate(array('date' => $state->start_date));
+			$start      = $start_date->format('Y-m-d');
 
 			$query->where('tbl.created_on >= :start')->bind(array('start' => $start));
 			
@@ -127,8 +126,8 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 		
 		if ($state->end_date && $state->end_date != '0000-00-00')
 		{
-		    $end_date  = $this->getService('koowa:date', array('date' => $state->end_date));
-		    $end       = $end_date->getDate('%Y-%m-%d');
+		    $end_date  = new KDate(array('date' => $state->end_date));
+		    $end       = $end_date->getDate('Y-m-d');
 
 		    $query->where('DATE(tbl.created_on) <= :end')->bind(array('end' => $end));
 		    

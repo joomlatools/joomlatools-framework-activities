@@ -1,6 +1,5 @@
 <?php
 /**
- * @version     $Id: executable.php 1485 2012-02-10 12:32:02Z johanjanssens $
  * @package     Nooku_Server
  * @subpackage  Activities
  * @copyright   Copyright (C) 2011 - 2012 Timble CVBA and Contributors. (http://www.timble.net).
@@ -31,7 +30,7 @@ class ComActivitiesControllerActivity extends ComKoowaControllerDefault
     {
         if (!$this->getModel()->getTable()->getDatabase()->execute($this->getModel()->getPurgeQuery()))
         {
-            $context->setError(new KControllerException(
+            $context->setError(new KControllerExceptionActionFailed(
                 'Delete Action Failed', KHttpResponse::INTERNAL_SERVER_ERROR
             ));
         }
