@@ -33,14 +33,19 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     protected $_attributes;
 
     /**
+     * @var array The parameter link attributes.
+     */
+    protected $_link_attributes;
+
+    /**
+     * @var string The parameter url.
+     */
+    protected $_url;
+
+    /**
      * @var mixed The parameter renderer.
      */
     protected $_renderer;
-
-    /**
-     * @var mixed The parameter link.
-     */
-    protected $_link;
 
     public function __construct(KConfig $config)
     {
@@ -53,22 +58,23 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
 
         $this->_label      = $config->label;
         $this->_renderer   = $config->renderer;
-        $this->_link       = $config->link;
         $this->_translator = $config->translator;
 
         $this->setAttributes(KConfig::unbox($config->attributes));
+        $this->setLinkAttributes(KConfig::unbox($config->link_attributes));
         $this->setTranslatable($config->translate);
         $this->setText($config->text);
+        $this->setUrl($config->url);
     }
 
     protected function _initialize(KConfig $config)
     {
         $config->append(array(
-            'html'       => true,
-            'link'       => 'com://admin/activities.activity.translator.parameter.link.html',
-            'translate'  => false,
-            'attributes' => array('class' => array('parameter')),
-            'translator' => 'com://admin/activities.translator',
+            'html'            => true,
+            'translate'       => false,
+            'link_attributes' => array(),
+            'attributes'      => array('class' => array('parameter')),
+            'translator'      => 'com://admin/activities.translator',
         ))->append(array(
                 'renderer' => 'com://admin/activities.activity.translator.parameter.renderer.' . ($config->html ? 'html' : 'text')));
 
@@ -186,24 +192,44 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorParameterInterface::setLink()
+     * @see ComActivitiesActivityTranslatorParameterInterface::setLinkAttributes()
      */
-    public function setLink(ComActivitiesActivityTranslatorParameterLinkInterface $link)
+    public function setLinkAttributes($attributes)
     {
-        $this->_link = $link;
+        $this->_link_attributes = $attributes;
         return $this;
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorParameterInterface::getLink()
+     * @see ComActivitiesActivityTranslatorParameterInterface::getLinkAttributes()
      */
-    public function getLink()
+    public function getLinkAttributes()
     {
-        if (!$this->_link instanceof ComActivitiesActivityTranslatorParameterLinkInterface)
-        {
-            $this->setLink($this->getService($this->_link));
-        }
+        return $this->_link_attributes;
+    }
 
-        return $this->_link;
+    /**
+     * @see ComActivitiesActivityTranslatorParameterInterface::setUrl()
+     */
+    public function setUrl($url)
+    {
+        $this->_url = (string) $url;
+        return $this;
+    }
+
+    /**
+     * @see ComActivitiesActivityTranslatorParameterInterface::getUrl()
+     */
+    public function getUrl()
+    {
+        return $this->_url;
+    }
+
+    /**
+     * @see ComActivitiesActivityTranslatorParameterInterface::isLinkable()
+     */
+    public function isLinkable()
+    {
+        return (bool) $this->getUrl();
     }
 }

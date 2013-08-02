@@ -21,9 +21,12 @@ class ComActivitiesActivityTranslatorParameterRendererHtml extends ComActivities
 
             $output = '<span class="content">' . $output . '</span>';
 
-            if (($link = $parameter->getLink()) && $link->getUrl())
+            if ($parameter->isLinkable())
             {
-                $output = $link->toString($output);
+                $url             = htmlspecialchars($parameter->getUrl(), ENT_QUOTES);
+                $link_attributes = $parameter->getLinkAttributes();
+
+                $output = '<a ' . (empty($link_attributes) ? '' : KHelperArray::toString($link_attributes)) . ' href="' . $url . '">' . $output . '</a>';
             }
 
             $attribs = $parameter->getAttributes();

@@ -72,7 +72,6 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
     protected function _setTitle(KConfig $config)
     {
         $config->append(array(
-            'link'       => array(),
             'attributes' => array(),
             'translate'  => false,
             'text'       => $this->title
@@ -127,25 +126,19 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
 
             if (method_exists($this, $method))
             {
-                $config = new KConfig();
+                $config = new KConfig(array('link' => array()));
 
                 call_user_func(array($this, $method), $config);
 
-                $config->html  = $html;
-                $config->label = $parameter;
-                $link          = $config->link;
+                $config->html            = $html;
+                $config->label           = $parameter;
+                $config->url             = $config->link->url;
+                $config->link_attributes = $config->link->attributes;
 
                 // Cleanup config object.
                 unset($config->link);
 
-                $parameter = $this->getService($this->_parameter, $config->toArray());
-
-                if ($link)
-                {
-                    $parameter->getLink()->setUrl($link->url)->setAttributes(KConfig::unbox($link->attributes));
-                }
-
-                $parameters[] = $parameter;
+                $parameters[] = $this->getService($this->_parameter, $config->toArray());
             }
         }
 

@@ -88,20 +88,43 @@ interface ComActivitiesActivityTranslatorParameterInterface
     public function render();
 
     /**
-     * Link setter.
+     * URL setter.
      *
-     * @param ComActivitiesActivityTranslatorParameterLinkInterface $link The parameter link.
+     * @param string $url The parameter URL.
      *
      * @return $this.
      */
-    public function setLink(ComActivitiesActivityTranslatorParameterLinkInterface $link);
+    public function setUrl($url);
 
     /**
-     * Link getter.
+     * URL getter.
      *
-     * @return ComActivitiesActivityTranslatorParameterLinkInterface The parameter link.
+     * @return string The parameter url.
      */
-    public function getLink();
+    public function getUrl();
+
+    /**
+     * Tells if the parameter is linkable or not.
+     *
+     * @return mixed
+     */
+    public function isLinkable();
+
+    /**
+     * Link attributes setter.
+     *
+     * @param array $attributes The parameter link attributes.
+     *
+     * @return $this.
+     */
+    public function setLinkAttributes($attributes);
+
+    /**
+     * Link attributes getter.
+     *
+     * @return array The parameter attributes.
+     */
+    public function getLinkAttributes();
 
     /**
      * Attributes setter.
