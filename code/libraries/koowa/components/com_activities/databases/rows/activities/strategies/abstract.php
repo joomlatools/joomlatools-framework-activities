@@ -8,11 +8,6 @@
 abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject implements ComActivitiesDatabaseRowActivityStrategyInterface
 {
     /**
-     * @var mixed The adapter to make database queries.
-     */
-    protected $_db_adapter;
-
-    /**
      * @var mixed The translator parameter identifier to instantiate.
      */
     protected $_parameter;
@@ -39,14 +34,12 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
         $this->setRow($config->row);
 
         $this->_parameter  = $config->parameter;
-        $this->_db_adapter = $config->db_adapter;
         $this->_translator = $config->translator;
     }
 
     protected function _initialize(KConfig $config)
     {
         $config->append(array(
-            'db_adapter' => 'koowa:database.adapter.mysqli',
             'parameter'  => 'com://admin/activities.activity.translator.parameter.default',
             'translator' => 'com://admin/activities.activity.translator.default',
         ));
@@ -121,7 +114,7 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
             'column' => $this->package . '_' . $this->name . '_' . 'id',
             'value'  => $this->row));
 
-        $db = $this->getService($this->_db_adapter);
+        $db = $this->getRow()->getTable()->getAdapter();
 
         $query = $this->getService('koowa:database.query.select');
         $query->columns('COUNT(*)')->table($config->table)->where($config->column . ' = :value')
