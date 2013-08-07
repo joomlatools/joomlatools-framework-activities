@@ -53,7 +53,7 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
         if ($state->end_date && $state->end_date != '0000-00-00')
         {
             $end_date = new KDate(array('date' => $state->end_date));
-            $end      = $end_date->getDate('Y-m-d');
+            $end      = $end_date->format('Y-m-d');
 
             $query->where('DATE(created_on) <= :end')->bind(array('end' => $end));
         }
@@ -120,20 +120,20 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 			
 			if ($day_range = $state->day_range) {
 			    $range = clone $start_date;  
-			    $query->where('tbl.created_on < :range_start')->bind(array('range_start' => $range->addDays($day_range)->getDate()));
+			    $query->where('tbl.created_on < :range_start')->bind(array('range_start' => $range->add(new DateInterval('P'.$day_range.'D'))->getDate()));
 			}
 		}
 		
 		if ($state->end_date && $state->end_date != '0000-00-00')
 		{
 		    $end_date  = new KDate(array('date' => $state->end_date));
-		    $end       = $end_date->getDate('Y-m-d');
+		    $end       = $end_date->format('Y-m-d');
 
 		    $query->where('DATE(tbl.created_on) <= :end')->bind(array('end' => $end));
 		    
 		    if ($day_range = $state->day_range) {
 		        $range = clone $end_date;
-		        $query->where('DATE(tbl.created_on) >= :range_end')->bind(array('range_end' => $range->addDays(-$day_range)->getDate('%Y-%m-%d')));
+		        $query->where('DATE(tbl.created_on) >= :range_end')->bind(array('range_end' => $range->sub(new DateInterval('P'.$day_range.'D'))->format('Y-m-d')));
 		    }
 		}
 
