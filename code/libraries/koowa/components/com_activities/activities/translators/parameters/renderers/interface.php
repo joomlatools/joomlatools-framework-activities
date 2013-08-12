@@ -6,6 +6,13 @@
  * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
  * @link		http://github.com/joomlatools/koowa-activities for the canonical source repository
  */
+
+/**
+ * Activity Parameter Translator Renderer Interface
+ *
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
+ */
 interface ComActivitiesActivityTranslatorParameterRendererInterface
 {
     /**

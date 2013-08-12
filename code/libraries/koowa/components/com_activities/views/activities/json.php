@@ -8,15 +8,12 @@
  */
 
 /**
- * Activities JSON View Class
+ * Activities Json View
  *
- * @author         Israel Canasa <http://nooku.assembla.com/profile/israelcanasa>
- * @category       Nooku
- * @package        Nooku_Components
- * @subpackage     Activities
- * @see            http://activitystrea.ms/specs/json/1.0/
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
+ * @see     http://activitystrea.ms/specs/json/1.0/
  */
-
 class ComActivitiesViewActivitiesJson extends KViewJson
 {
     /**

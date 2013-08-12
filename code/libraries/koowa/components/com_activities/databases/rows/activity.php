@@ -8,11 +8,10 @@
  */
 
 /**
- * Activities Database Row Class
+ * Activities Database Row
  *
- * @author         Arunas Mazeika <http://nooku.assembla.com/profile/arunasmazeika>
- * @package        Nooku_Components
- * @subpackage     Activities
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
  */
 class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
 {

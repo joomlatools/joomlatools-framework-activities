@@ -8,12 +8,10 @@
  */
 
 /**
- * Component Dispatcher
+ * Dispatcher
  *
- * @author      Israel Canasa <http://nooku.assembla.com/profile/israelcanasa>
- * @category	Nooku
- * @package    	Nooku_Components
- * @subpackage 	Activities
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
  */
 class ComActivitiesDispatcher extends ComKoowaDispatcher
 {

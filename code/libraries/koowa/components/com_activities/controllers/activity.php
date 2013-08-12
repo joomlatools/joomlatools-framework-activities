@@ -10,9 +10,8 @@
 /**
  * Activity Controller
  *
- * @author      Johan Janssens <http://nooku.assembla.com/profile/johanjanssens>
- * @package     Nooku_Server
- * @subpackage  Activities
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
  */
 class ComActivitiesControllerActivity extends ComKoowaControllerDefault
 {
@@ -34,10 +33,7 @@ class ComActivitiesControllerActivity extends ComKoowaControllerDefault
                 'Delete Action Failed', KHttpResponse::INTERNAL_SERVER_ERROR
             ));
         }
-        else
-        {
-            $context->status = KHttpResponse::NO_CONTENT;
-        }
+        else $context->status = KHttpResponse::NO_CONTENT;
     }
 
     public function setIp(KCommandContext $context)

@@ -8,13 +8,13 @@
  */
 
 /**
- * Activity database row strategy interface.
+ * Default Activity Database Row Strategy Interface
  *
  * Provides an interface for querying activity stream data from activity database rows. Database rows implementing this
  * interface can also be casted to strings.
  *
- * The components of
- *
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
  */
 interface ComActivitiesDatabaseRowActivityStrategyInterface
 {

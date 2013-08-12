@@ -7,6 +7,12 @@
  * @link		http://github.com/joomlatools/koowa-activities for the canonical source repository
  */
 
+/**
+ * Version
+ *
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
+ */
 class ComActivitiesVersion extends KObject
 {
     const VERSION = '1.0.2';

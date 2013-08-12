@@ -8,14 +8,11 @@
  */
 
 /**
- * Log Template Helper Class
+ * Activity Template Helper
  *
- * @author      Israel Canasa <http://nooku.assembla.com/profile/israelcanasa>
- * @package    	Nooku_Components
- * @subpackage 	Activities
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
  */
-
-
 class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault implements KServiceInstantiatable
 {
 	/**

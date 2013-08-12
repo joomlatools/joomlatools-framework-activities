@@ -8,13 +8,11 @@
  */
 
 /**
- * Activities Model Class
+ * Activities Model
  *
- * @author      Israel Canasa <http://nooku.assembla.com/profile/israelcanasa>
- * @package    	Nooku_Components
- * @subpackage 	Activities
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
  */
-
 class ComActivitiesModelActivities extends ComKoowaModelDefault
 {
 	public function __construct(KConfig $config)

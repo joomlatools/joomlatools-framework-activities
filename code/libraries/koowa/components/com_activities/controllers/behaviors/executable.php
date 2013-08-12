@@ -10,9 +10,8 @@
 /**
  * Executable Controller Behavior
  *
- * @author      Johan Janssens <http://nooku.assembla.com/profile/johanjanssens>
- * @package     Nooku_Server
- * @subpackage  Activities
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
  */
 class ComActivitiesControllerBehaviorExecutable extends ComKoowaControllerBehaviorExecutable
 {

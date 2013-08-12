@@ -8,14 +8,11 @@
  */
 
 /**
- * Activities Html View Class
+ * Activities Html View
  *
- * @author      Israel Canasa <http://nooku.assembla.com/profile/israelcanasa>
- * @category	Nooku
- * @package    	Nooku_Components
- * @subpackage 	Activities
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
  */
-
 class ComActivitiesViewActivitiesHtml extends ComKoowaViewHtml
 {
 	public function display()
