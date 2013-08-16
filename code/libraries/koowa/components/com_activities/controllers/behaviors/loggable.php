@@ -168,6 +168,6 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
 
     public function getHandle()
     {
-        return KMixinAbstract::getHandle();
+        return KObjectMixinAbstract::getHandle();
     }
 }
