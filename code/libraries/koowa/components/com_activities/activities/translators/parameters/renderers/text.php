@@ -22,15 +22,11 @@ class ComActivitiesActivityTranslatorParameterRendererText extends ComActivities
     {
         if ($output = $parameter->getText())
         {
-            if ($parameter->isTranslatable())
-            {
+            if ($parameter->isTranslatable()) {
                 $output = $parameter->getTranslator()->translate($output);
             }
         }
-        else
-        {
-            $output = $parameter->getLabel();
-        }
+        else $output = $parameter->getLabel();
 
         return $output;
     }
