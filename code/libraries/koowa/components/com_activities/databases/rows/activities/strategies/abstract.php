@@ -118,7 +118,7 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
         $config = new KConfig($config);
 
         $config->append(array(
-            'table'  => $this->package . '_' . KInflector::pluralize($this->name),
+            'table'  => $this->package . '_' . KStringInflector::pluralize($this->name),
             'column' => $this->package . '_' . $this->name . '_' . 'id',
             'value'  => $this->row));
 
