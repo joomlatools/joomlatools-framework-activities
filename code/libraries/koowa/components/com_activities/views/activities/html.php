@@ -19,7 +19,7 @@ class ComActivitiesViewActivitiesHtml extends ComKoowaViewHtml
 	{
 		if ($this->getLayout() == 'default')
 		{
-			$model = $this->getService($this->getModel()->getIdentifier());
+			$model = $this->getObject($this->getModel()->getIdentifier());
 
 			$this->assign('packages', $model
 				->distinct(true)

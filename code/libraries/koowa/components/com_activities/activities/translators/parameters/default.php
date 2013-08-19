@@ -139,7 +139,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     {
         if (!$this->_translator instanceof KTranslator)
         {
-            $this->setTranslator($this->getService($this->_translator));
+            $this->setTranslator($this->getObject($this->_translator));
         }
         return $this->_translator;
     }
@@ -168,7 +168,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     {
         if (!$this->_renderer instanceof ComActivitiesActivityTranslatorParameterRendererInterface)
         {
-            $this->setRenderer($this->getService($this->_renderer));
+            $this->setRenderer($this->getObject($this->_renderer));
         }
 
         return $this->_renderer;

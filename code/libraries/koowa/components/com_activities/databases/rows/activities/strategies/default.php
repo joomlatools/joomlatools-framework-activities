@@ -146,7 +146,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
                 // Cleanup config object.
                 unset($config->link);
 
-                $parameters[] = $this->getService($this->_parameter, $config->toArray());
+                $parameters[] = $this->getObject($this->_parameter, $config->toArray());
             }
         }
 

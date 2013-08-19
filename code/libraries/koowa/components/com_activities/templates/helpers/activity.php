@@ -18,16 +18,16 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault impleme
 	/**
      * Check for overrides of the helper
      *
-     * @param   KObjectConfig $config Configuration options
-     * @param 	object	A KObjectManagerInterface object
+     * @param   KObjectConfigInterface $config Configuration options
+     * @param 	KObjectManagerInterface $manager Object manager
      * @return ComActivitiesTemplateHelperActivity
      */
-    public static function getInstance(KObjectConfigInterface $config, KObjectManagerInterface $container)
+    public static function getInstance(KObjectConfigInterface $config, KObjectManagerInterface $manager)
     {
         $identifier = clone $config->service_identifier;
         $identifier->package = $config->row->package;
 
-        $identifier = $container->getIdentifier($identifier);
+        $identifier = $manager->getIdentifier($identifier);
 
         if(file_exists($identifier->filepath)) {
             $classname = $identifier->classname;

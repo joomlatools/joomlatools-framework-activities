@@ -100,26 +100,26 @@ class ComActivitiesViewActivitiesJson extends KViewJson
 
         return array(
             'id'        => implode(',', $id),
-            'published' => $this->getService('com://admin/activities.template.helper.date')->format(array(
+            'published' => $this->getObject('com://admin/activities.template.helper.date')->format(array(
                 'date'   => $item->created_on,
                 'format' => 'C'
             )),
             'verb'      => $item->action,
             'object'    => array(
-                'url' => $this->getService('koowa:http.url', array('url' => $base))->setQuery(array(
+                'url' => $this->getObject('koowa:http.url', array('url' => $base))->setQuery(array(
                     'option' => $item->type . '_' . $item->package,
                     'view'   => $item->name,
                     'id'     => $item->row,
                 ))->toString()
             ),
             'target'    => array(
-                'url' => $this->getService('koowa:http.url', array('url' => $base))->setQuery(array(
+                'url' => $this->getObject('koowa:http.url', array('url' => $base))->setQuery(array(
                     'option' => $item->type . '_' . $item->package,
                     'view'   => $item->name,
                 ))->toString()
             ),
             'actor'     => array(
-                'url' => $this->getService('koowa:http.url', array('url' => $base))->setQuery(array(
+                'url' => $this->getObject('koowa:http.url', array('url' => $base))->setQuery(array(
                     'option' => 'com_users',
                     'view'   => 'user',
                     'id'     => $item->created_by

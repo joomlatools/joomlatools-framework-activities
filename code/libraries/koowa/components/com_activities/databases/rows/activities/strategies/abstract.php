@@ -124,7 +124,7 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
 
         $db = $this->getRow()->getTable()->getAdapter();
 
-        $query = $this->getService('koowa:database.query.select');
+        $query = $this->getObject('koowa:database.query.select');
         $query->columns('COUNT(*)')->table($config->table)->where($config->column . ' = :value')
         ->bind(array('value' => $config->value));
 
@@ -162,7 +162,7 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
     {
         if (!$this->_translator instanceof ComActivitiesActivityTranslatorInterface)
         {
-            $this->_translator = $this->getService($this->_translator);
+            $this->_translator = $this->getObject($this->_translator);
         }
 
         return $this->_translator;
