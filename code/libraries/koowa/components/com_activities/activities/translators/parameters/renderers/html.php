@@ -65,8 +65,8 @@ class ComActivitiesActivityTranslatorParameterRendererHtml extends ComActivities
     {
         $output = array();
 
-        if ($array instanceof KConfig) {
-            $array = KConfig::unbox($array);
+        if ($array instanceof KObjectConfig) {
+            $array = KObjectConfig::unbox($array);
         }
 
         if (is_array($array))

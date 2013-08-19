@@ -30,7 +30,7 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
      */
     protected $_row;
 
-    public function __construct(KConfig $config)
+    public function __construct(KObjectConfig $config)
     {
         parent::__construct($config);
 
@@ -45,7 +45,7 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
         $this->_translator = $config->translator;
     }
 
-    protected function _initialize(KConfig $config)
+    protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
             'parameter'  => 'com://admin/activities.activity.translator.parameter.default',
@@ -81,7 +81,7 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
      */
     protected function _getUrl($config = array())
     {
-        $config = new KConfig($config);
+        $config = new KObjectConfig($config);
 
         $config->append(array('route' => true, 'absolute' => true, 'url' => KRequest::url()));
 
@@ -115,7 +115,7 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
      */
     protected function _resourceExists($config = array())
     {
-        $config = new KConfig($config);
+        $config = new KObjectConfig($config);
 
         $config->append(array(
             'table'  => $this->package . '_' . KStringInflector::pluralize($this->name),

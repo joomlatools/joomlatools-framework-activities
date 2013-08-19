@@ -15,7 +15,7 @@
  */
 abstract class ComActivitiesActivityTranslatorParameterRendererAbstract extends KObject implements ComActivitiesActivityTranslatorParameterRendererInterface, KServiceInstantiatable
 {
-    public static function getInstance(KConfigInterface $config, KServiceInterface $container)
+    public static function getInstance(KObjectConfigInterface $config, KServiceInterface $container)
     {
         // Singleton behavior.
         $classname = $config->service_identifier->classname;

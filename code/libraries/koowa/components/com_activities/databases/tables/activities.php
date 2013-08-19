@@ -15,7 +15,7 @@
  */
 class ComActivitiesDatabaseTableActivities extends KDatabaseTableDefault
 {
-    protected function _initialize(KConfig $config)
+    protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
             'behaviors' => array('creatable', 'identifiable')

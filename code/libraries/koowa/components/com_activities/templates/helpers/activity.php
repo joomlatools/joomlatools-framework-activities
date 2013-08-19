@@ -18,11 +18,11 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault impleme
 	/**
      * Check for overrides of the helper
      *
-     * @param   KConfig $config Configuration options
+     * @param   KObjectConfig $config Configuration options
      * @param 	object	A KServiceInterface object
      * @return ComActivitiesTemplateHelperActivity
      */
-    public static function getInstance(KConfigInterface $config, KServiceInterface $container)
+    public static function getInstance(KObjectConfigInterface $config, KServiceInterface $container)
     {
         $identifier = clone $config->service_identifier;
         $identifier->package = $config->row->package;
@@ -41,7 +41,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault impleme
 
     public function message($config = array())
 	{
-	    $config = new KConfig($config);
+	    $config = new KObjectConfig($config);
 		$config->append(array(
 			'row'      => ''
 		));

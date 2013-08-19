@@ -32,20 +32,20 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     /**
      * Activity controller identifier.
      *
-     * @param KConfig
+     * @param KObjectConfig
      */
     protected $_activity_controller;
 
-    public function __construct(KConfig $config)
+    public function __construct(KObjectConfig $config)
     {
         parent::__construct($config);
 
-        $this->_actions      = KConfig::unbox($config->actions);
-        $this->_title_column = KConfig::unbox($config->title_column);
+        $this->_actions      = KObjectConfig::unbox($config->actions);
+        $this->_title_column = KObjectConfig::unbox($config->title_column);
         $this->_activity_controller = $config->activity_controller;
     }
 
-    protected function _initialize(KConfig $config)
+    protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
             'priority'     => KCommand::PRIORITY_LOWEST,
@@ -80,7 +80,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
 
                     if (!empty($status) && $status !== KDatabase::STATUS_FAILED) {
                         $this->getService($this->_activity_controller->identifier,
-                            KConfig::unbox($this->_activity_controller->config))->add($this->_getActivityData($row,
+                            KObjectConfig::unbox($this->_activity_controller->config))->add($this->_getActivityData($row,
                             $status, $context));
                     }
                 }

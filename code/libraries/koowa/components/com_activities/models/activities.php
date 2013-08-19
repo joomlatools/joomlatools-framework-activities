@@ -15,7 +15,7 @@
  */
 class ComActivitiesModelActivities extends ComKoowaModelDefault
 {
-	public function __construct(KConfig $config)
+	public function __construct(KObjectConfig $config)
 	{
 		parent::__construct($config);
 
