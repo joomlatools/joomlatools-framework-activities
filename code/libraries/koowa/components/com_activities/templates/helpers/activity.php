@@ -24,7 +24,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault impleme
      */
     public static function getInstance(KObjectConfigInterface $config, KObjectManagerInterface $manager)
     {
-        $identifier = clone $config->service_identifier;
+        $identifier = clone $config->object_identifier;
         $identifier->package = $config->row->package;
 
         $identifier = $manager->getIdentifier($identifier);
@@ -32,7 +32,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault impleme
         if(file_exists($identifier->filepath)) {
             $classname = $identifier->classname;
         } else {
-            $classname = $config->service_identifier->classname;
+            $classname = $config->object_identifier->classname;
         }
 
         $instance  = new $classname($config);
