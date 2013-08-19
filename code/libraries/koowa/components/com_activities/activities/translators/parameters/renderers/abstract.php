@@ -20,7 +20,7 @@ abstract class ComActivitiesActivityTranslatorParameterRendererAbstract extends 
         // Singleton behavior.
         $classname = $config->service_identifier->classname;
         $instance  = new $classname($config);
-        $manager->set($config->service_identifier, $instance);
+        $manager->setObject($config->service_identifier, $instance);
 
         return $instance;
     }
