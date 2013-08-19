@@ -13,9 +13,9 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-abstract class ComActivitiesActivityTranslatorParameterRendererAbstract extends KObject implements ComActivitiesActivityTranslatorParameterRendererInterface, KObjectInstantiatable
+abstract class ComActivitiesActivityTranslatorParameterRendererAbstract extends KObject implements ComActivitiesActivityTranslatorParameterRendererInterface, KServiceInstantiatable
 {
-    public static function getInstance(KObjectConfigInterface $config, KObjectInterface $container)
+    public static function getInstance(KObjectConfigInterface $config, KServiceInterface $container)
     {
         // Singleton behavior.
         $classname = $config->service_identifier->classname;
