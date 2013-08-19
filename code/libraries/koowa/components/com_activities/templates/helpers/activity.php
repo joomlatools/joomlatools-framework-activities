@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault implements KServiceInstantiatable
+class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault implements KObjectInstantiatable
 {
 	/**
      * Check for overrides of the helper
