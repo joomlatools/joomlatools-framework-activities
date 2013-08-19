@@ -13,16 +13,16 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault implements KServiceInstantiatable
+class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault implements KObjectInstantiatable
 {
 	/**
      * Check for overrides of the helper
      *
      * @param   KObjectConfig $config Configuration options
-     * @param 	object	A KServiceInterface object
+     * @param 	object	A KObjectInterface object
      * @return ComActivitiesTemplateHelperActivity
      */
-    public static function getInstance(KObjectConfigInterface $config, KServiceInterface $container)
+    public static function getInstance(KObjectConfigInterface $config, KObjectInterface $container)
     {
         $identifier = clone $config->service_identifier;
         $identifier->package = $config->row->package;
