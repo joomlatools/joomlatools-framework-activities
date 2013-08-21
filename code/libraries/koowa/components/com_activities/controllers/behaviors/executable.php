@@ -18,7 +18,7 @@ class ComActivitiesControllerBehaviorExecutable extends ComKoowaControllerBehavi
     public function canAdd()
     {
         $result = false;
-        if (!$this->_mixer->isDispacthed()) {
+        if (!$this->getMixer()->isDispacthed()) {
             $result = true;
         }
         return $result;
