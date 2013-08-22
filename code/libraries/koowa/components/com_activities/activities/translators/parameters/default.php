@@ -55,7 +55,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
      */
     protected $_renderer;
 
-    public function __construct(KConfig $config)
+    public function __construct(KObjectConfig $config)
     {
         parent::__construct($config);
 
@@ -68,14 +68,14 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
         $this->_renderer   = $config->renderer;
         $this->_translator = $config->translator;
 
-        $this->setAttributes(KConfig::unbox($config->attributes));
-        $this->setLinkAttributes(KConfig::unbox($config->link_attributes));
+        $this->setAttributes(KObjectConfig::unbox($config->attributes));
+        $this->setLinkAttributes(KObjectConfig::unbox($config->link_attributes));
         $this->setTranslatable($config->translate);
         $this->setText($config->text);
         $this->setUrl($config->url);
     }
 
-    protected function _initialize(KConfig $config)
+    protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
             'html'            => true,
@@ -139,7 +139,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     {
         if (!$this->_translator instanceof KTranslator)
         {
-            $this->setTranslator($this->getService($this->_translator));
+            $this->setTranslator($this->getObject($this->_translator));
         }
         return $this->_translator;
     }
@@ -168,7 +168,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     {
         if (!$this->_renderer instanceof ComActivitiesActivityTranslatorParameterRendererInterface)
         {
-            $this->setRenderer($this->getService($this->_renderer));
+            $this->setRenderer($this->getObject($this->_renderer));
         }
 
         return $this->_renderer;

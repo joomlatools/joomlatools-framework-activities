@@ -43,7 +43,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
         return $icon;
     }
 
-    protected function _setActor(KConfig $config)
+    protected function _setActor(KObjectConfig $config)
     {
         if ($this->actorExists())
         {
@@ -60,7 +60,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
     }
 
 
-    protected function _setAction(KConfig $config)
+    protected function _setAction(KObjectConfig $config)
     {
         $config->append(array(
             'text'      => $this->status,
@@ -68,7 +68,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
     }
 
 
-    protected function _setObject(KConfig $config)
+    protected function _setObject(KObjectConfig $config)
     {
         $config->append(array(
             'translate'  => true,
@@ -77,7 +77,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
         ));
     }
 
-    protected function _setTitle(KConfig $config)
+    protected function _setTitle(KObjectConfig $config)
     {
         $config->append(array(
             'attributes' => array(),
@@ -134,7 +134,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
 
             if (method_exists($this, $method))
             {
-                $config = new KConfig(array('link' => array()));
+                $config = new KObjectConfig(array('link' => array()));
 
                 call_user_func(array($this, $method), $config);
 
@@ -146,7 +146,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
                 // Cleanup config object.
                 unset($config->link);
 
-                $parameters[] = $this->getService($this->_parameter, $config->toArray());
+                $parameters[] = $this->getObject($this->_parameter, $config->toArray());
             }
         }
 

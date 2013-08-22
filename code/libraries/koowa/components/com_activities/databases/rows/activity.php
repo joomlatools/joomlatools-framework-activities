@@ -152,7 +152,7 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
             $strategy->path = array('database', 'row', 'activity', 'strategy');
             $strategy->name = $this->package ? $this->package : 'default';
 
-            $this->setStrategy($this->getService($strategy, array('row' => $this)));
+            $this->setStrategy($this->getObject($strategy, array('row' => $this)));
         }
 
         return $this->_strategy;

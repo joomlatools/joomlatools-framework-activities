@@ -15,7 +15,7 @@
  */
 class ComActivitiesModelActivities extends ComKoowaModelDefault
 {
-	public function __construct(KConfig $config)
+	public function __construct(KObjectConfig $config)
 	{
 		parent::__construct($config);
 
@@ -44,7 +44,7 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
     {
         $state = $this->getState();
 
-        $query = $this->getService('koowa:database.query.delete');
+        $query = $this->getObject('koowa:database.query.delete');
 
         $query->table(array($this->getTable()->getName()));
 

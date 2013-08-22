@@ -15,7 +15,7 @@
  */
 class ComActivitiesActivityTranslatorDefault extends ComKoowaTranslator implements ComActivitiesActivityTranslatorInterface
 {
-    protected function _initialize(KConfig $config)
+    protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
             'alias_catalogue' => 'koowa:translator.catalogue',

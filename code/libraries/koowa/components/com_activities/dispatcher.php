@@ -15,7 +15,7 @@
  */
 class ComActivitiesDispatcher extends ComKoowaDispatcher
 {
-	protected function _initialize(KConfig $config)
+	protected function _initialize(KObjectConfig $config)
 	{
 		$config->append(array(
 			'request' => array(

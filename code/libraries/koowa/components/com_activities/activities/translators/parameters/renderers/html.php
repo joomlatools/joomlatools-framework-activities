@@ -22,8 +22,7 @@ class ComActivitiesActivityTranslatorParameterRendererHtml extends ComActivities
     {
         if ($output = $parameter->getText())
         {
-            if ($parameter->isTranslatable())
-            {
+            if ($parameter->isTranslatable()) {
                 $output = $parameter->getTranslator()->translate($output);
             }
 
@@ -34,31 +33,54 @@ class ComActivitiesActivityTranslatorParameterRendererHtml extends ComActivities
                 $url             = htmlspecialchars($parameter->getUrl(), ENT_QUOTES);
                 $link_attributes = $parameter->getLinkAttributes();
 
-                $output = '<a ' . (empty($link_attributes) ? '' : KHelperArray::toString($link_attributes)) . ' href="' . $url . '">' . $output . '</a>';
+                $output = '<a ' . (empty($link_attributes) ? '' : $this->buildAttributes($link_attributes)) . ' href="' . $url . '">' . $output . '</a>';
             }
 
             $attribs = $parameter->getAttributes();
 
             if (count($attribs))
             {
-                // TODO Check FW KHelperArray::toString. It seems that it is not properly working. Need to do the
-                // following for having properly rendered attribs.
                 foreach ($attribs as $attrib => $value)
                 {
-                    if (is_array($value))
-                    {
+                    if (is_array($value)) {
                         $attribs[$attrib] = implode(' ', $value);
                     }
                 }
 
-                $output = '<span ' . KHelperArray::toString($attribs) . '>' . $output . '</span>';
+                $output = '<span ' . $this->buildAttributes($attribs) . '>' . $output . '</span>';
             }
         }
-        else
-        {
-            $output = $parameter->getLabel();
-        }
+        else $output = $parameter->getLabel();
 
         return $output;
+    }
+
+    /**
+     * Method to build a string with xml style attributes from  an array of key/value pairs
+     *
+     * @param   mixed   $array The array of Key/Value pairs for the attributes
+     * @return  string  String containing xml style attributes
+     */
+    public function buildAttributes($array)
+    {
+        $output = array();
+
+        if ($array instanceof KObjectConfig) {
+            $array = KObjectConfig::unbox($array);
+        }
+
+        if (is_array($array))
+        {
+            foreach ($array as $key => $item)
+            {
+                if (is_array($item)) {
+                    $item = implode(' ', $item);
+                }
+
+                $output[] = $key . '="' . str_replace('"', '&quot;', $item) . '"';
+            }
+        }
+
+        return implode(' ', $output);
     }
 }
