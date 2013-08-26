@@ -14,7 +14,7 @@
  * @package        Nooku_Components
  * @subpackage     Activities
  */
-class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
+class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault implements ComActivitiesDatabaseRowActivityInterface
 {
     /**
      * @var ComActivitiesDatabaseRowActivityStrategyInterface The activity row strategy.
@@ -213,23 +213,20 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault
     }
 
     /**
-     * @see KDatabaseRowTable::__call()
-     *
-     * Overloaded for calling strategy methods.
+     * @see ComActivitiesDatabaseRowActivityInterface::toString()
      */
-    public function __call($method, $arguments)
+    public function toString($html = true)
     {
-        $strategy = $this->getStrategy();
+        // Delegate task to strategy.
+        return $this->getStrategy()->toString($html);
+    }
 
-        if (method_exists($strategy, $method) && is_callable(array($strategy, $method)))
-        {
-            $result = call_user_func_array(array($strategy, $method), $arguments);
-        }
-        else
-        {
-            $result = parent::__call($method, $arguments);
-        }
-
-        return $result;
+    /**
+     * @see ComActivitiesDatabaseRowActivityInterface::getStreamData()
+     */
+    public function getStreamData()
+    {
+        // Delegate task to strategy.
+        return $this->getStrategy()->getStreamData();
     }
 }
