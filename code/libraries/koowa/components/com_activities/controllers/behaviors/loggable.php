@@ -65,10 +65,10 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
 
             $data = $context->result;
 
-            if ($data instanceof KDatabaseRowAbstract || $data instanceof KDatabaseRowsetAbstract) {
+            if ($data instanceof KDatabaseRowInterface || $data instanceof KDatabaseRowsetInterface) {
                 $rowset = array();
 
-                if ($data instanceof KDatabaseRowAbstract) {
+                if ($data instanceof KDatabaseRowInterface) {
                     $rowset[] = $data;
                 } else {
                     $rowset = $data;
