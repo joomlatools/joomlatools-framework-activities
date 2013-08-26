@@ -92,7 +92,7 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
 
         if ($config->absolute)
         {
-            $url = KRequest::url()->get(KHttpUrl::AUTHORITY) . $url;
+            $url = KRequest::url()->toString(KHttpUrl::AUTHORITY) . $url;
         }
 
         return $url;
