@@ -226,9 +226,9 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
     }
 
     /**
-     * @see ComActivitiesDatabaseRowActivityStrategyInterface::toStream()
+     * @see ComActivitiesDatabaseRowActivityStrategyInterface::getStreamData()
      */
-    public function toStream()
+    public function getStreamData()
     {
         $tag = 'tag:' . KRequest::get('server.HTTP_HOST', 'string');
 
