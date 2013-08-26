@@ -160,6 +160,9 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
         return $this->_resourceExists(array('table' => 'users', 'column' => 'id', 'value' => $this->created_by));
     }
 
+    /**
+     * @see ComActivitiesDatabaseRowActivityStrategyInterface::objectExists()
+     */
     public function objectExists()
     {
         return $this->_resourceExists();
@@ -220,5 +223,41 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
     {
         // Activities don't have targets by default.
         return false;
+    }
+
+    /**
+     * @see ComActivitiesDatabaseRowActivityStrategyInterface::toStream()
+     */
+    public function toStream()
+    {
+        $tag = 'tag:' . KRequest::get('server.HTTP_HOST', 'string');
+
+        $data = array(
+            'id'        => $tag . ',id:' . $this->uuid,
+            'title'     => $this->toString(false),
+            'published' => $this->getService('com://admin/koowa.template.helper.date')->format(array(
+                'date'   => $this->created_on,
+                'format' => 'c'
+            )),
+            'verb'      => $this->action,
+            'object'    => array(
+                'id'         => $tag . ',id:' . $this->row,
+                'objectType' => $this->name),
+            'actor'     => array(
+                'id'          => $this->created_by,
+                'objectType'  => 'user',
+                'displayName' => $this->created_by_name));
+
+        if ($this->objectExists())
+        {
+            $data['object']['url'] = $this->getObjectUrl();
+        }
+
+        if ($this->actorExists())
+        {
+            $data['actor']['url'] = $this->getActorUrl();
+        }
+
+        return $data;
     }
 }
