@@ -83,11 +83,18 @@ interface ComActivitiesDatabaseRowActivityStrategyInterface
     public function getActorUrl();
 
     /**
-     * Casts an activity row object to a string.
+     * Activity stream data getter.
+     *
+     * @return array The activity stream data from the attached row object.
+     */
+    public function getStreamData();
+
+    /**
+     * Casts the attached activity row object to a string.
      *
      * @param boolean $html Whether to output HTML or plain text.
      *
-     * @return string The string representation of the activity row object.
+     * @return string The string representation of the attached activity row object.
      */
     public function toString($html = true);
 }
