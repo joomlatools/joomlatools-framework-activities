@@ -243,7 +243,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
         $data = array(
             'id'        => $tag . ',id:' . $this->uuid,
             'title'     => $this->toString(false),
-            'published' => $this->getService('com://admin/koowa.template.helper.date')->format(array(
+            'published' => $this->getObject('com://admin/koowa.template.helper.date')->format(array(
                 'date'   => $this->created_on,
                 'format' => 'c'
             )),
