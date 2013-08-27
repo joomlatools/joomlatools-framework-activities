@@ -1,9 +1,17 @@
 <?php
 /**
- * @package     LOGman
- * @copyright   Copyright (C) 2011 - 2013 Timble CVBA. (http://www.timble.net)
- * @license     GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link        http://www.joomlatools.com
+ * Koowa Framework - http://developer.joomlatools.com/koowa
+ *
+ * @copyright	Copyright (C) 2011 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link		http://github.com/joomlatools/koowa-activities for the canonical source repository
+ */
+
+/**
+ * Default Activity Parameter Translator
+ *
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
  */
 class ComActivitiesActivityTranslatorParameterDefault extends KObject implements ComActivitiesActivityTranslatorParameterInterface
 {
@@ -47,7 +55,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
      */
     protected $_renderer;
 
-    public function __construct(KConfig $config)
+    public function __construct(KObjectConfig $config)
     {
         parent::__construct($config);
 
@@ -60,14 +68,14 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
         $this->_renderer   = $config->renderer;
         $this->_translator = $config->translator;
 
-        $this->setAttributes(KConfig::unbox($config->attributes));
-        $this->setLinkAttributes(KConfig::unbox($config->link_attributes));
+        $this->setAttributes(KObjectConfig::unbox($config->attributes));
+        $this->setLinkAttributes(KObjectConfig::unbox($config->link_attributes));
         $this->setTranslatable($config->translate);
         $this->setText($config->text);
         $this->setUrl($config->url);
     }
 
-    protected function _initialize(KConfig $config)
+    protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
             'html'            => true,
@@ -131,7 +139,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     {
         if (!$this->_translator instanceof KTranslator)
         {
-            $this->setTranslator($this->getService($this->_translator));
+            $this->setTranslator($this->getObject($this->_translator));
         }
         return $this->_translator;
     }
@@ -160,7 +168,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     {
         if (!$this->_renderer instanceof ComActivitiesActivityTranslatorParameterRendererInterface)
         {
-            $this->setRenderer($this->getService($this->_renderer));
+            $this->setRenderer($this->getObject($this->_renderer));
         }
 
         return $this->_renderer;

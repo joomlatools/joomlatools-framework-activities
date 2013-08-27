@@ -1,25 +1,24 @@
 <?php
 /**
- * @package     Nooku_Server
- * @subpackage  Activities
- * @copyright   Copyright (C) 2011 - 2012 Timble CVBA and Contributors. (http://www.timble.net).
- * @license     GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link        http://www.nooku.org
+ * Koowa Framework - http://developer.joomlatools.com/koowa
+ *
+ * @copyright	Copyright (C) 2011 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link		http://github.com/joomlatools/koowa-activities for the canonical source repository
  */
 
 /**
  * Executable Controller Behavior
  *
- * @author      Johan Janssens <http://nooku.assembla.com/profile/johanjanssens>
- * @package     Nooku_Server
- * @subpackage  Activities
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
  */
 class ComActivitiesControllerBehaviorExecutable extends ComKoowaControllerBehaviorExecutable
 {
     public function canAdd()
     {
         $result = false;
-        if (!$this->_mixer->isDispacthed()) {
+        if (!$this->getMixer()->isDispacthed()) {
             $result = true;
         }
         return $result;

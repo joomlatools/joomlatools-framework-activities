@@ -1,9 +1,17 @@
 <?php
 /**
- * @package     LOGman
- * @copyright   Copyright (C) 2011 - 2013 Timble CVBA. (http://www.timble.net)
- * @license     GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link        http://www.joomlatools.com
+ * Koowa Framework - http://developer.joomlatools.com/koowa
+ *
+ * @copyright	Copyright (C) 2011 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link		http://github.com/joomlatools/koowa-activities for the canonical source repository
+ */
+
+/**
+ * Abstract Activity Database Row Strategy
+ *
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
  */
 abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject implements ComActivitiesDatabaseRowActivityStrategyInterface
 {
@@ -22,7 +30,7 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
      */
     protected $_row;
 
-    public function __construct(KConfig $config)
+    public function __construct(KObjectConfig $config)
     {
         parent::__construct($config);
 
@@ -37,7 +45,7 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
         $this->_translator = $config->translator;
     }
 
-    protected function _initialize(KConfig $config)
+    protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
             'parameter'  => 'com://admin/activities.activity.translator.parameter.default',
@@ -73,7 +81,7 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
      */
     protected function _getUrl($config = array())
     {
-        $config = new KConfig($config);
+        $config = new KObjectConfig($config);
 
         $config->append(array('route' => true, 'absolute' => true, 'url' => KRequest::url()));
 
@@ -107,16 +115,16 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
      */
     protected function _resourceExists($config = array())
     {
-        $config = new KConfig($config);
+        $config = new KObjectConfig($config);
 
         $config->append(array(
-            'table'  => $this->package . '_' . KInflector::pluralize($this->name),
+            'table'  => $this->package . '_' . KStringInflector::pluralize($this->name),
             'column' => $this->package . '_' . $this->name . '_' . 'id',
             'value'  => $this->row));
 
         $db = $this->getRow()->getTable()->getAdapter();
 
-        $query = $this->getService('koowa:database.query.select');
+        $query = $this->getObject('koowa:database.query.select');
         $query->columns('COUNT(*)')->table($config->table)->where($config->column . ' = :value')
         ->bind(array('value' => $config->value));
 
@@ -154,7 +162,7 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
     {
         if (!$this->_translator instanceof ComActivitiesActivityTranslatorInterface)
         {
-            $this->_translator = $this->getService($this->_translator);
+            $this->_translator = $this->getObject($this->_translator);
         }
 
         return $this->_translator;

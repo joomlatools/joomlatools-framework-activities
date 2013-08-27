@@ -1,20 +1,18 @@
 <?php
 /**
- * @package     Nooku_Components
- * @subpackage  Activities
- * @copyright	Copyright (C) 2010 - 2012 Timble CVBA and Contributors. (http://www.timble.net)
+ * Koowa Framework - http://developer.joomlatools.com/koowa
+ *
+ * @copyright	Copyright (C) 2011 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
  * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		http://www.nooku.org
+ * @link		http://github.com/joomlatools/koowa-activities for the canonical source repository
  */
 
 /**
- * Loggable Controller Behavior Class
+ * Loggable Controller Behavior
  *
- * @author      Israel Canasa <http://nooku.assembla.com/profile/israelcanasa>
- * @package    	Nooku_Components
- * @subpackage 	Activities
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
  */
-
 class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstract
 {
     /**
@@ -34,20 +32,20 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     /**
      * Activity controller identifier.
      *
-     * @param KConfig
+     * @param KObjectConfig
      */
     protected $_activity_controller;
 
-    public function __construct(KConfig $config)
+    public function __construct(KObjectConfig $config)
     {
         parent::__construct($config);
 
-        $this->_actions      = KConfig::unbox($config->actions);
-        $this->_title_column = KConfig::unbox($config->title_column);
+        $this->_actions      = KObjectConfig::unbox($config->actions);
+        $this->_title_column = KObjectConfig::unbox($config->title_column);
         $this->_activity_controller = $config->activity_controller;
     }
 
-    protected function _initialize(KConfig $config)
+    protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
             'priority'     => KCommand::PRIORITY_LOWEST,
@@ -67,10 +65,10 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
 
             $data = $context->result;
 
-            if ($data instanceof KDatabaseRowAbstract || $data instanceof KDatabaseRowsetAbstract) {
+            if ($data instanceof KDatabaseRowInterface || $data instanceof KDatabaseRowsetInterface) {
                 $rowset = array();
 
-                if ($data instanceof KDatabaseRowAbstract) {
+                if ($data instanceof KDatabaseRowInterface) {
                     $rowset[] = $data;
                 } else {
                     $rowset = $data;
@@ -81,8 +79,8 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                     $status = $this->_getStatus($row, $name);
 
                     if (!empty($status) && $status !== KDatabase::STATUS_FAILED) {
-                        $this->getService($this->_activity_controller->identifier,
-                            KConfig::unbox($this->_activity_controller->config))->add($this->_getActivityData($row,
+                        $this->getObject($this->_activity_controller->identifier,
+                            KObjectConfig::unbox($this->_activity_controller->config))->add($this->_getActivityData($row,
                             $status, $context));
                     }
                 }
@@ -170,6 +168,6 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
 
     public function getHandle()
     {
-        return KMixinAbstract::getHandle();
+        return KObjectMixinAbstract::getHandle();
     }
 }

@@ -1,9 +1,17 @@
 <?php
 /**
- * @package     LOGman
- * @copyright   Copyright (C) 2011 - 2013 Timble CVBA. (http://www.timble.net)
- * @license     GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link        http://www.joomlatools.com
+ * Koowa Framework - http://developer.joomlatools.com/koowa
+ *
+ * @copyright	Copyright (C) 2011 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link		http://github.com/joomlatools/koowa-activities for the canonical source repository
+ */
+
+/**
+ * Default Activity Database Row Strategy
+ *
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
  */
 class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatabaseRowActivityStrategyAbstract
 {
@@ -35,7 +43,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
         return $icon;
     }
 
-    protected function _setActor(KConfig $config)
+    protected function _setActor(KObjectConfig $config)
     {
         if ($this->actorExists())
         {
@@ -52,7 +60,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
     }
 
 
-    protected function _setAction(KConfig $config)
+    protected function _setAction(KObjectConfig $config)
     {
         $config->append(array(
             'text'      => $this->status,
@@ -60,7 +68,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
     }
 
 
-    protected function _setObject(KConfig $config)
+    protected function _setObject(KObjectConfig $config)
     {
         $config->append(array(
             'translate'  => true,
@@ -69,7 +77,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
         ));
     }
 
-    protected function _setTitle(KConfig $config)
+    protected function _setTitle(KObjectConfig $config)
     {
         $config->append(array(
             'attributes' => array(),
@@ -126,7 +134,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
 
             if (method_exists($this, $method))
             {
-                $config = new KConfig(array('link' => array()));
+                $config = new KObjectConfig(array('link' => array()));
 
                 call_user_func(array($this, $method), $config);
 
@@ -138,7 +146,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
                 // Cleanup config object.
                 unset($config->link);
 
-                $parameters[] = $this->getService($this->_parameter, $config->toArray());
+                $parameters[] = $this->getObject($this->_parameter, $config->toArray());
             }
         }
 

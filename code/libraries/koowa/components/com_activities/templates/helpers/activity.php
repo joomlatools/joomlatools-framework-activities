@@ -1,41 +1,38 @@
 <?php
 /**
- * @package     Nooku_Components
- * @subpackage  Activities
- * @copyright	Copyright (C) 2010 - 2012 Timble CVBA and Contributors. (http://www.timble.net)
+ * Koowa Framework - http://developer.joomlatools.com/koowa
+ *
+ * @copyright	Copyright (C) 2011 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
  * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		http://www.nooku.org
+ * @link		http://github.com/joomlatools/koowa-activities for the canonical source repository
  */
 
 /**
- * Log Template Helper Class
+ * Activity Template Helper
  *
- * @author      Israel Canasa <http://nooku.assembla.com/profile/israelcanasa>
- * @package    	Nooku_Components
- * @subpackage 	Activities
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
  */
-
-
-class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault implements KServiceInstantiatable
+class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault implements KObjectInstantiatable
 {
 	/**
      * Check for overrides of the helper
      *
-     * @param   KConfig $config Configuration options
-     * @param 	object	A KServiceInterface object
+     * @param   KObjectConfigInterface $config Configuration options
+     * @param 	KObjectManagerInterface $manager Object manager
      * @return ComActivitiesTemplateHelperActivity
      */
-    public static function getInstance(KConfigInterface $config, KServiceInterface $container)
+    public static function getInstance(KObjectConfigInterface $config, KObjectManagerInterface $manager)
     {
-        $identifier = clone $config->service_identifier;
+        $identifier = clone $config->object_identifier;
         $identifier->package = $config->row->package;
 
-        $identifier = $container->getIdentifier($identifier);
+        $identifier = $manager->getIdentifier($identifier);
 
         if(file_exists($identifier->filepath)) {
             $classname = $identifier->classname;
         } else {
-            $classname = $config->service_identifier->classname;
+            $classname = $config->object_identifier->classname;
         }
 
         $instance  = new $classname($config);
@@ -44,7 +41,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault impleme
 
     public function message($config = array())
 	{
-	    $config = new KConfig($config);
+	    $config = new KObjectConfig($config);
 		$config->append(array(
 			'row'      => ''
 		));

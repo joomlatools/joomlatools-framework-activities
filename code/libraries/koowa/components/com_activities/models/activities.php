@@ -1,23 +1,21 @@
 <?php
 /**
- * @package     Nooku_Components
- * @subpackage  Activities
- * @copyright	Copyright (C) 2010 - 2012 Timble CVBA and Contributors. (http://www.timble.net)
+ * Koowa Framework - http://developer.joomlatools.com/koowa
+ *
+ * @copyright	Copyright (C) 2011 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
  * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		http://www.nooku.org
+ * @link		http://github.com/joomlatools/koowa-activities for the canonical source repository
  */
 
 /**
- * Activities Model Class
+ * Activities Model
  *
- * @author      Israel Canasa <http://nooku.assembla.com/profile/israelcanasa>
- * @package    	Nooku_Components
- * @subpackage 	Activities
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
  */
-
 class ComActivitiesModelActivities extends ComKoowaModelDefault
 {
-	public function __construct(KConfig $config)
+	public function __construct(KObjectConfig $config)
 	{
 		parent::__construct($config);
 
@@ -46,7 +44,7 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
     {
         $state = $this->getState();
 
-        $query = $this->getService('koowa:database.query.delete');
+        $query = $this->getObject('koowa:database.query.delete');
 
         $query->table(array($this->getTable()->getName()));
 
