@@ -21,12 +21,8 @@ class ComActivitiesViewActivitiesHtml extends ComKoowaViewHtml
 		{
 			$model = $this->getObject($this->getModel()->getIdentifier());
 
-			$this->assign('packages', $model
-				->distinct(true)
-				->column('package')
-				->getList()
-			);
-		}
+            $this->packages = $model->distinct(true)->column('package')->getList();
+        }
 
 		return parent::display();
 	}
