@@ -63,7 +63,14 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     {
         if (in_array($name, $this->_actions)) {
 
-            $data = $context->result;
+            $parts = explode('.', $name);
+
+            // Properly fetch data for the event.
+            if ($parts[0] == 'before') {
+                $data = $this->getMixer()->getModel()->getData();
+            } else {
+                $data = $context->result;
+            }
 
             if ($data instanceof KDatabaseRowInterface || $data instanceof KDatabaseRowsetInterface) {
                 $rowset = array();
