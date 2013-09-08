@@ -2,9 +2,9 @@
 /**
  * Koowa Framework - http://developer.joomlatools.com/koowa
  *
- * @copyright	Copyright (C) 2011 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		http://github.com/joomlatools/koowa-activities for the canonical source repository
+ * @copyright      Copyright (C) 2011 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license        GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link           http://github.com/joomlatools/koowa-activities for the canonical source repository
  */
 
 /**
@@ -28,7 +28,14 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
      */
     protected function _getIcon()
     {
-        $classes = array('add' => 'icon-plus-sign', 'edit' => 'icon-edit', 'delete' => 'icon-trash');
+        $classes = array(
+            'publish'   => 'icon-ok',
+            'unpublish' => 'icon-eye-close',
+            'trash'     => 'icon-trash',
+            'add'       => 'icon-plus-sign',
+            'edit'      => 'icon-edit',
+            'delete'    => 'icon-remove',
+            'archive'   => 'icon-inbox');
 
         // Default.
         $icon = 'icon-task';

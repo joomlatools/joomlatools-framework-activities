@@ -26,7 +26,7 @@ class ComActivitiesActivityTranslatorParameterRendererHtml extends ComActivities
                 $output = $parameter->getTranslator()->translate($output);
             }
 
-            $output = '<span class="content">' . $output . '</span>';
+            $output = '<span class="text">' . $output . '</span>';
 
             if ($parameter->isLinkable())
             {
