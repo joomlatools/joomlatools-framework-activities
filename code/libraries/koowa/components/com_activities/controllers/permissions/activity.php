@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesControllerBehaviorExecutable extends ComKoowaControllerBehaviorExecutable
+class ComActivitiesControllerPermissionActivity extends ComKoowaControllerPermissionAbstract
 {
     public function canAdd()
     {
