@@ -17,11 +17,7 @@ class ComActivitiesControllerPermissionActivity extends ComKoowaControllerPermis
 {
     public function canAdd()
     {
-        $result = false;
-        if (!$this->getMixer()->isDispacthed()) {
-            $result = true;
-        }
-        return $result;
+        return !$this->isDispatched();
     }
 
     public function canEdit()
