@@ -2,9 +2,9 @@
 /**
  * Koowa Framework - http://developer.joomlatools.com/koowa
  *
- * @copyright	Copyright (C) 2011 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		http://github.com/joomlatools/koowa-activities for the canonical source repository
+ * @copyright      Copyright (C) 2011 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license        GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link           http://github.com/joomlatools/koowa-activities for the canonical source repository
  */
 
 /**
@@ -15,11 +15,6 @@
  */
 class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault implements ComActivitiesDatabaseRowActivityInterface
 {
-    /**
-     * @var ComActivitiesDatabaseRowActivityStrategyInterface The activity row strategy.
-     */
-    protected $_strategy;
-
     /**
      * @var array A list of required columns.
      */
@@ -79,33 +74,18 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault implements Co
         {
             // Encode meta data.
             $metadata = json_encode($this->metadata);
+
             if ($metadata === false)
             {
                 $this->setStatus(KDatabase::STATUS_FAILED);
                 $this->setStatusMessage('Unable to encode meta data');
                 return false;
             }
+
             $this->metadata = $metadata;
         }
 
-        $package = $this->package;
-
-        $result = parent::save();
-
-        // Reset strategy if package changed.
-        if ($result && ($package != $this->package))
-        {
-            $this->_strategy = null;
-        }
-
-        return $result;
-    }
-
-    public function __set($column, $value)
-    {
-        // Reset strategy on package change.
-        if ($column == 'package' && $this->package != $value) $this->_strategy = null;
-        return parent::__set($column, $value);
+        return parent::save();
     }
 
     public function __get($key)
@@ -126,89 +106,17 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault implements Co
     }
 
     /**
-     * Strategy setter.
-     *
-     * @param ComActivitiesDatabaseRowActivityStrategyInterface $strategy The row strategy.
-     *
-     * @return $this
-     */
-    public function setStrategy(ComActivitiesDatabaseRowActivityStrategyInterface $strategy)
-    {
-        $strategy->setRow($this);
-        $this->_strategy = $strategy;
-        return $this;
-    }
-
-    /**
      * Strategy getter.
      *
      * @return ComActivitiesDatabaseRowActivityStrategyInterface The row strategy.
      */
     public function getStrategy()
     {
-        if (!$this->_strategy instanceof ComActivitiesDatabaseRowActivityStrategyInterface)
-        {
-            $strategy       = clone $this->getIdentifier();
-            $strategy->path = array('database', 'row', 'activity', 'strategy');
-            $strategy->name = $this->isNew() ? 'new' : $this->package;
+        $strategy       = clone $this->getIdentifier();
+        $strategy->path = array('database', 'row', 'activity', 'strategy');
+        $strategy->name = $this->isNew() ? 'new' : $this->package;
 
-            $this->setStrategy($this->getObject($strategy, array('row' => $this)));
-        }
-
-        return $this->_strategy;
-    }
-
-    /**
-     * @see ComActivitiesDatabaseRowActivity::reset().
-     *
-     * Overloaded for strategy reset.
-     */
-    public function reset()
-    {
-        $result = parent::reset();
-
-        if ($result)
-        {
-            $this->_strategy = null;
-        }
-
-        return $result;
-    }
-
-    /**
-     * @see ComActivitiesDatabaseRowActivity::load().
-     *
-     * Overloaded for strategy reset.
-     */
-    public function load()
-    {
-        $package = $this->package;
-
-        $result = parent::load();
-
-        if ($result && ($package != $this->package))
-        {
-            $this->_strategy = null;
-        }
-
-        return $result;
-    }
-
-    /**
-     * @see ComActivitiesDatabaseRowActivity::delete().
-     *
-     * Overloaded for strategy reset.
-     */
-    public function delete()
-    {
-        $result = parent::delete();
-
-        if ($result)
-        {
-            $this->_strategy = null;
-        }
-
-        return $result;
+        return $this->getObject($strategy, array('row' => $this));
     }
 
     /**
