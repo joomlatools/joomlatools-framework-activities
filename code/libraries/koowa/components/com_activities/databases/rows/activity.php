@@ -132,8 +132,15 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault implements Co
      */
     public function toString($html = true)
     {
-        // Delegate task to strategy.
-        return $this->getStrategy()->toString($html);
+        $string = '';
+
+        if ($strategy = $this->getStrategy())
+        {
+            // Delegate task to strategy.
+            $string = $strategy->toString($html);
+        }
+
+        return $string;
     }
 
     /**
@@ -141,7 +148,14 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault implements Co
      */
     public function getStreamData()
     {
-        // Delegate task to strategy.
-        return $this->getStrategy()->getStreamData();
+        $data = array();
+
+        if ($strategy = $this->getStrategy())
+        {
+            // Delegate task to strategy.
+            $data = $strategy->getStreamData();
+        }
+
+        return $data;
     }
 }
