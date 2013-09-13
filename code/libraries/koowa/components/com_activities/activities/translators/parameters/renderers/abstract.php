@@ -8,7 +8,7 @@
  */
 
 /**
- * Abstract Activity Parameter Translator Renderer
+ * Abstract Activity Translator Parameter Renderer
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities

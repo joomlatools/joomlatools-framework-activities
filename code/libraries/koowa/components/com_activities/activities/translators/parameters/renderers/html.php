@@ -8,7 +8,7 @@
  */
 
 /**
- * Html Activity Parameter Translator Renderer
+ * Html Activity Translator Parameter Renderer
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities

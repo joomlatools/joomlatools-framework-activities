@@ -8,7 +8,7 @@
  */
 
 /**
- * Activity Parameter Translator Renderer Interface
+ * Activity Translator Parameter Renderer Interface
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
