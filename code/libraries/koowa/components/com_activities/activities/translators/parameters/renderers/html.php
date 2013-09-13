@@ -2,9 +2,9 @@
 /**
  * Koowa Framework - http://developer.joomlatools.com/koowa
  *
- * @copyright	Copyright (C) 2011 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		http://github.com/joomlatools/koowa-activities for the canonical source repository
+ * @copyright      Copyright (C) 2011 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license        GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link           http://github.com/joomlatools/koowa-activities for the canonical source repository
  */
 
 /**
@@ -13,44 +13,37 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesActivityTranslatorParameterRendererHtml extends ComActivitiesActivityTranslatorParameterRendererAbstract
+class ComActivitiesActivityTranslatorParameterRendererHtml extends ComActivitiesActivityTranslatorParameterRendererText
 {
     /**
      * @see ComActivitiesActivityTranslatorParameterRendererInterface::render()
      */
     public function render(ComActivitiesActivityTranslatorParameterInterface $parameter)
     {
-        if ($output = $parameter->getText())
+        $output = '<span class="text">' . parent::render($parameter) . '</span>';
+
+        if ($parameter->isLinkable())
         {
-            if ($parameter->isTranslatable()) {
-                $output = $parameter->getTranslator()->translate($output);
-            }
+            $url             = htmlspecialchars($parameter->getUrl(), ENT_QUOTES);
+            $link_attributes = $parameter->getLinkAttributes();
 
-            $output = '<span class="text">' . $output . '</span>';
-
-            if ($parameter->isLinkable())
-            {
-                $url             = htmlspecialchars($parameter->getUrl(), ENT_QUOTES);
-                $link_attributes = $parameter->getLinkAttributes();
-
-                $output = '<a ' . (empty($link_attributes) ? '' : $this->buildAttributes($link_attributes)) . ' href="' . $url . '">' . $output . '</a>';
-            }
-
-            $attribs = $parameter->getAttributes();
-
-            if (count($attribs))
-            {
-                foreach ($attribs as $attrib => $value)
-                {
-                    if (is_array($value)) {
-                        $attribs[$attrib] = implode(' ', $value);
-                    }
-                }
-
-                $output = '<span ' . $this->buildAttributes($attribs) . '>' . $output . '</span>';
-            }
+            $output = '<a ' . (empty($link_attributes) ? '' : $this->buildAttributes($link_attributes)) . ' href="' . $url . '">' . $output . '</a>';
         }
-        else $output = $parameter->getLabel();
+
+        $attribs = $parameter->getAttributes();
+
+        if (count($attribs))
+        {
+            foreach ($attribs as $attrib => $value)
+            {
+                if (is_array($value))
+                {
+                    $attribs[$attrib] = implode(' ', $value);
+                }
+            }
+
+            $output = '<span ' . $this->buildAttributes($attribs) . '>' . $output . '</span>';
+        }
 
         return $output;
     }
@@ -58,14 +51,16 @@ class ComActivitiesActivityTranslatorParameterRendererHtml extends ComActivities
     /**
      * Method to build a string with xml style attributes from  an array of key/value pairs
      *
-     * @param   mixed   $array The array of Key/Value pairs for the attributes
+     * @param   mixed $array The array of Key/Value pairs for the attributes
+     *
      * @return  string  String containing xml style attributes
      */
     public function buildAttributes($array)
     {
         $output = array();
 
-        if ($array instanceof KObjectConfig) {
+        if ($array instanceof KObjectConfig)
+        {
             $array = KObjectConfig::unbox($array);
         }
 
@@ -73,7 +68,8 @@ class ComActivitiesActivityTranslatorParameterRendererHtml extends ComActivities
         {
             foreach ($array as $key => $item)
             {
-                if (is_array($item)) {
+                if (is_array($item))
+                {
                     $item = implode(' ', $item);
                 }
 
