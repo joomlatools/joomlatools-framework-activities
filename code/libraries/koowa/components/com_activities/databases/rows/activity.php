@@ -108,29 +108,18 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault implements Co
     /**
      * Strategy getter.
      *
-     * @param mixed       An optional object that implements KObjectInterface, KObjectIdentifier object
-     *                    or valid identifier string
-     *
-     * @return ComActivitiesDatabaseRowActivityStrategyInterface|null   The row strategy, null if the current
-     *                                                                  row object is new or modified.
+     * @return ComActivitiesDatabaseRowActivityStrategyInterface|null The row strategy, null if the
+     * current row object is new or modified.
      */
-    public function getStrategy($identifier = null)
+    public function getStrategy()
     {
         $strategy = null;
 
         if (!$this->isNew() && !$this->getModified())
         {
-            if (is_null($identifier))
-            {
-                $identifier       = clone $this->getIdentifier();
-                $identifier->path = array('database', 'row', 'activity', 'strategy');
-                $identifier->name = $this->package;
-            }
-
-            if (!$identifier instanceof KObjectIdentifier)
-            {
-                $identifier = $this->getIdentifier($identifier);
-            }
+            $identifier       = clone $this->getIdentifier();
+            $identifier->path = array('database', 'row', 'activity', 'strategy');
+            $identifier->name = $this->package;
 
             $strategy = $this->getObject($identifier, array('row' => $this));
         }
