@@ -25,7 +25,6 @@ class ComActivitiesActivityTranslatorDefault extends ComKoowaTranslator implemen
     }
 
     /**
-     *
      * @see ComActivitiesActivityTranslatorInterface::translate()
      *
      * Overridden to look for translation overrides and provide support for context translations.
@@ -80,7 +79,7 @@ class ComActivitiesActivityTranslatorDefault extends ComKoowaTranslator implemen
     }
 
     /**
-     * Returns a list of override strings for the provided arguments.
+     * Returns a list of override strings for the provided string/parameters couple.
      *
      * @param     string                                              $string     The activity string.
      * @param     ComActivitiesActivityTranslatorParameterInterface[] $parameters An optional array containing translator
