@@ -93,7 +93,7 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 			$query->where('tbl.type = :type')->bind(array('type' => $state->type));
 		}
 
-		if ($state->package && !($state->distinct && !empty($state->column))) {
+		if ($state->package) {
 			$query->where('tbl.package = :package')->bind(array('package' => $state->package));
 		}
 
@@ -112,26 +112,22 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
         if ($state->start_date && $state->start_date != '0000-00-00')
 		{
 			$start_date = new KDate(array('date' => $state->start_date));
-			$start      = $start_date->format('Y-m-d');
 
-			$query->where('tbl.created_on >= :start')->bind(array('start' => $start));
+			$query->where('DATE(tbl.created_on) >= :start')->bind(array('start' => $start_date->format('Y-m-d')));
 			
 			if ($day_range = $state->day_range) {
-			    $range = clone $start_date;  
-			    $query->where('tbl.created_on < :range_start')->bind(array('range_start' => $range->add(new DateInterval('P'.$day_range.'D'))->getDate()));
+			    $query->where('DATE(tbl.created_on) <= :range_start')->bind(array('range_start' => $start_date->add(new DateInterval('P'.$day_range.'D'))->format('Y-m-d')));
 			}
 		}
 		
 		if ($state->end_date && $state->end_date != '0000-00-00')
 		{
 		    $end_date  = new KDate(array('date' => $state->end_date));
-		    $end       = $end_date->format('Y-m-d');
 
-		    $query->where('DATE(tbl.created_on) <= :end')->bind(array('end' => $end));
+		    $query->where('DATE(tbl.created_on) <= :end')->bind(array('end' => $end_date->format('Y-m-d')));
 		    
 		    if ($day_range = $state->day_range) {
-		        $range = clone $end_date;
-		        $query->where('DATE(tbl.created_on) >= :range_end')->bind(array('range_end' => $range->sub(new DateInterval('P'.$day_range.'D'))->format('Y-m-d')));
+		        $query->where('DATE(tbl.created_on) >= :range_end')->bind(array('range_end' => $end_date->sub(new DateInterval('P'.$day_range.'D'))->format('Y-m-d')));
 		    }
 		}
 
