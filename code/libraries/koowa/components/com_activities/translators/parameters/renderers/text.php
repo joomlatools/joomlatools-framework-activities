@@ -13,12 +13,12 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesActivityTranslatorParameterRendererText extends ComActivitiesActivityTranslatorParameterRendererAbstract
+class ComActivitiesTranslatorParameterRendererText extends ComActivitiesTranslatorParameterRendererAbstract
 {
     /**
-     * @see ComActivitiesActivityTranslatorParameterRendererInterface::render()
+     * @see ComActivitiesTranslatorParameterRendererInterface::render()
      */
-    public function render(ComActivitiesActivityTranslatorParameterInterface $parameter)
+    public function render(ComActivitiesTranslatorParameterInterface $parameter)
     {
         $output = $parameter->getText();
 

@@ -8,12 +8,12 @@
  */
 
 /**
- * Abstract Local Adapter
+ * Activity Translator Catalogue.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesActivityTranslatorCatalogueDefault extends ComKoowaTranslatorCatalogue
+class ComActivitiesTranslatorCatalogueActivity extends ComKoowaTranslatorCatalogue
 {
     /**
      * Overloaded for avoiding key length limit.

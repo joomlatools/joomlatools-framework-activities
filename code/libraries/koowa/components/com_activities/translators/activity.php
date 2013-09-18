@@ -2,30 +2,30 @@
 /**
  * Koowa Framework - http://developer.joomlatools.com/koowa
  *
- * @copyright	Copyright (C) 2011 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		http://github.com/joomlatools/koowa-activities for the canonical source repository
+ * @copyright      Copyright (C) 2011 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license        GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link           http://github.com/joomlatools/koowa-activities for the canonical source repository
  */
 
 /**
- * Default Activity Translator
+ * Activity Translator
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesActivityTranslatorDefault extends ComKoowaTranslator implements ComActivitiesActivityTranslatorInterface
+class ComActivitiesTranslatorActivity extends ComKoowaTranslator implements ComActivitiesTranslatorInterface
 {
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
             'alias_catalogue' => 'koowa:translator.catalogue',
             'prefix'          => 'KLS_ACTIVITY_',
-            'catalogue'       => 'com://admin/activities.activity.translator.catalogue.default'));
+            'catalogue'       => 'com://admin/activities.translator.catalogue.activity'));
         parent::_initialize($config);
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorInterface::translate()
+     * @see ComActivitiesTranslatorInterface::translate()
      *
      * Overridden to look for translation overrides and provide support for context translations.
      */
@@ -81,8 +81,8 @@ class ComActivitiesActivityTranslatorDefault extends ComKoowaTranslator implemen
     /**
      * Returns a list of override strings for the provided string/parameters couple.
      *
-     * @param     string                                              $string     The activity string.
-     * @param     ComActivitiesActivityTranslatorParameterInterface[] $parameters An optional array containing translator
+     * @param     string                                      $string             The activity string.
+     * @param     ComActivitiesTranslatorParameterInterface[] $parameters         An optional array containing translator
      *                                                                            parameter objects.
      *
      * @return array A list of override strings.
@@ -169,7 +169,7 @@ class ComActivitiesActivityTranslatorDefault extends ComKoowaTranslator implemen
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorInterface::parse()
+     * @see ComActivitiesTranslatorInterface::parse()
      */
     public function parse($string)
     {

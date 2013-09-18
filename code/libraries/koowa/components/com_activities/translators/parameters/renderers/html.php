@@ -13,12 +13,12 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesActivityTranslatorParameterRendererHtml extends ComActivitiesActivityTranslatorParameterRendererText
+class ComActivitiesTranslatorParameterRendererHtml extends ComActivitiesTranslatorParameterRendererText
 {
     /**
-     * @see ComActivitiesActivityTranslatorParameterRendererInterface::render()
+     * @see ComActivitiesTranslatorParameterRendererInterface::render()
      */
-    public function render(ComActivitiesActivityTranslatorParameterInterface $parameter)
+    public function render(ComActivitiesTranslatorParameterInterface $parameter)
     {
         $output = '<span class="text">' . parent::render($parameter) . '</span>';
 

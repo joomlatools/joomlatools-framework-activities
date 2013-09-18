@@ -13,14 +13,14 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-interface ComActivitiesActivityTranslatorParameterRendererInterface
+interface ComActivitiesTranslatorParameterRendererInterface
 {
     /**
      * Renders a parameter object.
      *
-     * @param $parameter ComActivitiesActivityTranslatorParameterInterface The parameter object.
+     * @param $parameter ComActivitiesTranslatorParameterInterface The parameter object.
      *
      * @return string The rendered parameter object.
      */
-    public function render(ComActivitiesActivityTranslatorParameterInterface $parameter);
+    public function render(ComActivitiesTranslatorParameterInterface $parameter);
 }

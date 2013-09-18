@@ -48,8 +48,8 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'parameter'  => 'com://admin/activities.activity.translator.parameter.default',
-            'translator' => 'com://admin/activities.activity.translator.default',
+            'parameter'  => 'com://admin/activities.translator.parameter.default',
+            'translator' => 'com://admin/activities.translator.activity',
         ));
         parent::_initialize($config);
     }
@@ -143,11 +143,11 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
     /**
      * Translator setter.
      *
-     * @param ComActivitiesActivityTranslatorInterface $translator The activity translator.
+     * @param ComActivitiesTranslatorInterface $translator The activity translator.
      *
      * @return $this
      */
-    public function setTranslator(ComActivitiesActivityTranslatorInterface $translator)
+    public function setTranslator(ComActivitiesTranslatorInterface $translator)
     {
         $this->_translator = $translator;
         return $this;
@@ -156,11 +156,11 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
     /**
      * Translator getter.
      *
-     * @return ComActivitiesActivityTranslatorInterface The activity translator.
+     * @return ComActivitiesTranslatorInterface The activity translator.
      */
     public function getTranslator()
     {
-        if (!$this->_translator instanceof ComActivitiesActivityTranslatorInterface)
+        if (!$this->_translator instanceof ComActivitiesTranslatorInterface)
         {
             $this->_translator = $this->getObject($this->_translator);
         }

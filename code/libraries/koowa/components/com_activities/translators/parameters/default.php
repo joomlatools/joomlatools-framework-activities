@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesActivityTranslatorParameterDefault extends KObject implements ComActivitiesActivityTranslatorParameterInterface
+class ComActivitiesTranslatorParameterDefault extends KObject implements ComActivitiesTranslatorParameterInterface
 {
     /**
      * @var string The parameter label.
@@ -84,13 +84,13 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
             'attributes'      => array('class' => array('parameter')),
             'translator'      => 'com://admin/activities.translator',
         ))->append(array(
-                'renderer' => 'com://admin/activities.activity.translator.parameter.renderer.' . ($config->html ? 'html' : 'text')));
+                'renderer' => 'com://admin/activities.translator.parameter.renderer.' . ($config->html ? 'html' : 'text')));
 
         parent::_initialize($config);
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorParameterInterface::setTranslatable()
+     * @see ComActivitiesTranslatorParameterInterface::setTranslatable()
      */
     public function setTranslatable($state)
     {
@@ -99,7 +99,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorParameterInterface::setText()
+     * @see ComActivitiesTranslatorParameterInterface::setText()
      */
     public function setText($text)
     {
@@ -108,7 +108,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorParameterInterface::getText()
+     * @see ComActivitiesTranslatorParameterInterface::getText()
      */
     public function getText()
     {
@@ -116,7 +116,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorParameterInterface::isTranslatable()
+     * @see ComActivitiesTranslatorParameterInterface::isTranslatable()
      */
     public function isTranslatable()
     {
@@ -124,7 +124,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorParameterInterface::setTranslator()
+     * @see ComActivitiesTranslatorParameterInterface::setTranslator()
      */
     public function setTranslator(KTranslator $translator)
     {
@@ -133,7 +133,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorParameterInterface::getTranslator()
+     * @see ComActivitiesTranslatorParameterInterface::getTranslator()
      */
     public function getTranslator()
     {
@@ -145,7 +145,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorParameterInterface::getLabel()
+     * @see ComActivitiesTranslatorParameterInterface::getLabel()
      */
     public function getLabel()
     {
@@ -153,20 +153,20 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorParameterInterface::setRenderer()
+     * @see ComActivitiesTranslatorParameterInterface::setRenderer()
      */
-    public function setRenderer(ComActivitiesActivityTranslatorParameterRendererInterface $renderer)
+    public function setRenderer(ComActivitiesTranslatorParameterRendererInterface $renderer)
     {
         $this->_renderer = $renderer;
         return $this;
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorParameterInterface::getRenderer()
+     * @see ComActivitiesTranslatorParameterInterface::getRenderer()
      */
     public function getRenderer()
     {
-        if (!$this->_renderer instanceof ComActivitiesActivityTranslatorParameterRendererInterface)
+        if (!$this->_renderer instanceof ComActivitiesTranslatorParameterRendererInterface)
         {
             $this->setRenderer($this->getObject($this->_renderer));
         }
@@ -175,7 +175,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorParameterInterface::render()
+     * @see ComActivitiesTranslatorParameterInterface::render()
      */
     public function render()
     {
@@ -183,7 +183,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorParameterInterface::setAttributes()
+     * @see ComActivitiesTranslatorParameterInterface::setAttributes()
      */
     public function setAttributes($attributes)
     {
@@ -192,7 +192,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorParameterInterface::getAttributes()
+     * @see ComActivitiesTranslatorParameterInterface::getAttributes()
      */
     public function getAttributes()
     {
@@ -200,7 +200,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorParameterInterface::setLinkAttributes()
+     * @see ComActivitiesTranslatorParameterInterface::setLinkAttributes()
      */
     public function setLinkAttributes($attributes)
     {
@@ -209,7 +209,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorParameterInterface::getLinkAttributes()
+     * @see ComActivitiesTranslatorParameterInterface::getLinkAttributes()
      */
     public function getLinkAttributes()
     {
@@ -217,7 +217,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorParameterInterface::setUrl()
+     * @see ComActivitiesTranslatorParameterInterface::setUrl()
      */
     public function setUrl($url)
     {
@@ -226,7 +226,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorParameterInterface::getUrl()
+     * @see ComActivitiesTranslatorParameterInterface::getUrl()
      */
     public function getUrl()
     {
@@ -234,7 +234,7 @@ class ComActivitiesActivityTranslatorParameterDefault extends KObject implements
     }
 
     /**
-     * @see ComActivitiesActivityTranslatorParameterInterface::isLinkable()
+     * @see ComActivitiesTranslatorParameterInterface::isLinkable()
      */
     public function isLinkable()
     {

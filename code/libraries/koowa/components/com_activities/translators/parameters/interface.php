@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-interface ComActivitiesActivityTranslatorParameterInterface
+interface ComActivitiesTranslatorParameterInterface
 {
     /**
      * Text setter.
@@ -75,16 +75,16 @@ interface ComActivitiesActivityTranslatorParameterInterface
     /**
      * Renderer setter.
      *
-     * @param ComActivitiesActivityTranslatorParameterRendererInterface $renderer
+     * @param ComActivitiesTranslatorParameterRendererInterface $renderer
      *
      * @return $this.
      */
-    public function setRenderer(ComActivitiesActivityTranslatorParameterRendererInterface $renderer);
+    public function setRenderer(ComActivitiesTranslatorParameterRendererInterface $renderer);
 
     /**
      * Renderer getter.
      *
-     * @return ComActivitiesActivityTranslatorParameterRendererInterface The parameter renderer.
+     * @return ComActivitiesTranslatorParameterRendererInterface The parameter renderer.
      */
     public function getRenderer();
 
