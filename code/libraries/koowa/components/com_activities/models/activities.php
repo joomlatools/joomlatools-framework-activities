@@ -19,8 +19,9 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 	{
 		parent::__construct($config);
 
-		$this->_state
-			->insert('application' , 'cmd')
+        $state = $this->getState();
+
+		$state->insert('application' , 'cmd')
 			->insert('type'        , 'cmd')
 			->insert('package'     , 'cmd')
 			->insert('name'        , 'cmd')
@@ -34,10 +35,10 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 			->insert('day_range'   , 'int')
             ->insert('ip'          , 'ip');
 
-		$this->_state->remove('direction')->insert('direction', 'word', 'desc');
+		$state->remove('direction')->insert('direction', 'word', 'desc');
 
 		// Force ordering by created_on
-		$this->_state->sort = 'created_on';
+		$state->sort = 'created_on';
 	}
 
     public function getPurgeQuery()
@@ -61,11 +62,13 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 
 	protected function _buildQueryColumns(KDatabaseQueryInterface $query)
 	{
-		if($this->_state->distinct && !empty($this->_state->column))
+        $state = $this->getState();
+
+		if($state->distinct && !empty($state->column))
 		{
 			$query->distinct()
-				->columns($this->_state->column)
-				->columns(array('activities_activity_id' => $this->_state->column));
+				->columns($state->column)
+				->columns(array('activities_activity_id' => $state->column));
 		}
 		else
 		{
@@ -83,7 +86,7 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 	{
 		parent::_buildQueryWhere($query);
 		
-		$state = $this->_state;
+		$state = $this->getState();
 
 		if ($state->application) {
 			$query->where('tbl.application = :application')->bind(array('application' => $state->application));
@@ -142,7 +145,9 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 
 	protected function _buildQueryOrder(KDatabaseQueryInterface $query)
 	{
-		if($this->_state->distinct && !empty($this->_state->column)) {
+        $state = $this->getState();
+
+		if($state->distinct && !empty($state->column)) {
 			$query->order('package', 'asc');
 		} else {
 		    parent::_buildQueryOrder($query);
