@@ -162,11 +162,11 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     }
 
     /**
-     * This method is called with the current context to determine what identifier generates the event.
+     * Activity identifier getter.
      *
-     * This is useful in cases where the row is from another package or the actual action happens somewhere else.
+     * @param KCommandContext $context The command context object.
      *
-     * @param KCommandContext $context
+     * @return KObjectIdentifier The activity identifier.
      */
     public function getActivityIdentifier(KCommandContext $context)
     {
