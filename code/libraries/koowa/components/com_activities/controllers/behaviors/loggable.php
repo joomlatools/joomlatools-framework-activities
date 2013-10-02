@@ -34,7 +34,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
      *
      * @param string|KObjectIdentifierInterface
      */
-    protected $_activity_controller;
+    protected $_controller;
 
     public function __construct(KObjectConfig $config)
     {
@@ -42,7 +42,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
 
         $this->_actions      = KObjectConfig::unbox($config->actions);
         $this->_title_column = KObjectConfig::unbox($config->title_column);
-        $this->_activity_controller = $config->activity_controller;
+        $this->_controller   = $config->controller;
     }
 
     protected function _initialize(KObjectConfig $config)
@@ -51,9 +51,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
             'priority'     => KCommand::PRIORITY_LOWEST,
             'actions'      => array('after.edit', 'after.add', 'after.delete'),
             'title_column' => array('title', 'name'),
-            'activity_controller' => array(
-                'identifier' => 'com://admin/activities.controller.activity',
-                'config'     => array()),
+            'controller'   => 'com://admin/activities.controller.activity'
         ));
 
         parent::_initialize($config);
