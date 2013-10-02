@@ -94,60 +94,62 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     }
 
     /**
-     * Returns activity data given a row and its context.
+     * Activity data getter.
      *
-     * This method can be used if the default data mapping does not apply.
-     *
-     * @param KDatabaseRowAbstract $row     The data row.
-     * @param                      string   The row status.
-     * @param KCommandContext      $context The command context.
+     * @param KObjectConfig $config Configuration object containing event related information.
      *
      * @return array Activity data.
      */
-    protected function _getActivityData(KDatabaseRowAbstract $row, $status, KCommandContext $context)
+    protected function _getActivityData(KObjectConfig $config)
     {
+        $context = $config->context;
 
         $identifier = $this->getActivityIdentifier($context);
 
-        $activity = array(
+        $data = array(
             'action'      => $context->action,
             'application' => $identifier->application,
             'type'        => $identifier->type,
             'package'     => $identifier->package,
             'name'        => $identifier->name,
-            'status'      => $status
+            'status'      => $config->status
         );
 
-        if (is_array($this->_title_column)) {
-            foreach ($this->_title_column as $title) {
-                if ($row->{$title}) {
-                    $activity['title'] = $row->{$title};
+        $row = $config->row;
+
+        if (is_array($this->_title_column))
+        {
+            foreach ($this->_title_column as $title)
+            {
+                if ($row->{$title})
+                {
+                    $data['title'] = $row->{$title};
                     break;
                 }
             }
-        } elseif ($row->{$this->_title_column}) {
-            $activity['title'] = $row->{$this->_title_column};
+        }
+        elseif ($row->{$this->_title_column})
+        {
+            $data['title'] = $row->{$this->_title_column};
         }
 
-        if (!isset($activity['title'])) {
-            $activity['title'] = '#' . $row->id;
+        if (!isset($data['title']))
+        {
+            $data['title'] = '#' . $row->id;
         }
 
-        $activity['row'] = $row->id;
+        $data['row'] = $row->id;
 
-        return $activity;
+        return $data;
     }
 
     /**
      * Status getter.
      *
-     * Loggable support actions other than add, edit and delete. While logging custom actions it may be
-     * useful to somehow translate the returned status to something more meaningful.
-     *
-     * @param KDatabaseRowAbstract       $row
-     * @param string                     $action    The command action being executed.
+     * @param KDatabaseRowInterface $row
+     * @param string               $action    The command action being executed.
      */
-    protected function _getStatus(KDatabaseRowAbstract $row, $action)
+    protected function _getStatus(KDatabaseRowInterface $row, $action)
     {
         $status = $row->getStatus();
 
