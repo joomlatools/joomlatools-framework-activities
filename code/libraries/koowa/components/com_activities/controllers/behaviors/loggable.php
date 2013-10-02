@@ -32,7 +32,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     /**
      * Activity controller identifier.
      *
-     * @param KObjectConfig
+     * @param string|KObjectIdentifierInterface
      */
     protected $_activity_controller;
 
