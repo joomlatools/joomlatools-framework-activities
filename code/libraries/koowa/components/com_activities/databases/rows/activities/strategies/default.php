@@ -24,9 +24,9 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
     }
 
     /**
-     * @see ComActivitiesDatabaseRowActivityStrategyAbstract::_getIcon()
+     * @see ComActivitiesDatabaseRowActivityStrategyInterface::getIcon()
      */
-    protected function _getIcon()
+    public function getIcon()
     {
         $classes = array(
             'publish'   => 'icon-ok',
@@ -158,11 +158,6 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
         }
 
         $string = $translator->translate($string, $parameters);
-
-        if ($html)
-        {
-            $string = '<i class="' . $this->_getIcon() . '" ></i >&nbsp;' . $string;
-        }
 
         return $string;
     }

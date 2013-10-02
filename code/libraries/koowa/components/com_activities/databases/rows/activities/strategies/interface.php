@@ -8,7 +8,7 @@
  */
 
 /**
- * Default Activity Database Row Strategy Interface
+ * Activity Database Row Strategy Interface
  *
  * Provides an interface for querying activity stream data from activity database rows. Database rows implementing this
  * interface can also be casted to strings.
@@ -98,4 +98,11 @@ interface ComActivitiesDatabaseRowActivityStrategyInterface
      * @return string The string representation of the attached activity row object.
      */
     public function toString($html = true);
+
+    /**
+     * Activity icon getter.
+     *
+     * @return string The activity icon class.
+     */
+    public function getIcon();
 }
