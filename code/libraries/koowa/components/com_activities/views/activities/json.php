@@ -16,29 +16,15 @@
  */
 class ComActivitiesViewActivitiesJson extends KViewJson
 {
-    protected function _getItem(KDatabaseRowInterface $row)
+    protected function _getActivity(KDatabaseRowInterface $row)
     {
-        if ($this->getLayout() == 'stream')
-        {
+        if ($this->getLayout() == 'stream') {
             $item = $row->getStreamData();
         }
-        else
-        {
-            $item = parent::_getItem($row);
+        else {
+            $item = $row->toArray();
         }
 
         return $item;
-    }
-
-    protected function _getList(KDatabaseRowsetInterface $rowset)
-    {
-        $result = array();
-
-        foreach ($rowset as $row)
-        {
-            $result[] = $this->_getItem($row);
-        }
-
-        return $result;
     }
 }
