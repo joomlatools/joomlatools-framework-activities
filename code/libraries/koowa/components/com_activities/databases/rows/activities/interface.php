@@ -6,6 +6,13 @@
  * @license        GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
  * @link           http://www.nooku.org
  */
+
+/**
+ * Activity Database Row Interface
+ *
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
+ */
 interface ComActivitiesDatabaseRowActivityInterface
 {
     /**
