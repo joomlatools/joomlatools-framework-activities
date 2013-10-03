@@ -19,6 +19,8 @@ class ComActivitiesControllerActivity extends ComKoowaControllerDefault
     {
         parent::__construct($config);
 
+        $this->getObject('translator')->loadLanguageFiles('com_activities');
+
         $this->registerCallback('before.add', array($this, 'setIp'));
     }
 
