@@ -118,8 +118,15 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault implements Co
         if (!$this->isNew() && !$this->getModified())
         {
             $identifier       = clone $this->getIdentifier();
-            $identifier->path = array('database', 'row', 'activity', 'strategy');
+            $identifier->path = array('database', 'row', 'activity', 'strategy', 'package');
             $identifier->name = $this->package;
+
+            if (!file_exists($identifier->getLocator()->findPath($identifier)))
+            {
+                // Manually fallback to default.
+                $identifier->path = array('database', 'row', 'activity', 'strategy');
+                $identifier->name = 'default';
+            }
 
             $strategy = $this->getObject($identifier, array('row' => $this));
         }
