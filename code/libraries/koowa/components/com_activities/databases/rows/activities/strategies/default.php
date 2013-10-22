@@ -94,13 +94,11 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
 
         $link = $config->link;
 
-        if (!$link->url && $this->objectExists() && ($url = $this->getObjectUrl()))
-        {
+        if (!$link->url && $this->objectExists() && ($url = $this->getObjectUrl())) {
             $link->url = $url;
         }
 
-        if ($this->status == 'deleted')
-        {
+        if ($this->status == 'deleted') {
             $config->attributes = array('class' => array('deleted'));
         }
     }
@@ -127,12 +125,9 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
      */
     public function toString($html = true)
     {
-        $string = $this->_getString();
-
+        $string     = $this->_getString();
         $translator = $this->getTranslator();
-
         $components = $translator->parse($string);
-
         $parameters = array();
 
         foreach ($components['parameters'] as $parameter)
@@ -159,8 +154,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
 
         $string = $translator->translate($string, $parameters);
 
-        if ($html)
-        {
+        if ($html) {
             $string = '<i class="' . $this->_getIcon() . '" ></i >&nbsp;' . $string;
         }
 
@@ -199,8 +193,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
     {
         $url = null;
 
-        if ($this->created_by)
-        {
+        if ($this->created_by) {
             $url = $this->_getUrl(array('url' => 'index.php?option=com_users&task=user.edit&id=' . $this->created_by));
         }
 
@@ -214,8 +207,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
     {
         $url = null;
 
-        if ($this->package && $this->name && $this->row)
-        {
+        if ($this->package && $this->name && $this->row) {
             $url = $this->_getUrl(array('url' => 'index.php?option=com_' . $this->package . '&task=' . $this->name . '.edit&id=' . $this->row));
         }
 
@@ -245,7 +237,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
      */
     public function getStreamData()
     {
-        $tag = 'tag:' . KRequest::get('server.HTTP_HOST', 'string');
+        $tag = 'tag:' . $$this->getUrl()->toString(KHttpUrl::HOST);
 
         $data = array(
             'id'        => $tag . ',id:' . $this->uuid,
@@ -263,13 +255,11 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
                 'objectType'  => 'user',
                 'displayName' => $this->created_by_name));
 
-        if ($this->objectExists())
-        {
+        if ($this->objectExists()) {
             $data['object']['url'] = $this->getObjectUrl();
         }
 
-        if ($this->actorExists())
-        {
+        if ($this->actorExists()) {
             $data['actor']['url'] = $this->getActorUrl();
         }
 
