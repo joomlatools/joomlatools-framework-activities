@@ -8,12 +8,12 @@
  */
 
 /**
- * Abstract Activity Parameter Translator Renderer
+ * Abstract Activity Translator Parameter Renderer
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-abstract class ComActivitiesActivityTranslatorParameterRendererAbstract extends KObject implements ComActivitiesActivityTranslatorParameterRendererInterface, KObjectInstantiable
+abstract class ComActivitiesTranslatorParameterRendererAbstract extends KObject implements ComActivitiesTranslatorParameterRendererInterface, KObjectInstantiable
 {
     public static function getInstance(KObjectConfigInterface $config, KObjectManagerInterface $manager)
     {

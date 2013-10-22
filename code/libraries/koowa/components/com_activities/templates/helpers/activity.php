@@ -15,53 +15,26 @@
  */
 class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault implements KObjectInstantiable
 {
-	/**
-     * Check for overrides of the helper
-     *
-     * @param   KObjectConfigInterface $config Configuration options
-     * @param 	KObjectManagerInterface $manager Object manager
-     * @return ComActivitiesTemplateHelperActivity
-     */
     public static function getInstance(KObjectConfigInterface $config, KObjectManagerInterface $manager)
     {
-        $identifier = clone $config->object_identifier;
-        $identifier->package = $config->row->package;
-
-        $identifier = $manager->getIdentifier($identifier);
-
-        if(file_exists($identifier->filepath)) {
-            $classname = $identifier->classname;
-        } else {
+        if (!$manager->isRegistered($config->object_identifier)) {
+            //Create the singleton
             $classname = $config->object_identifier->classname;
+            $instance  = new $classname($config);
+            $manager->setObject($config->object_identifier, $instance);
         }
 
-        $instance  = new $classname($config);
-        return $instance;
+        return $manager->getObject($config->object_identifier);
     }
 
     public function message($config = array())
-	{
-	    $config = new KObjectConfig($config);
-		$config->append(array(
-			'row'      => ''
-		));
+    {
+        $config = new KObjectConfig($config);
 
-		$row  = $config->row;
+        $config->append(array(
+            'html' => true
+        ));
 
-		$item = $this->getTemplate()->getView()->createRoute('option='.$row->type.'_'.$row->package.'&view='.$row->name.'&id='.$row->row);
-		$user = $this->getTemplate()->getView()->createRoute('option=com_users&view=user&id='.$row->created_by);
-
-		$message   = '<a href="'.$user.'">'.$row->created_by_name.'</a>';
-		$message  .= ' <span class="action">'.$row->status.'</span>';
-
-		if ($row->status != 'deleted') {
-			$message .= ' <a href="'.$item.'">'.$row->title.'</a>';
-		} else {
-			$message .= ' <span class="ellipsis" class="deleted">'.$row->title.'</span>';
-		}
-
-		$message .= ' <span class="ellipsis" class="package">'.$row->name.'</span>';
-
-		return $message;
-	}
+        return $config->row->toString($config->html);
+    }
 }

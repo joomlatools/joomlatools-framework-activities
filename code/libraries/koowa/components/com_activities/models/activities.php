@@ -19,8 +19,9 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 	{
 		parent::__construct($config);
 
-		$this->_state
-			->insert('application' , 'cmd')
+        $state = $this->getState();
+
+		$state->insert('application' , 'cmd')
 			->insert('type'        , 'cmd')
 			->insert('package'     , 'cmd')
 			->insert('name'        , 'cmd')
@@ -34,10 +35,10 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 			->insert('day_range'   , 'int')
             ->insert('ip'          , 'ip');
 
-		$this->_state->remove('direction')->insert('direction', 'word', 'desc');
+		$state->remove('direction')->insert('direction', 'word', 'desc');
 
 		// Force ordering by created_on
-		$this->_state->sort = 'created_on';
+		$state->sort = 'created_on';
 	}
 
     public function getPurgeQuery()
@@ -61,11 +62,13 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 
 	protected function _buildQueryColumns(KDatabaseQueryInterface $query)
 	{
-		if($this->_state->distinct && !empty($this->_state->column))
+        $state = $this->getState();
+
+		if($state->distinct && !empty($state->column))
 		{
 			$query->distinct()
-				->columns($this->_state->column)
-				->columns(array('activities_activity_id' => $this->_state->column));
+				->columns($state->column)
+				->columns(array('activities_activity_id' => $state->column));
 		}
 		else
 		{
@@ -83,7 +86,7 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 	{
 		parent::_buildQueryWhere($query);
 		
-		$state = $this->_state;
+		$state = $this->getState();
 
 		if ($state->application) {
 			$query->where('tbl.application = :application')->bind(array('application' => $state->application));
@@ -93,7 +96,7 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 			$query->where('tbl.type = :type')->bind(array('type' => $state->type));
 		}
 
-		if ($state->package && !($state->distinct && !empty($state->column))) {
+		if ($state->package) {
 			$query->where('tbl.package = :package')->bind(array('package' => $state->package));
 		}
 
@@ -112,26 +115,22 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
         if ($state->start_date && $state->start_date != '0000-00-00')
 		{
 			$start_date = new KDate(array('date' => $state->start_date));
-			$start      = $start_date->format('Y-m-d');
 
-			$query->where('tbl.created_on >= :start')->bind(array('start' => $start));
+			$query->where('DATE(tbl.created_on) >= :start')->bind(array('start' => $start_date->format('Y-m-d')));
 			
 			if ($day_range = $state->day_range) {
-			    $range = clone $start_date;  
-			    $query->where('tbl.created_on < :range_start')->bind(array('range_start' => $range->add(new DateInterval('P'.$day_range.'D'))->getDate()));
+			    $query->where('DATE(tbl.created_on) <= :range_start')->bind(array('range_start' => $start_date->add(new DateInterval('P'.$day_range.'D'))->format('Y-m-d')));
 			}
 		}
 		
 		if ($state->end_date && $state->end_date != '0000-00-00')
 		{
 		    $end_date  = new KDate(array('date' => $state->end_date));
-		    $end       = $end_date->format('Y-m-d');
 
-		    $query->where('DATE(tbl.created_on) <= :end')->bind(array('end' => $end));
+		    $query->where('DATE(tbl.created_on) <= :end')->bind(array('end' => $end_date->format('Y-m-d')));
 		    
 		    if ($day_range = $state->day_range) {
-		        $range = clone $end_date;
-		        $query->where('DATE(tbl.created_on) >= :range_end')->bind(array('range_end' => $range->sub(new DateInterval('P'.$day_range.'D'))->format('Y-m-d')));
+		        $query->where('DATE(tbl.created_on) >= :range_end')->bind(array('range_end' => $end_date->sub(new DateInterval('P'.$day_range.'D'))->format('Y-m-d')));
 		    }
 		}
 
@@ -146,7 +145,9 @@ class ComActivitiesModelActivities extends ComKoowaModelDefault
 
 	protected function _buildQueryOrder(KDatabaseQueryInterface $query)
 	{
-		if($this->_state->distinct && !empty($this->_state->column)) {
+        $state = $this->getState();
+
+		if($state->distinct && !empty($state->column)) {
 			$query->order('package', 'asc');
 		} else {
 		    parent::_buildQueryOrder($query);

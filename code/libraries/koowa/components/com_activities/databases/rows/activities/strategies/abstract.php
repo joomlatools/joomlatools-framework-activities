@@ -36,9 +36,10 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
 
         if (!$config->row instanceof ComActivitiesDatabaseRowActivity) {
             throw new BadMethodCallException('The activity database row object is missing.');
+        if ($config->row)
+        {
+            $this->setRow($config->row);
         }
-
-        $this->setRow($config->row);
 
         $this->_parameter  = $config->parameter;
         $this->_translator = $config->translator;
@@ -47,18 +48,11 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'parameter'  => 'com://admin/activities.activity.translator.parameter.default',
-            'translator' => 'com://admin/activities.activity.translator.default',
+            'parameter'  => 'com://admin/activities.translator.parameter.default',
+            'translator' => 'com://admin/activities.translator.activity',
         ));
         parent::_initialize($config);
     }
-
-    /**
-     * Activity icon getter.
-     *
-     * @return string The activity icon class value.
-     */
-    abstract protected function _getIcon();
 
     /**
      * Activity string getter.
@@ -86,19 +80,15 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
 
         $url = $config->url;
 
-        if ($config->route)
-        {
+        // If routing is disabled, URLs are assumed to be relative to site root.
+        if ($config->route) {
             $url = JRoute::_($config->url, false);
-        }
-        else
-        {
-            // If routing is disabled, URLs are assumed to be relative to site root.
+        } else {
             $url = KRequest::root() . '/' . $url;
         }
 
 
-        if ($config->absolute)
-        {
+        if ($config->absolute) {
             $url = KRequest::url()->toString(KHttpUrl::AUTHORITY) . $url;
         }
 
@@ -140,11 +130,11 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
     /**
      * Translator setter.
      *
-     * @param ComActivitiesActivityTranslatorInterface $translator The activity translator.
+     * @param ComActivitiesTranslatorInterface $translator The activity translator.
      *
      * @return $this
      */
-    public function setTranslator(ComActivitiesActivityTranslatorInterface $translator)
+    public function setTranslator(ComActivitiesTranslatorInterface $translator)
     {
         $this->_translator = $translator;
         return $this;
@@ -153,11 +143,11 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
     /**
      * Translator getter.
      *
-     * @return ComActivitiesActivityTranslatorInterface The activity translator.
+     * @return ComActivitiesTranslatorInterface The activity translator.
      */
     public function getTranslator()
     {
-        if (!$this->_translator instanceof ComActivitiesActivityTranslatorInterface) {
+        if (!$this->_translator instanceof ComActivitiesTranslatorInterface) {
             $this->_translator = $this->getObject($this->_translator);
         }
 

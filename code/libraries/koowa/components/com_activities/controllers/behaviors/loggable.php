@@ -32,9 +32,9 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     /**
      * Activity controller identifier.
      *
-     * @param KObjectConfig
+     * @param string|KObjectIdentifierInterface
      */
-    protected $_activity_controller;
+    protected $_controller;
 
     public function __construct(KObjectConfig $config)
     {
@@ -42,7 +42,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
 
         $this->_actions      = KObjectConfig::unbox($config->actions);
         $this->_title_column = KObjectConfig::unbox($config->title_column);
-        $this->_activity_controller = $config->activity_controller;
+        $this->_controller   = $config->controller;
     }
 
     protected function _initialize(KObjectConfig $config)
@@ -51,9 +51,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
             'priority'     => self::PRIORITY_LOWEST,
             'actions'      => array('after.edit', 'after.add', 'after.delete'),
             'title_column' => array('title', 'name'),
-            'activity_controller' => array(
-                'identifier' => 'com://admin/activities.controller.activity',
-                'config'     => array()),
+            'controller'   => 'com://admin/activities.controller.activity'
         ));
 
         parent::_initialize($config);
@@ -85,10 +83,15 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                     //Only log if the row status is valid.
                     $status = $this->_getStatus($row, $name);
 
-                    if (!empty($status) && $status !== KDatabase::STATUS_FAILED) {
-                        $this->getObject($this->_activity_controller->identifier,
-                            KObjectConfig::unbox($this->_activity_controller->config))->add($this->_getActivityData($row,
-                            $status, $context));
+                    if (!empty($status) && $status !== KDatabase::STATUS_FAILED)
+                    {
+                        $config = new KObjectConfig(array(
+                            'row'     => $row,
+                            'status'  => $status,
+                            'context' => $context,
+                            'event'   => $name));
+
+                        $this->getObject($this->_controller)->add($this->_getActivityData($config));
                     }
                 }
             }
@@ -96,60 +99,62 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     }
 
     /**
-     * Returns activity data given a row and its context.
+     * Activity data getter.
      *
-     * This method can be used if the default data mapping does not apply.
-     *
-     * @param KDatabaseRowAbstract $row     The data row.
-     * @param                      string   The row status.
-     * @param KCommandContext      $context The command context.
+     * @param KObjectConfig $config Configuration object containing event related information.
      *
      * @return array Activity data.
      */
-    protected function _getActivityData(KDatabaseRowAbstract $row, $status, KCommandContext $context)
+    protected function _getActivityData(KObjectConfig $config)
     {
+        $context = $config->context;
 
         $identifier = $this->getActivityIdentifier($context);
 
-        $activity = array(
+        $data = array(
             'action'      => $context->action,
             'application' => $identifier->application,
             'type'        => $identifier->type,
             'package'     => $identifier->package,
             'name'        => $identifier->name,
-            'status'      => $status
+            'status'      => $config->status
         );
 
-        if (is_array($this->_title_column)) {
-            foreach ($this->_title_column as $title) {
-                if ($row->{$title}) {
-                    $activity['title'] = $row->{$title};
+        $row = $config->row;
+
+        if (is_array($this->_title_column))
+        {
+            foreach ($this->_title_column as $title)
+            {
+                if ($row->{$title})
+                {
+                    $data['title'] = $row->{$title};
                     break;
                 }
             }
-        } elseif ($row->{$this->_title_column}) {
-            $activity['title'] = $row->{$this->_title_column};
+        }
+        elseif ($row->{$this->_title_column})
+        {
+            $data['title'] = $row->{$this->_title_column};
         }
 
-        if (!isset($activity['title'])) {
-            $activity['title'] = '#' . $row->id;
+        if (!isset($data['title']))
+        {
+            $data['title'] = '#' . $row->id;
         }
 
-        $activity['row'] = $row->id;
+        $data['row'] = $row->id;
 
-        return $activity;
+        return $data;
     }
 
     /**
      * Status getter.
      *
-     * Loggable support actions other than add, edit and delete. While logging custom actions it may be
-     * useful to somehow translate the returned status to something more meaningful.
-     *
-     * @param KDatabaseRowAbstract       $row
-     * @param string                     $action    The command action being executed.
+     * @param KDatabaseRowInterface $row
+     * @param string               $action    The command action being executed.
      */
-    protected function _getStatus(KDatabaseRowAbstract $row, $action)
+    protected function _getStatus(KDatabaseRowInterface $row, $action)
     {
         $status = $row->getStatus();
 
@@ -162,11 +167,11 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     }
 
     /**
-     * This method is called with the current context to determine what identifier generates the event.
+     * Activity identifier getter.
      *
-     * This is useful in cases where the row is from another package or the actual action happens somewhere else.
+     * @param KCommandContext $context The command context object.
      *
-     * @param KCommandContext $context
+     * @return KObjectIdentifier The activity identifier.
      */
     public function getActivityIdentifier(KCommandContext $context)
     {
