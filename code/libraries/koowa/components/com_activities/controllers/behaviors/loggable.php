@@ -48,7 +48,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'priority'     => KCommand::PRIORITY_LOWEST,
+            'priority'     => self::PRIORITY_LOWEST,
             'actions'      => array('after.edit', 'after.add', 'after.delete'),
             'title_column' => array('title', 'name'),
             'activity_controller' => array(
