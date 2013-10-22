@@ -34,8 +34,7 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
     {
         parent::__construct($config);
 
-        if (!$config->row instanceof ComActivitiesDatabaseRowActivity)
-        {
+        if (!$config->row instanceof ComActivitiesDatabaseRowActivity) {
             throw new BadMethodCallException('The activity database row object is missing.');
         }
 
@@ -126,14 +125,12 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
 
         $query = $this->getObject('koowa:database.query.select');
         $query->columns('COUNT(*)')->table($config->table)->where($config->column . ' = :value')
-        ->bind(array('value' => $config->value));
+               ->bind(array('value' => $config->value));
 
         // Need to catch exceptions here as table may not longer exist.
-        try
-        {
+        try {
             $result = $db->select($query, KDatabase::FETCH_FIELD);
-        } catch (Exception $e)
-        {
+        } catch (Exception $e) {
             $result = 0;
         }
 
@@ -160,8 +157,7 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
      */
     public function getTranslator()
     {
-        if (!$this->_translator instanceof ComActivitiesActivityTranslatorInterface)
-        {
+        if (!$this->_translator instanceof ComActivitiesActivityTranslatorInterface) {
             $this->_translator = $this->getObject($this->_translator);
         }
 
