@@ -57,7 +57,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
         parent::_initialize($config);
     }
 
-    public function execute($name, KCommandContext $context)
+    public function execute($name, KCommand $context)
     {
         if (in_array($name, $this->_actions)) {
 
@@ -169,11 +169,11 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     /**
      * Activity identifier getter.
      *
-     * @param KCommandContext $context The command context object.
+     * @param KCommand $context The command context object.
      *
      * @return KObjectIdentifier The activity identifier.
      */
-    public function getActivityIdentifier(KCommandContext $context)
+    public function getActivityIdentifier(KCommand $context)
     {
         return $context->caller->getIdentifier();
     }
