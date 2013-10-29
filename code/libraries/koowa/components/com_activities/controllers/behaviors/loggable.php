@@ -175,7 +175,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
      */
     public function getActivityIdentifier(KCommand $context)
     {
-        return $context->caller->getIdentifier();
+        return $context->subject->getIdentifier();
     }
 
     public function getHandle()
