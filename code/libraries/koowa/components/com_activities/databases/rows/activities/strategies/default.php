@@ -125,7 +125,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
      */
     public function toString($html = true)
     {
-        $string = $this->_getString();
+        $string     = $this->_getString();
         $translator = $this->getTranslator();
         $components = $translator->parse($string);
         $parameters = array();
@@ -153,10 +153,6 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
         }
 
         $string = $translator->translate($string, $parameters);
-
-        if ($html) {
-            $string = '<i class="' . $this->_getIcon() . '" ></i >&nbsp;' . $string;
-        }
 
         return $string;
     }
@@ -237,7 +233,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
      */
     public function getStreamData()
     {
-        $tag = 'tag:' . $$this->getUrl()->toString(KHttpUrl::HOST);
+        $tag = 'tag:' . $this->getUrl()->toString(KHttpUrl::HOST);
 
         $data = array(
             'id'        => $tag . ',id:' . $this->uuid,
