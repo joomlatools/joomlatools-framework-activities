@@ -34,8 +34,11 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
     {
         parent::__construct($config);
 
-        if (!$config->row instanceof ComActivitiesDatabaseRowActivity) {
+        if (!$config->row instanceof ComActivitiesDatabaseRowActivity)
+        {
             throw new BadMethodCallException('The activity database row object is missing.');
+        }
+
         if ($config->row)
         {
             $this->setRow($config->row);
