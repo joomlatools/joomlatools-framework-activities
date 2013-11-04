@@ -24,7 +24,7 @@ class ComActivitiesControllerActivity extends ComKoowaControllerDefault
         $this->registerCallback('before.add', array($this, 'setIp'));
     }
 
-    protected function _actionPurge(KCommand $context)
+    protected function _actionPurge(KControllerContextInterface $context)
     {
         if (!$this->getModel()->getTable()->getDatabase()->execute($this->getModel()->getPurgeQuery()))
         {
@@ -35,7 +35,7 @@ class ComActivitiesControllerActivity extends ComKoowaControllerDefault
         else $context->status = KHttpResponse::NO_CONTENT;
     }
 
-    public function setIp(KCommand $context)
+    public function setIp(KControllerContextInterface $context)
     {
         $context->data->ip = KRequest::get('server.REMOTE_ADDR', 'ip');
     }
