@@ -22,17 +22,19 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault implements Co
 
     public function save()
     {
+        $translator = $this->getObject('translator');
+
         if (!in_array($this->application, array('admin', 'site')))
         {
             $this->setStatus(KDatabase::STATUS_FAILED);
-            $this->setStatusMessage('Invalid application value');
+            $this->setStatusMessage($translator->translate('Invalid application value'));
             return false;
         }
 
         if (!in_array($this->type, array('com')))
         {
             $this->setStatus(KDatabase::STATUS_FAILED);
-            $this->setStatusMessage('Invalid type value');
+            $this->setStatusMessage($translator->translate('Invalid type value'));
             return false;
         }
 
@@ -65,7 +67,7 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault implements Co
             if (empty($this->$column))
             {
                 $this->setStatus(KDatabase::STATUS_FAILED);
-                $this->setStatusMessage('Missing required data');
+                $this->setStatusMessage($translator->translate('Missing required data'));
                 return false;
             }
         }
@@ -78,7 +80,7 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault implements Co
             if ($metadata === false)
             {
                 $this->setStatus(KDatabase::STATUS_FAILED);
-                $this->setStatusMessage('Unable to encode meta data');
+                $this->setStatusMessage($translator->translate('Unable to encode meta data'));
                 return false;
             }
 
