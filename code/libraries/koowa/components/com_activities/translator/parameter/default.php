@@ -82,9 +82,9 @@ class ComActivitiesTranslatorParameterDefault extends KObject implements ComActi
             'translate'       => false,
             'link_attributes' => array(),
             'attributes'      => array('class' => array('parameter')),
-            'translator'      => 'com://admin/activities.translator',
+            'translator'      => 'com:activities.translator',
         ))->append(array(
-                'renderer' => 'com://admin/activities.translator.parameter.renderer.' . ($config->html ? 'html' : 'text')));
+                'renderer' => 'com:activities.translator.parameter.renderer.' . ($config->html ? 'html' : 'text')));
 
         parent::_initialize($config);
     }

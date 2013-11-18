@@ -51,7 +51,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
             'priority'     => self::PRIORITY_LOWEST,
             'actions'      => array('after.edit', 'after.add', 'after.delete'),
             'title_column' => array('title', 'name'),
-            'controller'   => 'com://admin/activities.controller.activity'
+            'controller'   => 'com:activities.controller.activity'
         ));
 
         parent::_initialize($config);

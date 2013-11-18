@@ -20,7 +20,7 @@ class ComActivitiesTranslatorActivity extends ComKoowaTranslator implements ComA
         $config->append(array(
             'alias_catalogue' => 'koowa:translator.catalogue',
             'prefix'          => 'KLS_ACTIVITY_',
-            'catalogue'       => 'com://admin/activities.translator.catalogue.activity'));
+            'catalogue'       => 'com:activities.translator.catalogue.activity'));
         parent::_initialize($config);
     }
 

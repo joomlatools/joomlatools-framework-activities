@@ -51,8 +51,8 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'parameter'  => 'com://admin/activities.translator.parameter.default',
-            'translator' => 'com://admin/activities.translator.activity',
+            'parameter'  => 'com:activities.translator.parameter.default',
+            'translator' => 'com:activities.translator.activity',
         ));
         parent::_initialize($config);
     }
