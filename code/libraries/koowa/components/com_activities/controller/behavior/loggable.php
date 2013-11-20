@@ -70,7 +70,8 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                 $data = $context->result;
             }
 
-            if ($data instanceof KDatabaseRowInterface || $data instanceof KDatabaseRowsetInterface) {
+            if ($data instanceof KDatabaseRowInterface || $data instanceof KDatabaseRowsetInterface)
+            {
                 $rowset = array();
 
                 if ($data instanceof KDatabaseRowInterface) {
@@ -79,7 +80,8 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                     $rowset = $data;
                 }
 
-                foreach ($rowset as $row) {
+                foreach ($rowset as $row)
+                {
                     //Only log if the row status is valid.
                     $status = $this->_getStatus($row, $name);
 
@@ -107,8 +109,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
      */
     protected function _getActivityData(KObjectConfig $config)
     {
-        $context = $config->context;
-
+        $context    = $config->context;
         $identifier = $this->getActivityIdentifier($context);
 
         $data = array(
@@ -133,13 +134,11 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                 }
             }
         }
-        elseif ($row->{$this->_title_column})
-        {
+        elseif ($row->{$this->_title_column}) {
             $data['title'] = $row->{$this->_title_column};
         }
 
-        if (!isset($data['title']))
-        {
+        if (!isset($data['title'])) {
             $data['title'] = '#' . $row->id;
         }
 

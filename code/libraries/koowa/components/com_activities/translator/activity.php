@@ -66,8 +66,10 @@ class ComActivitiesTranslatorActivity extends ComKoowaTranslator implements ComA
                     if ($parameter->getLabel() == $label)
                     {
                         $clone = clone $parameter;
+
                         // Change the text for the one provided by the translation.
                         $clone->setText($matches[2][$i])->setTranslatable(false);
+
                         //  Make the parameter non-translatable (as it's already translated).
                         $translation = str_replace($matches[0][$i], $clone->render(), $translation);
                         break;
@@ -85,7 +87,6 @@ class ComActivitiesTranslatorActivity extends ComKoowaTranslator implements ComA
      * @param     string                                      $string             The activity string.
      * @param     ComActivitiesTranslatorParameterInterface[] $parameters         An optional array containing translator
      *                                                                            parameter objects.
-     *
      * @return array A list of override strings.
      */
     protected function _getOverrides($string, array $parameters = array())
@@ -107,11 +108,10 @@ class ComActivitiesTranslatorActivity extends ComKoowaTranslator implements ComA
             foreach ($this->_getPowerSet($set) as $subset)
             {
                 $override = $string;
-                foreach ($subset as $parameter)
-                {
-                    $override = str_replace('{' . $parameter->getLabel() . '}', $parameter->getText(),
-                        $override);
+                foreach ($subset as $parameter) {
+                    $override = str_replace('{' . $parameter->getLabel() . '}', $parameter->getText(), $override);
                 }
+
                 $overrides[] = $override;
             }
         }

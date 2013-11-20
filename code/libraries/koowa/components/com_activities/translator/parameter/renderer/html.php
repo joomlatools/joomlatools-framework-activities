@@ -36,8 +36,7 @@ class ComActivitiesTranslatorParameterRendererHtml extends ComActivitiesTranslat
         {
             foreach ($attribs as $attrib => $value)
             {
-                if (is_array($value))
-                {
+                if (is_array($value)) {
                     $attribs[$attrib] = implode(' ', $value);
                 }
             }
@@ -52,15 +51,13 @@ class ComActivitiesTranslatorParameterRendererHtml extends ComActivitiesTranslat
      * Method to build a string with xml style attributes from  an array of key/value pairs
      *
      * @param   mixed $array The array of Key/Value pairs for the attributes
-     *
      * @return  string  String containing xml style attributes
      */
     public function buildAttributes($array)
     {
         $output = array();
 
-        if ($array instanceof KObjectConfig)
-        {
+        if ($array instanceof KObjectConfig) {
             $array = KObjectConfig::unbox($array);
         }
 
@@ -68,8 +65,7 @@ class ComActivitiesTranslatorParameterRendererHtml extends ComActivitiesTranslat
         {
             foreach ($array as $key => $item)
             {
-                if (is_array($item))
-                {
+                if (is_array($item)) {
                     $item = implode(' ', $item);
                 }
 

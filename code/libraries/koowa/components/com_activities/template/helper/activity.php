@@ -17,7 +17,8 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault impleme
 {
     public static function getInstance(KObjectConfigInterface $config, KObjectManagerInterface $manager)
     {
-        if (!$manager->isRegistered($config->object_identifier)) {
+        if (!$manager->isRegistered($config->object_identifier))
+        {
             //Create the singleton
             $classname = $config->object_identifier->classname;
             $instance  = new $classname($config);
@@ -30,7 +31,6 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault impleme
     public function message($config = array())
     {
         $config = new KObjectConfig($config);
-
         $config->append(array(
             'html' => true
         ));

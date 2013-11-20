@@ -21,7 +21,6 @@ interface ComActivitiesDatabaseRowActivityInterface
      * This string correspond to the message of the activity that the row represents.
      *
      * @param bool $html Whether the HTML (true) or plain text (false) version is returned.
-     *
      * @return string The activity message string.
      */
     public function toString($html = true);

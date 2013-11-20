@@ -34,13 +34,11 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
     {
         parent::__construct($config);
 
-        if (!$config->row instanceof ComActivitiesDatabaseRowActivity)
-        {
+        if (!$config->row instanceof ComActivitiesDatabaseRowActivity) {
             throw new BadMethodCallException('The activity database row object is missing.');
         }
 
-        if ($config->row)
-        {
+        if ($config->row) {
             $this->setRow($config->row);
         }
 
@@ -78,7 +76,6 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
     protected function _getUrl($config = array())
     {
         $config = new KObjectConfig($config);
-
         $config->append(array('route' => true, 'absolute' => true, 'url' => ''));
 
         $url = (string) $config->url;
@@ -108,7 +105,6 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
     protected function _resourceExists($config = array())
     {
         $config = new KObjectConfig($config);
-
         $config->append(array(
             'table'  => $this->package . '_' . KStringInflector::pluralize($this->name),
             'column' => $this->package . '_' . $this->name . '_' . 'id',

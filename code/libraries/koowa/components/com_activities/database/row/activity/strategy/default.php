@@ -42,8 +42,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
 
         $action = $this->action;
 
-        if (in_array($action, array_keys($classes)))
-        {
+        if (in_array($action, array_keys($classes))) {
             $icon = $classes[$action];
         }
 

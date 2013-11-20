@@ -59,8 +59,7 @@ class ComActivitiesTranslatorParameterDefault extends KObject implements ComActi
     {
         parent::__construct($config);
 
-        if (!$config->label)
-        {
+        if (!$config->label) {
             throw new InvalidArgumentException('A translator parameter must have a label');
         }
 
@@ -166,8 +165,7 @@ class ComActivitiesTranslatorParameterDefault extends KObject implements ComActi
      */
     public function getRenderer()
     {
-        if (!$this->_renderer instanceof ComActivitiesTranslatorParameterRendererInterface)
-        {
+        if (!$this->_renderer instanceof ComActivitiesTranslatorParameterRendererInterface) {
             $this->setRenderer($this->getObject($this->_renderer));
         }
 

@@ -94,7 +94,6 @@ interface ComActivitiesDatabaseRowActivityStrategyInterface
      * Casts the attached activity row object to a string.
      *
      * @param boolean $html Whether to output HTML or plain text.
-     *
      * @return string The string representation of the attached activity row object.
      */
     public function toString($html = true);

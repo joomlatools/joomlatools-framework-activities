@@ -56,8 +56,7 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault implements Co
                     $status = null;
             }
 
-            if ($status)
-            {
+            if ($status) {
                 $this->status = $status;
             }
         }
@@ -98,8 +97,7 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault implements Co
         {
             // Try to decode it.
             $metadata = json_decode($value);
-            if ($metadata !== null)
-            {
+            if ($metadata !== null) {
                 $value = $metadata;
             }
         }
@@ -143,9 +141,8 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault implements Co
     {
         $string = '';
 
-        if ($strategy = $this->getStrategy())
-        {
-            // Delegate task to strategy.
+        // Delegate task to strategy.
+        if ($strategy = $this->getStrategy()) {
             $string = $strategy->toString($html);
         }
 
@@ -159,9 +156,8 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault implements Co
     {
         $data = array();
 
-        if ($strategy = $this->getStrategy())
-        {
-            // Delegate task to strategy.
+        // Delegate task to strategy.
+        if ($strategy = $this->getStrategy()) {
             $data = $strategy->getStreamData();
         }
 

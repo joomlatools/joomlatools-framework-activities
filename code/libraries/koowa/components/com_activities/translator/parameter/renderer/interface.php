@@ -19,7 +19,6 @@ interface ComActivitiesTranslatorParameterRendererInterface
      * Renders a parameter object.
      *
      * @param $parameter ComActivitiesTranslatorParameterInterface The parameter object.
-     *
      * @return string The rendered parameter object.
      */
     public function render(ComActivitiesTranslatorParameterInterface $parameter);

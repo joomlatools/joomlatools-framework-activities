@@ -22,8 +22,7 @@ class ComActivitiesTranslatorParameterRendererText extends ComActivitiesTranslat
     {
         $output = $parameter->getText();
 
-        if ($parameter->isTranslatable())
-        {
+        if ($parameter->isTranslatable()) {
             $output = $parameter->getTranslator()->translate($output);
         }
 
