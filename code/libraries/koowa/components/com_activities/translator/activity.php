@@ -20,7 +20,9 @@ class ComActivitiesTranslatorActivity extends ComKoowaTranslator implements ComA
         $config->append(array(
             'alias_catalogue' => 'koowa:translator.catalogue',
             'prefix'          => 'KLS_ACTIVITY_',
-            'catalogue'       => 'com:activities.translator.catalogue.activity'));
+            'catalogue'       => 'com:activities.translator.catalogue.activity'
+        ));
+
         parent::_initialize($config);
     }
 
@@ -46,8 +48,7 @@ class ComActivitiesTranslatorActivity extends ComKoowaTranslator implements ComA
 
         $replacements = array();
 
-        foreach ($parameters as $parameter)
-        {
+        foreach ($parameters as $parameter) {
             $replacements[$parameter->getLabel()] = $parameter->render();
         }
 
@@ -95,8 +96,7 @@ class ComActivitiesTranslatorActivity extends ComKoowaTranslator implements ComA
         // Construct a set containing non-empty (with replacement texts) parameters.
         foreach ($parameters as $parameter)
         {
-            if ($parameter->getText())
-            {
+            if ($parameter->getText()) {
                 $set[] = $parameter;
             }
         }
@@ -145,10 +145,10 @@ class ComActivitiesTranslatorActivity extends ComKoowaTranslator implements ComA
             }
             if (count($member) >= $min_length)
             {
-                if (!isset($members[count($member)]))
-                {
+                if (!isset($members[count($member)])) {
                     $members[count($member)] = array();
                 }
+
                 // Group members by number of elements they contain.
                 $members[count($member)][] = $member;
             }
@@ -160,8 +160,7 @@ class ComActivitiesTranslatorActivity extends ComKoowaTranslator implements ComA
         $power = array();
 
         // We want members with greater amount of elements first.
-        foreach (array_reverse($members) as $subsets)
-        {
+        foreach (array_reverse($members) as $subsets) {
             $power = array_merge($power, $subsets);
         }
 
@@ -173,20 +172,17 @@ class ComActivitiesTranslatorActivity extends ComKoowaTranslator implements ComA
      */
     public function parse($string)
     {
-        if (!is_string($string))
-        {
+        if (!is_string($string)) {
             throw new InvalidArgumentException('$string must be of type string');
         }
 
         $components = array('parameters' => array(), 'words' => array());
 
-        if (preg_match_all('/\{(.+?)\}/', $string, $matches) !== false)
-        {
+        if (preg_match_all('/\{(.+?)\}/', $string, $matches) !== false) {
             $components['parameters'] = $matches[1];
         }
 
-        if (preg_match_all('/(?:^|\s+)(\w+?)(?:$|\s+)/', $string, $matches) !== false)
-        {
+        if (preg_match_all('/(?:^|\s+)(\w+?)(?:$|\s+)/', $string, $matches) !== false) {
             $components['words'] = $matches[1];
         }
 

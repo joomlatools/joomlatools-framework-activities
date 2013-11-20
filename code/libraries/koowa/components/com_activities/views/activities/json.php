@@ -20,8 +20,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
     {
         if ($this->getLayout() == 'stream') {
             $item = $row->getStreamData();
-        }
-        else {
+        } else {
             $item = $row->toArray();
         }
 
