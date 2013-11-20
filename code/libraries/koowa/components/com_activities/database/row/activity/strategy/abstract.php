@@ -79,13 +79,13 @@ abstract class ComActivitiesDatabaseRowActivityStrategyAbstract extends KObject 
     {
         $config = new KObjectConfig($config);
 
-        $config->append(array('route' => true, 'absolute' => true, 'url' => KRequest::url()));
+        $config->append(array('route' => true, 'absolute' => true, 'url' => ''));
 
-        $url = $config->url;
+        $url = (string) $config->url;
 
         // If routing is disabled, URLs are assumed to be relative to site root.
         if ($config->route) {
-            $url = JRoute::_($config->url, false);
+            $url = JRoute::_($url, false);
         } else {
             $url = KRequest::root() . '/' . $url;
         }
