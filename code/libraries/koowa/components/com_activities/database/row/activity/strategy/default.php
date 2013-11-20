@@ -233,7 +233,7 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
      */
     public function getStreamData()
     {
-        $tag = 'tag:' . $this->getUrl()->toString(KHttpUrl::HOST);
+        $tag = 'tag:' . $this->_getUrl();
 
         $data = array(
             'id'        => $tag . ',id:' . $this->uuid,
