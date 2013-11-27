@@ -13,21 +13,8 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault implements KObjectInstantiable
+class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault implements KObjectMultiton
 {
-    public static function getInstance(KObjectConfigInterface $config, KObjectManagerInterface $manager)
-    {
-        if (!$manager->isRegistered($config->object_identifier))
-        {
-            //Create the singleton
-            $classname = $config->object_identifier->classname;
-            $instance  = new $classname($config);
-            $manager->setObject($config->object_identifier, $instance);
-        }
-
-        return $manager->getObject($config->object_identifier);
-    }
-
     public function message($config = array())
     {
         $config = new KObjectConfig($config);
