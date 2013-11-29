@@ -37,6 +37,6 @@ class ComActivitiesControllerActivity extends ComKoowaControllerDefault
 
     public function setIp(KControllerContextInterface $context)
     {
-        $context->data->ip = KRequest::get('server.REMOTE_ADDR', 'ip');
+        $context->request->data->ip = KRequest::get('server.REMOTE_ADDR', 'ip');
     }
 }
