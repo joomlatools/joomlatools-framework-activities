@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesModelActivities extends ComKoowaModelDefault
+class ComActivitiesModelActivities extends KModelTable
 {
 	public function __construct(KObjectConfig $config)
 	{

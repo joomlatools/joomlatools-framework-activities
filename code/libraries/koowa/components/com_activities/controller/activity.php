@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesControllerActivity extends ComKoowaControllerDefault
+class ComActivitiesControllerActivity extends ComKoowaControllerModel
 {
     public function __construct(KObjectConfig $config)
     {
