@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesTemplateHelperActivity extends KTemplateHelperDefault implements KObjectMultiton
+class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implements KObjectMultiton
 {
     public function message($config = array())
     {

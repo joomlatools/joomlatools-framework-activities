@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesDatabaseRowActivity extends KDatabaseRowDefault implements ComActivitiesDatabaseRowActivityInterface
+class ComActivitiesDatabaseRowActivity extends KDatabaseRowTable implements ComActivitiesDatabaseRowActivityInterface
 {
     /**
      * @var array A list of required columns.
