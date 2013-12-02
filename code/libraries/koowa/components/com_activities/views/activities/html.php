@@ -15,18 +15,18 @@
  */
 class ComActivitiesViewActivitiesHtml extends ComKoowaViewHtml
 {
-	public function display()
+    public function fetchData(KViewContext $context)
 	{
 		if ($this->getLayout() == 'default')
 		{
 			$model = $this->getObject($this->getModel()->getIdentifier());
 
-			$this->packages = $model
+			$context->data->packages = $model
 				->distinct(true)
 				->column('package')
 				->getList();
 		}
 
-		return parent::display();
+		return parent::fetchData($context);
 	}
 }
