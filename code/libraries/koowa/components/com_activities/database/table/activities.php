@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesDatabaseTableActivities extends KDatabaseTableDefault
+class ComActivitiesDatabaseTableActivities extends KDatabaseTableAbstract
 {
     protected function _initialize(KObjectConfig $config)
     {
