@@ -118,14 +118,14 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowTable implements ComA
         if (!$this->isNew() && !$this->getModified())
         {
             $identifier       = clone $this->getIdentifier();
-            $identifier->path = array('database', 'row', 'activity', 'strategy', 'package');
+            $identifier->path = array('database', 'row', 'activity', 'strategy');
             $identifier->name = $this->package;
 
             if (!file_exists($identifier->getLocator()->findPath($identifier)))
             {
                 // Manually fallback to default.
-                $identifier->path = array('database', 'row', 'activity', 'strategy');
-                $identifier->name = 'default';
+                $identifier->path = array('database', 'row', 'activity');
+                $identifier->name = 'strategy';
             }
 
             $strategy = $this->getObject($identifier, array('row' => $this));
