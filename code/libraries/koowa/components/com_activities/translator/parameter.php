@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesTranslatorParameterDefault extends KObject implements ComActivitiesTranslatorParameterInterface
+class ComActivitiesTranslatorParameter extends KObject implements ComActivitiesTranslatorParameterInterface
 {
     /**
      * @var string The parameter label.
@@ -83,7 +83,7 @@ class ComActivitiesTranslatorParameterDefault extends KObject implements ComActi
             'attributes'      => array('class' => array('parameter')),
             'translator'      => 'com:activities.translator',
         ))->append(array(
-                'renderer' => 'com:activities.translator.parameter.renderer.' . ($config->html ? 'html' : 'text')));
+                   'renderer' => 'com:activities.translator.parameter.renderer.' . ($config->html ? 'html' : 'text')));
 
         parent::_initialize($config);
     }
