@@ -37,6 +37,6 @@ class ComActivitiesControllerActivity extends ComKoowaControllerModel
 
     public function setIp(KControllerContextInterface $context)
     {
-        $context->request->data->ip = $context->request->getAddress();
+        $context->request->data->ip = $this->getObject('request')->getAddress();
     }
 }
