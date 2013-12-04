@@ -2,21 +2,167 @@
 /**
  * Koowa Framework - http://developer.joomlatools.com/koowa
  *
- * @copyright      Copyright (C) 2011 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license        GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link           http://github.com/joomlatools/koowa-activities for the canonical source repository
+ * @copyright	Copyright (C) 2011 - 2013 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link		http://github.com/joomlatools/koowa-activities for the canonical source repository
  */
 
 /**
- * Default Activity Database Row Strategy
+ * Activity Database Row Strategy
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatabaseRowActivityStrategyAbstract
+class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComActivitiesDatabaseRowActivityStrategyInterface
 {
     /**
-     * @see ComActivitiesDatabaseRowActivityStrategyAbstract::_getString()
+     * @var mixed The translator parameter identifier to instantiate.
+     */
+    protected $_parameter;
+
+    /**
+     * @var mixed The activity translator.
+     */
+    protected $_translator;
+
+    /**
+     * @var ComActivitiesDatabaseRowActivity The activity row object.
+     */
+    protected $_row;
+
+    public function __construct(KObjectConfig $config)
+    {
+        parent::__construct($config);
+
+        if (!$config->row instanceof ComActivitiesDatabaseRowActivity) {
+            throw new BadMethodCallException('The activity database row object is missing.');
+        }
+
+        if ($config->row) {
+            $this->setRow($config->row);
+        }
+
+        $this->_parameter  = $config->parameter;
+        $this->_translator = $config->translator;
+    }
+
+    protected function _initialize(KObjectConfig $config)
+    {
+        $config->append(array(
+            'parameter'  => 'com:activities.translator.parameter',
+            'translator' => 'com:activities.translator.activity',
+        ));
+        parent::_initialize($config);
+    }
+
+    /**
+     * URL getter.
+     *
+     * @param array $config An optional configuration array.
+     *
+     * @return string The URL.
+     */
+    protected function _getUrl($config = array())
+    {
+        $config = new KObjectConfig($config);
+        $config->append(array('route' => true, 'absolute' => true, 'url' => ''));
+
+        $url = (string) $config->url;
+
+        // If routing is disabled, URLs are assumed to be relative to site root.
+        if ($config->route) {
+            $url = JRoute::_($url, false);
+        } else {
+            $url = KRequest::root() . '/' . $url;
+        }
+
+
+        if ($config->absolute) {
+            $url = $this->getObject('request')->getUrl()->toString(KHttpUrl::AUTHORITY) . $url;
+        }
+
+        return $url;
+    }
+
+    /**
+     * Determines if a given resource exists.
+     *
+     * @param array $config An optional configuration array.
+     *
+     * @return bool True if it exists, false otherwise.
+     */
+    protected function _resourceExists($config = array())
+    {
+        $config = new KObjectConfig($config);
+        $config->append(array(
+            'table'  => $this->package . '_' . KStringInflector::pluralize($this->name),
+            'column' => $this->package . '_' . $this->name . '_' . 'id',
+            'value'  => $this->row));
+
+        $db = $this->getRow()->getTable()->getAdapter();
+
+        $query = $this->getObject('koowa:database.query.select');
+        $query->columns('COUNT(*)')->table($config->table)->where($config->column . ' = :value')
+              ->bind(array('value' => $config->value));
+
+        // Need to catch exceptions here as table may not longer exist.
+        try {
+            $result = $db->select($query, KDatabase::FETCH_FIELD);
+        } catch (Exception $e) {
+            $result = 0;
+        }
+
+        return (bool) $result;
+    }
+
+    /**
+     * Translator setter.
+     *
+     * @param ComActivitiesTranslatorInterface $translator The activity translator.
+     *
+     * @return $this
+     */
+    public function setTranslator(ComActivitiesTranslatorInterface $translator)
+    {
+        $this->_translator = $translator;
+        return $this;
+    }
+
+    /**
+     * Translator getter.
+     *
+     * @return ComActivitiesTranslatorInterface The activity translator.
+     */
+    public function getTranslator()
+    {
+        if (!$this->_translator instanceof ComActivitiesTranslatorInterface) {
+            $this->_translator = $this->getObject($this->_translator);
+        }
+
+        return $this->_translator;
+    }
+
+    /**
+     * Returns activity row column values if a matching column for the requested key is found.
+     *
+     * @param string $key The requested key.
+     *
+     * @return mixed The row column value if a matching column is found for the requested key, null otherwise.
+     */
+    public function __get($key)
+    {
+        $row = $this->getRow();
+        return isset($row->{$key}) ? $row->{$key} : null;
+    }
+
+    /**
+     * Activity string getter.
+     *
+     * An activity string is a compact representation of the activity text which also provides information
+     * about the variables it may contain. These are used in the same way Joomla! translation keys are
+     * used for translating text to other languages.
+     *
+     * @return string The activity string.
      */
     protected function _getString()
     {
@@ -238,9 +384,9 @@ class ComActivitiesDatabaseRowActivityStrategyDefault extends ComActivitiesDatab
             'id'        => $tag . ',id:' . $this->uuid,
             'title'     => $this->toString(false),
             'published' => $this->getObject('com://admin/koowa.template.helper.date')->format(array(
-                'date'   => $this->created_on,
-                'format' => 'c'
-            )),
+                    'date'   => $this->created_on,
+                    'format' => 'c'
+                )),
             'verb'      => $this->action,
             'object'    => array(
                 'id'         => $tag . ',id:' . $this->row,
