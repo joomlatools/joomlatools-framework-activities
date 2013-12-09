@@ -147,7 +147,7 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
      *
      * @param string $key The requested key.
      *
-     * @return mixed The row column value if a matching column is found for the requested key, null otherwise.
+     * @return mixed The activity row column value if a matching column is found for the requested key, null otherwise.
      */
     public function __get($key)
     {
@@ -169,9 +169,6 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
         return '{actor} {action} {object} {title}';
     }
 
-    /**
-     * @see ComActivitiesDatabaseRowActivityStrategyInterface::getIcon()
-     */
     public function getIcon()
     {
         $classes = array(
@@ -195,11 +192,16 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
         return $icon;
     }
 
+    /**
+     * Actor translator parameter configuration setter.
+     *
+     * @param KObjectConfig $config The translator parameter configuration object.
+     */
     protected function _setActor(KObjectConfig $config)
     {
         if ($this->actorExists())
         {
-            $config->link = array('url' => $this->getActorUrl());
+            $config->url = $this->getActorUrl();
             $text         = $this->created_by_name;
         }
         else
@@ -211,7 +213,11 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
         $config->text = $text;
     }
 
-
+    /**
+     * Action translator parameter configuration setter.
+     *
+     * @param KObjectConfig $config The translator parameter configuration object.
+     */
     protected function _setAction(KObjectConfig $config)
     {
         $config->append(array(
@@ -219,7 +225,11 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
             'translate' => true));
     }
 
-
+    /**
+     * Object translator parameter configuration setter.
+     *
+     * @param KObjectConfig $config The translator parameter configuration object.
+     */
     protected function _setObject(KObjectConfig $config)
     {
         $config->append(array(
@@ -229,6 +239,11 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
         ));
     }
 
+    /**
+     * Title translator parameter configuration setter.
+     *
+     * @param KObjectConfig $config The translator parameter configuration object.
+     */
     protected function _setTitle(KObjectConfig $config)
     {
         $config->append(array(
@@ -237,10 +252,8 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
             'text'       => $this->title
         ));
 
-        $link = $config->link;
-
-        if (!$link->url && $this->objectExists() && ($url = $this->getObjectUrl())) {
-            $link->url = $url;
+        if (!$config->url && $this->objectExists() && ($url = $this->getObjectUrl())) {
+            $config->url = $url;
         }
 
         if ($this->status == 'deleted') {
@@ -248,26 +261,17 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
         }
     }
 
-    /**
-     * @see ComActivitiesDatabaseRowActivityStrategyInterface::setRow()
-     */
     public function setRow(ComActivitiesDatabaseRowActivity $row)
     {
         $this->_row = $row;
         return $this;
     }
 
-    /**
-     * @see ComActivitiesDatabaseRowActivityStrategyInterface::getRow()
-     */
     public function getRow()
     {
         return $this->_row;
     }
 
-    /**
-     * @see ComActivitiesDatabaseRowActivityStrategyInterface::toString()
-     */
     public function toString($html = true)
     {
         $string     = $this->_getString();
@@ -281,17 +285,12 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
 
             if (method_exists($this, $method))
             {
-                $config = new KObjectConfig(array('link' => array()));
+                $config = new KObjectConfig();
 
                 call_user_func(array($this, $method), $config);
 
                 $config->html            = $html;
                 $config->label           = $parameter;
-                $config->url             = $config->link->url;
-                $config->link_attributes = $config->link->attributes;
-
-                // Cleanup config object.
-                unset($config->link);
 
                 $parameters[] = $this->getObject($this->_parameter, $config->toArray());
             }
@@ -302,34 +301,21 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
         return $string;
     }
 
-    /**
-     * @see ComActivitiesDatabaseRowActivityStrategyInterface::actorExists()
-     */
     public function actorExists()
     {
         return $this->_resourceExists(array('table' => 'users', 'column' => 'id', 'value' => $this->created_by));
     }
 
-    /**
-     * @see ComActivitiesDatabaseRowActivityStrategyInterface::objectExists()
-     */
     public function objectExists()
     {
         return $this->_resourceExists();
     }
 
-    /**
-     * @see ComActivitiesDatabaseRowActivityStrategyInterface::targetExists()
-     */
     public function targetExists()
     {
-        // Activities don't have targets by default.
-        return false;
+        return false; // Activities don't have targets by default.
     }
 
-    /**
-     * @see ComActivitiesDatabaseRowActivityStrategyInterface::getActorUrl()
-     */
     public function getActorUrl()
     {
         $url = null;
@@ -341,9 +327,6 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
         return $url;
     }
 
-    /**
-     * @see ComActivitiesDatabaseRowActivityStrategyInterface::getObjectUrl()
-     */
     public function getObjectUrl()
     {
         $url = null;
@@ -355,27 +338,16 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
         return $url;
     }
 
-    /**
-     * @see ComActivitiesDatabaseRowActivityStrategyInterface::getTargetUrl()
-     */
     public function getTargetUrl()
     {
-        // Non-linkable as no target by default.
-        return null;
+        return null; // Non-linkable as no target by default.
     }
 
-    /**
-     * @see ComActivitiesDatabaseRowActivityStrategyInterface::hasTarget()
-     */
     public function hasTarget()
     {
-        // Activities don't have targets by default.
-        return false;
+        return false; // Activities don't have targets by default.
     }
 
-    /**
-     * @see ComActivitiesDatabaseRowActivityStrategyInterface::getStreamData()
-     */
     public function getStreamData()
     {
         $tag = 'tag:' . $this->_getUrl();
