@@ -17,8 +17,6 @@ class ComActivitiesTranslatorCatalogueActivity extends ComKoowaTranslatorCatalog
 {
     /**
      * Overloaded for avoiding key length limit.
-     *
-     * @see ComKoowaTranslatorCatalogue::generateKey()
      */
     public function generateKey($string)
     {

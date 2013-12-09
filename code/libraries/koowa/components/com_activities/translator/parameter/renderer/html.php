@@ -15,9 +15,6 @@
  */
 class ComActivitiesTranslatorParameterRendererHtml extends ComActivitiesTranslatorParameterRendererText
 {
-    /**
-     * @see ComActivitiesTranslatorParameterRendererInterface::render()
-     */
     public function render(ComActivitiesTranslatorParameterInterface $parameter)
     {
         $output = '<span class="text">' . parent::render($parameter) . '</span>';

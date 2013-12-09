@@ -15,9 +15,6 @@
  */
 class ComActivitiesTranslatorParameterRendererText extends ComActivitiesTranslatorParameterRendererAbstract
 {
-    /**
-     * @see ComActivitiesTranslatorParameterRendererInterface::render()
-     */
     public function render(ComActivitiesTranslatorParameterInterface $parameter)
     {
         $output = $parameter->getText();

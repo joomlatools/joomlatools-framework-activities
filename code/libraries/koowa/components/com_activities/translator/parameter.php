@@ -88,52 +88,34 @@ class ComActivitiesTranslatorParameter extends KObject implements ComActivitiesT
         parent::_initialize($config);
     }
 
-    /**
-     * @see ComActivitiesTranslatorParameterInterface::setTranslatable()
-     */
     public function setTranslatable($state)
     {
         $this->_translate = (bool) $state;
         return $this;
     }
 
-    /**
-     * @see ComActivitiesTranslatorParameterInterface::setText()
-     */
     public function setText($text)
     {
         $this->_text = (string) $text;
         return $this;
     }
 
-    /**
-     * @see ComActivitiesTranslatorParameterInterface::getText()
-     */
     public function getText()
     {
         return $this->_text;
     }
 
-    /**
-     * @see ComActivitiesTranslatorParameterInterface::isTranslatable()
-     */
     public function isTranslatable()
     {
         return (bool) $this->_translate;
     }
 
-    /**
-     * @see ComActivitiesTranslatorParameterInterface::setTranslator()
-     */
     public function setTranslator(KTranslator $translator)
     {
         $this->_translator = $translator;
         return $this;
     }
 
-    /**
-     * @see ComActivitiesTranslatorParameterInterface::getTranslator()
-     */
     public function getTranslator()
     {
         if (!$this->_translator instanceof KTranslator)
@@ -143,26 +125,17 @@ class ComActivitiesTranslatorParameter extends KObject implements ComActivitiesT
         return $this->_translator;
     }
 
-    /**
-     * @see ComActivitiesTranslatorParameterInterface::getLabel()
-     */
     public function getLabel()
     {
         return $this->_label;
     }
 
-    /**
-     * @see ComActivitiesTranslatorParameterInterface::setRenderer()
-     */
     public function setRenderer(ComActivitiesTranslatorParameterRendererInterface $renderer)
     {
         $this->_renderer = $renderer;
         return $this;
     }
 
-    /**
-     * @see ComActivitiesTranslatorParameterInterface::getRenderer()
-     */
     public function getRenderer()
     {
         if (!$this->_renderer instanceof ComActivitiesTranslatorParameterRendererInterface) {
@@ -172,26 +145,17 @@ class ComActivitiesTranslatorParameter extends KObject implements ComActivitiesT
         return $this->_renderer;
     }
 
-    /**
-     * @see ComActivitiesTranslatorParameterInterface::render()
-     */
     public function render()
     {
         return (string) $this->getRenderer()->render($this);
     }
 
-    /**
-     * @see ComActivitiesTranslatorParameterInterface::setAttributes()
-     */
     public function setAttributes($attributes)
     {
         $this->_attributes = $attributes;
         return $this;
     }
 
-    /**
-     * @see ComActivitiesTranslatorParameterInterface::getAttributes()
-     */
     public function getAttributes()
     {
         return $this->_attributes;
@@ -206,34 +170,22 @@ class ComActivitiesTranslatorParameter extends KObject implements ComActivitiesT
         return $this;
     }
 
-    /**
-     * @see ComActivitiesTranslatorParameterInterface::getLinkAttributes()
-     */
     public function getLinkAttributes()
     {
         return $this->_link_attributes;
     }
 
-    /**
-     * @see ComActivitiesTranslatorParameterInterface::setUrl()
-     */
     public function setUrl($url)
     {
         $this->_url = (string) $url;
         return $this;
     }
 
-    /**
-     * @see ComActivitiesTranslatorParameterInterface::getUrl()
-     */
     public function getUrl()
     {
         return $this->_url;
     }
 
-    /**
-     * @see ComActivitiesTranslatorParameterInterface::isLinkable()
-     */
     public function isLinkable()
     {
         return (bool) $this->getUrl();
