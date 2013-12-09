@@ -27,8 +27,6 @@ class ComActivitiesTranslatorActivity extends ComKoowaTranslator implements ComA
     }
 
     /**
-     * @see ComActivitiesTranslatorInterface::translate()
-     *
      * Overridden to look for translation overrides and provide support for context translations.
      */
     public function translate($string, array $parameters = array())
@@ -167,9 +165,6 @@ class ComActivitiesTranslatorActivity extends ComKoowaTranslator implements ComA
         return $power;
     }
 
-    /**
-     * @see ComActivitiesTranslatorInterface::parse()
-     */
     public function parse($string)
     {
         if (!is_string($string)) {
