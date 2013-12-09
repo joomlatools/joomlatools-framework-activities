@@ -136,7 +136,7 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
     public function getTranslator()
     {
         if (!$this->_translator instanceof ComActivitiesTranslatorInterface) {
-            $this->_translator = $this->getObject($this->_translator);
+            $this->setTranslator($this->getObject($this->_translator));
         }
 
         return $this->_translator;
