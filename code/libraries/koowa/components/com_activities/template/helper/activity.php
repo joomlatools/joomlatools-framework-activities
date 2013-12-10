@@ -17,7 +17,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
 {
     public function message($config = array())
     {
-        $config = new KObjectConfig($config);
+        $config = new KObjectConfigJson($config);
         $config->append(array(
             'html' => true
         ));
