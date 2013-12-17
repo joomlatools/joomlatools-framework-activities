@@ -73,7 +73,7 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
         if ($config->route) {
             $url = JRoute::_($url, false);
         } else {
-            $url = KRequest::root() . '/' . $url;
+            $url = $this->getObject('request')->getBaseUrl('site') . '/' . $url;
         }
 
 
