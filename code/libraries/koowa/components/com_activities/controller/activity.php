@@ -28,9 +28,7 @@ class ComActivitiesControllerActivity extends ComKoowaControllerModel
     {
         if (!$this->getModel()->getTable()->getDatabase()->execute($this->getModel()->getPurgeQuery()))
         {
-            $context->setError(new KControllerExceptionActionFailed(
-                'Delete Action Failed', KHttpResponse::INTERNAL_SERVER_ERROR
-            ));
+            throw new KControllerExceptionActionFailed('Delete Action Failed');
         }
         else $context->status = KHttpResponse::NO_CONTENT;
     }
