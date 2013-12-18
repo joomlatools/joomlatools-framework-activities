@@ -84,24 +84,37 @@ interface ComActivitiesDatabaseRowActivityStrategyInterface
     public function getActorUrl();
 
     /**
-     * Activity stream data getter.
-     *
-     * @return array The activity stream data from the attached row object.
-     */
-    public function getStreamData();
-
-    /**
-     * Casts the attached activity row object to a string.
-     *
-     * @param boolean $html Whether to output HTML or plain text.
-     * @return string The string representation of the attached activity row object.
-     */
-    public function toString($html = true);
-
-    /**
      * Activity icon getter.
      *
      * @return string The activity icon class.
      */
     public function getIcon();
+
+    /**
+     * Activity message getter.
+     *
+     * @return ComActivitiesMessageInterface The activity message object.
+     */
+    public function getMessage();
+
+    /**
+     * Object type getter.
+     *
+     * @return string The object type.
+     */
+    public function getObjectType();
+
+    /**
+     * Target type getter.
+     *
+     * @return string|null The target type, null if no target.
+     */
+    public function getTargetType();
+
+    /**
+     * Target id getter.
+     *
+     * @return string|null The id of the target, null if no target.
+     */
+    public function getTargetId();
 }
