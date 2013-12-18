@@ -20,7 +20,7 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslator implements ComAc
         $config->append(array(
                 'alias_catalogue' => 'koowa:translator.catalogue',
                 'prefix'          => 'KLS_ACTIVITY_',
-                'catalogue'       => 'com:activities.translator.catalogue.message')
+                'catalogue'       => 'com:activities.message.translator.catalogue.message')
         );
 
         parent::_initialize($config);
