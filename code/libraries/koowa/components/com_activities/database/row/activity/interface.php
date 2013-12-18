@@ -16,19 +16,9 @@
 interface ComActivitiesDatabaseRowActivityInterface
 {
     /**
-     * Casts an activity row to a string.
+     * Strategy getter.
      *
-     * This string correspond to the message of the activity that the row represents.
-     *
-     * @param bool $html Whether the HTML (true) or plain text (false) version is returned.
-     * @return string The activity message string.
+     * @return ComActivitiesDatabaseRowActivityStrategyInterface|null The activity strategy, null if one cannot be provided.
      */
-    public function toString($html = true);
-
-    /**
-     * Activity stream data getter.
-     *
-     * @return array Associative array containing formatted activity stream data for the activity row.
-     */
-    public function getStreamData();
+    public function getStrategy();
 }
