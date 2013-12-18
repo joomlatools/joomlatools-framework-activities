@@ -16,19 +16,32 @@
 class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComActivitiesDatabaseRowActivityStrategyInterface
 {
     /**
-     * @var mixed The translator parameter identifier to instantiate.
+     * The activity message object.
+     *
+     * @var ComActivitiesMessageInterface
+     */
+    protected $_message;
+
+    /**
+     * The activity row object.
+     *
+     * @var ComActivitiesDatabaseRowActivity
+     */
+    protected $_row;
+
+    /**
+     * Activity message parameter identifier.
+     *
+     * @param mixed
      */
     protected $_parameter;
 
     /**
-     * @var mixed The activity translator.
+     * Determines if scripts are already loaded of not.
+     *
+     * @var bool
      */
-    protected $_translator;
-
-    /**
-     * @var ComActivitiesDatabaseRowActivity The activity row object.
-     */
-    protected $_row;
+    static protected $_scripts_loaded = array();
 
     public function __construct(KObjectConfig $config)
     {
@@ -42,6 +55,7 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
             $this->setRow($config->row);
         }
 
+        $this->_message    = $config->message;
         $this->_parameter  = $config->parameter;
         $this->_translator = $config->translator;
     }
@@ -49,39 +63,50 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'parameter'  => 'com:activities.translator.parameter',
-            'translator' => 'com:activities.translator.activity',
-        ));
+            'parameter' => 'com:activities.message.parameter',
+            'message'   => 'com:activities.message'));
         parent::_initialize($config);
     }
 
-    /**
-     * URL getter.
-     *
-     * @param array $config An optional configuration array.
-     *
-     * @return string The URL.
-     */
-    protected function _getUrl($config = array())
+    public function getMessage()
     {
-        $config = new KObjectConfig($config);
-        $config->append(array('route' => true, 'absolute' => true, 'url' => ''));
+        $config = array('string'  => $this->_getString());
 
-        $url = (string) $config->url;
+        $identifier = (string) $this->getIdentifier();
 
-        // If routing is disabled, URLs are assumed to be relative to site root.
-        if ($config->route) {
-            $url = JRoute::_($url, false);
-        } else {
-            $url = KRequest::root() . '/' . $url;
+        if (!in_array($identifier, self::$_scripts_loaded))
+        {
+            $config['scripts'] = $this->_getScripts();
+            self::$_scripts_loaded[] = $identifier;
         }
 
+        $message = $this->getObject($this->_message, $config);
+        $message->getParameters()->setData($this->_getParameters());
 
-        if ($config->absolute) {
-            $url = $this->getObject('request')->getUrl()->toString(KHttpUrl::AUTHORITY) . $url;
+        return $message;
+    }
+
+    protected function _getParameters()
+    {
+        $parameters = array();
+
+        if (preg_match_all('/\{(.*?)\}/', $this->_getString(), $matches) !== false)
+        {
+            foreach ($matches[1] as $parameter)
+            {
+                $method = '_set' . ucfirst($parameter);
+
+                if (method_exists($this, $method))
+                {
+                    $config = new KObjectConfig();
+                    $this->$method($config);
+                    $config->label = $parameter;
+                    $parameters[] = $this->getObject($this->_parameter, $config->toArray());
+                }
+            }
         }
 
-        return $url;
+        return $parameters;
     }
 
     /**
@@ -116,33 +141,6 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
     }
 
     /**
-     * Translator setter.
-     *
-     * @param ComActivitiesTranslatorInterface $translator The activity translator.
-     *
-     * @return $this
-     */
-    public function setTranslator(ComActivitiesTranslatorInterface $translator)
-    {
-        $this->_translator = $translator;
-        return $this;
-    }
-
-    /**
-     * Translator getter.
-     *
-     * @return ComActivitiesTranslatorInterface The activity translator.
-     */
-    public function getTranslator()
-    {
-        if (!$this->_translator instanceof ComActivitiesTranslatorInterface) {
-            $this->setTranslator($this->getObject($this->_translator));
-        }
-
-        return $this->_translator;
-    }
-
-    /**
      * Returns activity row column values if a matching column for the requested key is found.
      *
      * @param string $key The requested key.
@@ -167,6 +165,15 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
     protected function _getString()
     {
         return '{actor} {action} {object} {title}';
+    }
+
+    /**
+     * @return null
+     */
+    protected function _getScripts()
+    {
+        // No scripts by default.
+        return null;
     }
 
     public function getIcon()
@@ -272,35 +279,6 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
         return $this->_row;
     }
 
-    public function toString($html = true)
-    {
-        $string     = $this->_getString();
-        $translator = $this->getTranslator();
-        $components = $translator->parse($string);
-        $parameters = array();
-
-        foreach ($components['parameters'] as $parameter)
-        {
-            $method = '_set' . ucfirst($parameter);
-
-            if (method_exists($this, $method))
-            {
-                $config = new KObjectConfig();
-
-                call_user_func(array($this, $method), $config);
-
-                $config->html            = $html;
-                $config->label           = $parameter;
-
-                $parameters[] = $this->getObject($this->_parameter, $config->toArray());
-            }
-        }
-
-        $string = $translator->translate($string, $parameters);
-
-        return $string;
-    }
-
     public function actorExists()
     {
         return $this->_resourceExists(array('table' => 'users', 'column' => 'id', 'value' => $this->created_by));
@@ -321,7 +299,7 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
         $url = null;
 
         if ($this->created_by) {
-            $url = $this->_getUrl(array('url' => 'index.php?option=com_users&task=user.edit&id=' . $this->created_by));
+            $url = 'option=com_users&task=user.edit&id=' . $this->created_by;
         }
 
         return $url;
@@ -332,7 +310,7 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
         $url = null;
 
         if ($this->package && $this->name && $this->row) {
-            $url = $this->_getUrl(array('url' => 'index.php?option=com_' . $this->package . '&task=' . $this->name . '.edit&id=' . $this->row));
+            $url = 'option=com_' . $this->package . '&task=' . $this->name . '.edit&id=' . $this->row;
         }
 
         return $url;
@@ -348,34 +326,18 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
         return false; // Activities don't have targets by default.
     }
 
-    public function getStreamData()
+    public function getObjectType()
     {
-        $tag = 'tag:' . $this->_getUrl();
+        return $this->name;
+    }
 
-        $data = array(
-            'id'        => $tag . ',id:' . $this->uuid,
-            'title'     => $this->toString(false),
-            'published' => $this->getObject('com://admin/koowa.template.helper.date')->format(array(
-                    'date'   => $this->created_on,
-                    'format' => 'c'
-                )),
-            'verb'      => $this->action,
-            'object'    => array(
-                'id'         => $tag . ',id:' . $this->row,
-                'objectType' => $this->name),
-            'actor'     => array(
-                'id'          => $this->created_by,
-                'objectType'  => 'user',
-                'displayName' => $this->created_by_name));
+    public function getTargetId()
+    {
+        return null; // Activities don't have targets by default.
+    }
 
-        if ($this->objectExists()) {
-            $data['object']['url'] = $this->getObjectUrl();
-        }
-
-        if ($this->actorExists()) {
-            $data['actor']['url'] = $this->getActorUrl();
-        }
-
-        return $data;
+    public function getTargetType()
+    {
+        return null; // Activities don't have targets by default.
     }
 }
