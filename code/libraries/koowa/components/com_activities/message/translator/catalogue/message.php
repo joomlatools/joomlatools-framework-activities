@@ -8,12 +8,12 @@
  */
 
 /**
- * Activity Translator Catalogue.
+ * Message Translator Catalogue.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesTranslatorCatalogueActivity extends ComKoowaTranslatorCatalogue
+class ComActivitiesMessageTranslatorCatalogueMessage extends ComKoowaTranslatorCatalogue
 {
     /**
      * Overloaded for avoiding key length limit.
