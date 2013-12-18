@@ -16,10 +16,82 @@
  */
 class ComActivitiesViewActivitiesJson extends KViewJson
 {
+    protected $_layout;
+
+    public function __construct(KObjectConfig $config)
+    {
+        $this->_layout = $config->layout;
+        parent::__construct($config);
+    }
+
     protected function _getActivity(KDatabaseRowInterface $row)
     {
-        if ($this->getLayout() == 'stream') {
-            $item = $row->getStreamData();
+        if (($this->_layout == 'stream') && ($strategy = $row->getStrategy())) {
+
+            $tag = 'tag:' . $this->getUrl();
+
+            $message = $strategy->getMessage();
+
+            foreach ($message->getParameters() as $parameter)
+            {
+                $parameter->setContent($parameter->getText());
+            }
+
+            $item = array(
+                'id'        => $tag . ',id:' . $row->uuid,
+                'title'     => $message->toString(),
+                'published' => $this->getObject('com://admin/koowa.template.helper.date')->format(array(
+                        'date'   => $row->created_on,
+                        'format' => 'c'
+                    )),
+                'verb'      => $this->action,
+                'object'    => array(
+                    'id'         => $tag . ',id:' . $row->row,
+                    'objectType' => $row->name),
+                'actor'     => array(
+                    'id'          => $row->created_by,
+                    'objectType'  => 'user',
+                    'displayName' => $row->created_by_name));
+
+            if ($strategy->objectExists()) {
+                $item['object']['url'] = $this->getRoute($strategy->getObjectUrl(), true);
+            }
+
+            if ($strategy->actorExists()) {
+                $item['actor']['url'] = $this->getRoute($strategy->getActorUrl(), true);
+            }
+
+            if ($strategy->getObjectType() == 'image')
+            {
+                $item['object']['objectType'] = 'image';
+
+                // Append media info.
+                if ($strategy->objectExists())
+                {
+                    $item['object']['image'] = array(
+                        'url' => $strategy->getObjectUrl()
+                    );
+
+                    if ($row->metadata->width && $row->metadata->height)
+                    {
+                        $item['object']['image']['width']  = $row->metadata->width;
+                        $item['object']['image']['height'] = $row->metadata->height;
+                    }
+                }
+            }
+
+            if ($strategy->hasTarget())
+            {
+                $item['target'] = array(
+                    'id'         => $tag . ',id:' . $strategy->getTargetId(),
+                    'objectType' => $strategy->getTargetType()
+                );
+
+                if ($strategy->targetExists())
+                {
+                    $item['target']['url'] = $strategy->getTargetUrl();
+                }
+            }
         } else {
             $item = $row->toArray();
         }
