@@ -105,12 +105,6 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowTable implements ComA
         return $value;
     }
 
-    /**
-     * Strategy getter.
-     *
-     * @return ComActivitiesDatabaseRowActivityStrategyInterface|null The row strategy, null if the
-     * current row object is new or modified.
-     */
     public function getStrategy()
     {
         $strategy = null;
@@ -132,35 +126,5 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowTable implements ComA
         }
 
         return $strategy;
-    }
-
-    /**
-     * @see ComActivitiesDatabaseRowActivityInterface::toString()
-     */
-    public function toString($html = true)
-    {
-        $string = '';
-
-        // Delegate task to strategy.
-        if ($strategy = $this->getStrategy()) {
-            $string = $strategy->toString($html);
-        }
-
-        return $string;
-    }
-
-    /**
-     * @see ComActivitiesDatabaseRowActivityInterface::getStreamData()
-     */
-    public function getStreamData()
-    {
-        $data = array();
-
-        // Delegate task to strategy.
-        if ($strategy = $this->getStrategy()) {
-            $data = $strategy->getStreamData();
-        }
-
-        return $data;
     }
 }
