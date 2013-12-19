@@ -94,11 +94,6 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
      */
     protected function _renderText(ComActivitiesMessageInterface $message)
     {
-        foreach ($message->getParameters() as $parameter)
-        {
-            $parameter->setContent($parameter->getText());
-        }
-
         return $message->toString();
     }
 }

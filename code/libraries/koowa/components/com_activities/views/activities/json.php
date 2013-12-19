@@ -45,11 +45,6 @@ class ComActivitiesViewActivitiesJson extends KViewJson
         {
             $message = $strategy->getMessage();
 
-            foreach ($message->getParameters() as $parameter)
-            {
-                $parameter->setContent($parameter->getText());
-            }
-
             $item = array(
                 'id'        => $row->uuid,
                 'title'     => $message->toString(),
