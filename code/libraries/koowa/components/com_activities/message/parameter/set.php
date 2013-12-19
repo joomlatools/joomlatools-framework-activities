@@ -23,7 +23,6 @@ class ComActivitiesMessageParameterSet extends KObjectSet implements ComActiviti
         return $text;
     }
 
-
     public function insert(KObjectHandlable $parameter)
     {
         if (!$parameter instanceof ComActivitiesMessageParameterInterface)
@@ -40,7 +39,6 @@ class ComActivitiesMessageParameterSet extends KObjectSet implements ComActiviti
 
         return true;
     }
-
 
     public function extract(KObjectHandlable $parameter)
     {
