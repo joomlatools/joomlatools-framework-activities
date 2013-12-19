@@ -96,22 +96,6 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
     public function isLinkable();
 
     /**
-     * Routable state setter.
-     *
-     * @param bool $state The parameter link is made routable if true, non-routable if false.
-     *
-     * @return mixed
-     */
-    public function setRoutable($state);
-
-    /**
-     * Tells if the parameter link (if any) should be routed.
-     *
-     * @return bool
-     */
-    public function isRoutable();
-
-    /**
      * Link attributes setter.
      *
      * @param array $attributes The parameter link attributes.

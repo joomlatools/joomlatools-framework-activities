@@ -58,13 +58,6 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     protected $_url;
 
     /**
-     * Tells if the parameter link is routable (true) or not (false).
-     *
-     * @var bool
-     */
-    protected $_route;
-
-    /**
      * The parameter translator.
      *
      * @var mixed
@@ -86,7 +79,6 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
         $this->setAttributes(KObjectConfig::unbox($config->attributes));
         $this->setLinkAttributes(KObjectConfig::unbox($config->link_attributes));
         $this->setTranslatable($config->translate);
-        $this->setRoutable($config->route);
         $this->setText($config->text);
         $this->setUrl($config->url);
     }
@@ -95,7 +87,6 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     {
         $config->append(array(
             'translator'      => 'com:activities.translator',
-            'route'           => true,
             'translate'       => false,
             'link_attributes' => array(),
             'attributes'      => array('class' => array('parameter'))
@@ -185,17 +176,6 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     public function isLinkable()
     {
         return (bool) $this->getUrl();
-    }
-
-    public function setRoutable($state)
-    {
-        $this->_route = (bool) $state;
-        return $this;
-    }
-
-    public function isRoutable()
-    {
-        return $this->isLinkable() && (bool) $this->_route;
     }
 
     public function setTranslator(KTranslatorInterface $translator)
