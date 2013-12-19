@@ -58,6 +58,15 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     protected $_url;
 
     /**
+     * The parameter content.
+     *
+     * This variable contains the formatted text that is be used for rendering activity messages.
+     *
+     * @var string
+     */
+    protected $_content;
+
+    /**
      * The parameter translator.
      *
      * @var mixed
@@ -80,6 +89,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
         $this->setLinkAttributes(KObjectConfig::unbox($config->link_attributes));
         $this->setTranslatable($config->translate);
         $this->setText($config->text);
+        $this->setContent($config->content);
         $this->setUrl($config->url);
     }
 
@@ -125,9 +135,17 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
         return $this;
     }
 
+    /**
+     * Content getter will return text as content if no content is set.
+     */
     public function getContent()
     {
-        return $this->_content;
+        if (!$content = $this->_content)
+        {
+            $content = $this->getText();
+        }
+
+        return $content;
     }
 
     public function isTranslatable()
