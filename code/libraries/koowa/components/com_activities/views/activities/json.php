@@ -24,12 +24,25 @@ class ComActivitiesViewActivitiesJson extends KViewJson
         parent::__construct($config);
     }
 
+    protected function _initialize(KObjectConfig $config)
+    {
+        $config->append(array('behaviors' => array('routable')));
+        parent::_initialize($config);
+    }
+
+    protected function _getItem(KDatabaseRowInterface $row)
+    {
+        $data = parent::_getItem($row);
+
+        unset($data['links']); // Cleanup.
+
+        return $data;
+    }
+
     protected function _getActivity(KDatabaseRowInterface $row)
     {
-        if (($this->_layout == 'stream') && ($strategy = $row->getStrategy())) {
-
-            $tag = 'tag:' . $this->getUrl();
-
+        if (($this->_layout == 'stream') && ($strategy = $row->getStrategy()))
+        {
             $message = $strategy->getMessage();
 
             foreach ($message->getParameters() as $parameter)
@@ -38,7 +51,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
             }
 
             $item = array(
-                'id'        => $tag . ',id:' . $row->uuid,
+                'id'        => $row->uuid,
                 'title'     => $message->toString(),
                 'published' => $this->getObject('com://admin/koowa.template.helper.date')->format(array(
                         'date'   => $row->created_on,
@@ -46,7 +59,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                     )),
                 'verb'      => $this->action,
                 'object'    => array(
-                    'id'         => $tag . ',id:' . $row->row,
+                    'id'         => $row->row,
                     'objectType' => $row->name),
                 'actor'     => array(
                     'id'          => $row->created_by,
@@ -54,11 +67,11 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                     'displayName' => $row->created_by_name));
 
             if ($strategy->objectExists()) {
-                $item['object']['url'] = $this->getRoute($strategy->getObjectUrl(), true);
+                $item['object']['url'] = $this->getActivityRoute($strategy->getObjectUrl(), false);
             }
 
             if ($strategy->actorExists()) {
-                $item['actor']['url'] = $this->getRoute($strategy->getActorUrl(), true);
+                $item['actor']['url'] = $this->getActivityRoute($strategy->getActorUrl(), false);
             }
 
             if ($strategy->getObjectType() == 'image')
@@ -69,7 +82,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                 if ($strategy->objectExists())
                 {
                     $item['object']['image'] = array(
-                        'url' => $strategy->getObjectUrl()
+                        'url' => $this->getActivityRoute($strategy->getObjectUrl(), false)
                     );
 
                     if ($row->metadata->width && $row->metadata->height)
@@ -83,13 +96,13 @@ class ComActivitiesViewActivitiesJson extends KViewJson
             if ($strategy->hasTarget())
             {
                 $item['target'] = array(
-                    'id'         => $tag . ',id:' . $strategy->getTargetId(),
+                    'id'         => $strategy->getTargetId(),
                     'objectType' => $strategy->getTargetType()
                 );
 
                 if ($strategy->targetExists())
                 {
-                    $item['target']['url'] = $strategy->getTargetUrl();
+                    $item['target']['url'] = $this->getActivityRoute($strategy->getTargetUrl(), false);
                 }
             }
         } else {
