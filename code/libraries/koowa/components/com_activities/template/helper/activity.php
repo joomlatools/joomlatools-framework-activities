@@ -67,7 +67,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
 
                 if ($parameter->isRoutable())
                 {
-                    $url = $view->getRoute($url);
+                    $url = $view->getActivityRoute($url);
                 } else {
                     $url = $view->getUrl()->toString(KHttpUrl::AUTHORITY) . '/' . $url;
                 }
