@@ -52,7 +52,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                         'date'   => $row->created_on,
                         'format' => 'c'
                     )),
-                'verb'      => $this->action,
+                'verb'      => $row->action,
                 'object'    => array(
                     'id'         => $row->row,
                     'objectType' => $row->name),
