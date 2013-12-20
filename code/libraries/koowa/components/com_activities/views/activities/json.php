@@ -69,10 +69,11 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                 $item['actor']['url'] = $this->getActivityRoute($strategy->getActorUrl(), false);
             }
 
-            if ($strategy->getObjectType() == 'image')
-            {
-                $item['object']['objectType'] = 'image';
+            $object_type = $strategy->getObjectType();
+            $item['object']['objectType'] = $object_type;
 
+            if (in_array($object_type, array('image', 'photo', 'photograph', 'picture', 'icon')))
+            {
                 // Append media info.
                 if ($strategy->objectExists())
                 {
