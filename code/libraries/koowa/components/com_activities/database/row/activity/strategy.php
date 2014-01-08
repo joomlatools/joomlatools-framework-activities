@@ -149,6 +149,12 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
      */
     public function __get($key)
     {
+        // TODO: Remove when table schema is updated.
+        if ($key == 'verb')
+        {
+            $key = 'action';
+        }
+
         $row = $this->getRow();
         return isset($row->{$key}) ? $row->{$key} : null;
     }
@@ -190,10 +196,10 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
         // Default.
         $icon = 'icon-task';
 
-        $action = $this->action;
+        $verb = $this->verb;
 
-        if (in_array($action, array_keys($classes))) {
-            $icon = $classes[$action];
+        if (in_array($verb, array_keys($classes))) {
+            $icon = $classes[$verb];
         }
 
         return $icon;
