@@ -118,8 +118,8 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowTable implements ComA
             if (!$this->getObject('manager')->getClass($identifier, false))
             {
                 // Manually fallback to default.
-                $identifier->path = array('database', 'row', 'activity');
-                $identifier->name = 'strategy';
+                $identifier['path'] = array('database', 'row', 'activity');
+                $identifier['name'] = 'strategy';
             }
 
             $strategy = $this->getObject($identifier, array('row' => $this));
