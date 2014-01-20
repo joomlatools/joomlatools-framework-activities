@@ -21,16 +21,16 @@ class ComActivitiesControllerActivity extends ComKoowaControllerModel
 
         $this->getObject('translator')->loadTranslations('com_activities');
 
-        $this->registerCallback('before.add', array($this, 'setIp'));
+        $this->addCommandHandler('before.add', 'setIp');
     }
 
     protected function _actionPurge(KControllerContextInterface $context)
     {
-        if (!$this->getModel()->getTable()->getDatabase()->execute($this->getModel()->getPurgeQuery()))
-        {
+        if (!$this->getModel()->getTable()->getDatabase()->execute($this->getModel()->getPurgeQuery())) {
             throw new KControllerExceptionActionFailed('Delete Action Failed');
+        } else {
+            $context->status = KHttpResponse::NO_CONTENT;
         }
-        else $context->status = KHttpResponse::NO_CONTENT;
     }
 
     public function setIp(KControllerContextInterface $context)

@@ -57,17 +57,19 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
         parent::_initialize($config);
     }
 
-    public function execute($name, KCommandInterface $context)
+    public function executeCommand(KCommandInterface $command, $condition = null)
     {
-        if (in_array($name, $this->_actions)) {
+        $name = $command->getName();
 
+        if (in_array($name, $this->_actions))
+        {
             $parts = explode('.', $name);
 
             // Properly fetch data for the event.
             if ($parts[0] == 'before') {
                 $data = $this->getMixer()->getModel()->getData();
             } else {
-                $data = $context->result;
+                $data = $command->result;
             }
 
             if ($data instanceof KDatabaseRowInterface || $data instanceof KDatabaseRowsetInterface)
@@ -90,7 +92,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                         $config = new KObjectConfig(array(
                             'row'     => $row,
                             'status'  => $status,
-                            'context' => $context,
+                            'context' => $command,
                             'event'   => $name));
 
                         $this->getObject($this->_controller)->add($this->_getActivityData($config));
@@ -172,9 +174,9 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
      *
      * @return KObjectIdentifier The activity identifier.
      */
-    public function getActivityIdentifier(KCommandInterface $context)
+    public function getActivityIdentifier(KCommandInterface $command)
     {
-        return $context->subject->getIdentifier();
+        return $command->getSubject()->getIdentifier();
     }
 
     public function getHandle()
