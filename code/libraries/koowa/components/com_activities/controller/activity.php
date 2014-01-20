@@ -21,7 +21,7 @@ class ComActivitiesControllerActivity extends ComKoowaControllerModel
 
         $this->getObject('translator')->loadTranslations('com_activities');
 
-        $this->addCommandHandler('before.add', 'setIp');
+        $this->addCommandHandler('before.add', '_setIp');
     }
 
     protected function _actionPurge(KControllerContextInterface $context)
@@ -33,7 +33,7 @@ class ComActivitiesControllerActivity extends ComKoowaControllerModel
         }
     }
 
-    public function setIp(KControllerContextInterface $context)
+    protected function _setIp(KControllerContextInterface $context)
     {
         $context->request->data->ip = $this->getObject('request')->getAddress();
     }
