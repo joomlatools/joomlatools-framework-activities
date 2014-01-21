@@ -33,6 +33,6 @@ class ComActivitiesViewActivitiesHtml extends ComKoowaViewHtml
 				->getList();
 		}
 
-		return parent::_fetchData($context);
+		parent::_fetchData($context);
 	}
 }
