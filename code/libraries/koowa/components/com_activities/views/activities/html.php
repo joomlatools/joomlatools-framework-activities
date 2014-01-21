@@ -21,7 +21,7 @@ class ComActivitiesViewActivitiesHtml extends ComKoowaViewHtml
         parent::_initialize($config);
     }
 
-    public function fetchData(KViewContext $context)
+    protected function _fetchData(KViewContext $context)
 	{
 		if ($this->getLayout() == 'default')
 		{
@@ -33,6 +33,6 @@ class ComActivitiesViewActivitiesHtml extends ComKoowaViewHtml
 				->getList();
 		}
 
-		return parent::fetchData($context);
+		return parent::_fetchData($context);
 	}
 }
