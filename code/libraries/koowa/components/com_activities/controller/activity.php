@@ -21,7 +21,7 @@ class ComActivitiesControllerActivity extends ComKoowaControllerModel
 
         $this->getObject('translator')->loadTranslations('com_activities');
 
-        $this->addCommandHandler('before.add', '_setIp');
+        $this->addCommandCallback('before.add', '_setIp');
     }
 
     protected function _actionPurge(KControllerContextInterface $context)

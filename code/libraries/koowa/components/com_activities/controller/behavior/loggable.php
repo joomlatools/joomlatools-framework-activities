@@ -57,7 +57,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
         parent::_initialize($config);
     }
 
-    public function executeCommand(KCommandInterface $command, $condition = null)
+    public function execute(KCommandInterface $command, KCommandChainInterface $chain)
     {
         $name = $command->getName();
 
