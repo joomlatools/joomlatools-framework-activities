@@ -50,7 +50,7 @@ class ComActivitiesModelActivities extends KModelTable
 
         if ($state->end_date && $state->end_date != '0000-00-00')
         {
-            $end_date = new KDate(array('date' => $state->end_date));
+            $end_date = $this->getObject('lib:date', array('date' => $state->end_date));
             $end      = $end_date->format('Y-m-d');
 
             $query->where('DATE(created_on) <= :end')->bind(array('end' => $end));
@@ -113,7 +113,7 @@ class ComActivitiesModelActivities extends KModelTable
 
         if ($state->start_date && $state->start_date != '0000-00-00')
 		{
-			$start_date = new KDate(array('date' => $state->start_date));
+			$start_date = $this->getObject('lib:date',array('date' => $state->start_date));
 
 			$query->where('DATE(tbl.created_on) >= :start')->bind(array('start' => $start_date->format('Y-m-d')));
 			
@@ -124,7 +124,7 @@ class ComActivitiesModelActivities extends KModelTable
 		
 		if ($state->end_date && $state->end_date != '0000-00-00')
 		{
-		    $end_date  = new KDate(array('date' => $state->end_date));
+		    $end_date  = $this->getObject('lib:date',array('date' => $state->end_date));
 
 		    $query->where('DATE(tbl.created_on) <= :end')->bind(array('end' => $end_date->format('Y-m-d')));
 		    
