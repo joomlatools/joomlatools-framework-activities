@@ -126,7 +126,7 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
 
         $db = $this->getRow()->getTable()->getAdapter();
 
-        $query = $this->getObject('koowa:database.query.select');
+        $query = $this->getObject('lib:database.query.select');
         $query->columns('COUNT(*)')->table($config->table)->where($config->column . ' = :value')
               ->bind(array('value' => $config->value));
 

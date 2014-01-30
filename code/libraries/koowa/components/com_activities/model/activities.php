@@ -44,7 +44,7 @@ class ComActivitiesModelActivities extends KModelTable
     public function getPurgeQuery()
     {
         $state = $this->getState();
-        $query = $this->getObject('koowa:database.query.delete');
+        $query = $this->getObject('lib:database.query.delete');
 
         $query->table(array($this->getTable()->getName()));
 

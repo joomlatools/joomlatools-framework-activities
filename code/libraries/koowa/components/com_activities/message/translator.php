@@ -18,7 +18,7 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslator implements ComAc
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-                'alias_catalogue' => 'koowa:translator.catalogue',
+                'alias_catalogue' => 'lib:translator.catalogue',
                 'prefix'          => 'KLS_ACTIVITY_',
                 'catalogue'       => 'com:activities.message.translator.catalogue.message')
         );
