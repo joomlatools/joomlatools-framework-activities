@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesMessageTranslator extends ComKoowaTranslator implements ComActivitiesMessageTranslatorInterface
+class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implements ComActivitiesMessageTranslatorInterface
 {
     protected function _initialize(KObjectConfig $config)
     {
