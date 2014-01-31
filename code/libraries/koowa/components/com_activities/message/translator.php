@@ -70,7 +70,7 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
      * Returns a list of override strings for the provided string/parameters couple.
      *
      * @param     string                                           $string     The activity string.
-     * @param     ComActivitiesMessageParameterCollectionInterface $parameters The message parameter collection object.
+     * @param     ComActivitiesMessageParameterSetInterface $parameters The message parameter collection object.
      *
      * @return array A list of override strings.
      */
@@ -82,8 +82,7 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
         // Construct a set containing non-empty (with replacement texts) parameters.
         foreach ($parameters as $parameter)
         {
-            if ($parameter->getText())
-            {
+            if ($parameter->getText()) {
                 $set[] = $parameter;
             }
         }
@@ -94,8 +93,7 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
             foreach ($this->_getPowerSet($set) as $subset)
             {
                 $override = $string;
-                foreach ($subset as $parameter)
-                {
+                foreach ($subset as $parameter) {
                     $override = str_replace('{' . $parameter->getLabel() . '}', $parameter->getText(), $override);
                 }
 
@@ -126,14 +124,13 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
         {
             $b      = sprintf("%0" . $elements . "b", $i);
             $member = array();
-            for ($j = 0; $j < $elements; $j++)
-            {
+            for ($j = 0; $j < $elements; $j++) {
                 if ($b{$j} == '1') $member[] = $set[$j];
             }
+
             if (count($member) >= $min_length)
             {
-                if (!isset($members[count($member)]))
-                {
+                if (!isset($members[count($member)])) {
                     $members[count($member)] = array();
                 }
 
@@ -148,8 +145,7 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
         $power = array();
 
         // We want members with greater amount of elements first.
-        foreach (array_reverse($members) as $subsets)
-        {
+        foreach (array_reverse($members) as $subsets) {
             $power = array_merge($power, $subsets);
         }
 

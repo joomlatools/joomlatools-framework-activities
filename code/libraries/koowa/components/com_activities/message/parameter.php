@@ -140,8 +140,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
      */
     public function getContent()
     {
-        if (!$content = $this->_content)
-        {
+        if (!$content = $this->_content) {
             $content = $this->getText();
         }
 
@@ -204,8 +203,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
 
     public function getTranslator()
     {
-        if (!$this->_translator instanceof KTranslatorInterface)
-        {
+        if (!$this->_translator instanceof KTranslatorInterface) {
             $this->setTranslator($this->getObject($this->_translator));
         }
 

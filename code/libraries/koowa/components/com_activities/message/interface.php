@@ -15,7 +15,7 @@ interface ComActivitiesMessageInterface
     /**
      * Message parameters set setter.
      *
-     * @param ComActivitiesMessageParameterCollectionInterface $parameters A set of message parameters.
+     * @param ComActivitiesMessageParameterSetInterface $parameters A set of message parameters.
      *
      * @return $this
      */

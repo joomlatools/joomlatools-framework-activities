@@ -105,8 +105,7 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
 
     public function getTranslator()
     {
-        if (!$this->_translator instanceof ComActivitiesMessageTranslatorInterface)
-        {
+        if (!$this->_translator instanceof ComActivitiesMessageTranslatorInterface) {
             $this->setTranslator($this->getObject($this->_translator));
         }
 
