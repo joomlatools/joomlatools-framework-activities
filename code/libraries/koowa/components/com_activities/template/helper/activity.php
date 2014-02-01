@@ -26,20 +26,17 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
     public function message($config = array())
     {
         $config = new KObjectConfig($config);
-
         $config->append(array('format' => 'html'));
 
         $renderer = '_render' . ucfirst($config->format);
 
-        if (!method_exists($this, $renderer))
-        {
+        if (!method_exists($this, $renderer)) {
             throw new InvalidArgumentException('Renderer not found');
         }
 
         $row = $config->row;
 
-        if (!$row instanceof ComActivitiesDatabaseRowActivity)
-        {
+        if (!$row instanceof ComActivitiesDatabaseRowActivity) {
             throw new InvalidArgumentException('Activity row not found');
         }
 
@@ -63,23 +60,21 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
                 $link_attributes = $parameter->getLinkAttributes();
 
                 $view = $this->getTemplate()->getView();
-
-                $url = $view->getActivityRoute($parameter->getUrl());
+                $url  = $view->getActivityRoute($parameter->getUrl());
 
                 $output = '<a ' . (empty($link_attributes) ? '' : $this->buildAttributes($link_attributes)) . ' href="' . $url . '">' . $output . '</a>';
             }
 
             $attribs = $parameter->getAttributes();
 
-            if (count($attribs))
-            {
+            if (count($attribs)) {
                 $output = '<span ' . $this->buildAttributes($attribs) . '>' . $output . '</span>';
             }
 
             $parameter->setContent($output);
         }
 
-        $html = $message->toString();
+        $html  = $message->toString();
         $html .= $message->getScripts(); // Append scripts.
 
         return $html;
