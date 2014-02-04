@@ -185,8 +185,8 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
     public function getIcon()
     {
         $classes = array(
-            'publish'   => 'icon-ok',
-            'unpublish' => 'icon-eye-close',
+            'publish'   => 'icon-remove-circle',
+            'unpublish' => 'icon-ok-circle',
             'trash'     => 'icon-trash',
             'add'       => 'icon-plus-sign',
             'edit'      => 'icon-edit',
