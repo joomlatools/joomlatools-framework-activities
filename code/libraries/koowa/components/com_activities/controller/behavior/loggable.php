@@ -98,7 +98,12 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                         try {
                             $this->getObject($this->_controller)->add($this->_getActivityData($config));
                         }
-                        catch (Exception $e) {}
+                        catch (Exception $e)
+                        {
+                            if (JDEBUG) {
+                                throw $e;
+                            }
+                        }
                     }
                 }
             }
