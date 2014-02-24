@@ -92,8 +92,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                         $config = new KObjectConfig(array(
                             'row'     => $row,
                             'status'  => $status,
-                            'context' => $command,
-                            'event'   => $name));
+                            'command' => $command));
 
                         try {
                             $this->getObject($this->_controller)->add($this->_getActivityData($config));
@@ -119,11 +118,11 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
      */
     protected function _getActivityData(KObjectConfig $config)
     {
-        $context    = $config->context;
-        $identifier = $this->getActivityIdentifier($context);
+        $command    = $config->command;
+        $identifier = $this->getActivityIdentifier($command);
 
         $data = array(
-            'action'      => $context->action,
+            'action'      => $command->action,
             'application' => $identifier->domain,
             'type'        => $identifier->type,
             'package'     => $identifier->package,
