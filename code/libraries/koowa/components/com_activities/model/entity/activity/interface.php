@@ -13,12 +13,12 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-interface ComActivitiesDatabaseRowActivityInterface
+interface ComActivitiesModelEntityActivityInterface
 {
     /**
      * Strategy getter.
      *
-     * @return ComActivitiesDatabaseRowActivityStrategyInterface|null The activity strategy, null if one cannot be provided.
+     * @return ComActivitiesModelEntityActivityStrategyInterface|null The activity strategy, null if one cannot be provided.
      */
     public function getStrategy();
 }

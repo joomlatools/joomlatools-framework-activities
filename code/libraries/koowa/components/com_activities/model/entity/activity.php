@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesDatabaseRowActivity extends KDatabaseRowTable implements ComActivitiesDatabaseRowActivityInterface
+class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComActivitiesModelEntityActivityInterface
 {
     /**
      * @var array A list of required columns.
@@ -109,16 +109,16 @@ class ComActivitiesDatabaseRowActivity extends KDatabaseRowTable implements ComA
     {
         $strategy = null;
 
-        if (!$this->isNew() && !$this->getModified())
+        if (!$this->isNew() && !$this->getProperties(true))
         {
             $identifier         = $this->getIdentifier()->toArray();
-            $identifier['path'] = array('database', 'row', 'activity', 'strategy');
+            $identifier['path'] = array('model', 'entity', 'activity', 'strategy');
             $identifier['name'] = $this->package;
 
             if (!$this->getObject('manager')->getClass($identifier, false))
             {
                 // Manually fallback to default.
-                $identifier['path'] = array('database', 'row', 'activity');
+                $identifier['path'] = array('model', 'entity', 'activity');
                 $identifier['name'] = 'strategy';
             }
 

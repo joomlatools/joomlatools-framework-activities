@@ -36,7 +36,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
 
         $row = $config->row;
 
-        if (!$row instanceof ComActivitiesDatabaseRowActivity) {
+        if (!$row instanceof ComActivitiesModelEntityActivity) {
             throw new InvalidArgumentException('Activity row not found');
         }
 
@@ -45,7 +45,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
 
     /** Activity message Html renderer.
      *
-     * @param ComActivityMessageInterface $message The activity message.
+     * @param ComActivitiesMessageInterface $message The activity message.
      *
      * @return string The Html message.
      */

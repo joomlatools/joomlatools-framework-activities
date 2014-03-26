@@ -26,7 +26,7 @@ class ComActivitiesControllerActivity extends ComKoowaControllerModel
 
     protected function _actionPurge(KControllerContextInterface $context)
     {
-        if (!$this->getModel()->getTable()->getDatabase()->execute($this->getModel()->getPurgeQuery())) {
+        if (!$this->getModel()->getTable()->getAdapter()->execute($this->getModel()->getPurgeQuery())) {
             throw new KControllerExceptionActionFailed('Delete Action Failed');
         } else {
             $context->status = KHttpResponse::NO_CONTENT;

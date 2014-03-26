@@ -16,21 +16,21 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-interface ComActivitiesDatabaseRowActivityStrategyInterface
+interface ComActivitiesModelEntityActivityStrategyInterface
 {
     /**
      * Row setter
      *
-     * @param ComActivitiesDatabaseRowActivity $activity The activity row object.
+     * @param ComActivitiesModelEntityActivity $activity The activity row object.
      *
      * @return $this.
      */
-    public function setRow(ComActivitiesDatabaseRowActivity $row);
+    public function setRow(ComActivitiesModelEntityActivity $row);
 
     /**
      * Row getter.
      *
-     * @return ComActivitiesDatabaseRowActivity The activity row object.
+     * @return ComActivitiesModelEntityActivity The activity row object.
      */
     public function getRow();
 

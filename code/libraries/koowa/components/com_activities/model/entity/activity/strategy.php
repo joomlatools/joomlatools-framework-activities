@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComActivitiesDatabaseRowActivityStrategyInterface
+class ComActivitiesModelEntityActivityStrategy extends KObject implements ComActivitiesModelEntityActivityStrategyInterface
 {
     /**
      * The activity message object.
@@ -25,7 +25,7 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
     /**
      * The activity row object.
      *
-     * @var ComActivitiesDatabaseRowActivity
+     * @var ComActivitiesModelEntityActivity
      */
     protected $_row;
 
@@ -47,7 +47,7 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
     {
         parent::__construct($config);
 
-        if (!$config->row instanceof ComActivitiesDatabaseRowActivity) {
+        if (!$config->row instanceof ComActivitiesModelEntityActivity) {
             throw new BadMethodCallException('The activity database row object is missing.');
         }
 
@@ -274,7 +274,7 @@ class ComActivitiesDatabaseRowActivityStrategy extends KObject implements ComAct
         }
     }
 
-    public function setRow(ComActivitiesDatabaseRowActivity $row)
+    public function setRow(ComActivitiesModelEntityActivity $row)
     {
         $this->_row = $row;
         return $this;

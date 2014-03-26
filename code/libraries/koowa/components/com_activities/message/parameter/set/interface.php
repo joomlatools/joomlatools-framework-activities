@@ -10,7 +10,7 @@
 /**
  * Message Parameter Set Interface.
  */
-interface ComActivitiesMessageParameterSetInterface extends Iterator, ArrayAccess, Countable, Serializable
+interface ComActivitiesMessageParameterSetInterface extends IteratorAggregate, ArrayAccess, Countable, Serializable
 {
     /**
      * Returns the set content.
@@ -37,7 +37,7 @@ interface ComActivitiesMessageParameterSetInterface extends Iterator, ArrayAcces
      *
      * @return $this
      */
-    public function extract(KObjectHandlable $parameter);
+    public function remove(KObjectHandlable $parameter);
 
     /**
      * Parameters setter.

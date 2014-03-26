@@ -30,7 +30,7 @@ class ComActivitiesViewActivitiesHtml extends ComKoowaViewHtml
 			$context->data->packages = $model
 				->distinct(true)
 				->column('package')
-				->getList();
+				->fetch();
 		}
 
 		parent::_fetchData($context);

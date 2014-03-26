@@ -16,45 +16,29 @@ class ComActivitiesMessageParameterSet extends KObjectSet implements ComActiviti
     {
         $text = array();
 
-        foreach ($this as $parameter)
-        {
+        foreach ($this as $parameter) {
             $text[$parameter->getLabel()] = $parameter->getContent();
         }
+
         return $text;
     }
 
     public function insert(KObjectHandlable $parameter)
     {
-        if (!$parameter instanceof ComActivitiesMessageParameterInterface)
-        {
+        if (!$parameter instanceof ComActivitiesMessageParameterInterface) {
             throw new InvalidArgumentException('Parameter must be of ComActivitiesMessageParameterInterface type');
         }
 
-        $handle = $parameter->getLabel();
-
-        if ($handle)
-        {
-            $this->_object_set->offsetSet($handle, $parameter);
-        }
-
-        return true;
+        return parent::insert($parameter);
     }
 
-    public function extract(KObjectHandlable $parameter)
+    public function remove(KObjectHandlable $parameter)
     {
-        if (!$parameter instanceof ComActivitiesMessageParameterInterface)
-        {
+        if (!$parameter instanceof ComActivitiesMessageParameterInterface) {
             throw new InvalidArgumentException('Parameter must be of ComActivitiesMessageParameterInterface type');
         }
 
-        $handle = $parameter->getLabel();
-
-        if ($this->_object_set->offsetExists($handle))
-        {
-            $this->_object_set->offsetUnset($handle);
-        }
-
-        return $this;
+        return parent::remove($parameter);
     }
 
     public function setData(array $data)
