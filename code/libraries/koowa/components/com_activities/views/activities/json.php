@@ -30,9 +30,9 @@ class ComActivitiesViewActivitiesJson extends KViewJson
         parent::_initialize($config);
     }
 
-    protected function _getItem(KDatabaseRowInterface $row)
+    protected function _getEntity(KDatabaseRowInterface $row)
     {
-        $data = parent::_getItem($row);
+        $data = parent::_getEntity($row);
 
         unset($data['links']); // Cleanup.
 
