@@ -8,10 +8,10 @@
  */
 
 /**
- * Activity Database Row Strategy Interface
+ * Activity Entity Strategy Interface
  *
- * Provides an interface for querying activity stream data from activity database rows. Database rows implementing this
- * interface can also be casted to strings.
+ * Provides an interface for querying activity stream data from activity database rows.
+ * Entities implementing this interface can also be casted to strings.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
@@ -19,20 +19,20 @@
 interface ComActivitiesModelEntityActivityStrategyInterface
 {
     /**
-     * Row setter
+     * Entity setter
      *
-     * @param ComActivitiesModelEntityActivity $activity The activity row object.
+     * @param ComActivitiesModelEntityActivity $activity The activity entity.
      *
      * @return $this.
      */
-    public function setRow(ComActivitiesModelEntityActivity $row);
+    public function setEntity(ComActivitiesModelEntityActivity $activity);
 
     /**
-     * Row getter.
+     * Entity getter.
      *
-     * @return ComActivitiesModelEntityActivity The activity row object.
+     * @return ComActivitiesModelEntityActivity The activity entity
      */
-    public function getRow();
+    public function getEntity();
 
     /**
      * Tells if the activity object still exists, i.e. it is still stored or reachable.

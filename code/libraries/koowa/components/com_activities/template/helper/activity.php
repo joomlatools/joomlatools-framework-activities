@@ -34,13 +34,13 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
             throw new InvalidArgumentException('Renderer not found');
         }
 
-        $row = $config->row;
+        $entity = $config->entity;
 
-        if (!$row instanceof ComActivitiesModelEntityActivity) {
-            throw new InvalidArgumentException('Activity row not found');
+        if (!$entity instanceof ComActivitiesModelEntityActivity) {
+            throw new InvalidArgumentException('Activity entity not found');
         }
 
-        return $this->$renderer($row->getStrategy()->getMessage());
+        return $this->$renderer($entity->getStrategy()->getMessage());
     }
 
     /** Activity message Html renderer.

@@ -8,7 +8,7 @@
  */
 
 /**
- * Activities Database Row
+ * Activity Entity
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
@@ -122,7 +122,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
                 $identifier['name'] = 'strategy';
             }
 
-            $strategy = $this->getObject($identifier, array('row' => $this));
+            $strategy = $this->getObject($identifier, array('entity' => $this));
         }
 
         return $strategy;

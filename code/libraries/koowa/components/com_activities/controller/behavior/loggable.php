@@ -74,15 +74,15 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
 
             if ($data instanceof KModelEntityInterface)
             {
-                foreach ($data as $row)
+                foreach ($data as $entity)
                 {
                     //Only log if the row status is valid.
-                    $status = $this->_getStatus($row, $name);
+                    $status = $this->_getStatus($entity, $name);
 
                     if (!empty($status) && $status !== KDatabase::STATUS_FAILED)
                     {
                         $config = new KObjectConfig(array(
-                            'row'     => $row,
+                            'entity'  => $entity,
                             'status'  => $status,
                             'command' => $command));
 
@@ -122,28 +122,28 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
             'status'      => $config->status
         );
 
-        $row = $config->row;
+        $entity = $config->entity;
 
         if (is_array($this->_title_column))
         {
             foreach ($this->_title_column as $title)
             {
-                if ($row->{$title})
+                if ($entity->{$title})
                 {
-                    $data['title'] = $row->{$title};
+                    $data['title'] = $entity->{$title};
                     break;
                 }
             }
         }
-        elseif ($row->{$this->_title_column}) {
-            $data['title'] = $row->{$this->_title_column};
+        elseif ($entity->{$this->_title_column}) {
+            $data['title'] = $entity->{$this->_title_column};
         }
 
         if (!isset($data['title'])) {
-            $data['title'] = '#' . $row->id;
+            $data['title'] = '#' . $entity->id;
         }
 
-        $data['row'] = $row->id;
+        $data['row'] = $entity->id;
 
         return $data;
     }
@@ -151,12 +151,13 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     /**
      * Status getter.
      *
-     * @param KModelEntityInterface $row
-     * @param string               $action    The command action being executed.
+     * @param KModelEntityInterface $entity
+     * @param string                $action The command action being executed.
+     * @return string
      */
-    protected function _getStatus(KModelEntityInterface $row, $action)
+    protected function _getStatus(KModelEntityInterface $entity, $action)
     {
-        $status = $row->getStatus();
+        $status = $entity->getStatus();
 
         // Commands may change the original status of an action.
         if ($action == 'after.add' && $status == KDatabase::STATUS_UPDATED) {

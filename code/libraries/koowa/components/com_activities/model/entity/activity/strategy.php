@@ -8,7 +8,7 @@
  */
 
 /**
- * Activity Database Row Strategy
+ * Activity Entity Strategy
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
@@ -23,11 +23,11 @@ class ComActivitiesModelEntityActivityStrategy extends KObject implements ComAct
     protected $_message;
 
     /**
-     * The activity row object.
+     * The activity entity.
      *
      * @var ComActivitiesModelEntityActivity
      */
-    protected $_row;
+    protected $_entity;
 
     /**
      * Activity message parameter identifier.
@@ -47,12 +47,12 @@ class ComActivitiesModelEntityActivityStrategy extends KObject implements ComAct
     {
         parent::__construct($config);
 
-        if (!$config->row instanceof ComActivitiesModelEntityActivity) {
-            throw new BadMethodCallException('The activity database row object is missing.');
+        if (!$config->entity instanceof ComActivitiesModelEntityActivity) {
+            throw new BadMethodCallException('The activity entity is missing.');
         }
 
-        if ($config->row) {
-            $this->setRow($config->row);
+        if ($config->entity) {
+            $this->setEntity($config->entity);
         }
 
         $this->_message    = $config->message;
@@ -124,7 +124,7 @@ class ComActivitiesModelEntityActivityStrategy extends KObject implements ComAct
             'column' => $this->package . '_' . $this->name . '_' . 'id',
             'value'  => $this->row));
 
-        $db = $this->getRow()->getTable()->getAdapter();
+        $db = $this->getEntity()->getTable()->getAdapter();
 
         $query = $this->getObject('lib:database.query.select');
         $query->columns('COUNT(*)')->table($config->table)->where($config->column . ' = :value')
@@ -141,22 +141,21 @@ class ComActivitiesModelEntityActivityStrategy extends KObject implements ComAct
     }
 
     /**
-     * Returns activity row column values if a matching column for the requested key is found.
+     * Returns activity entity column values if a matching column for the requested key is found.
      *
      * @param string $key The requested key.
      *
-     * @return mixed The activity row column value if a matching column is found for the requested key, null otherwise.
+     * @return mixed The activity entity column value if a matching column is found for the requested key, null otherwise.
      */
     public function __get($key)
     {
         // TODO: Remove when table schema is updated.
-        if ($key == 'verb')
-        {
+        if ($key == 'verb') {
             $key = 'action';
         }
 
-        $row = $this->getRow();
-        return isset($row->{$key}) ? $row->{$key} : null;
+        $entity = $this->getEntity();
+        return isset($entity->{$key}) ? $entity->{$key} : null;
     }
 
     /**
@@ -274,15 +273,16 @@ class ComActivitiesModelEntityActivityStrategy extends KObject implements ComAct
         }
     }
 
-    public function setRow(ComActivitiesModelEntityActivity $row)
+    public function setEntity(ComActivitiesModelEntityActivity $activity)
     {
-        $this->_row = $row;
+        $this->_entity = $activity;
+
         return $this;
     }
 
-    public function getRow()
+    public function getEntity()
     {
-        return $this->_row;
+        return $this->_entity;
     }
 
     public function actorExists()

@@ -8,7 +8,7 @@
  */
 
 /**
- * Activity Database Row Interface
+ * Activity Entity Interface
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
