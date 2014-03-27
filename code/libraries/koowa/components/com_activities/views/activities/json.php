@@ -30,36 +30,36 @@ class ComActivitiesViewActivitiesJson extends KViewJson
         parent::_initialize($config);
     }
 
-    protected function _getEntity(KDatabaseRowInterface $row)
+    protected function _getEntity(KModelEntityInterface $entity)
     {
-        $data = parent::_getEntity($row);
+        $data = parent::_getEntity($entity);
 
         unset($data['links']); // Cleanup.
 
         return $data;
     }
 
-    protected function _getActivity(KDatabaseRowInterface $row)
+    protected function _getActivity(KModelEntityInterface $entity)
     {
-        if (($this->_layout == 'stream') && ($strategy = $row->getStrategy()))
+        if (($this->_layout == 'stream') && ($strategy = $entity->getStrategy()))
         {
             $message = $strategy->getMessage();
 
             $item = array(
-                'id'        => $row->uuid,
+                'id'        => $entity->uuid,
                 'title'     => $message->toString(),
                 'published' => $this->getObject('com://admin/koowa.template.helper.date')->format(array(
-                        'date'   => $row->created_on,
+                        'date'   => $entity->created_on,
                         'format' => 'c'
                     )),
-                'verb'      => $row->action,
+                'verb'      => $entity->action,
                 'object'    => array(
-                    'id'         => $row->row,
-                    'objectType' => $row->name),
+                    'id'         => $entity->row,
+                    'objectType' => $entity->name),
                 'actor'     => array(
-                    'id'          => $row->created_by,
+                    'id'          => $entity->created_by,
                     'objectType'  => 'user',
-                    'displayName' => $row->created_by_name));
+                    'displayName' => $entity->created_by_name));
 
             if ($strategy->objectExists()) {
                 $item['object']['url'] = $this->getActivityRoute($strategy->getObjectUrl(), false);
@@ -81,10 +81,10 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                         'url' => $this->getActivityRoute($strategy->getObjectUrl(), false)
                     );
 
-                    if ($row->metadata->width && $row->metadata->height)
+                    if ($entity->metadata->width && $entity->metadata->height)
                     {
-                        $item['object']['image']['width']  = $row->metadata->width;
-                        $item['object']['image']['height'] = $row->metadata->height;
+                        $item['object']['image']['width']  = $entity->metadata->width;
+                        $item['object']['image']['height'] = $entity->metadata->height;
                     }
                 }
             }
@@ -102,7 +102,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                 }
             }
         } else {
-            $item = $row->toArray();
+            $item = $entity->toArray();
         }
 
         return $item;
