@@ -67,22 +67,14 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
 
             // Properly fetch data for the event.
             if ($parts[0] == 'before') {
-                $data = $this->getMixer()->getModel()->getData();
+                $data = $this->getMixer()->getModel()->fetch();
             } else {
                 $data = $command->result;
             }
 
-            if ($data instanceof KDatabaseRowInterface || $data instanceof KDatabaseRowsetInterface)
+            if ($data instanceof KModelEntityInterface)
             {
-                $rowset = array();
-
-                if ($data instanceof KDatabaseRowInterface) {
-                    $rowset[] = $data;
-                } else {
-                    $rowset = $data;
-                }
-
-                foreach ($rowset as $row)
+                foreach ($data as $row)
                 {
                     //Only log if the row status is valid.
                     $status = $this->_getStatus($row, $name);
@@ -159,10 +151,10 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     /**
      * Status getter.
      *
-     * @param KDatabaseRowInterface $row
+     * @param KModelEntityInterface $row
      * @param string               $action    The command action being executed.
      */
-    protected function _getStatus(KDatabaseRowInterface $row, $action)
+    protected function _getStatus(KModelEntityInterface $row, $action)
     {
         $status = $row->getStatus();
 
