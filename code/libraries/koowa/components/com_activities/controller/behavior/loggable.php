@@ -63,26 +63,19 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
 
         if (in_array($name, $this->_actions))
         {
-            $parts = explode('.', $name);
+            $entity = $this->_getActivityEntity($command);
 
-            // Properly fetch data for the event.
-            if ($parts[0] == 'before') {
-                $data = $this->getMixer()->getModel()->fetch();
-            } else {
-                $data = $command->result;
-            }
-
-            if ($data instanceof KModelEntityInterface)
+            if ($entity instanceof KModelEntityInterface)
             {
-                foreach ($data as $entity)
+                foreach ($entity as $object)
                 {
                     //Only log if the row status is valid.
-                    $status = $this->_getStatus($entity, $name);
+                    $status = $this->_getStatus($object, $name);
 
                     if (!empty($status) && $status !== KDatabase::STATUS_FAILED)
                     {
                         $config = new KObjectConfig(array(
-                            'entity'  => $entity,
+                            'object'  => $object,
                             'status'  => $status,
                             'command' => $command));
 
@@ -99,6 +92,32 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                 }
             }
         }
+    }
+
+    /**
+     * Activity Entity Getter.
+     *
+     * The activity entity is the object(s) against which the action is executed.
+     *
+     * @param KCommandInterface $command The command.
+     *
+     * @return KModelEntityInterface The entity.
+     */
+    protected function _getActivityEntity(KCommandInterface $command)
+    {
+        $parts = explode('.', $command->getName());
+
+        // Properly fetch data for the event.
+        if ($parts[0] == 'before')
+        {
+            $object = $this->getMixer()->getModel()->fetch();
+        }
+        else
+        {
+            $object = $command->result;
+        }
+
+        return $object;
     }
 
     /**
@@ -122,28 +141,28 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
             'status'      => $config->status
         );
 
-        $entity = $config->entity;
+        $object = $config->object;
 
         if (is_array($this->_title_column))
         {
             foreach ($this->_title_column as $title)
             {
-                if ($entity->{$title})
+                if ($object->{$title})
                 {
-                    $data['title'] = $entity->{$title};
+                    $data['title'] = $object->{$title};
                     break;
                 }
             }
         }
-        elseif ($entity->{$this->_title_column}) {
-            $data['title'] = $entity->{$this->_title_column};
+        elseif ($object->{$this->_title_column}) {
+            $data['title'] = $object->{$this->_title_column};
         }
 
         if (!isset($data['title'])) {
-            $data['title'] = '#' . $entity->id;
+            $data['title'] = '#' . $object->id;
         }
 
-        $data['row'] = $entity->id;
+        $data['row'] = $object->id;
 
         return $data;
     }
