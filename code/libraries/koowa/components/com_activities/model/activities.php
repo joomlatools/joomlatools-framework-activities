@@ -117,8 +117,8 @@ class ComActivitiesModelActivities extends KModelDatabase
 
 			$query->where('DATE(tbl.created_on) >= :start')->bind(array('start' => $start_date->format('Y-m-d')));
 			
-			if ($day_range = $state->day_range) {
-			    $query->where('DATE(tbl.created_on) <= :range_start')->bind(array('range_start' => $start_date->modify(sprintf('+%d days', $day_range))->format('Y-m-d')));
+			if (is_numeric($state->day_range)) {
+			    $query->where('DATE(tbl.created_on) <= :range_start')->bind(array('range_start' => $start_date->modify(sprintf('+%d days', $state->day_range))->format('Y-m-d')));
 			}
 		}
 		
@@ -128,8 +128,8 @@ class ComActivitiesModelActivities extends KModelDatabase
 
 		    $query->where('DATE(tbl.created_on) <= :end')->bind(array('end' => $end_date->format('Y-m-d')));
 		    
-		    if ($day_range = $state->day_range) {
-		        $query->where('DATE(tbl.created_on) >= :range_end')->bind(array('range_end' => $end_date->modify(sprintf('-%d days', $day_range))->format('Y-m-d')));
+		    if (is_numeric($state->day_range)) {
+		        $query->where('DATE(tbl.created_on) >= :range_end')->bind(array('range_end' => $end_date->modify(sprintf('-%d days', $state->day_range))->format('Y-m-d')));
 		    }
 		}
 
