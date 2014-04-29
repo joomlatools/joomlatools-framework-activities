@@ -43,8 +43,7 @@ class ComActivitiesMessageParameterSet extends KObjectSet implements ComActiviti
 
     public function setData(array $data)
     {
-        foreach ($data as $parameter)
-        {
+        foreach ($data as $parameter) {
             $this->insert($parameter);
         }
 

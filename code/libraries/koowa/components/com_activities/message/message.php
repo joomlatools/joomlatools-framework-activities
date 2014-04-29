@@ -78,8 +78,7 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
 
     public function getParameters()
     {
-        if (!$this->_parameters instanceof ComActivitiesMessageParameterSetInterface)
-        {
+        if (!$this->_parameters instanceof ComActivitiesMessageParameterSetInterface) {
             $this->setParameters($this->getObject($this->_parameters));
         }
 
