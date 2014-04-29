@@ -77,8 +77,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     {
         parent::__construct($config);
 
-        if (!$config->label)
-        {
+        if (!$config->label) {
             throw new InvalidArgumentException('A translator parameter must have a label');
         }
 
@@ -121,8 +120,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     {
         $text = $this->_text;
 
-        if ($this->isTranslatable())
-        {
+        if ($this->isTranslatable()) {
             $text = $this->getTranslator()->translate($text);
         }
 
