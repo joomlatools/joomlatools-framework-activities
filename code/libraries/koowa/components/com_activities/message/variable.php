@@ -8,66 +8,66 @@
  */
 
 /**
- * Message Parameter Class.
+ * Message Variable Class.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesMessageParameter extends KObject implements ComActivitiesMessageParameterInterface
+class ComActivitiesMessageVariable extends KObject implements ComActivitiesMessageVariableInterface
 {
     /**
-     * The parameter label.
+     * The variable label.
      *
      * @var string
      */
     protected $_label;
 
     /**
-     * The parameter text.
+     * The variable text.
      *
      * @var string
      */
     protected $_text;
 
     /**
-     * Determines if the parameter is translatable (true) or not (false).
+     * Determines if the variable is translatable (true) or not (false).
      *
      * @var boolean
      */
     protected $_translate;
 
     /**
-     * The parameter attributes.
+     * The variable attributes.
      *
      * @var array
      */
     protected $_attributes;
 
     /**
-     * The parameter link attributes.
+     * The variable link attributes.
      *
      * @var array
      */
     protected $_link_attributes;
 
     /**
-     * The parameter url.
+     * The variable url.
      *
      * @var string
      */
     protected $_url;
 
     /**
-     * The parameter content.
+     * The variable content.
      *
-     * This variable contains the formatted text that is be used for rendering activity messages.
+     * This property contains the formatted text that is be used for rendering activity messages.
      *
      * @var string
      */
     protected $_content;
 
     /**
-     * The parameter translator.
+     * The variable translator.
      *
      * @var mixed
      */
@@ -78,7 +78,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
         parent::__construct($config);
 
         if (!$config->label) {
-            throw new InvalidArgumentException('A translator parameter must have a label');
+            throw new InvalidArgumentException('A translator variable must have a label');
         }
 
         $this->_label      = $config->label;
@@ -98,7 +98,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
             'translator'      => 'com:activities.translator',
             'translate'       => false,
             'link_attributes' => array(),
-            'attributes'      => array('class' => array('parameter'))
+            'attributes'      => array('class' => array('variable'))
         ));
 
         parent::_initialize($config);

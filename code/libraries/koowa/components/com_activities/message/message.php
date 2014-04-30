@@ -20,11 +20,11 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
     protected $_key;
 
     /**
-     * The set of message parameters.
+     * The set of message variables.
      *
-     * @var ComActivitiesMessageParameterSetInterface
+     * @var ComActivitiesMessageVariableSetInterface
      */
-    protected $_parameters;
+    protected $_variables;
 
     /**
      * The message scripts.
@@ -47,14 +47,14 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
         $this->setKey($config->key);
         $this->setScripts($config->scripts);
 
-        $this->_parameters = $config->parameters;
+        $this->_variables = $config->variables;
         $this->_translator = $config->translator;
     }
 
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'parameters' => 'com:activities.message.parameter.set',
+            'variables' => 'com:activities.message.variable.set',
             'translator' => 'com:activities.message.translator'));
         parent::_initialize($config);
     }
@@ -70,19 +70,19 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
         return $this->_key;
     }
 
-    public function setParameters(ComActivitiesMessageParameterSetInterface $parameters)
+    public function setVariables(ComActivitiesMessageVariableSetInterface $variables)
     {
-        $this->_parameters = $parameters;
+        $this->_variables = $variables;
         return $this;
     }
 
-    public function getParameters()
+    public function getVariables()
     {
-        if (!$this->_parameters instanceof ComActivitiesMessageParameterSetInterface) {
-            $this->setParameters($this->getObject($this->_parameters));
+        if (!$this->_variables instanceof ComActivitiesMessageVariableSetInterface) {
+            $this->setVariables($this->getObject($this->_variables));
         }
 
-        return $this->_parameters;
+        return $this->_variables;
     }
 
     public function setScripts($scripts)

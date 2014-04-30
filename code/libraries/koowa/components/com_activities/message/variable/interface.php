@@ -8,17 +8,17 @@
  */
 
 /**
- * Message Parameter Interface
+ * Message Variable Interface
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-interface ComActivitiesMessageParameterInterface extends KObjectHandlable
+interface ComActivitiesMessageVariableInterface extends KObjectHandlable
 {
     /**
      * Text setter.
      *
-     * @param mixed $text The parameter text.
+     * @param mixed $text The variable text.
      *
      * @return $this.
      */
@@ -27,14 +27,14 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
     /**
      * Text getter.
      *
-     * @return string The parameter text.
+     * @return string The variable text.
      */
     public function getText();
 
     /**
      * Content setter.
      *
-     * @param string $content The parameter content.
+     * @param string $content The variable content.
      *
      * @return $this
      */
@@ -43,21 +43,21 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
     /**
      * Content getter.
      *
-     * @return The parameter content.
+     * @return The variable content.
      */
     public function getContent();
 
     /**
      * Translatable state setter.
      *
-     * @param bool The parameter is made translatable if true, non-translatable if false.
+     * @param bool The variable is made translatable if true, non-translatable if false.
      *
      * @return $this.
      */
     public function setTranslatable($state);
 
     /**
-     * Tells if the parameter is translatable.
+     * Tells if the variable is translatable.
      *
      * @return bool True if translatable, false otherwise.
      */
@@ -66,16 +66,16 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
     /**
      * Label getter.
      *
-     * A label uniquely identifies a parameter.
+     * A label uniquely identifies a variable.
      *
-     * @return string The parameter label.
+     * @return string The variable label.
      */
     public function getLabel();
 
     /**
      * URL setter.
      *
-     * @param string $url The parameter URL.
+     * @param string $url The variable URL.
      *
      * @return $this.
      */
@@ -84,12 +84,12 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
     /**
      * URL getter.
      *
-     * @return string The parameter url.
+     * @return string The variable url.
      */
     public function getUrl();
 
     /**
-     * Tells if the parameter is linkable or not.
+     * Tells if the variable is linkable or not.
      *
      * @return bool
      */
@@ -98,7 +98,7 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
     /**
      * Link attributes setter.
      *
-     * @param array $attributes The parameter link attributes.
+     * @param array $attributes The variable link attributes.
      *
      * @return $this.
      */
@@ -107,14 +107,14 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
     /**
      * Link attributes getter.
      *
-     * @return array The parameter attributes.
+     * @return array The variable attributes.
      */
     public function getLinkAttributes();
 
     /**
      * Attributes setter.
      *
-     * @param array $attributes The parameter attributes.
+     * @param array $attributes The variable attributes.
      *
      * @return $this.
      */
@@ -123,23 +123,23 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
     /**
      * Attributes getter.
      *
-     * @return array The parameter attributes.
+     * @return array The variable attributes.
      */
     public function getAttributes();
 
     /**
-     * Parameter translator setter.
+     * Variable translator setter.
      *
-     * @param KTranslatorInterface $translator The parameter translator.
+     * @param KTranslatorInterface $translator The variable translator.
      *
      * @return $this
      */
     public function setTranslator(KTranslatorInterface $translator);
 
     /**
-     * Parameter translator getter.
+     * Variable translator getter.
      *
-     * @return KTranslatorInterface The parameter translator.
+     * @return KTranslatorInterface The variable translator.
      */
     public function getTranslator();
 }

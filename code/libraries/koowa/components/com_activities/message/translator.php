@@ -30,9 +30,9 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
     {
         $key = $message->getKey();
 
-        if ($parameters = $message->getParameters())
+        if ($variables = $message->getVariables())
         {
-            foreach ($this->_getOverrides($key, $parameters) as $override)
+            foreach ($this->_getOverrides($key, $variables) as $override)
             {
                 // Check if a key for the $override exists.
                 if ($this->isTranslatable($override))
@@ -43,7 +43,7 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
             }
         }
 
-        $translation = $this->translate($key, $parameters->getContent());
+        $translation = $this->translate($key, $variables->getContent());
 
         // Process context translations.
         if (preg_match_all('/\{(.+?):(.+?)\}/', $translation, $matches) !== false)
@@ -52,11 +52,11 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
             {
                 $label = $matches[1][$i];
 
-                foreach ($parameters as $parameter)
+                foreach ($variables as $variable)
                 {
-                    if ($parameter->getLabel() == $label)
+                    if ($variable->getLabel() == $label)
                     {
-                        $translation = str_replace($matches[0][$i], $parameter->getContent(), $translation);
+                        $translation = str_replace($matches[0][$i], $variable->getContent(), $translation);
                         break;
                     }
                 }

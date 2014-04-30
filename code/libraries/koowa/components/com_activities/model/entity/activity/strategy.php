@@ -30,11 +30,11 @@ class ComActivitiesModelEntityActivityStrategy extends KObject implements ComAct
     protected $_entity;
 
     /**
-     * Activity message parameter identifier.
+     * Activity activity message variable identifier.
      *
      * @param mixed
      */
-    protected $_parameter;
+    protected $_variable;
 
     /**
      * Determines if scripts are already loaded of not.
@@ -56,15 +56,15 @@ class ComActivitiesModelEntityActivityStrategy extends KObject implements ComAct
         }
 
         $this->_message    = $config->message;
-        $this->_parameter  = $config->parameter;
+        $this->_variable   = $config->variable;
         $this->_translator = $config->translator;
     }
 
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'parameter' => 'com:activities.message.parameter',
-            'message'   => 'com:activities.message'));
+            'variable' => 'com:activities.message.variable',
+            'message'  => 'com:activities.message'));
         parent::_initialize($config);
     }
 
@@ -81,32 +81,32 @@ class ComActivitiesModelEntityActivityStrategy extends KObject implements ComAct
         }
 
         $message = $this->getObject($this->_message, $config);
-        $message->getParameters()->setData($this->_getParameters());
+        $message->getVariables()->setData($this->_getVariables());
 
         return $message;
     }
 
-    protected function _getParameters()
+    protected function _getVariables()
     {
-        $parameters = array();
+        $variables = array();
 
         if (preg_match_all('/\{(.*?)\}/', $this->_getKey(), $matches) !== false)
         {
-            foreach ($matches[1] as $parameter)
+            foreach ($matches[1] as $variable)
             {
-                $method = '_set' . ucfirst($parameter);
+                $method = '_set' . ucfirst($variable);
 
                 if (method_exists($this, $method))
                 {
                     $config = new KObjectConfig();
                     $this->$method($config);
-                    $config->label = $parameter;
-                    $parameters[] = $this->getObject($this->_parameter, $config->toArray());
+                    $config->label = $variable;
+                    $variables[] = $this->getObject($this->_variable, $config->toArray());
                 }
             }
         }
 
-        return $parameters;
+        return $variables;
     }
 
     /**
@@ -205,9 +205,9 @@ class ComActivitiesModelEntityActivityStrategy extends KObject implements ComAct
     }
 
     /**
-     * Actor translator parameter configuration setter.
+     * Actor translator variable configuration setter.
      *
-     * @param KObjectConfig $config The translator parameter configuration object.
+     * @param KObjectConfig $config The message variable configuration object.
      */
     protected function _setActor(KObjectConfig $config)
     {
@@ -226,9 +226,9 @@ class ComActivitiesModelEntityActivityStrategy extends KObject implements ComAct
     }
 
     /**
-     * Action translator parameter configuration setter.
+     * Action activity message variable configuration setter.
      *
-     * @param KObjectConfig $config The translator parameter configuration object.
+     * @param KObjectConfig $config The activity message variable configuration object.
      */
     protected function _setAction(KObjectConfig $config)
     {
@@ -238,9 +238,9 @@ class ComActivitiesModelEntityActivityStrategy extends KObject implements ComAct
     }
 
     /**
-     * Object translator parameter configuration setter.
+     * Object activity message variable configuration setter.
      *
-     * @param KObjectConfig $config The translator parameter configuration object.
+     * @param KObjectConfig $config The activity message variable configuration object.
      */
     protected function _setObject(KObjectConfig $config)
     {
@@ -252,9 +252,9 @@ class ComActivitiesModelEntityActivityStrategy extends KObject implements ComAct
     }
 
     /**
-     * Title translator parameter configuration setter.
+     * Title activity message variable configuration setter.
      *
-     * @param KObjectConfig $config The translator parameter configuration object.
+     * @param KObjectConfig $config The activity message variable configuration object.
      */
     protected function _setTitle(KObjectConfig $config)
     {

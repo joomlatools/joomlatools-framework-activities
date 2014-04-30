@@ -8,41 +8,41 @@
  */
 
 /**
- * Message Parameter Set Interface.
+ * Message Variable Set Interface.
  */
-interface ComActivitiesMessageParameterSetInterface extends IteratorAggregate, ArrayAccess, Countable, Serializable
+interface ComActivitiesMessageVariableSetInterface extends IteratorAggregate, ArrayAccess, Countable, Serializable
 {
     /**
      * Returns the set content.
      *
-     * @return array Associative array containing parameter label and content pairs.
+     * @return array Associative array containing variable label and content pairs.
      */
     public function getContent();
 
     /**
-     * Insert a parameter into the set.
+     * Insert a variable into the set.
      *
-     * @param ComActivitiesMessageParameterInterface $parameter The parameter object to be inserted.
+     * @param ComActivitiesMessageVariableInterface $variable The variable object to be inserted.
      * @throws InvalidArgumentException
      *
      * @return boolean    TRUE on success FALSE on failure
      */
-    public function insert(KObjectHandlable $parameter);
+    public function insert(KObjectHandlable $variable);
 
     /**
-     * Removes a parameter from the set.
+     * Removes a variable from the set.
      *
-     * @param ComActivitiesMessageParameterInterface $parameter The parameter object to be removed.
+     * @param ComActivitiesMessageVariableInterface $variable The variable object to be removed.
      * @throws InvalidArgumentException
      *
      * @return $this
      */
-    public function remove(KObjectHandlable $parameter);
+    public function remove(KObjectHandlable $variable);
 
     /**
-     * Parameters setter.
+     * Variables setter.
      *
-     * @param array $data An array containing parameter objects.
+     * @param array $data An array containing variable objects.
      *
      * @return $this
      */
