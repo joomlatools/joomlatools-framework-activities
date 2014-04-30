@@ -13,11 +13,11 @@
 class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterface
 {
     /**
-     * The message string.
+     * The message key.
      *
      * @var string
      */
-    protected $_string;
+    protected $_key;
 
     /**
      * The set of message parameters.
@@ -44,7 +44,7 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
     {
         parent::__construct($config);
 
-        $this->setString($config->string);
+        $this->setKey($config->key);
         $this->setScripts($config->scripts);
 
         $this->_parameters = $config->parameters;
@@ -59,15 +59,15 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
         parent::_initialize($config);
     }
 
-    public function setString($string)
+    public function setKey($key)
     {
-        $this->_string = (string) $string;
+        $this->_key = (string) $key;
         return $this;
     }
 
-    public function getString()
+    public function getKey()
     {
-        return $this->_string;
+        return $this->_key;
     }
 
     public function setParameters(ComActivitiesMessageParameterSetInterface $parameters)

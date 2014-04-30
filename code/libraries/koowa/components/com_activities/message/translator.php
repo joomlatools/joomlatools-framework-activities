@@ -28,22 +28,22 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
 
     public function translateMessage(ComActivitiesMessageInterface $message)
     {
-        $string = $message->getString();
+        $key = $message->getKey();
 
         if ($parameters = $message->getParameters())
         {
-            foreach ($this->_getOverrides($string, $parameters) as $override)
+            foreach ($this->_getOverrides($key, $parameters) as $override)
             {
                 // Check if a key for the $override exists.
                 if ($this->isTranslatable($override))
                 {
-                    $string = $override;
+                    $key = $override;
                     break;
                 }
             }
         }
 
-        $translation = $this->translate($string, $parameters->getContent());
+        $translation = $this->translate($key, $parameters->getContent());
 
         // Process context translations.
         if (preg_match_all('/\{(.+?):(.+?)\}/', $translation, $matches) !== false)
@@ -69,12 +69,12 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
     /**
      * Returns a list of override strings for the provided string/parameters couple.
      *
-     * @param     string                                           $string     The activity string.
+     * @param     string                                    $key     The translation key.
      * @param     ComActivitiesMessageParameterSetInterface $parameters The message parameter collection object.
      *
      * @return array A list of override strings.
      */
-    protected function _getOverrides($string, $parameters)
+    protected function _getOverrides($key, $parameters)
     {
         $overrides = array();
         $set       = array();
@@ -92,7 +92,7 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
             // Get the power set of the set of parameters and construct a list of string overrides from it.
             foreach ($this->_getPowerSet($set) as $subset)
             {
-                $override = $string;
+                $override = $key;
                 foreach ($subset as $parameter) {
                     $override = str_replace('{' . $parameter->getLabel() . '}', $parameter->getText(), $override);
                 }

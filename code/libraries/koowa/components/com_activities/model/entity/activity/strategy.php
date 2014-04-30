@@ -70,7 +70,7 @@ class ComActivitiesModelEntityActivityStrategy extends KObject implements ComAct
 
     public function getMessage()
     {
-        $config = array('string'  => $this->_getString());
+        $config = array('key'  => $this->_getKey());
 
         $identifier = (string) $this->getIdentifier();
 
@@ -90,7 +90,7 @@ class ComActivitiesModelEntityActivityStrategy extends KObject implements ComAct
     {
         $parameters = array();
 
-        if (preg_match_all('/\{(.*?)\}/', $this->_getString(), $matches) !== false)
+        if (preg_match_all('/\{(.*?)\}/', $this->_getKey(), $matches) !== false)
         {
             foreach ($matches[1] as $parameter)
             {
@@ -159,15 +159,15 @@ class ComActivitiesModelEntityActivityStrategy extends KObject implements ComAct
     }
 
     /**
-     * Activity string getter.
+     * Activity message key getter.
      *
-     * An activity string is a compact representation of the activity text which also provides information
-     * about the variables it may contain. These are used in the same way Joomla! translation keys are
+     * An activity message key is a compact representation of the activity text which also provides information
+     * about the variables it may contain. This key is used in the same way Joomla! translation keys are
      * used for translating text to other languages.
      *
-     * @return string The activity string.
+     * @return string The activity message key.
      */
-    protected function _getString()
+    protected function _getKey()
     {
         return '{actor} {action} {object} {title}';
     }

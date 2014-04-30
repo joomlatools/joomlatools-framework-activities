@@ -17,7 +17,7 @@ interface ComActivitiesMessageInterface
      *
      * @param ComActivitiesMessageParameterSetInterface $parameters A set of message parameters.
      *
-     * @return $this
+     * @return ComActivitiesMessageInterface
      */
     public function setParameters(ComActivitiesMessageParameterSetInterface $parameters);
 
@@ -29,27 +29,27 @@ interface ComActivitiesMessageInterface
     public function getParameters();
 
     /**
-     * Message string setter.
+     * Message key setter.
      *
-     * @param string $string The message string.
+     * @param string $key The message key.
      *
-     * @return $this
+     * @return ComActivitiesMessageInterface
      */
-    public function setString($string);
+    public function setKey($key);
 
     /**
-     * Message string getter.
+     * Message key getter.
      *
-     * @return string The message string.
+     * @return string The message key.
      */
-    public function getString();
+    public function getKey();
 
     /**
      * Message scripts setter.
      *
      * @param string $scripts Scripts to be included with the message.
      *
-     * @return $this
+     * @return ComActivitiesMessageInterface
      */
     public function setScripts($scripts);
 
@@ -65,7 +65,7 @@ interface ComActivitiesMessageInterface
      *
      * @param ComActivitiesMessageTranslatorInterface The message translator.
      *
-     * @return $this
+     * @return ComActivitiesMessageInterface
      */
     public function setTranslator(ComActivitiesMessageTranslatorInterface $translator);
 
