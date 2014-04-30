@@ -100,7 +100,6 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
      * The activity entity is the object(s) against which the action is executed.
      *
      * @param KCommandInterface $command The command.
-     *
      * @return KModelEntityInterface The entity.
      */
     protected function _getActivityEntity(KCommandInterface $command)
@@ -108,12 +107,9 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
         $parts = explode('.', $command->getName());
 
         // Properly fetch data for the event.
-        if ($parts[0] == 'before')
-        {
+        if ($parts[0] == 'before') {
             $object = $this->getMixer()->getModel()->fetch();
-        }
-        else
-        {
+        } else {
             $object = $command->result;
         }
 
@@ -124,7 +120,6 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
      * Activity data getter.
      *
      * @param KObjectConfig $config Configuration object containing event related information.
-     *
      * @return array Activity data.
      */
     protected function _getActivityData(KObjectConfig $config)
@@ -190,7 +185,6 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
      * Activity identifier getter.
      *
      * @param KCommandInterface $context The command context object.
-     *
      * @return KObjectIdentifier The activity identifier.
      */
     public function getActivityIdentifier(KCommandInterface $command)
