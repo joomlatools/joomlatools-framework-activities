@@ -41,9 +41,9 @@ class ComActivitiesViewActivitiesJson extends KViewJson
 
     protected function _getActivity(KModelEntityInterface $entity)
     {
-        if (($this->_layout == 'stream') && ($strategy = $entity->getStrategy()))
+        if ($this->_layout == 'stream')
         {
-            $message = $strategy->getMessage();
+            $message = $entity->getMessage();
 
             $item = array(
                 'id'        => $entity->uuid,
@@ -61,24 +61,24 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                     'objectType'  => 'user',
                     'displayName' => $entity->created_by_name));
 
-            if ($strategy->objectExists()) {
-                $item['object']['url'] = $this->getActivityRoute($strategy->getObjectUrl(), false);
+            if ($entity->objectExists()) {
+                $item['object']['url'] = $this->getActivityRoute($entity->getObjectUrl(), false);
             }
 
-            if ($strategy->actorExists()) {
-                $item['actor']['url'] = $this->getActivityRoute($strategy->getActorUrl(), false);
+            if ($entity->actorExists()) {
+                $item['actor']['url'] = $this->getActivityRoute($entity->getActorUrl(), false);
             }
 
-            $object_type = $strategy->getObjectType();
+            $object_type = $entity->getObjectType();
             $item['object']['objectType'] = $object_type;
 
             if (in_array($object_type, array('image', 'photo', 'photograph', 'picture', 'icon')))
             {
                 // Append media info.
-                if ($strategy->objectExists())
+                if ($entity->objectExists())
                 {
                     $item['object']['image'] = array(
-                        'url' => $this->getActivityRoute($strategy->getObjectUrl(), false)
+                        'url' => $this->getActivityRoute($entity->getObjectUrl(), false)
                     );
 
                     if ($entity->metadata->width && $entity->metadata->height)
@@ -89,16 +89,16 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                 }
             }
 
-            if ($strategy->hasTarget())
+            if ($entity->hasTarget())
             {
                 $item['target'] = array(
-                    'id'         => $strategy->getTargetId(),
-                    'objectType' => $strategy->getTargetType()
+                    'id'         => $entity->getTargetId(),
+                    'objectType' => $entity->getTargetType()
                 );
 
-                if ($strategy->targetExists())
+                if ($entity->targetExists())
                 {
-                    $item['target']['url'] = $this->getActivityRoute($strategy->getTargetUrl(), false);
+                    $item['target']['url'] = $this->getActivityRoute($entity->getTargetUrl(), false);
                 }
             }
         } else {

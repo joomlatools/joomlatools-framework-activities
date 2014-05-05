@@ -40,7 +40,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
             throw new InvalidArgumentException('Activity entity not found');
         }
 
-        return $this->$renderer($entity->getStrategy()->getMessage());
+        return $this->$renderer($entity->getMessage());
     }
 
     /** Activity message Html renderer.

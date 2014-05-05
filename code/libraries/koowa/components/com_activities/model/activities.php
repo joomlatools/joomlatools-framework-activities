@@ -15,31 +15,55 @@
  */
 class ComActivitiesModelActivities extends KModelDatabase
 {
+    /**
+     * @var array Associative array containing activity data.
+     */
+    protected $_activity;
+
 	public function __construct(KObjectConfig $config)
 	{
 		parent::__construct($config);
 
         $state = $this->getState();
 
-		$state->insert('application' , 'cmd')
-			->insert('type'        , 'cmd')
-			->insert('package'     , 'cmd')
-			->insert('name'        , 'cmd')
-			->insert('action'      , 'cmd')
-            ->insert('row'         , 'int')
-			->insert('user'        , 'cmd')
-			->insert('distinct'    , 'boolean', false)
-			->insert('column'      , 'cmd')
-			->insert('start_date'  , 'date')
-			->insert('end_date'    , 'date')
-			->insert('day_range'   , 'int')
-            ->insert('ip'          , 'ip');
+        $state->insert('application', 'cmd')
+              ->insert('type', 'cmd')
+              ->insert('package', 'cmd')
+              ->insert('name', 'cmd')
+              ->insert('action', 'cmd')
+              ->insert('row', 'int')
+              ->insert('user', 'cmd')
+              ->insert('distinct', 'boolean', false)
+              ->insert('column', 'cmd')
+              ->insert('start_date', 'date')
+              ->insert('end_date', 'date')
+              ->insert('day_range', 'int')
+              ->insert('ip', 'ip');
 
 		$state->remove('direction')->insert('direction', 'word', 'desc');
 
 		// Force ordering by created_on
 		$state->sort = 'created_on';
 	}
+
+    public function setActivityData($data)
+    {
+        $this->_activity = KObjectConfig::unbox($data);
+    }
+
+    /**
+     * Overridden for setting entity package from state.
+     */
+    protected function _actionCreate(KModelContext $context)
+    {
+        //Entity options
+        $options = array(
+            'activity'        => $this->_activity,
+            'identity_column' => $context->getIdentityKey()
+        );
+
+        return $this->getTable()->createRow($options);
+    }
 
     public function getPurgeQuery()
     {
