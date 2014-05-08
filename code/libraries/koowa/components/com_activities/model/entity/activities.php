@@ -16,12 +16,19 @@
 class ComActivitiesModelEntityActivities extends KModelEntityRowset
 {
     /**
-     * Overridden to set prototype based on current activity data.
+     * Initializes the options for the object
+     *
+     * Called from {@link __construct()} as a first step of object instantiation.
+     *
+     * @param   KObjectConfig $config An optional ObjectConfig object with configuration options
+     * @return  void
      */
-    public function create(array $properties = array(), $status = null)
+    protected function _initialize(KObjectConfig $config)
     {
-        $this->_prototype = $this->getTable()->createRow(array('activity' => $properties));
+        $config->append(array(
+            'prototypable' => false
+        ));
 
-        return parent::create($properties, $status);
+        parent::_initialize($config);
     }
 }

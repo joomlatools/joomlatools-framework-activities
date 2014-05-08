@@ -15,11 +15,6 @@
  */
 class ComActivitiesModelActivities extends KModelDatabase
 {
-    /**
-     * @var array Associative array containing activity data.
-     */
-    protected $_activity;
-
 	public function __construct(KObjectConfig $config)
 	{
 		parent::__construct($config);
@@ -45,25 +40,6 @@ class ComActivitiesModelActivities extends KModelDatabase
 		// Force ordering by created_on
 		$state->sort = 'created_on';
 	}
-
-    public function setActivityData($data)
-    {
-        $this->_activity = KObjectConfig::unbox($data);
-    }
-
-    /**
-     * Overridden for setting entity package from state.
-     */
-    protected function _actionCreate(KModelContext $context)
-    {
-        //Entity options
-        $options = array(
-            'activity'        => $this->_activity,
-            'identity_column' => $context->getIdentityKey()
-        );
-
-        return $this->getTable()->createRow($options);
-    }
 
     public function getPurgeQuery()
     {

@@ -57,26 +57,24 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     {
         $config->append(array(
             'variable' => 'com:activities.message.variable',
-            'message'  => 'com:activities.message'));
+            'message'  => 'com:activities.message'
+        ));
+
         parent::_initialize($config);
     }
 
     public static function getInstance(KObjectConfigInterface $config, KObjectManagerInterface $manager)
     {
-        if (!$package = $config->activity->package) {
+        if (!$package = $config->data->package) {
             throw new RuntimeException('Unable to determine the activity package');
         }
-
-        // Set package on entity.
-        $config->append(array('data' => array('package' => $package)));
 
         if ($config->object_identifier->class == get_class())
         {
             $identifier            = $config->object_identifier->toArray();
             $identifier['package'] = $package;
 
-            if ($class = $manager->getClass($identifier, false))
-            {
+            if ($class = $manager->getClass($identifier, false)) {
                 return $manager->getObject($identifier, $config->toArray());
             }
         }

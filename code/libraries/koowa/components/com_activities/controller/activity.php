@@ -22,7 +22,6 @@ class ComActivitiesControllerActivity extends ComKoowaControllerModel
         $this->getObject('translator')->loadTranslations('com_activities');
 
         $this->addCommandCallback('before.add', '_setIp');
-        $this->addCommandCallback('before.add', '_setEntityPackage');
     }
 
     protected function _actionPurge(KControllerContextInterface $context)
@@ -37,19 +36,5 @@ class ComActivitiesControllerActivity extends ComKoowaControllerModel
     protected function _setIp(KControllerContextInterface $context)
     {
         $context->request->data->ip = $this->getObject('request')->getAddress();
-    }
-
-    /**
-     * Entity package setter.
-     *
-     * Sets the model state for creating entities of a type given by the activity package.
-     *
-     * @param KControllerContextInterface $context
-     */
-    protected function _setEntityPackage(KControllerContextInterface $context)
-    {
-        if ($data = $context->request->data) {
-            $this->getModel()->setActivityData($data);
-        }
     }
 }
