@@ -58,8 +58,8 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
     {
         $config->append(array(
             'variables'  => 'com:activities.message.variable.set',
-            'translator' => 'com:activities.message.translator')
-        );
+            'translator' => 'com:activities.message.translator'
+        ));
 
         parent::_initialize($config);
     }
