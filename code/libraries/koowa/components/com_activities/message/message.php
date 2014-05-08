@@ -9,9 +9,19 @@
 
 /**
  * Activity Message Class.
+ *
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
  */
 class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterface
 {
+    /**
+     * The message translator.
+     *
+     * @var mixed
+     */
+    protected $_translator;
+
     /**
      * The message key.
      *
@@ -33,13 +43,6 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
      */
     protected $_scripts;
 
-    /**
-     * The message translator.
-     *
-     * @var mixed
-     */
-    protected $_translator;
-
     public function __construct(KObjectConfig $config)
     {
         parent::__construct($config);
@@ -47,15 +50,17 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
         $this->setKey($config->key);
         $this->setScripts($config->scripts);
 
-        $this->_variables = $config->variables;
+        $this->_variables   = $config->variables;
         $this->_translator = $config->translator;
     }
 
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'variables' => 'com:activities.message.variable.set',
-            'translator' => 'com:activities.message.translator'));
+            'variables'  => 'com:activities.message.variable.set',
+            'translator' => 'com:activities.message.translator')
+        );
+
         parent::_initialize($config);
     }
 

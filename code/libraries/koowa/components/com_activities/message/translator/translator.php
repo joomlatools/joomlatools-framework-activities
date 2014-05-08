@@ -18,10 +18,10 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-                'alias_catalogue' => 'lib:translator.catalogue',
-                'prefix'          => 'KLS_ACTIVITY_',
-                'catalogue'       => 'com:activities.message.translator.catalogue.message')
-        );
+            'alias_catalogue' => 'lib:translator.catalogue',
+            'prefix'          => 'KLS_ACTIVITY_',
+            'catalogue'       => 'com:activities.message.translator.catalogue.message'
+        ));
 
         parent::_initialize($config);
     }
@@ -70,7 +70,7 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
      * Returns a list of override strings for the provided string/parameters couple.
      *
      * @param     string                                    $key     The translation key.
-     * @param     ComActivitiesMessageParameterSetInterface $parameters The message parameter collection object.
+     * @param     ComActivitiesMessageVariableSetInterface $parameters The message parameter collection object.
      *
      * @return array A list of override strings.
      */

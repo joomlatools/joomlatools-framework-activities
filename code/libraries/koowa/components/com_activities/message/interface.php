@@ -9,68 +9,67 @@
 
 /**
  * Activity Message Interface.
+ *
+ * @author  Arunas Mazeika <https://github.com/amazeika>
+ * @package Koowa\Component\Activities
  */
 interface ComActivitiesMessageInterface
 {
     /**
-     * Message variables set setter.
+     * Set the message variables
      *
      * @param ComActivitiesMessageVariableSetInterface $variables A set of message variables.
-     *
      * @return ComActivitiesMessageInterface
      */
     public function setVariables(ComActivitiesMessageVariableSetInterface $variables);
 
     /**
-     * Message variables set getter.
+     * Get the message variables
      *
      * @return ComActivitiesMessageVariableSetInterface A set of message variables.
      */
     public function getVariables();
 
     /**
-     * Message key setter.
+     * Set the message key
      *
      * @param string $key The message key.
-     *
      * @return ComActivitiesMessageInterface
      */
     public function setKey($key);
 
     /**
-     * Message key getter.
+     * Get the message key
      *
      * @return string The message key.
      */
     public function getKey();
 
     /**
-     * Message scripts setter.
+     * Set the message scripts
      *
      * @param string $scripts Scripts to be included with the message.
-     *
      * @return ComActivitiesMessageInterface
      */
     public function setScripts($scripts);
 
     /**
-     * Message scripts getter
+     * Get the message scripts
      *
      * @return string Scripts to be included with the message.
      */
     public function getScripts();
 
     /**
-     * Message translator setter.
+     * Set the message translator
      *
-     * @param ComActivitiesMessageTranslatorInterface The message translator.
-     *
+     * @param ComActivitiesMessageTranslatorInterface $translator The message translator.
      * @return ComActivitiesMessageInterface
      */
     public function setTranslator(ComActivitiesMessageTranslatorInterface $translator);
 
     /**
-     * Message translator getter.
+     * Get the message translator
      *
      * @return ComActivitiesMessageTranslatorInterface The message translator.
      */

@@ -63,8 +63,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
 
     public static function getInstance(KObjectConfigInterface $config, KObjectManagerInterface $manager)
     {
-        if (!$package = $config->activity->package)
-        {
+        if (!$package = $config->activity->package) {
             throw new RuntimeException('Unable to determine the activity package');
         }
 
@@ -88,8 +87,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     public function save()
     {
         // Activities are immutable.
-        if (!$this->isNew())
-        {
+        if (!$this->isNew()) {
             throw new RuntimeException('Activities cannot be modified.');
         }
 
@@ -163,15 +161,16 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     public function setProperty($name, $value, $modified = true)
     {
         // Map metadata to parameters (POST data contains a metadata key not parameters).
-        if ($name == 'metadata') $name = 'parameters';
+        if ($name == 'metadata') {
+            $name = 'parameters';
+        }
 
         return parent::setProperty($name, $value, $modified);
     }
 
     public function setPropertyPackage($value)
     {
-        if ($this->package && $this->package != $value)
-        {
+        if ($this->package && $this->package != $value) {
             throw new RuntimeException('Entity package cannot be modified.');
         }
 
@@ -180,8 +179,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
 
     public function removeProperty($name)
     {
-        if ($name == 'package')
-        {
+        if ($name == 'package') {
             throw new RuntimeException('Entity package property cannot be removed.');
         }
 
@@ -196,8 +194,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
 
         if (!in_array($identifier, self::$_scripts_loaded))
         {
-            if ($scripts = $this->_getMessageScripts())
-            {
+            if ($scripts = $this->_getMessageScripts()) {
                 $config['scripts'] = $scripts;
             }
 

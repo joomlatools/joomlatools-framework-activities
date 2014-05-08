@@ -18,8 +18,7 @@ interface ComActivitiesMessageTranslatorInterface
     /**
      * Translates an activity message.
      *
-     * @param ComActivitiesMessageInterface The activity message.
-     *
+     * @param ComActivitiesMessageInterface $message The activity message.
      * @return string The translated activity message.
      */
     public function translateMessage(ComActivitiesMessageInterface $message);

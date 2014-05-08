@@ -48,8 +48,7 @@ class ComActivitiesControllerActivity extends ComKoowaControllerModel
      */
     protected function _setEntityPackage(KControllerContextInterface $context)
     {
-        if ($data = $context->request->data)
-        {
+        if ($data = $context->request->data) {
             $this->getModel()->setActivityData($data);
         }
     }

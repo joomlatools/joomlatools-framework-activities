@@ -43,14 +43,14 @@ interface ComActivitiesMessageVariableInterface extends KObjectHandlable
     /**
      * Content getter.
      *
-     * @return The variable content.
+     * @return string The variable content.
      */
     public function getContent();
 
     /**
      * Translatable state setter.
      *
-     * @param bool The variable is made translatable if true, non-translatable if false.
+     * @param bool $state The variable is made translatable if true, non-translatable if false.
      *
      * @return $this.
      */
