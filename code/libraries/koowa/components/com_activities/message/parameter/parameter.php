@@ -83,10 +83,11 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
 
         $this->_label      = $config->label;
         $this->_translator = $config->translator;
+        $this->_translate  = $config->translate;
 
         $this->setAttributes(KObjectConfig::unbox($config->attributes));
         $this->setLinkAttributes(KObjectConfig::unbox($config->link_attributes));
-        $this->setTranslatable($config->translate);
+
         $this->setText($config->text);
         $this->setContent($config->content);
         $this->setUrl($config->url);
@@ -156,18 +157,6 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
         }
 
         return $content;
-    }
-
-    /**
-     * Translatable state setter.
-     *
-     * @param bool $state The parameter is made translatable if true, non-translatable if false.
-     * @return ComActivitiesMessageParameterInterface
-     */
-    public function setTranslatable($state)
-    {
-        $this->_translate = (bool) $state;
-        return $this;
     }
 
     /**

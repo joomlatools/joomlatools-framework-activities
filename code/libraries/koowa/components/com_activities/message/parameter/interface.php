@@ -47,14 +47,6 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
     public function getContent();
 
     /**
-     * Translatable state setter.
-     *
-     * @param bool $state The parameter is made translatable if true, non-translatable if false.
-     * @return ComActivitiesMessageParameterInterface
-     */
-    public function setTranslatable($state);
-
-    /**
      * Label getter.
      *
      * A label uniquely identifies a parameter.
