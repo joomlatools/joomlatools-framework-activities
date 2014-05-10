@@ -51,11 +51,9 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
         {
             for ($i = 0; $i < count($matches[0]); $i++)
             {
-                $label = $matches[1][$i];
-
                 foreach ($parameters as $parameter)
                 {
-                    if ($parameter->getLabel() == $label)
+                    if ($parameter->getName() ==  $matches[1][$i])
                     {
                         $translation = str_replace($matches[0][$i], $parameter->getContent(), $translation);
                         break;
@@ -95,7 +93,7 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
             {
                 $override = $key;
                 foreach ($subset as $parameter) {
-                    $override = str_replace('{' . $parameter->getLabel() . '}', $parameter->getValue(), $override);
+                    $override = str_replace('{' . $parameter->getName() . '}', $parameter->getValue(), $override);
                 }
 
                 $overrides[] = $override;

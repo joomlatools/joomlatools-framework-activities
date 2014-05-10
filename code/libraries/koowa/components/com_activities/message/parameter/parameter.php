@@ -16,11 +16,11 @@
 class ComActivitiesMessageParameter extends KObject implements ComActivitiesMessageParameterInterface
 {
     /**
-     * The parameter label.
+     * The parameter name
      *
      * @var string
      */
-    protected $_label;
+    protected $__name;
 
     /**
      * The parameter value.
@@ -75,11 +75,11 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     {
         parent::__construct($config);
 
-        if (!$config->label) {
-            throw new InvalidArgumentException('A translator parameter must have a label');
+        if (empty($config->name)) {
+            throw new InvalidArgumentException('A message parameter must have a name');
         }
 
-        $this->_label      = $config->label;
+        $this->__name      = $config->name;
         $this->_translate  = $config->translate;
 
         $this->setAttributes(KObjectConfig::unbox($config->attributes));
@@ -101,6 +101,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
+            'name'            => null,
             'value'           => '',
             'translate'       => false,
             'link_attributes' => array(),
@@ -111,15 +112,15 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     }
 
     /**
-     * Get the parameter label
+     * Get the parameter name
      *
-     * A label uniquely identifies a parameter.
+     * A name uniquely identifies a parameter.
      *
-     * @return string The parameter label.
+     * @return string The parameter name
      */
-    public function getLabel()
+    public function getName()
     {
-        return $this->_label;
+        return $this->__name;
     }
 
     /**

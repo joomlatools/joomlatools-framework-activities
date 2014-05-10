@@ -25,7 +25,7 @@ class ComActivitiesMessageParameters extends KObjectSet implements ComActivities
         $text = array();
 
         foreach ($this as $parameter) {
-            $text[$parameter->getLabel()] = $parameter->getContent();
+            $text[$parameter->getName()] = $parameter->getContent();
         }
 
         return $text;

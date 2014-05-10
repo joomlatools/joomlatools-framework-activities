@@ -220,7 +220,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
                     $config = new KObjectConfig();
                     $this->$method($config);
 
-                    $config->label = $parameter;
+                    $config->name = $parameter;
                     $parameters[] = $this->getObject($this->_parameter, $config->toArray());
                 }
             }

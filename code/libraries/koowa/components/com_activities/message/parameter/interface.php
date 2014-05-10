@@ -16,13 +16,13 @@
 interface ComActivitiesMessageParameterInterface extends KObjectHandlable
 {
     /**
-     * Get the parameter label
+     * Get the parameter name
      *
-     * A label uniquely identifies a parameter.
+     * A name uniquely identifies a parameter.
      *
-     * @return string The parameter label.
+     * @return string The parameter name
      */
-    public function getLabel();
+    public function getName();
 
     /**
      * Get the parameter value
