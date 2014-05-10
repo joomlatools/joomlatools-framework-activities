@@ -141,9 +141,28 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         return parent::save();
     }
 
+    public function setProperty($name, $value, $modified = true)
+    {
+        // Map metadata to parameters (POST data contains a metadata key not parameters).
+        if ($name == 'metadata') {
+            $name = 'parameters';
+        }
+
+        return parent::setProperty($name, $value, $modified);
+    }
+
     public function setPropertyVerb($value)
     {
         $this->setProperty('action', $value);
+    }
+
+    public function removeProperty($name)
+    {
+        if ($name == 'package') {
+            throw new RuntimeException('Entity package property cannot be removed.');
+        }
+
+        return parent::removeProperty($name);
     }
 
     public function getPropertyVerb()
@@ -156,16 +175,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         return  $this->getParameters();
     }
 
-    public function setProperty($name, $value, $modified = true)
-    {
-        // Map metadata to parameters (POST data contains a metadata key not parameters).
-        if ($name == 'metadata') {
-            $name = 'parameters';
-        }
-
-        return parent::setProperty($name, $value, $modified);
-    }
-
     public function setPropertyPackage($value)
     {
         if ($this->package && $this->package != $value) {
@@ -173,15 +182,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         }
 
         return $value;
-    }
-
-    public function removeProperty($name)
-    {
-        if ($name == 'package') {
-            throw new RuntimeException('Entity package property cannot be removed.');
-        }
-
-        return parent::removeProperty($name);
     }
 
     public function getMessage()
@@ -205,87 +205,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         return $message;
     }
 
-    protected function _getMessageParameters()
-    {
-        $parameters = array();
-
-        if (preg_match_all('/\{(.*?)\}/', $this->_getMessageFormat(), $matches) !== false)
-        {
-            foreach ($matches[1] as $parameter)
-            {
-                $method = '_set' . ucfirst($parameter);
-
-                if (method_exists($this, $method))
-                {
-                    $config = new KObjectConfig();
-                    $this->$method($config);
-
-                    $config->name = $parameter;
-                    $parameters[] = $this->getObject($this->_parameter, $config->toArray());
-                }
-            }
-        }
-
-        return $parameters;
-    }
-
-    /**
-     * Determines if a given resource exists.
-     *
-     * @param array $config An optional configuration array.
-     *
-     * @return bool True if it exists, false otherwise.
-     */
-    protected function _resourceExists($config = array())
-    {
-        $config = new KObjectConfig($config);
-        $config->append(array(
-            'table'  => $this->package . '_' . KStringInflector::pluralize($this->name),
-            'column' => $this->package . '_' . $this->name . '_' . 'id',
-            'value'  => $this->row));
-
-        $db = $this->getTable()->getAdapter();
-
-        $query = $this->getObject('lib:database.query.select');
-        $query->columns('COUNT(*)')->table($config->table)->where($config->column . ' = :value')
-              ->bind(array('value' => $config->value));
-
-        // Need to catch exceptions here as table may not longer exist.
-        try {
-            $result = $db->select($query, KDatabase::FETCH_FIELD);
-        } catch (Exception $e) {
-            $result = 0;
-        }
-
-        return (bool) $result;
-    }
-
-    /**
-     * Message key getter.
-     *
-     * An activity message format is a compact representation of the activity which also provides information
-     * about the parameters it may contain.
-     *
-     * @return string The activity message format.
-     */
-    protected function _getMessageFormat()
-    {
-        return '{actor} {action} {object} {title}';
-    }
-
-    /**
-     * Message scripts getter.
-     *
-     * Returns
-     *
-     * @return mixed
-     */
-    protected function _getMessageScripts()
-    {
-        // No scripts by default.
-        return null;
-    }
-
     public function getIcon()
     {
         $classes = array(
@@ -307,75 +226,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         }
 
         return $icon;
-    }
-
-    /**
-     * Actor translator parameter configuration setter.
-     *
-     * @param KObjectConfig $config The message parameter configuration object.
-     */
-    protected function _setActor(KObjectConfig $config)
-    {
-        if ($this->actorExists())
-        {
-            $config->url = $this->getActorUrl();
-            $value  = $this->created_by_name;
-        }
-        else
-        {
-            $value = $this->created_by ? 'Deleted user' : 'Guest user';
-            $config->translate = true;
-        }
-
-        $config->value = $value;
-    }
-
-    /**
-     * Action activity message parameter configuration setter.
-     *
-     * @param KObjectConfig $config The activity message parameter configuration object.
-     */
-    protected function _setAction(KObjectConfig $config)
-    {
-        $config->append(array(
-            'value'      => $this->status,
-            'translate' => true));
-    }
-
-    /**
-     * Object activity message parameter configuration setter.
-     *
-     * @param KObjectConfig $config The activity message parameter configuration object.
-     */
-    protected function _setObject(KObjectConfig $config)
-    {
-        $config->append(array(
-            'translate'  => true,
-            'value'       => $this->name,
-            'attributes' => array('class' => array('object')),
-        ));
-    }
-
-    /**
-     * Title activity message parameter configuration setter.
-     *
-     * @param KObjectConfig $config The activity message parameter configuration object.
-     */
-    protected function _setTitle(KObjectConfig $config)
-    {
-        $config->append(array(
-            'attributes' => array(),
-            'translate'  => false,
-            'value'      => $this->title
-        ));
-
-        if (!$config->url && $this->objectExists() && ($url = $this->getObjectUrl())) {
-            $config->url = $url;
-        }
-
-        if ($this->status == 'deleted') {
-            $config->attributes = array('class' => array('deleted'));
-        }
     }
 
     public function setEntity(ComActivitiesModelEntityActivity $activity)
@@ -450,5 +300,155 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     public function getTargetType()
     {
         return null; // Activities don't have targets by default.
+    }
+
+    /**
+     * Determines if a given resource exists.
+     *
+     * @param array $config An optional configuration array.
+     *
+     * @return bool True if it exists, false otherwise.
+     */
+    protected function _resourceExists($config = array())
+    {
+        $config = new KObjectConfig($config);
+        $config->append(array(
+            'table'  => $this->package . '_' . KStringInflector::pluralize($this->name),
+            'column' => $this->package . '_' . $this->name . '_' . 'id',
+            'value'  => $this->row));
+
+        $db = $this->getTable()->getAdapter();
+
+        $query = $this->getObject('lib:database.query.select');
+        $query->columns('COUNT(*)')->table($config->table)->where($config->column . ' = :value')
+            ->bind(array('value' => $config->value));
+
+        // Need to catch exceptions here as table may not longer exist.
+        try {
+            $result = $db->select($query, KDatabase::FETCH_FIELD);
+        } catch (Exception $e) {
+            $result = 0;
+        }
+
+        return (bool) $result;
+    }
+
+    /**
+     * Message key getter.
+     *
+     * An activity message format is a compact representation of the activity which also provides information
+     * about the parameters it may contain.
+     *
+     * @return string The activity message format.
+     */
+    protected function _getMessageFormat()
+    {
+        return '{actor} {action} {object} {title}';
+    }
+
+    /**
+     * Message scripts getter.
+     *
+     * Returns
+     *
+     * @return mixed
+     */
+    protected function _getMessageScripts()
+    {
+        // No scripts by default.
+        return null;
+    }
+
+    protected function _getMessageParameters()
+    {
+        $parameters = array();
+
+        if (preg_match_all('/\{(.*?)\}/', $this->_getMessageFormat(), $matches) !== false)
+        {
+            foreach ($matches[1] as $parameter)
+            {
+                $method = '_getMessage' . ucfirst($parameter);
+
+                if (method_exists($this, $method))
+                {
+                    $config = new KObjectConfig();
+                    $this->$method($config);
+
+                    $config->name = $parameter;
+                    $parameters[] = $this->getObject($this->_parameter, $config->toArray());
+                }
+            }
+        }
+
+        return $parameters;
+    }
+
+    /**
+     * Get the actor activity message parameter configuration
+     *
+     * @param KObjectConfig $config The message parameter configuration object.
+     */
+    protected function _getMessageActor(KObjectConfig $config)
+    {
+        if ($this->actorExists())
+        {
+            $config->url = $this->getActorUrl();
+            $value  = $this->created_by_name;
+        }
+        else
+        {
+            $value = $this->created_by ? 'Deleted user' : 'Guest user';
+            $config->translate = true;
+        }
+
+        $config->value = $value;
+    }
+
+    /**
+     * Get the action activity message parameter configuration.
+     *
+     * @param KObjectConfig $config The activity message parameter configuration object.
+     */
+    protected function _getMessageAction(KObjectConfig $config)
+    {
+        $config->append(array(
+            'value'      => $this->status,
+            'translate' => true));
+    }
+
+    /**
+     * Get the object activity message parameter configuration.
+     *
+     * @param KObjectConfig $config The activity message parameter configuration object.
+     */
+    protected function _getMessageObject(KObjectConfig $config)
+    {
+        $config->append(array(
+            'translate'  => true,
+            'value'       => $this->name,
+            'attributes' => array('class' => array('object')),
+        ));
+    }
+
+    /**
+     * Get the title activity message parameter configuration.
+     *
+     * @param KObjectConfig $config The activity message parameter configuration object.
+     */
+    protected function _getMessageTitle(KObjectConfig $config)
+    {
+        $config->append(array(
+            'attributes' => array(),
+            'translate'  => false,
+            'value'      => $this->title
+        ));
+
+        if (!$config->url && $this->objectExists() && ($url = $this->getObjectUrl())) {
+            $config->url = $url;
+        }
+
+        if ($this->status == 'deleted') {
+            $config->attributes = array('class' => array('deleted'));
+        }
     }
 }
