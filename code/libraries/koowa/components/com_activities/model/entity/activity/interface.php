@@ -16,79 +16,80 @@
 interface ComActivitiesModelEntityActivityInterface
 {
     /**
-     * Tells if the activity object still exists, i.e. it is still stored or reachable.
+     * Check if the activity object still exists, i.e. it is still stored or reachable.
      *
      * @return boolean True if still exists, false otherwise.
      */
-    public function objectExists();
+    public function hasObject();
 
     /**
-     * Activity object URL getter.
+     * Get the activity object URL
      *
      * @return string|null The activity object URL, null if not linkable.
      */
     public function getObjectUrl();
 
     /**
-     * Tells if the activity target still exists, i.e. it is still stored or reachable.
-     *
-     * @return boolean True if still exists, false otherwise.
-     */
-    public function targetExists();
-
-    /**
-     * Activity target URL getter.
-     *
-     * @return string|null The activity target URL, null if not linkable.
-     */
-    public function getTargetUrl();
-
-    /**
-     * Tells if the activity actor still exists, i.e. it is still stored or reachable.
-     *
-     * @return boolean True if still exists, false otherwise.
-     */
-    public function actorExists();
-
-    /**
-     * Activity actor URL getter.
-     *
-     * @return string|null The activity actor URL, null if not linkable or reachable.
-     */
-    public function getActorUrl();
-
-    /**
-     * Activity icon getter.
-     *
-     * @return string The activity icon class.
-     */
-    public function getIcon();
-
-    /**
-     * Activity message getter.
-     *
-     * @return ComActivitiesMessageInterface The activity message object.
-     */
-    public function getMessage();
-
-    /**
-     * Object type getter.
+     * Get the activity object type
      *
      * @return string The object type.
      */
     public function getObjectType();
 
     /**
-     * Target type getter.
+     * Checks if the activity target still exists, i.e. it is still stored or reachable.
+     *
+     * @return boolean True if still exists, false otherwise.
+     */
+    public function hasTarget();
+
+    /**
+     * Get the activity target identifier
+     *
+     * @return string|null The identifier of the target, null if no target.
+     */
+    public function getTargetId();
+
+    /**
+     * Get the activity target URL
+     *
+     * @return string|null The activity target URL, null if not linkable.
+     */
+    public function getTargetUrl();
+
+    /**
+     * Get the activity target type
      *
      * @return string|null The target type, null if no target.
      */
     public function getTargetType();
 
     /**
-     * Target id getter.
+     * Check if the activity actor still exists, i.e. it is still stored or reachable.
      *
-     * @return string|null The id of the target, null if no target.
+     * @return boolean True if still exists, false otherwise.
      */
-    public function getTargetId();
+    public function hasActor();
+
+    /**
+     * Get the activity actor URL
+     *
+     * @return string|null The activity actor URL, null if not linkable or reachable.
+     */
+    public function getActorUrl();
+
+    /**
+     * Get the activity icon
+     *
+     * @return string The activity icon class.
+     */
+    public function getIcon();
+
+    /**
+     * Get the activity message
+     *
+     * @return ComActivitiesMessageInterface The activity message object.
+     */
+    public function getMessage();
+
 }

@@ -41,6 +41,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     protected $_required = array('package', 'name', 'action', 'title', 'status');
 
+    /**
+     * Constructor.
+     *
+     * @param   KObjectConfig $config Configuration options
+     */
     public function __construct(KObjectConfig $config)
     {
         parent::__construct($config);
@@ -52,7 +57,14 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         self::$_scripts_loaded = array();
     }
 
-
+    /**
+     * Initializes the options for the object
+     *
+     * Called from {@link __construct()} as a first step of object instantiation.
+     *
+     * @param   KObjectConfig $config Configuration options.
+     * @return  void
+     */
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
@@ -63,6 +75,13 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         parent::_initialize($config);
     }
 
+    /**
+     * Get the object identifier
+     *
+     * @param   KObjectConfigInterface $config      Configuration options
+     * @param 	KObjectManagerInterface $manager	A KObjectManagerInterface object
+     * @return  KObjectInterface
+     */
     public static function getInstance(KObjectConfigInterface $config, KObjectManagerInterface $manager)
     {
         if (!$package = $config->data->package) {
@@ -184,6 +203,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         return $value;
     }
 
+    /**
+     * Get the activity message
+     *
+     * @return ComActivitiesMessageInterface The activity message object.
+     */
     public function getMessage()
     {
         $config = array('format' => $this->_getMessageFormat());
@@ -205,6 +229,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         return $message;
     }
 
+    /**
+     * Get the activity icon
+     *
+     * @return string The activity icon class.
+     */
     public function getIcon()
     {
         $classes = array(
@@ -240,32 +269,21 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         return $this->_entity;
     }
 
-    public function actorExists()
-    {
-        return $this->_resourceExists(array('table' => 'users', 'column' => 'id', 'value' => $this->created_by));
-    }
-
-    public function objectExists()
+    /**
+     * Check if the activity object still exists, i.e. it is still stored or reachable.
+     *
+     * @return boolean True if still exists, false otherwise.
+     */
+    public function hasObject()
     {
         return $this->_resourceExists();
     }
 
-    public function targetExists()
-    {
-        return false; // Activities don't have targets by default.
-    }
-
-    public function getActorUrl()
-    {
-        $url = null;
-
-        if ($this->created_by) {
-            $url = 'option=com_users&task=user.edit&id=' . $this->created_by;
-        }
-
-        return $url;
-    }
-
+    /**
+     * Get the activity object URL
+     *
+     * @return string|null The activity object URL, null if not linkable.
+     */
     public function getObjectUrl()
     {
         $url = null;
@@ -277,20 +295,51 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         return $url;
     }
 
-    public function getTargetUrl()
-    {
-        return null; // Non-linkable as no target by default.
-    }
-
+    /**
+     * Get the activity object type
+     *
+     * @return string The object type.
+     */
     public function getObjectType()
     {
         return $this->name;
     }
 
+    /**
+     * Checks if the activity target still exists, i.e. it is still stored or reachable.
+     *
+     * @return boolean True if still exists, false otherwise.
+     */
+    public function hasTarget()
+    {
+        return false; // Activities don't have targets by default.
+    }
+
+    /**
+     * Get the activity target identifier
+     *
+     * @return string|null The identifier of the target, null if no target.
+     */
     public function getTargetId()
     {
         return null; // Activities don't have targets by default.
     }
+
+    /**
+     * Get the activity target URL
+     *
+     * @return string|null The activity target URL, null if not linkable.
+     */
+    public function getTargetUrl()
+    {
+        return null; // Non-linkable as no target by default.
+    }
+
+    /**
+     * Get the activity target type
+     *
+     * @return string|null The target type, null if no target.
+     */
 
     public function getTargetType()
     {
@@ -298,10 +347,35 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     }
 
     /**
+     * Check if the activity actor still exists, i.e. it is still stored or reachable.
+     *
+     * @return boolean True if still exists, false otherwise.
+     */
+    public function hasActor()
+    {
+        return $this->_resourceExists(array('table' => 'users', 'column' => 'id', 'value' => $this->created_by));
+    }
+
+    /**
+     * Get the activity actor URL
+     *
+     * @return string|null The activity actor URL, null if not linkable or reachable.
+     */
+    public function getActorUrl()
+    {
+        $url = null;
+
+        if ($this->created_by) {
+            $url = 'option=com_users&task=user.edit&id=' . $this->created_by;
+        }
+
+        return $url;
+    }
+
+    /**
      * Determines if a given resource exists.
      *
      * @param array $config An optional configuration array.
-     *
      * @return bool True if it exists, false otherwise.
      */
     protected function _resourceExists($config = array())
@@ -385,7 +459,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     protected function _getMessageActor(KObjectConfig $config)
     {
-        if ($this->actorExists())
+        if ($this->hasActor())
         {
             $config->url = $this->getActorUrl();
             $value  = $this->created_by_name;
@@ -438,7 +512,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
             'value'      => $this->title
         ));
 
-        if (!$config->url && $this->objectExists() && ($url = $this->getObjectUrl())) {
+        if (!$config->url && $this->hasObject() && ($url = $this->getObjectUrl())) {
             $config->url = $url;
         }
 
