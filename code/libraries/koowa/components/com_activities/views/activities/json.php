@@ -89,21 +89,16 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                 }
             }
 
-            if ($entity->hasTarget())
+            if ($entity->targetExists())
             {
                 $item['target'] = array(
                     'id'         => $entity->getTargetId(),
-                    'objectType' => $entity->getTargetType()
+                    'objectType' => $entity->getTargetType(),
+                    ['url']      => $this->getActivityRoute($entity->getTargetUrl(), false)
                 );
-
-                if ($entity->targetExists())
-                {
-                    $item['target']['url'] = $this->getActivityRoute($entity->getTargetUrl(), false);
-                }
             }
-        } else {
-            $item = $entity->toArray();
         }
+        else $item = $entity->toArray();
 
         return $item;
     }

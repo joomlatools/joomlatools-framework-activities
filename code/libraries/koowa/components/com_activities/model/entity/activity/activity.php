@@ -282,11 +282,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         return null; // Non-linkable as no target by default.
     }
 
-    public function hasTarget()
-    {
-        return false; // Activities don't have targets by default.
-    }
-
     public function getObjectType()
     {
         return $this->name;

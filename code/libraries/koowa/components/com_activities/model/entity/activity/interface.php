@@ -44,13 +44,6 @@ interface ComActivitiesModelEntityActivityInterface
     public function getTargetUrl();
 
     /**
-     * Tells if the activity has a target.
-     *
-     * @return boolean True if it has a target, false otherwise.
-     */
-    public function hasTarget();
-
-    /**
      * Tells if the activity actor still exists, i.e. it is still stored or reachable.
      *
      * @return boolean True if still exists, false otherwise.
