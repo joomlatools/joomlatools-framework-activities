@@ -53,7 +53,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
     {
         foreach ($message->getParameters() as $parameter)
         {
-            $output = '<span class="text">' . $parameter->getText() . '</span>';
+            $output = '<span class="text">' . $parameter->getValue() . '</span>';
 
             if ($parameter->isLinkable())
             {

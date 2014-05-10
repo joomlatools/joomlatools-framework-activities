@@ -319,15 +319,15 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         if ($this->actorExists())
         {
             $config->url = $this->getActorUrl();
-            $text         = $this->created_by_name;
+            $value  = $this->created_by_name;
         }
         else
         {
-            $text = $this->created_by ? 'Deleted user' : 'Guest user';
+            $value = $this->created_by ? 'Deleted user' : 'Guest user';
             $config->translate = true;
         }
 
-        $config->text = $text;
+        $config->value = $value;
     }
 
     /**
@@ -338,7 +338,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     protected function _setAction(KObjectConfig $config)
     {
         $config->append(array(
-            'text'      => $this->status,
+            'value'      => $this->status,
             'translate' => true));
     }
 
@@ -351,7 +351,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     {
         $config->append(array(
             'translate'  => true,
-            'text'       => $this->name,
+            'value'       => $this->name,
             'attributes' => array('class' => array('object')),
         ));
     }
@@ -366,7 +366,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         $config->append(array(
             'attributes' => array(),
             'translate'  => false,
-            'text'       => $this->title
+            'value'      => $this->title
         ));
 
         if (!$config->url && $this->objectExists() && ($url = $this->getObjectUrl())) {

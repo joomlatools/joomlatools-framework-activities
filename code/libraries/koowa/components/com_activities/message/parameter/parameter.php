@@ -23,11 +23,11 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     protected $_label;
 
     /**
-     * The parameter text.
+     * The parameter value.
      *
      * @var string
      */
-    protected $_text;
+    protected $_value;
 
     /**
      * Determines if the parameter is translatable (true) or not (false).
@@ -85,7 +85,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
         $this->setAttributes(KObjectConfig::unbox($config->attributes));
         $this->setLinkAttributes(KObjectConfig::unbox($config->link_attributes));
 
-        $this->setText($config->text);
+        $this->setValue($config->value);
         $this->setContent($config->content);
         $this->setUrl($config->url);
     }
@@ -101,6 +101,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
+            'value'           => '',
             'translate'       => false,
             'link_attributes' => array(),
             'attributes'      => array('class' => array('parameter'))
@@ -122,31 +123,31 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     }
 
     /**
-     * Get the parameter text
+     * Get the parameter value
      *
-     * @param mixed $text The parameter text.
+     * @param mixed $value The parameter value.
      * @return ComActivitiesMessageParameterInterface
      */
-    public function setText($text)
+    public function setValue($value)
     {
-        $this->_text = (string) $text;
+        $this->_value = (string) $value;
         return $this;
     }
 
     /**
-     * Set the parameter text
+     * Set the parameter value
      *
-     * @return string The parameter text.
+     * @return string The parameter value.
      */
-    public function getText()
+    public function getValue()
     {
-        $text = $this->_text;
+        $value = $this->_value;
 
         if ($this->isTranslatable()) {
-            $text = $this->getObject('translator')->translate($text);
+            $text = $this->getObject('translator')->translate($value);
         }
 
-        return $text;
+        return $value;
     }
 
     /**
@@ -169,7 +170,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     public function getContent()
     {
         if (!$content = $this->_content) {
-            $content = $this->getText();
+            $content = $this->getValue();
         }
 
         return $content;

@@ -25,19 +25,19 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
     public function getLabel();
 
     /**
-     * Get the parameter text
+     * Get the parameter value
      *
-     * @param mixed $text The parameter text.
+     * @param mixed $value The parameter value.
      * @return ComActivitiesMessageParameterInterface
      */
-    public function setText($text);
+    public function setValue($value);
 
     /**
-     * Set the parameter text
+     * Set the parameter value
      *
-     * @return string The parameter text.
+     * @return string The parameter value.
      */
-    public function getText();
+    public function getValue();
 
     /**
      * Set the parameter content

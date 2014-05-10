@@ -28,9 +28,10 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
 
     public function translateMessage(ComActivitiesMessageInterface $message)
     {
-        $format = $message->getFormat();
+        $format     = $message->getFormat();
+        $parameters = $message->getParameters();
 
-        if ($parameters = $message->getParameters())
+        if ($parameters)
         {
             foreach ($this->_getOverrides($format, $parameters) as $override)
             {
@@ -82,7 +83,7 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
         // Construct a set containing non-empty (with replacement texts) parameters.
         foreach ($parameters as $parameter)
         {
-            if ($parameter->getText()) {
+            if ($parameter->getValue()) {
                 $set[] = $parameter;
             }
         }
@@ -94,7 +95,7 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
             {
                 $override = $key;
                 foreach ($subset as $parameter) {
-                    $override = str_replace('{' . $parameter->getLabel() . '}', $parameter->getText(), $override);
+                    $override = str_replace('{' . $parameter->getLabel() . '}', $parameter->getValue(), $override);
                 }
 
                 $overrides[] = $override;
