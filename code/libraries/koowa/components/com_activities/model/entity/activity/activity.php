@@ -186,7 +186,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
 
     public function getMessage()
     {
-        $config = array('key'  => $this->_getMessageKey());
+        $config = array('format' => $this->_getMessageFormat());
 
         $identifier = (string) $this->getIdentifier();
 
@@ -209,7 +209,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     {
         $variables = array();
 
-        if (preg_match_all('/\{(.*?)\}/', $this->_getMessageKey(), $matches) !== false)
+        if (preg_match_all('/\{(.*?)\}/', $this->_getMessageFormat(), $matches) !== false)
         {
             foreach ($matches[1] as $variable)
             {
@@ -219,6 +219,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
                 {
                     $config = new KObjectConfig();
                     $this->$method($config);
+
                     $config->label = $variable;
                     $variables[] = $this->getObject($this->_variable, $config->toArray());
                 }
@@ -262,13 +263,12 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     /**
      * Message key getter.
      *
-     * An activity message key is a compact representation of the activity text which also provides information
-     * about the variables it may contain. This key is used in the same way Joomla! translation keys are
-     * used for translating text to other languages.
+     * An activity message format is a compact representation of the activity which also provides information
+     * about the parameters it may contain.
      *
-     * @return string The activity message key.
+     * @return string The activity message format.
      */
-    protected function _getMessageKey()
+    protected function _getMessageFormat()
     {
         return '{actor} {action} {object} {title}';
     }
