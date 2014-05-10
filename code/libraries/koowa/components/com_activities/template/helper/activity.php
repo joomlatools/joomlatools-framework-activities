@@ -51,27 +51,27 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
      */
     protected function _renderHtml(ComActivitiesMessageInterface $message)
     {
-        foreach ($message->getVariables() as $variable)
+        foreach ($message->getParameters() as $parameter)
         {
-            $output = '<span class="text">' . $variable->getText() . '</span>';
+            $output = '<span class="text">' . $parameter->getText() . '</span>';
 
-            if ($variable->isLinkable())
+            if ($parameter->isLinkable())
             {
-                $link_attributes = $variable->getLinkAttributes();
+                $link_attributes = $parameter->getLinkAttributes();
 
                 $view = $this->getTemplate()->getView();
-                $url  = $view->getActivityRoute($variable->getUrl());
+                $url  = $view->getActivityRoute($parameter->getUrl());
 
                 $output = '<a ' . (empty($link_attributes) ? '' : $this->buildAttributes($link_attributes)) . ' href="' . $url . '">' . $output . '</a>';
             }
 
-            $attribs = $variable->getAttributes();
+            $attribs = $parameter->getAttributes();
 
             if (count($attribs)) {
                 $output = '<span ' . $this->buildAttributes($attribs) . '>' . $output . '</span>';
             }
 
-            $variable->setContent($output);
+            $parameter->setContent($output);
         }
 
         $html  = $message->toString();

@@ -30,11 +30,11 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
     protected $_format;
 
     /**
-     * The set of message variables.
+     * The message parameters.
      *
-     * @var ComActivitiesMessageVariableSetInterface
+     * @var ComActivitiesMessageParametersInterface
      */
-    protected $_variables;
+    protected $_parameters;
 
     /**
      * The message scripts.
@@ -50,7 +50,7 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
         $this->setFormat($config->format);
         $this->setScripts($config->scripts);
 
-        $this->_variables   = $config->variables;
+        $this->_parameters = $config->parameters;
         $this->_translator = $config->translator;
     }
 
@@ -58,7 +58,7 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
     {
         $config->append(array(
             'format'     => '{actor} {action} {object} {title}',
-            'variables'  => 'com:activities.message.variable.set',
+            'parameters' => 'com:activities.message.parameters',
             'translator' => 'com:activities.message.translator'
         ));
 
@@ -76,19 +76,19 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
         return $this->_format;
     }
 
-    public function setVariables(ComActivitiesMessageVariableSetInterface $variables)
+    public function setParameters(ComActivitiesMessageParametersInterface $parameters)
     {
-        $this->_variables = $variables;
+        $this->_parameters = $parameters;
         return $this;
     }
 
-    public function getVariables()
+    public function getParameters()
     {
-        if (!$this->_variables instanceof ComActivitiesMessageVariableSetInterface) {
-            $this->setVariables($this->getObject($this->_variables));
+        if (!$this->_parameters instanceof ComActivitiesMessageParametersInterface) {
+            $this->setParameters($this->getObject($this->_parameters));
         }
 
-        return $this->_variables;
+        return $this->_parameters;
     }
 
     public function setScripts($scripts)

@@ -8,57 +8,57 @@
  */
 
 /**
- * Message Variable Class.
+ * Message Parameter Class
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesMessageVariable extends KObject implements ComActivitiesMessageVariableInterface
+class ComActivitiesMessageParameter extends KObject implements ComActivitiesMessageParameterInterface
 {
     /**
-     * The variable label.
+     * The parameter label.
      *
      * @var string
      */
     protected $_label;
 
     /**
-     * The variable text.
+     * The parameter text.
      *
      * @var string
      */
     protected $_text;
 
     /**
-     * Determines if the variable is translatable (true) or not (false).
+     * Determines if the parameter is translatable (true) or not (false).
      *
      * @var boolean
      */
     protected $_translate;
 
     /**
-     * The variable attributes.
+     * The parameter attributes.
      *
      * @var array
      */
     protected $_attributes;
 
     /**
-     * The variable link attributes.
+     * The parameter link attributes.
      *
      * @var array
      */
     protected $_link_attributes;
 
     /**
-     * The variable url.
+     * The parameter url.
      *
      * @var string
      */
     protected $_url;
 
     /**
-     * The variable content.
+     * The parameter content.
      *
      * This property contains the formatted text that is be used for rendering activity messages.
      *
@@ -78,7 +78,7 @@ class ComActivitiesMessageVariable extends KObject implements ComActivitiesMessa
         parent::__construct($config);
 
         if (!$config->label) {
-            throw new InvalidArgumentException('A translator variable must have a label');
+            throw new InvalidArgumentException('A translator parameter must have a label');
         }
 
         $this->_label      = $config->label;
@@ -98,24 +98,29 @@ class ComActivitiesMessageVariable extends KObject implements ComActivitiesMessa
             'translator'      => 'com:activities.translator',
             'translate'       => false,
             'link_attributes' => array(),
-            'attributes'      => array('class' => array('variable'))
+            'attributes'      => array('class' => array('parameter'))
         ));
 
         parent::_initialize($config);
     }
 
-    public function setTranslatable($state)
-    {
-        $this->_translate = (bool) $state;
-        return $this;
-    }
-
+    /**
+     * Text setter.
+     *
+     * @param mixed $text The parameter text.
+     * @return ComActivitiesMessageParameter
+     */
     public function setText($text)
     {
         $this->_text = (string) $text;
         return $this;
     }
 
+    /**
+     * Text getter.
+     *
+     * @return string The parameter text.
+     */
     public function getText()
     {
         $text = $this->_text;
@@ -127,6 +132,12 @@ class ComActivitiesMessageVariable extends KObject implements ComActivitiesMessa
         return $text;
     }
 
+    /**
+     * Content setter.
+     *
+     * @param string $content The parameter content.
+     * @return ComActivitiesMessageParameterInterface
+     */
     public function setContent($content)
     {
         $this->_content = $content;
@@ -134,7 +145,9 @@ class ComActivitiesMessageVariable extends KObject implements ComActivitiesMessa
     }
 
     /**
-     * Content getter will return text as content if no content is set.
+     * Content getter.
+     *
+     * @return string The parameter content.
      */
     public function getContent()
     {
@@ -145,60 +158,113 @@ class ComActivitiesMessageVariable extends KObject implements ComActivitiesMessa
         return $content;
     }
 
-    public function isTranslatable()
+    /**
+     * Translatable state setter.
+     *
+     * @param bool $state The parameter is made translatable if true, non-translatable if false.
+     * @return ComActivitiesMessageParameterInterface
+     */
+    public function setTranslatable($state)
     {
-        return (bool) $this->_translate;
+        $this->_translate = (bool) $state;
+        return $this;
     }
 
+    /**
+     * Label getter.
+     *
+     * A label uniquely identifies a parameter.
+     *
+     * @return string The parameter label.
+     */
     public function getLabel()
     {
         return $this->_label;
     }
 
-    public function setAttributes($attributes)
-    {
-        $this->_attributes = $attributes;
-        return $this;
-    }
-
-    public function getAttributes()
-    {
-        return $this->_attributes;
-    }
-
-    public function setLinkAttributes($attributes)
-    {
-        $this->_link_attributes = $attributes;
-        return $this;
-    }
-
-    public function getLinkAttributes()
-    {
-        return $this->_link_attributes;
-    }
-
+    /**
+     * Set the URL
+     *
+     * @param string $url The parameter URL.
+     * @return ComActivitiesMessageParameterInterface
+     */
     public function setUrl($url)
     {
         $this->_url = (string) $url;
         return $this;
     }
 
+    /**
+     * Get the URL
+     *
+     * @return string The parameter url.
+     */
     public function getUrl()
     {
         return $this->_url;
     }
 
-    public function isLinkable()
+    /**
+     * Set the attributes
+     *
+     * @param array $attributes The parameter attributes.
+     * @return ComActivitiesMessageParameterInterface
+     */
+    public function setAttributes($attributes)
     {
-        return (bool) $this->getUrl();
+        $this->_attributes = $attributes;
+        return $this;
     }
 
+    /**
+     * Get the attributes
+     *
+     * @return array The parameter attributes.
+     */
+    public function getAttributes()
+    {
+        return $this->_attributes;
+    }
+
+    /**
+     * Link attributes setter.
+     *
+     * @param array $attributes The parameter link attributes.
+     * @return ComActivitiesMessageParameterInterface
+     */
+    public function setLinkAttributes($attributes)
+    {
+        $this->_link_attributes = $attributes;
+        return $this;
+    }
+
+    /**
+     * Get the link attributes
+     *
+     * @return array The parameter attributes.
+     */
+    public function getLinkAttributes()
+    {
+        return $this->_link_attributes;
+    }
+
+    /**
+     * Set the translator
+     *
+     * @param KTranslatorInterface $translator The parameter translator.
+     * @return ComActivitiesMessageParameterInterface
+     */
     public function setTranslator(KTranslatorInterface $translator)
     {
         $this->_translator = $translator;
         return $this;
     }
 
+    /**
+     * Get the translator
+     *
+     * @return KTranslatorInterface The parameter translator.
+     */
     public function getTranslator()
     {
         if (!$this->_translator instanceof KTranslatorInterface) {
@@ -206,5 +272,25 @@ class ComActivitiesMessageVariable extends KObject implements ComActivitiesMessa
         }
 
         return $this->_translator;
+    }
+
+    /**
+     * Tells if the parameter is translatable.
+     *
+     * @return bool True if translatable, false otherwise.
+     */
+    public function isTranslatable()
+    {
+        return (bool) $this->_translate;
+    }
+
+    /**
+     * Tells if the parameter is linkable or not.
+     *
+     * @return bool
+     */
+    public function isLinkable()
+    {
+        return (bool) $this->getUrl();
     }
 }

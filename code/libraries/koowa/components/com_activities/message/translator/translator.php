@@ -30,9 +30,9 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
     {
         $format = $message->getFormat();
 
-        if ($variables = $message->getVariables())
+        if ($parameters = $message->getParameters())
         {
-            foreach ($this->_getOverrides($format, $variables) as $override)
+            foreach ($this->_getOverrides($format, $parameters) as $override)
             {
                 // Check if a key for the $override exists.
                 if ($this->isTranslatable($override))
@@ -43,7 +43,7 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
             }
         }
 
-        $translation = $this->translate($format, $variables->getContent());
+        $translation = $this->translate($format, $parameters->getContent());
 
         // Process context translations.
         if (preg_match_all('/\{(.+?):(.+?)\}/', $translation, $matches) !== false)
@@ -52,11 +52,11 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
             {
                 $label = $matches[1][$i];
 
-                foreach ($variables as $variable)
+                foreach ($parameters as $parameter)
                 {
-                    if ($variable->getLabel() == $label)
+                    if ($parameter->getLabel() == $label)
                     {
-                        $translation = str_replace($matches[0][$i], $variable->getContent(), $translation);
+                        $translation = str_replace($matches[0][$i], $parameter->getContent(), $translation);
                         break;
                     }
                 }
@@ -70,7 +70,7 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
      * Returns a list of override strings for the provided string/parameters couple.
      *
      * @param     string                                    $key     The translation key.
-     * @param     ComActivitiesMessageVariableSetInterface $parameters The message parameter collection object.
+     * @param     ComActivitiesMessageParametersInterface $parameters The message parameter collection object.
      *
      * @return array A list of override strings.
      */
