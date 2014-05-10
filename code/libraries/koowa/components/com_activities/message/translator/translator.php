@@ -28,22 +28,22 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
 
     public function translateMessage(ComActivitiesMessageInterface $message)
     {
-        $key = $message->getKey();
+        $format = $message->getFormat();
 
         if ($variables = $message->getVariables())
         {
-            foreach ($this->_getOverrides($key, $variables) as $override)
+            foreach ($this->_getOverrides($format, $variables) as $override)
             {
                 // Check if a key for the $override exists.
                 if ($this->isTranslatable($override))
                 {
-                    $key = $override;
+                    $format = $override;
                     break;
                 }
             }
         }
 
-        $translation = $this->translate($key, $variables->getContent());
+        $translation = $this->translate($format, $variables->getContent());
 
         // Process context translations.
         if (preg_match_all('/\{(.+?):(.+?)\}/', $translation, $matches) !== false)

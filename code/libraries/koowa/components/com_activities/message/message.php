@@ -23,11 +23,11 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
     protected $_translator;
 
     /**
-     * The message key.
+     * The message format.
      *
      * @var string
      */
-    protected $_key;
+    protected $_format;
 
     /**
      * The set of message variables.
@@ -47,7 +47,7 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
     {
         parent::__construct($config);
 
-        $this->setKey($config->key);
+        $this->setFormat($config->format);
         $this->setScripts($config->scripts);
 
         $this->_variables   = $config->variables;
@@ -57,6 +57,7 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
+            'format'     => '{actor} {action} {object} {title}',
             'variables'  => 'com:activities.message.variable.set',
             'translator' => 'com:activities.message.translator'
         ));
@@ -64,15 +65,15 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
         parent::_initialize($config);
     }
 
-    public function setKey($key)
+    public function setFormat($format)
     {
-        $this->_key = (string) $key;
+        $this->_format = (string) $format;
         return $this;
     }
 
-    public function getKey()
+    public function getFormat()
     {
-        return $this->_key;
+        return $this->_format;
     }
 
     public function setVariables(ComActivitiesMessageVariableSetInterface $variables)

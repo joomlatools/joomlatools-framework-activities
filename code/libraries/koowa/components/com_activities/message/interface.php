@@ -31,19 +31,19 @@ interface ComActivitiesMessageInterface
     public function getVariables();
 
     /**
-     * Set the message key
+     * Set the message format
      *
-     * @param string $key The message key.
+     * @param string $format The message format.
      * @return ComActivitiesMessageInterface
      */
-    public function setKey($key);
+    public function setFormat($format);
 
     /**
-     * Get the message key
+     * Get the message format
      *
-     * @return string The message key.
+     * @return string The message format.
      */
-    public function getKey();
+    public function getFormat();
 
     /**
      * Set the message scripts
