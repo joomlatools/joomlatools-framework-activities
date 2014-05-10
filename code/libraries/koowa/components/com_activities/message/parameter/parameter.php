@@ -66,6 +66,11 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
      */
     protected $_content;
 
+    /**
+     * Constructor.
+     *
+     * @param   KObjectConfig $config Configuration options
+     */
     public function __construct(KObjectConfig $config)
     {
         parent::__construct($config);
@@ -85,6 +90,14 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
         $this->setUrl($config->url);
     }
 
+    /**
+     * Initializes the options for the object
+     *
+     * Called from {@link __construct()} as a first step of object instantiation.
+     *
+     * @param   KObjectConfig $config Configuration options.
+     * @return  void
+     */
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
@@ -97,10 +110,22 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     }
 
     /**
-     * Text setter.
+     * Get the parameter label
+     *
+     * A label uniquely identifies a parameter.
+     *
+     * @return string The parameter label.
+     */
+    public function getLabel()
+    {
+        return $this->_label;
+    }
+
+    /**
+     * Get the parameter text
      *
      * @param mixed $text The parameter text.
-     * @return ComActivitiesMessageParameter
+     * @return ComActivitiesMessageParameterInterface
      */
     public function setText($text)
     {
@@ -109,7 +134,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     }
 
     /**
-     * Text getter.
+     * Set the parameter text
      *
      * @return string The parameter text.
      */
@@ -125,7 +150,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     }
 
     /**
-     * Content setter.
+     * Set the parameter content
      *
      * @param string $content The parameter content.
      * @return ComActivitiesMessageParameterInterface
@@ -137,7 +162,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     }
 
     /**
-     * Content getter.
+     * Get the parameter content
      *
      * @return string The parameter content.
      */
@@ -148,18 +173,6 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
         }
 
         return $content;
-    }
-
-    /**
-     * Label getter.
-     *
-     * A label uniquely identifies a parameter.
-     *
-     * @return string The parameter label.
-     */
-    public function getLabel()
-    {
-        return $this->_label;
     }
 
     /**

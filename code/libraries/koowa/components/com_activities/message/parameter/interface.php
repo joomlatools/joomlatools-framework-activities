@@ -16,23 +16,31 @@
 interface ComActivitiesMessageParameterInterface extends KObjectHandlable
 {
     /**
-     * Text setter.
+     * Get the parameter label
+     *
+     * A label uniquely identifies a parameter.
+     *
+     * @return string The parameter label.
+     */
+    public function getLabel();
+
+    /**
+     * Get the parameter text
      *
      * @param mixed $text The parameter text.
-     *
-     * @return $this.
+     * @return ComActivitiesMessageParameterInterface
      */
     public function setText($text);
 
     /**
-     * Text getter.
+     * Set the parameter text
      *
      * @return string The parameter text.
      */
     public function getText();
 
     /**
-     * Content setter.
+     * Set the parameter content
      *
      * @param string $content The parameter content.
      * @return ComActivitiesMessageParameterInterface
@@ -40,20 +48,11 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
     public function setContent($content);
 
     /**
-     * Content getter.
+     * Get the parameter content
      *
      * @return string The parameter content.
      */
     public function getContent();
-
-    /**
-     * Label getter.
-     *
-     * A label uniquely identifies a parameter.
-     *
-     * @return string The parameter label.
-     */
-    public function getLabel();
 
     /**
      * Set the URL
@@ -71,7 +70,7 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
     public function getUrl();
 
     /**
-     * Link attributes setter.
+     * Set the parameter link attributes
      *
      * @param array $attributes The parameter link attributes.
      * @return ComActivitiesMessageParameterInterface
@@ -79,14 +78,14 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
     public function setLinkAttributes($attributes);
 
     /**
-     * Get the link attributes
+     * Get the parameter link attributes
      *
      * @return array The parameter attributes.
      */
     public function getLinkAttributes();
 
     /**
-     * Set the attributes
+     * Set the parameter attributes
      *
      * @param array $attributes The parameter attributes.
      * @return ComActivitiesMessageParameterInterface
@@ -94,7 +93,7 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
     public function setAttributes($attributes);
 
     /**
-     * Get the attributes
+     * Get the parameter attributes
      *
      * @return array The parameter attributes.
      */
