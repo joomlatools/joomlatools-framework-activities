@@ -16,6 +16,13 @@
 class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComActivitiesModelEntityActivityInterface, KObjectInstantiable
 {
     /**
+     * Holds a list of loaded scripts.
+     *
+     * @var bool
+     */
+    static protected $_scripts_loaded;
+
+    /**
      * Message object identifier.
      *
      * @var mixed
@@ -30,14 +37,23 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     protected $_parameter;
 
     /**
-     * Holds a list of loaded scripts.
+     * The database table name
      *
-     * @var bool
+     * @var string
      */
-    static protected $_scripts_loaded;
+    protected $_table_name;
 
     /**
-     * @var array A list of required columns.
+     * The database table column
+     *
+     * @var string
+     */
+    protected $_table_column;
+
+    /**
+     * A list of required columns.
+     *
+     * @var array
      */
     protected $_required = array('package', 'name', 'action', 'title', 'status');
 
@@ -54,6 +70,18 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         $this->_parameter  = $config->parameter;
         $this->_translator = $config->translator;
 
+        if(empty($config->table)) {
+            $this->_table = $this->package . '_' . KStringInflector::pluralize($this->name);
+        } else {
+            $this->_table = $config->table;
+        }
+
+        if(empty($config->table_column)) {
+            $this->_table_column = $this->package . '_' . $this->name . '_' . 'id';
+        } else {
+            $this->_table_column = $config->table_column;
+        }
+
         self::$_scripts_loaded = array();
     }
 
@@ -68,8 +96,10 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'parameter' => 'com:activities.message.parameter',
-            'message'   => 'com:activities.message'
+            'table'         => null,
+            'table_column'  => null,
+            'parameter'     => 'com:activities.message.parameter',
+            'message'       => 'com:activities.message'
         ));
 
         parent::_initialize($config);
@@ -257,18 +287,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         return $icon;
     }
 
-    public function setEntity(ComActivitiesModelEntityActivity $activity)
-    {
-        $this->_entity = $activity;
-
-        return $this;
-    }
-
-    public function getEntity()
-    {
-        return $this->_entity;
-    }
-
     /**
      * Check if the activity object still exists, i.e. it is still stored or reachable.
      *
@@ -276,7 +294,22 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     public function hasObject()
     {
-        return $this->_resourceExists();
+        $db     = $this->getTable()->getAdapter();
+        $table  = $this->_table;
+        $column = $this->_column;
+
+        $query = $this->getObject('lib:database.query.select');
+        $query->columns('COUNT(*)')->table($table)->where($column . ' = :value')
+            ->bind(array('value' => $this->row));
+
+        // Need to catch exceptions here as table may not longer exist.
+        try {
+            $result = $db->select($query, KDatabase::FETCH_FIELD);
+        } catch (Exception $e) {
+            $result = 0;
+        }
+
+        return (bool) $result;
     }
 
     /**
@@ -288,8 +321,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     {
         $url = null;
 
-        if ($this->package && $this->name && $this->row) {
-            $url = 'option=com_' . $this->package . '&task=' . $this->name . '.edit&id=' . $this->row;
+        if($this->hasObject())
+        {
+            if ($this->package && $this->name && $this->row) {
+                $url = 'option=com_' . $this->package . '&task=' . $this->name . '.edit&id=' . $this->row;
+            }
         }
 
         return $url;
@@ -353,7 +389,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     public function hasActor()
     {
-        return $this->_resourceExists(array('table' => 'users', 'column' => 'id', 'value' => $this->created_by));
+        return (bool) $this->getObject('user.provider')->load($this->created_by)->getId();
     }
 
     /**
@@ -365,41 +401,14 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     {
         $url = null;
 
-        if ($this->created_by) {
-            $url = 'option=com_users&task=user.edit&id=' . $this->created_by;
+        if($this->hasActor())
+        {
+            if ($this->created_by) {
+                $url = 'option=com_users&task=user.edit&id=' . $this->created_by;
+            }
         }
 
         return $url;
-    }
-
-    /**
-     * Determines if a given resource exists.
-     *
-     * @param array $config An optional configuration array.
-     * @return bool True if it exists, false otherwise.
-     */
-    protected function _resourceExists($config = array())
-    {
-        $config = new KObjectConfig($config);
-        $config->append(array(
-            'table'  => $this->package . '_' . KStringInflector::pluralize($this->name),
-            'column' => $this->package . '_' . $this->name . '_' . 'id',
-            'value'  => $this->row));
-
-        $db = $this->getTable()->getAdapter();
-
-        $query = $this->getObject('lib:database.query.select');
-        $query->columns('COUNT(*)')->table($config->table)->where($config->column . ' = :value')
-            ->bind(array('value' => $config->value));
-
-        // Need to catch exceptions here as table may not longer exist.
-        try {
-            $result = $db->select($query, KDatabase::FETCH_FIELD);
-        } catch (Exception $e) {
-            $result = 0;
-        }
-
-        return (bool) $result;
     }
 
     /**
