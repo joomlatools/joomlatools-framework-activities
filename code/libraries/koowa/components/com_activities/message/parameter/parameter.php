@@ -66,13 +66,6 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
      */
     protected $_content;
 
-    /**
-     * The variable translator.
-     *
-     * @var mixed
-     */
-    protected $_translator;
-
     public function __construct(KObjectConfig $config)
     {
         parent::__construct($config);
@@ -82,7 +75,6 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
         }
 
         $this->_label      = $config->label;
-        $this->_translator = $config->translator;
         $this->_translate  = $config->translate;
 
         $this->setAttributes(KObjectConfig::unbox($config->attributes));
@@ -96,7 +88,6 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'translator'      => 'com:activities.translator',
             'translate'       => false,
             'link_attributes' => array(),
             'attributes'      => array('class' => array('parameter'))
@@ -127,7 +118,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
         $text = $this->_text;
 
         if ($this->isTranslatable()) {
-            $text = $this->getTranslator()->translate($text);
+            $text = $this->getObject('translator')->translate($text);
         }
 
         return $text;
@@ -235,32 +226,6 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     public function getLinkAttributes()
     {
         return $this->_link_attributes;
-    }
-
-    /**
-     * Set the translator
-     *
-     * @param KTranslatorInterface $translator The parameter translator.
-     * @return ComActivitiesMessageParameterInterface
-     */
-    public function setTranslator(KTranslatorInterface $translator)
-    {
-        $this->_translator = $translator;
-        return $this;
-    }
-
-    /**
-     * Get the translator
-     *
-     * @return KTranslatorInterface The parameter translator.
-     */
-    public function getTranslator()
-    {
-        if (!$this->_translator instanceof KTranslatorInterface) {
-            $this->setTranslator($this->getObject($this->_translator));
-        }
-
-        return $this->_translator;
     }
 
     /**

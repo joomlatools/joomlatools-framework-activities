@@ -101,21 +101,6 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
     public function getAttributes();
 
     /**
-     * Set the translator
-     *
-     * @param KTranslatorInterface $translator The parameter translator.
-     * @return ComActivitiesMessageParameterInterface
-     */
-    public function setTranslator(KTranslatorInterface $translator);
-
-    /**
-     * Get the translator
-     *
-     * @return KTranslatorInterface The parameter translator.
-     */
-    public function getTranslator();
-
-    /**
      * Tells if the parameter is linkable or not.
      *
      * @return bool
