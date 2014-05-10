@@ -16,21 +16,6 @@
 interface ComActivitiesMessageInterface
 {
     /**
-     * Set the message parameters
-     *
-     * @param ComActivitiesMessageParametersInterface $parameters The message parameters.
-     * @return ComActivitiesMessageInterface
-     */
-    public function setParameters(ComActivitiesMessageParametersInterface $parameters);
-
-    /**
-     * Get the message parameters
-     *
-     * @return ComActivitiesMessageParametersInterface The message parameters.
-     */
-    public function getParameters();
-
-    /**
      * Set the message format
      *
      * @param string $format The message format.
@@ -44,6 +29,21 @@ interface ComActivitiesMessageInterface
      * @return string The message format.
      */
     public function getFormat();
+
+    /**
+     * Set the message parameters
+     *
+     * @param ComActivitiesMessageParametersInterface $parameters The message parameters.
+     * @return ComActivitiesMessageInterface
+     */
+    public function setParameters(ComActivitiesMessageParametersInterface $parameters);
+
+    /**
+     * Get the message parameters
+     *
+     * @return ComActivitiesMessageParametersInterface The message parameters.
+     */
+    public function getParameters();
 
     /**
      * Set the message scripts
