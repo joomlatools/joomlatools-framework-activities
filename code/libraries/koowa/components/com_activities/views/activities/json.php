@@ -21,12 +21,16 @@ class ComActivitiesViewActivitiesJson extends KViewJson
     public function __construct(KObjectConfig $config)
     {
         $this->_layout = $config->layout;
+
         parent::__construct($config);
     }
 
     protected function _initialize(KObjectConfig $config)
     {
-        $config->append(array('behaviors' => array('routable')));
+        $config->append(array(
+            'behaviors' => array('routable')
+        ));
+
         parent::_initialize($config);
     }
 

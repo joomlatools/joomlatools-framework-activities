@@ -380,7 +380,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         else
         {
             $value = $this->created_by ? 'Deleted user' : 'Guest user';
-            $parameter->translate = true;
+            $value = $this->getObject('translator')->translate($value);
         }
 
         $parameter->value = $value;
@@ -394,8 +394,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      */
     protected function _parameterAction(ComActivitiesActivityParameterInterface $parameter)
     {
-        $parameter->value     = $this->status;
-        $parameter->translate = true;
+        $parameter->value = $this->getObject('translator')->translate($this->status);
     }
 
     /**
@@ -406,8 +405,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      */
     protected function _parameterObject(ComActivitiesActivityParameterInterface $parameter)
     {
-        $parameter->value     = $this->name;
-        $parameter->translate = true;
+        $parameter->value = $this->getObject('translator')->translate($this->name);
 
         $parameter->append(array(
             'attributes' => array('class' => array('object')),
@@ -424,8 +422,8 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         $parameter->value = $this->title;
 
-        if (!$parameter->url && $this->hasObject() && ($url = $this->getObjectUrl())) {
-            $parameter->url = $url;
+        if ($this->hasObject()) {
+            $parameter->url = $this->getObjectUrl();
         }
 
         if ($this->status == 'deleted') {

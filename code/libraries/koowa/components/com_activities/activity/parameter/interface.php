@@ -115,13 +115,6 @@ interface ComActivitiesActivityParameterInterface
     public function isLinkable();
 
     /**
-     * Tells if the parameter is translatable.
-     *
-     * @return bool True if translatable, false otherwise.
-     */
-    public function isTranslatable();
-
-    /**
      * Casts an activity parameter to string.
      *
      * @return string The string representation of an activity parameter.

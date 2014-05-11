@@ -42,8 +42,7 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
         parent::__construct($config);
 
         $this->append(array(
-            'value'      => '',
-            'translate' => false,
+            'value'     => '',
             'url'       => '',
             'link_attributes' => array(),
             'attributes'      => array(
@@ -87,11 +86,6 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
     public function getValue()
     {
         $value = $this->value;
-
-        //if ($this->isTranslatable()) {
-        //    $text = $this->getObject('translator')->translate($value);
-        //}
-
         return $value;
     }
 
@@ -185,16 +179,6 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
         }
 
         return $content;
-    }
-
-    /**
-     * Tells if the parameter is translatable.
-     *
-     * @return bool True if translatable, false otherwise.
-     */
-    public function isTranslatable()
-    {
-        return (bool) $this->translate;
     }
 
     /**
