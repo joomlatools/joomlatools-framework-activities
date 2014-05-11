@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComActivitiesModelEntityActivityInterface, KObjectInstantiable
+class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjectInstantiable
 {
     /**
      * Holds a list of loaded scripts.
@@ -210,7 +210,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      *
      * @return ComActivitiesMessageInterface The activity message object.
      */
-    public function getMessage()
+    public function getPropertyMessage()
     {
         $config = array('format' => $this->_getMessageFormat());
 

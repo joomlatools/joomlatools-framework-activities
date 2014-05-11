@@ -43,7 +43,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
     {
         if ($this->_layout == 'stream')
         {
-            $message = $entity->getMessage();
+            $message = $entity->message;
 
             $item = array(
                 'id'        => $entity->uuid,
