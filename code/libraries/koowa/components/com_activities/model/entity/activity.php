@@ -388,8 +388,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return null; // Activities don't have targets by default.
     }
 
-
-
     /**
      * Get the message parameters
      *
