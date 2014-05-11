@@ -122,20 +122,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
         $translator = $this->getObject('translator');
 
-        if (!in_array($this->application, array('admin', 'site')))
-        {
-            $this->setStatus(KDatabase::STATUS_FAILED);
-            $this->setStatusMessage($translator->translate('Invalid application value'));
-            return false;
-        }
-
-        if (!in_array($this->type, array('com')))
-        {
-            $this->setStatus(KDatabase::STATUS_FAILED);
-            $this->setStatusMessage($translator->translate('Invalid type value'));
-            return false;
-        }
-
         if (!$this->status)
         {
             // Attempt to provide a default status.
