@@ -59,10 +59,9 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         parent::__construct($config);
 
+        $this->_format     = $config->format;
         $this->_parameter  = $config->parameter;
         $this->_translator = $config->translator;
-
-        $this->setFormat($config->format);
     }
 
     /**
@@ -199,29 +198,78 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Set the activity translator
+     * Get the message format
      *
-     * @param ComActivitiesMessageTranslatorInterface $translator The message translator.
-     * @return ComActivitiesMessageInterface
+     * An activity message format is a compact representation of the activity which also provides information
+     * about the parameters it may contain.
+     *
+     * @return string The activity message format.
      */
-    public function setTranslator(ComActivitiesMessageTranslatorInterface $translator)
+    public function getFormat()
     {
-        $this->_translator = $translator;
-        return $this;
+        return $this->_format;
     }
 
     /**
-     * Get the activity translator
+     * Check if the activity actor still exists, i.e. it is still stored or reachable.
      *
-     * @return ComActivitiesMessageTranslatorInterface The message translator.
+     * @return boolean True if still exists, false otherwise.
      */
-    public function getTranslator()
+    public function hasActor()
     {
-        if (!$this->_translator instanceof ComActivitiesMessageTranslatorInterface) {
-            $this->setTranslator($this->getObject($this->_translator));
+        return (bool) $this->getObject('user.provider')->load($this->created_by)->getId();
+    }
+
+    /**
+     * Get the activity actor URL
+     *
+     * @return string|null The activity actor URL, null if not linkable or reachable.
+     */
+    public function getActorUrl()
+    {
+        $url = null;
+
+        if($this->hasActor())
+        {
+            if ($this->created_by) {
+                $url = 'option=com_users&task=user.edit&id=' . $this->created_by;
+            }
         }
 
-        return $this->_translator;
+        return $url;
+    }
+
+    /**
+     * Get the actor activity message parameter configuration
+     *
+     * @param KObjectConfig $config The message parameter configuration object.
+     */
+    public function getActorParameter(KObjectConfig $config)
+    {
+        if ($this->hasActor())
+        {
+            $config->url = $this->getActorUrl();
+            $value  = $this->created_by_name;
+        }
+        else
+        {
+            $value = $this->created_by ? 'Deleted user' : 'Guest user';
+            $config->translate = true;
+        }
+
+        $config->value = $value;
+    }
+
+    /**
+     * Get the action activity message parameter configuration.
+     *
+     * @param KObjectConfig $config The activity message parameter configuration object.
+     */
+    public function getActionParameter(KObjectConfig $config)
+    {
+        $config->append(array(
+            'value'      => $this->status,
+            'translate' => true));
     }
 
     /**
@@ -264,6 +312,43 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
+     * Get the object activity message parameter configuration.
+     *
+     * @param KObjectConfig $config The activity message parameter configuration object.
+     */
+    public function getObjectParameter(KObjectConfig $config)
+    {
+        $config->append(array(
+            'translate'  => true,
+            'value'       => $this->name,
+            'attributes' => array('class' => array('object')),
+        ));
+    }
+
+    /**
+     * Get the title activity message parameter configuration.
+     *
+     * @param KObjectConfig $config The activity message parameter configuration object.
+     */
+    public function getTitleParameter(KObjectConfig $config)
+    {
+        $config->append(array(
+            'attributes' => array(),
+            'translate'  => false,
+            'value'      => $this->title
+        ));
+
+        if (!$config->url && $this->hasObject() && ($url = $this->getObjectUrl())) {
+            $config->url = $url;
+        }
+
+        if ($this->status == 'deleted') {
+            $config->attributes = array('class' => array('deleted'));
+        }
+    }
+
+
+    /**
      * Checks if the activity target still exists, i.e. it is still stored or reachable.
      *
      * @return boolean True if still exists, false otherwise.
@@ -298,77 +383,12 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      *
      * @return string|null The target type, null if no target.
      */
-
     public function getTargetType()
     {
         return null; // Activities don't have targets by default.
     }
 
-    /**
-     * Check if the activity actor still exists, i.e. it is still stored or reachable.
-     *
-     * @return boolean True if still exists, false otherwise.
-     */
-    public function hasActor()
-    {
-        return (bool) $this->getObject('user.provider')->load($this->created_by)->getId();
-    }
 
-    /**
-     * Get the activity actor URL
-     *
-     * @return string|null The activity actor URL, null if not linkable or reachable.
-     */
-    public function getActorUrl()
-    {
-        $url = null;
-
-        if($this->hasActor())
-        {
-            if ($this->created_by) {
-                $url = 'option=com_users&task=user.edit&id=' . $this->created_by;
-            }
-        }
-
-        return $url;
-    }
-
-    /**
-     * Set the message format
-     *
-     * @param string $format The message format.
-     * @return ComActivitiesMessageInterface
-     */
-    public function setFormat($format)
-    {
-        $this->_format = (string) $format;
-        return $this;
-    }
-
-    /**
-     * Get the message format
-     *
-     * An activity message format is a compact representation of the activity which also provides information
-     * about the parameters it may contain.
-     *
-     * @return string The activity message format.
-     */
-    public function getFormat()
-    {
-        return $this->_format;
-    }
-
-    /**
-     * Set the message parameters
-     *
-     * @param array $parameters The message parameters.
-     * @return ComActivitiesMessageInterface
-     */
-    public function setActivityParameters($parameters)
-    {
-        $this->_parameters = $parameters;
-        return $this;
-    }
 
     /**
      * Get the message parameters
@@ -401,72 +421,17 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the actor activity message parameter configuration
+     * Get the activity translator
      *
-     * @param KObjectConfig $config The message parameter configuration object.
+     * @return ComActivitiesMessageTranslatorInterface The message translator.
      */
-    protected function getActorParameter(KObjectConfig $config)
+    public function getTranslator()
     {
-        if ($this->hasActor())
-        {
-            $config->url = $this->getActorUrl();
-            $value  = $this->created_by_name;
-        }
-        else
-        {
-            $value = $this->created_by ? 'Deleted user' : 'Guest user';
-            $config->translate = true;
+        if (!$this->_translator instanceof ComActivitiesMessageTranslatorInterface) {
+            $this->_translator = $this->getObject($this->_translator);
         }
 
-        $config->value = $value;
-    }
-
-    /**
-     * Get the action activity message parameter configuration.
-     *
-     * @param KObjectConfig $config The activity message parameter configuration object.
-     */
-    public function getActionParameter(KObjectConfig $config)
-    {
-        $config->append(array(
-            'value'      => $this->status,
-            'translate' => true));
-    }
-
-    /**
-     * Get the object activity message parameter configuration.
-     *
-     * @param KObjectConfig $config The activity message parameter configuration object.
-     */
-    public function getObjectParameter(KObjectConfig $config)
-    {
-        $config->append(array(
-            'translate'  => true,
-            'value'       => $this->name,
-            'attributes' => array('class' => array('object')),
-        ));
-    }
-
-    /**
-     * Get the title activity message parameter configuration.
-     *
-     * @param KObjectConfig $config The activity message parameter configuration object.
-     */
-    public function getTitleParameter(KObjectConfig $config)
-    {
-        $config->append(array(
-            'attributes' => array(),
-            'translate'  => false,
-            'value'      => $this->title
-        ));
-
-        if (!$config->url && $this->hasObject() && ($url = $this->getObjectUrl())) {
-            $config->url = $url;
-        }
-
-        if ($this->status == 'deleted') {
-            $config->attributes = array('class' => array('deleted'));
-        }
+        return $this->_translator;
     }
 
     /**
