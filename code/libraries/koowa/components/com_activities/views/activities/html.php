@@ -17,7 +17,10 @@ class ComActivitiesViewActivitiesHtml extends ComKoowaViewHtml
 {
     protected function _initialize(KObjectConfig $config)
     {
-        $config->append(array('behaviors' => array('routable')));
+        $config->append(array(
+            'behaviors' => array('routable')
+        ));
+
         parent::_initialize($config);
     }
 
