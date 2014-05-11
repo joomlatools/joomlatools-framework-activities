@@ -16,62 +16,27 @@
 class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implements KObjectMultiton
 {
     /**
-     * Holds a list of loaded scripts.
+     * Renders an activity
      *
-     * @var bool
-     */
-    static protected $_scripts_loaded;
-
-    /**
-     * Constructor.
-     *
-     * @param   KObjectConfig $config Configuration options
-     */
-    public function __construct(KObjectConfig $config)
-    {
-        parent::__construct($config);
-
-        self::$_scripts_loaded = array();
-    }
-
-    /**
-     * Renders an activity message.
-     *
-     * @param array $config An optional configuration array.
-     *
-     * @return string The rendered activity.
+     * @param  array $config An optional configuration array.
      * @throws InvalidArgumentException
+     * @return  string  Html
      */
-    public function message($config = array())
+    public function render($config = array())
     {
         $config = new KObjectConfig($config);
-        $config->append(array('format' => 'html'));
+        $config->append(array(
+            'entity' => null,
+        ));
 
-        $renderer = '_render' . ucfirst($config->format);
+        $activity = $config->entity;
 
-        if (!method_exists($this, $renderer)) {
-            throw new InvalidArgumentException('Renderer not found');
+        if (!$activity instanceof ComActivitiesActivityInterface) {
+            throw new InvalidArgumentException('Activity Not Found');
         }
 
-        $entity = $config->entity;
-
-        if (!$entity instanceof ComActivitiesModelEntityActivity) {
-            throw new InvalidArgumentException('Activity entity not found');
-        }
-
-        return $this->$renderer($entity);
-    }
-
-    /**
-     * Activity message Html renderer.
-     *
-     * @param ComActivitiesActivityInterface $message The activity message.
-     * @return string The Html message.
-     */
-    protected function _renderHtml(ComActivitiesActivityInterface $message)
-    {
         //Render activity parameters
-        foreach ($message->getActivityParameters() as $parameter)
+        foreach ($activity->getActivityParameters() as $parameter)
         {
             $output = '<span class="text">' . $parameter->getValue() . '</span>';
 
@@ -97,30 +62,8 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
 
         //Render activity message
         $html = '';
-        $html .= $message->toString();
-
-        //Append scripts
-        $identifier = (string) $message->getIdentifier();
-        if (!in_array($identifier, self::$_scripts_loaded))
-        {
-            if ($scripts = $message->getScripts()) {
-                $html .= $scripts;
-            }
-
-            self::$_scripts_loaded[] = $identifier;
-        }
+        $html .= $activity->toString();
 
         return $html;
-    }
-
-    /**
-     * Activity message text renderer.
-     *
-     * @param ComActivitiesActivityInterface $message The activity message.
-     * @return string The text message.
-     */
-    protected function _renderText(ComActivitiesActivityInterface $message)
-    {
-        return $message->toString();
     }
 }
