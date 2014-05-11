@@ -227,34 +227,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the activity icon
-     *
-     * @return string The activity icon class.
-     */
-    public function getIcon()
-    {
-        $classes = array(
-            'publish'   => 'icon-ok-circle',
-            'unpublish' => 'icon-remove-circle',
-            'trash'     => 'icon-trash',
-            'add'       => 'icon-plus-sign',
-            'edit'      => 'icon-edit',
-            'delete'    => 'icon-remove',
-            'archive'   => 'icon-inbox');
-
-        // Default.
-        $icon = 'icon-task';
-
-        $verb = $this->verb;
-
-        if (in_array($verb, array_keys($classes))) {
-            $icon = $classes[$verb];
-        }
-
-        return $icon;
-    }
-
-    /**
      * Check if the activity object still exists, i.e. it is still stored or reachable.
      *
      * @return boolean True if still exists, false otherwise.
