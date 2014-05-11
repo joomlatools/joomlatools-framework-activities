@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesActivityTranslatorCatalogueMessage extends ComKoowaTranslatorCatalogue
+class ComActivitiesActivityTranslatorCatalogue extends ComKoowaTranslatorCatalogue
 {
     /**
      * Overloaded for avoiding key length limit.

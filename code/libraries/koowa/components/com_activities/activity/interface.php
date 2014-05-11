@@ -22,11 +22,11 @@
 interface ComActivitiesActivityInterface
 {
     /**
-     * Get the message format
+     * Get the activity string format
      *
      * Default format is '{actor} {action} {object} {title}'
      *
-     * @return string The message format.
+     * @return string The activity string format.
      */
     public function getFormat();
 
@@ -91,27 +91,19 @@ interface ComActivitiesActivityInterface
      *
      * @return string|null The target type, null if no target.
      */
-
     public function getTargetType();
 
     /**
-     * Get the message parameters
+     * Get the activity parameters
      *
-     * @return array The message parameters.
+     * @return array The activity parameters.
      */
     public function getActivityParameters();
 
     /**
-     * Get the message translator
+     * Casts an activity to a string.
      *
-     * @return ComActivitiesActivityTranslatorInterface The message translator.
-     */
-    public function getTranslator();
-
-    /**
-     * Casts an activity message to string.
-     *
-     * @return string The string representation of an activity message.
+     * @return string The string representation of an activity
      */
     public function toString();
 }

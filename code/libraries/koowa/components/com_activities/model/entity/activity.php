@@ -67,8 +67,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'format'     => '{actor} {action} {object} {title}',
-            'translator' => 'com:activities.activity.translator'
+            'format' => '{actor} {action} {object} {title}',
         ));
 
         parent::_initialize($config);
@@ -341,27 +340,16 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the activity translator
-     *
-     * @return ComActivitiesActivityTranslatorInterface The message translator.
-     */
-    public function getTranslator()
-    {
-        if (!$this->_translator instanceof ComActivitiesActivityTranslatorInterface) {
-            $this->_translator = $this->getObject($this->_translator);
-        }
-
-        return $this->_translator;
-    }
-
-    /**
      * Casts an activity message to string.
      *
      * @return string The string representation of an activity message.
      */
     public function toString()
     {
-        return $this->getTranslator()->translateMessage($this);
+        $format      = $this->getFormat();
+        $parameters  = $this->getActivityParameters();
+
+        return $this->getObject('com:activities.activity.translator')->translate($format, $parameters);
     }
 
     /**

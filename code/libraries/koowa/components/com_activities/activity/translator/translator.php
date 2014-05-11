@@ -20,17 +20,15 @@ class ComActivitiesActivityTranslator extends ComKoowaTranslatorAbstract impleme
         $config->append(array(
             'alias_catalogue' => 'lib:translator.catalogue',
             'prefix'          => 'KLS_ACTIVITY_',
-            'catalogue'       => 'com:activities.activity.translator.catalogue.message'
+            'catalogue'       => 'com:activities.activity.translator.catalogue'
         ));
 
         parent::_initialize($config);
     }
 
-    public function translateMessage(ComActivitiesActivityInterface $message)
+    public function translate($format, array $parameters = array())
     {
-        $format     = $message->getFormat();
-        $parameters = $message->getActivityParameters();
-
+        //Find a format override
         if ($parameters)
         {
             foreach ($this->_getOverrides($format, $parameters) as $override)
@@ -44,9 +42,10 @@ class ComActivitiesActivityTranslator extends ComKoowaTranslatorAbstract impleme
             }
         }
 
-        $translation = $this->translate($format, $parameters);
+        //Translate format
+        $translation = parent::translate($format, $parameters);
 
-        // Process context translations.
+        //Translate context
         if (preg_match_all('/\{(.+?):(.+?)\}/', $translation, $matches) !== false)
         {
             for ($i = 0; $i < count($matches[0]); $i++)
