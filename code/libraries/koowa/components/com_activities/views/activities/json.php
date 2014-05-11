@@ -43,11 +43,9 @@ class ComActivitiesViewActivitiesJson extends KViewJson
     {
         if ($this->_layout == 'stream')
         {
-            $message = $entity->message;
-
             $item = array(
                 'id'        => $entity->uuid,
-                'title'     => $message->toString(),
+                'title'     => $entity->toString(),
                 'published' => $this->getObject('com://admin/koowa.template.helper.date')->format(array(
                         'date'   => $entity->created_on,
                         'format' => 'c'

@@ -36,14 +36,14 @@ interface ComActivitiesMessageInterface
      * @param array $parameters The message parameters.
      * @return ComActivitiesMessageInterface
      */
-    public function setParameters($parameters);
+    public function setActivityParameters($parameters);
 
     /**
      * Get the message parameters
      *
      * @return array The message parameters.
      */
-    public function getParameters();
+    public function getActivityParameters();
 
     /**
      * Set the message scripts

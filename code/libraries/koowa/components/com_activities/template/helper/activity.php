@@ -16,6 +16,25 @@
 class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implements KObjectMultiton
 {
     /**
+     * Holds a list of loaded scripts.
+     *
+     * @var bool
+     */
+    static protected $_scripts_loaded;
+
+    /**
+     * Constructor.
+     *
+     * @param   KObjectConfig $config Configuration options
+     */
+    public function __construct(KObjectConfig $config)
+    {
+        parent::__construct($config);
+
+        self::$_scripts_loaded = array();
+    }
+
+    /**
      * Renders an activity message.
      *
      * @param array $config An optional configuration array.
@@ -40,7 +59,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
             throw new InvalidArgumentException('Activity entity not found');
         }
 
-        return $this->$renderer($entity->message);
+        return $this->$renderer($entity);
     }
 
     /**
@@ -51,7 +70,8 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
      */
     protected function _renderHtml(ComActivitiesMessageInterface $message)
     {
-        foreach ($message->getParameters() as $parameter)
+        //Render activity parameters
+        foreach ($message->getActivityParameters() as $parameter)
         {
             $output = '<span class="text">' . $parameter->getValue() . '</span>';
 
@@ -59,10 +79,11 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
             {
                 $link_attributes = $parameter->getLinkAttributes();
 
-                $view = $this->getTemplate()->getView();
-                $url  = $view->getActivityRoute($parameter->getUrl());
+                $view       = $this->getTemplate()->getView();
+                $url        = $view->getActivityRoute($parameter->getUrl());
+                $attributes = !empty($link_attributes) ? $this->buildAttributes($link_attributes) : '';
 
-                $output = '<a ' . (empty($link_attributes) ? '' : $this->buildAttributes($link_attributes)) . ' href="' . $url . '">' . $output . '</a>';
+                $output = '<a ' . $attributes . ' href="' . $url . '">' . $output . '</a>';
             }
 
             $attribs = $parameter->getAttributes();
@@ -74,8 +95,20 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
             $parameter->setContent($output);
         }
 
-        $html  = $message->toString();
-        $html .= $message->getScripts(); // Append scripts.
+        //Render activity message
+        $html = '';
+        $html .= $message->toString();
+
+        //Append scripts
+        $identifier = (string) $message->getIdentifier();
+        if (!in_array($identifier, self::$_scripts_loaded))
+        {
+            if ($scripts = $message->getScripts()) {
+                $html .= $scripts;
+            }
+
+            self::$_scripts_loaded[] = $identifier;
+        }
 
         return $html;
     }

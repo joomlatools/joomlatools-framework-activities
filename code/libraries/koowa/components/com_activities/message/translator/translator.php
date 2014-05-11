@@ -29,7 +29,7 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
     public function translateMessage(ComActivitiesMessageInterface $message)
     {
         $format     = $message->getFormat();
-        $parameters = $message->getParameters();
+        $parameters = $message->getActivityParameters();
 
         if ($parameters)
         {

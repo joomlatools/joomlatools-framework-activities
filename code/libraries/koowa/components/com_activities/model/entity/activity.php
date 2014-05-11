@@ -13,15 +13,8 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjectInstantiable
+class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjectInstantiable, ComActivitiesMessageInterface
 {
-    /**
-     * Holds a list of loaded scripts.
-     *
-     * @var bool
-     */
-    static protected $_scripts_loaded;
-
     /**
      * The message format.
      *
@@ -30,18 +23,25 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     protected $_format;
 
     /**
-     * Message object identifier.
-     *
-     * @var mixed
-     */
-    protected $_message;
-
-    /**
      * Message parameter object identifier.
      *
      * @param mixed
      */
     protected $_parameter;
+
+    /**
+     * Message parameters
+     *
+     * @param mixed
+     */
+    protected $_parameters;
+
+    /**
+     * The message translator.
+     *
+     * @var mixed
+     */
+    protected $_translator;
 
     /**
      * A list of required columns.
@@ -59,13 +59,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         parent::__construct($config);
 
-        $this->_message    = $config->message;
         $this->_parameter  = $config->parameter;
         $this->_translator = $config->translator;
 
         $this->setFormat($config->format);
-
-        self::$_scripts_loaded = array();
+        $this->setScripts($config->scripts);
     }
 
     /**
@@ -80,8 +78,9 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         $config->append(array(
             'format'     => '{actor} {action} {object} {title}',
+            'scripts'    => null,
             'parameter'  => 'com:activities.message.parameter',
-            'message'    => 'com:activities.message'
+            'translator' => 'com:activities.message.translator'
         ));
 
         parent::_initialize($config);
@@ -202,29 +201,29 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the activity message
+     * Set the activity translator
      *
-     * @return ComActivitiesMessageInterface The activity message object.
+     * @param ComActivitiesMessageTranslatorInterface $translator The message translator.
+     * @return ComActivitiesMessageInterface
      */
-    public function getPropertyMessage()
+    public function setTranslator(ComActivitiesMessageTranslatorInterface $translator)
     {
-        $config = array('format' => $this->getFormat());
+        $this->_translator = $translator;
+        return $this;
+    }
 
-        $identifier = (string) $this->getIdentifier();
-
-        if (!in_array($identifier, self::$_scripts_loaded))
-        {
-            if ($scripts = $this->_getMessageScripts()) {
-                $config['scripts'] = $scripts;
-            }
-
-            self::$_scripts_loaded[] = $identifier;
+    /**
+     * Get the activity translator
+     *
+     * @return ComActivitiesMessageTranslatorInterface The message translator.
+     */
+    public function getTranslator()
+    {
+        if (!$this->_translator instanceof ComActivitiesMessageTranslatorInterface) {
+            $this->setTranslator($this->getObject($this->_translator));
         }
 
-        $message = $this->getObject($this->_message, $config);
-        $message->setParameters($this->_getMessageParameters());
-
-        return $message;
+        return $this->_translator;
     }
 
     /**
@@ -390,40 +389,67 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Message scripts getter.
+     * Set the message scripts
      *
-     * Returns
-     *
-     * @return mixed
+     * @param string $scripts Scripts to be included with the message.
+     * @return ComActivitiesMessageInterface
      */
-    protected function _getMessageScripts()
+    public function setScripts($scripts)
     {
-        // No scripts by default.
-        return null;
+        $this->_scripts = $scripts;
+        return $this;
     }
 
-    protected function _getMessageParameters()
+    /**
+     * Get the message scripts
+     *
+     * @return string Scripts to be included with the message.
+     */
+    public function getScripts()
     {
-        $parameters = array();
+        return $this->_scripts;
+    }
 
-        if (preg_match_all('/\{(.*?)\}/', $this->getFormat(), $matches) !== false)
-        {
-            foreach ($matches[1] as $parameter)
-            {
-                $method = '_getMessage' . ucfirst($parameter);
+    /**
+     * Set the message parameters
+     *
+     * @param array $parameters The message parameters.
+     * @return ComActivitiesMessageInterface
+     */
+    public function setActivityParameters($parameters)
+    {
+        $this->_parameters = $parameters;
+        return $this;
+    }
 
-                if (method_exists($this, $method))
-                {
-                    $config = new KObjectConfig();
-                    $this->$method($config);
+    /**
+     * Get the message parameters
+     *
+     * @return array The message parameters.
+     */
+    public function getActivityParameters()
+    {
+       if(!isset($this->_parameters))
+       {
+           if (preg_match_all('/\{(.*?)\}/', $this->getFormat(), $matches) !== false)
+           {
+               foreach ($matches[1] as $parameter)
+               {
+                   $method = 'get'.ucfirst($parameter).'Parameter';
 
-                    $config->name = $parameter;
-                    $parameters[$parameter] = $this->getObject($this->_parameter, $config->toArray());
-                }
-            }
-        }
+                   if (method_exists($this, $method))
+                   {
+                       $config = new KObjectConfig();
+                       $this->$method($config);
 
-        return $parameters;
+                       $config->name = $parameter;
+                       $this->_parameters[$parameter] = $this->getObject($this->_parameter, $config->toArray());
+                   }
+               }
+           }
+       }
+
+        return $this->_parameters;
     }
 
     /**
@@ -431,7 +457,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      *
      * @param KObjectConfig $config The message parameter configuration object.
      */
-    protected function _getMessageActor(KObjectConfig $config)
+    protected function getActorParameter(KObjectConfig $config)
     {
         if ($this->hasActor())
         {
@@ -452,7 +478,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      *
      * @param KObjectConfig $config The activity message parameter configuration object.
      */
-    protected function _getMessageAction(KObjectConfig $config)
+    public function getActionParameter(KObjectConfig $config)
     {
         $config->append(array(
             'value'      => $this->status,
@@ -464,7 +490,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      *
      * @param KObjectConfig $config The activity message parameter configuration object.
      */
-    protected function _getMessageObject(KObjectConfig $config)
+    public function getObjectParameter(KObjectConfig $config)
     {
         $config->append(array(
             'translate'  => true,
@@ -478,7 +504,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      *
      * @param KObjectConfig $config The activity message parameter configuration object.
      */
-    protected function _getMessageTitle(KObjectConfig $config)
+    public function getTitleParameter(KObjectConfig $config)
     {
         $config->append(array(
             'attributes' => array(),
@@ -493,5 +519,25 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         if ($this->status == 'deleted') {
             $config->attributes = array('class' => array('deleted'));
         }
+    }
+
+    /**
+     * Casts an activity message to string.
+     *
+     * @return string The string representation of an activity message.
+     */
+    public function toString()
+    {
+        return $this->getTranslator()->translateMessage($this);
+    }
+
+    /**
+     * Allow PHP casting of this object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->toString();
     }
 }
