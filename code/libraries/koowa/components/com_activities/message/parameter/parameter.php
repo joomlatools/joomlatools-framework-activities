@@ -262,4 +262,24 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
     {
         return (bool) $this->getUrl();
     }
+
+    /**
+     * Casts an activity parameter to string.
+     *
+     * @return string The string representation of an activity parameter.
+     */
+    public function toString()
+    {
+        return $this->getContent();
+    }
+
+    /**
+     * Allow PHP casting of this object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->toString();
+    }
 }

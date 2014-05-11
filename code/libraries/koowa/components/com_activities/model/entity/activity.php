@@ -222,7 +222,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         }
 
         $message = $this->getObject($this->_message, $config);
-        $message->getParameters()->setData($this->_getMessageParameters());
+        $message->setParameters($this->_getMessageParameters());
 
         return $message;
     }
@@ -418,7 +418,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
                     $this->$method($config);
 
                     $config->name = $parameter;
-                    $parameters[] = $this->getObject($this->_parameter, $config->toArray());
+                    $parameters[$parameter] = $this->getObject($this->_parameter, $config->toArray());
                 }
             }
         }

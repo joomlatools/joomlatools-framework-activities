@@ -112,4 +112,11 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
      * @return bool True if translatable, false otherwise.
      */
     public function isTranslatable();
+
+    /**
+     * Casts an activity parameter to string.
+     *
+     * @return string The string representation of an activity parameter.
+     */
+    public function toString();
 }

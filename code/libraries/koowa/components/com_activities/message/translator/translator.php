@@ -44,7 +44,7 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
             }
         }
 
-        $translation = $this->translate($format, $parameters->getContent());
+        $translation = $this->translate($format, $parameters);
 
         // Process context translations.
         if (preg_match_all('/\{(.+?):(.+?)\}/', $translation, $matches) !== false)
@@ -68,9 +68,8 @@ class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implemen
     /**
      * Returns a list of override strings for the provided string/parameters couple.
      *
-     * @param     string                                    $key     The translation key.
-     * @param     ComActivitiesMessageParametersInterface $parameters The message parameter collection object.
-     *
+     * @param  string  $format      The message format.
+     * @param  array   $parameters  The message parameter collection object.
      * @return array A list of override strings.
      */
     protected function _getOverrides($key, $parameters)

@@ -32,7 +32,7 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
     /**
      * The message parameters.
      *
-     * @var ComActivitiesMessageParametersInterface
+     * @var array
      */
     protected $_parameters;
 
@@ -103,10 +103,10 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
     /**
      * Set the message parameters
      *
-     * @param ComActivitiesMessageParametersInterface $parameters The message parameters.
+     * @param array $parameters The message parameters.
      * @return ComActivitiesMessageInterface
      */
-    public function setParameters(ComActivitiesMessageParametersInterface $parameters)
+    public function setParameters($parameters)
     {
         $this->_parameters = $parameters;
         return $this;
@@ -115,14 +115,10 @@ class ComActivitiesMessage extends KObject implements ComActivitiesMessageInterf
     /**
      * Get the message parameters
      *
-     * @return ComActivitiesMessageParametersInterface The message parameters.
+     * @return array The message parameters.
      */
     public function getParameters()
     {
-        if (!$this->_parameters instanceof ComActivitiesMessageParametersInterface) {
-            $this->setParameters($this->getObject($this->_parameters));
-        }
-
         return $this->_parameters;
     }
 
