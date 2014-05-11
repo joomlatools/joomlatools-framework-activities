@@ -8,54 +8,19 @@
  */
 
 /**
- * Activity Parameter Class
+ * Activity Parameter
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesActivityParameter extends KObject implements ComActivitiesActivityParameterInterface
+class ComActivitiesActivityParameter extends KObjectConfig implements ComActivitiesActivityParameterInterface
 {
     /**
      * The parameter name
      *
      * @var string
      */
-    protected $__name;
-
-    /**
-     * The parameter value.
-     *
-     * @var string
-     */
-    protected $_value;
-
-    /**
-     * Determines if the parameter is translatable (true) or not (false).
-     *
-     * @var boolean
-     */
-    protected $_translate;
-
-    /**
-     * The parameter attributes.
-     *
-     * @var array
-     */
-    protected $_attributes;
-
-    /**
-     * The parameter link attributes.
-     *
-     * @var array
-     */
-    protected $_link_attributes;
-
-    /**
-     * The parameter url.
-     *
-     * @var string
-     */
-    protected $_url;
+    private $__name;
 
     /**
      * The parameter content.
@@ -69,46 +34,25 @@ class ComActivitiesActivityParameter extends KObject implements ComActivitiesAct
     /**
      * Constructor.
      *
-     * @param   KObjectConfig $config Configuration options
+     * @param	string 			$name The command name
+     * @param   array|KObjectConfig 	$config An associative array of configuration settings or a KObjectConfig instance.
      */
-    public function __construct(KObjectConfig $config)
+    public function __construct( $name, $config = array())
     {
         parent::__construct($config);
 
-        if (empty($config->name)) {
-            throw new InvalidArgumentException('A message parameter must have a name');
-        }
-
-        $this->__name      = $config->name;
-        $this->_translate  = $config->translate;
-
-        $this->setAttributes(KObjectConfig::unbox($config->attributes));
-        $this->setLinkAttributes(KObjectConfig::unbox($config->link_attributes));
-
-        $this->setValue($config->value);
-        $this->setContent($config->content);
-        $this->setUrl($config->url);
-    }
-
-    /**
-     * Initializes the options for the object
-     *
-     * Called from {@link __construct()} as a first step of object instantiation.
-     *
-     * @param   KObjectConfig $config Configuration options.
-     * @return  void
-     */
-    protected function _initialize(KObjectConfig $config)
-    {
-        $config->append(array(
-            'name'            => null,
-            'value'           => '',
-            'translate'       => false,
+        $this->append(array(
+            'value'      => '',
+            'translate' => false,
+            'url'       => '',
             'link_attributes' => array(),
-            'attributes'      => array('class' => array('parameter'))
+            'attributes'      => array(
+                'class' => array('parameter')
+            )
         ));
 
-        parent::_initialize($config);
+        //Set the command name
+        $this->__name = $name;
     }
 
     /**
@@ -131,7 +75,7 @@ class ComActivitiesActivityParameter extends KObject implements ComActivitiesAct
      */
     public function setValue($value)
     {
-        $this->_value = (string) $value;
+        $this->value = (string) $value;
         return $this;
     }
 
@@ -142,13 +86,79 @@ class ComActivitiesActivityParameter extends KObject implements ComActivitiesAct
      */
     public function getValue()
     {
-        $value = $this->_value;
+        $value = $this->value;
 
-        if ($this->isTranslatable()) {
-            $text = $this->getObject('translator')->translate($value);
-        }
+        //if ($this->isTranslatable()) {
+        //    $text = $this->getObject('translator')->translate($value);
+        //}
 
         return $value;
+    }
+
+    /**
+     * Set the URL
+     *
+     * @param string $url The parameter URL.
+     * @return ComActivitiesActivityParameterInterface
+     */
+    public function setUrl($url)
+    {
+        $this->url = (string) $url;
+        return $this;
+    }
+
+    /**
+     * Get the URL
+     *
+     * @return string The parameter url.
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * Set the attributes
+     *
+     * @param array $attributes The parameter attributes.
+     * @return ComActivitiesActivityParameterInterface
+     */
+    public function setAttributes($attributes)
+    {
+        $this->attributes = $attributes;
+        return $this;
+    }
+
+    /**
+     * Get the attributes
+     *
+     * @return array The parameter attributes.
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * Link attributes setter.
+     *
+     * @param array $attributes The parameter link attributes.
+     * @return ComActivitiesActivityParameterInterface
+     */
+    public function setLinkAttributes($attributes)
+    {
+        $this->link_attributes = $attributes;
+        return $this;
+    }
+
+    /**
+     * Get the link attributes
+     *
+     * @return array The parameter attributes.
+     */
+    public function getLinkAttributes()
+    {
+        return $this->link_attributes;
     }
 
     /**
@@ -178,79 +188,13 @@ class ComActivitiesActivityParameter extends KObject implements ComActivitiesAct
     }
 
     /**
-     * Set the URL
-     *
-     * @param string $url The parameter URL.
-     * @return ComActivitiesActivityParameterInterface
-     */
-    public function setUrl($url)
-    {
-        $this->_url = (string) $url;
-        return $this;
-    }
-
-    /**
-     * Get the URL
-     *
-     * @return string The parameter url.
-     */
-    public function getUrl()
-    {
-        return $this->_url;
-    }
-
-    /**
-     * Set the attributes
-     *
-     * @param array $attributes The parameter attributes.
-     * @return ComActivitiesActivityParameterInterface
-     */
-    public function setAttributes($attributes)
-    {
-        $this->_attributes = $attributes;
-        return $this;
-    }
-
-    /**
-     * Get the attributes
-     *
-     * @return array The parameter attributes.
-     */
-    public function getAttributes()
-    {
-        return $this->_attributes;
-    }
-
-    /**
-     * Link attributes setter.
-     *
-     * @param array $attributes The parameter link attributes.
-     * @return ComActivitiesActivityParameterInterface
-     */
-    public function setLinkAttributes($attributes)
-    {
-        $this->_link_attributes = $attributes;
-        return $this;
-    }
-
-    /**
-     * Get the link attributes
-     *
-     * @return array The parameter attributes.
-     */
-    public function getLinkAttributes()
-    {
-        return $this->_link_attributes;
-    }
-
-    /**
      * Tells if the parameter is translatable.
      *
      * @return bool True if translatable, false otherwise.
      */
     public function isTranslatable()
     {
-        return (bool) $this->_translate;
+        return (bool) $this->translate;
     }
 
     /**
@@ -271,6 +215,22 @@ class ComActivitiesActivityParameter extends KObject implements ComActivitiesAct
     public function toString()
     {
         return $this->getContent();
+    }
+
+    /**
+     * Set a parameter property
+     *
+     * @param  string $name
+     * @param  mixed  $value
+     * @return void
+     */
+    public function set($name, $value)
+    {
+        if (is_array($value)) {
+            $value = new KObjectConfig($value);
+        }
+
+        parent::set($name, $value);
     }
 
     /**

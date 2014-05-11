@@ -23,13 +23,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     protected $_format;
 
     /**
-     * Message parameter object identifier.
-     *
-     * @param mixed
-     */
-    protected $_parameter;
-
-    /**
      * Message parameters
      *
      * @param mixed
@@ -60,7 +53,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         parent::__construct($config);
 
         $this->_format     = $config->format;
-        $this->_parameter  = $config->parameter;
         $this->_translator = $config->translator;
     }
 
@@ -76,7 +68,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         $config->append(array(
             'format'     => '{actor} {action} {object} {title}',
-            'parameter'  => 'com:activities.activity.parameter',
             'translator' => 'com:activities.activity.translator'
         ));
 
@@ -240,39 +231,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the actor activity message parameter configuration
-     *
-     * @param KObjectConfig $config The message parameter configuration object.
-     */
-    public function getActorParameter(KObjectConfig $config)
-    {
-        if ($this->hasActor())
-        {
-            $config->url = $this->getActorUrl();
-            $value  = $this->created_by_name;
-        }
-        else
-        {
-            $value = $this->created_by ? 'Deleted user' : 'Guest user';
-            $config->translate = true;
-        }
-
-        $config->value = $value;
-    }
-
-    /**
-     * Get the action activity message parameter configuration.
-     *
-     * @param KObjectConfig $config The activity message parameter configuration object.
-     */
-    public function getActionParameter(KObjectConfig $config)
-    {
-        $config->append(array(
-            'value'      => $this->status,
-            'translate' => true));
-    }
-
-    /**
      * Check if the activity object still exists, i.e. it is still stored or reachable.
      *
      * @return boolean True if still exists, false otherwise.
@@ -310,43 +268,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         return $this->name;
     }
-
-    /**
-     * Get the object activity message parameter configuration.
-     *
-     * @param KObjectConfig $config The activity message parameter configuration object.
-     */
-    public function getObjectParameter(KObjectConfig $config)
-    {
-        $config->append(array(
-            'translate'  => true,
-            'value'       => $this->name,
-            'attributes' => array('class' => array('object')),
-        ));
-    }
-
-    /**
-     * Get the title activity message parameter configuration.
-     *
-     * @param KObjectConfig $config The activity message parameter configuration object.
-     */
-    public function getTitleParameter(KObjectConfig $config)
-    {
-        $config->append(array(
-            'attributes' => array(),
-            'translate'  => false,
-            'value'      => $this->title
-        ));
-
-        if (!$config->url && $this->hasObject() && ($url = $this->getObjectUrl())) {
-            $config->url = $url;
-        }
-
-        if ($this->status == 'deleted') {
-            $config->attributes = array('class' => array('deleted'));
-        }
-    }
-
 
     /**
      * Checks if the activity target still exists, i.e. it is still stored or reachable.
@@ -397,19 +318,20 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
        if(!isset($this->_parameters))
        {
+           $this->_parameters = array();
+
            if (preg_match_all('/\{(.*?)\}/', $this->getFormat(), $matches) !== false)
            {
-               foreach ($matches[1] as $parameter)
+               foreach ($matches[1] as $name)
                {
-                   $method = 'get'.ucfirst($parameter).'Parameter';
+                   $method = '_parameter'.ucfirst($name);
 
                    if (method_exists($this, $method))
                    {
-                       $config = new KObjectConfig();
-                       $this->$method($config);
+                       $parameter = new ComActivitiesActivityParameter($name);
+                       $this->$method($parameter);
 
-                       $config->name = $parameter;
-                       $this->_parameters[$parameter] = $this->getObject($this->_parameter, $config->toArray());
+                       $this->_parameters[$parameter->getName()] = $parameter;
                    }
                }
            }
@@ -440,6 +362,75 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     public function toString()
     {
         return $this->getTranslator()->translateMessage($this);
+    }
+
+    /**
+     * Actor Activity Parameter
+     *
+     * @param ComActivitiesActivityParameterInterface $parameter The activity parameter.
+     * @return  void
+     */
+    protected function _parameterActor(ComActivitiesActivityParameterInterface $parameter)
+    {
+        if ($this->hasActor())
+        {
+            $parameter->url = $this->getActorUrl();
+            $value  = $this->created_by_name;
+        }
+        else
+        {
+            $value = $this->created_by ? 'Deleted user' : 'Guest user';
+            $parameter->translate = true;
+        }
+
+        $parameter->value = $value;
+    }
+
+    /**
+     * Action Activity parameter
+     *
+     * @param ComActivitiesActivityParameterInterface $parameter The activity parameter.
+     * @return  void
+     */
+    protected function _parameterAction(ComActivitiesActivityParameterInterface $parameter)
+    {
+        $parameter->value     = $this->status;
+        $parameter->translate = true;
+    }
+
+    /**
+     * Object Activity Parameter
+     *
+     * @param ComActivitiesActivityParameterInterface $parameter The activity parameter.
+     * @return  void
+     */
+    protected function _parameterObject(ComActivitiesActivityParameterInterface $parameter)
+    {
+        $parameter->value     = $this->name;
+        $parameter->translate = true;
+
+        $parameter->append(array(
+            'attributes' => array('class' => array('object')),
+        ));
+    }
+
+    /**
+     * Title Activity Parameter
+     *
+     * @param ComActivitiesActivityParameterInterface $parameter The activity parameter.
+     * @return  void
+     */
+    protected function _parameterTitle(ComActivitiesActivityParameterInterface $parameter)
+    {
+        $parameter->value = $this->title;
+
+        if (!$parameter->url && $this->hasObject() && ($url = $this->getObjectUrl())) {
+            $parameter->url = $url;
+        }
+
+        if ($this->status == 'deleted') {
+            $parameter->attributes = array('class' => array('deleted'));
+        }
     }
 
     /**

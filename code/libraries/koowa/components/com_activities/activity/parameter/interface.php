@@ -13,8 +13,16 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-interface ComActivitiesActivityParameterInterface extends KObjectHandlable
+interface ComActivitiesActivityParameterInterface
 {
+    /**
+     * Constructor.
+     *
+     * @param	string $name The parameter name
+     * @param   array|KObjectConfig $config An associative array of configuration settings or a KObjectConfig instance.
+     */
+    public function __construct( $name, $config = array());
+
     /**
      * Get the parameter name
      *
@@ -38,21 +46,6 @@ interface ComActivitiesActivityParameterInterface extends KObjectHandlable
      * @return string The parameter value.
      */
     public function getValue();
-
-    /**
-     * Set the parameter content
-     *
-     * @param string $content The parameter content.
-     * @return ComActivitiesActivityParameterInterface
-     */
-    public function setContent($content);
-
-    /**
-     * Get the parameter content
-     *
-     * @return string The parameter content.
-     */
-    public function getContent();
 
     /**
      * Set the URL
@@ -98,6 +91,21 @@ interface ComActivitiesActivityParameterInterface extends KObjectHandlable
      * @return array The parameter attributes.
      */
     public function getAttributes();
+
+    /**
+     * Set the parameter content
+     *
+     * @param string $content The parameter content.
+     * @return ComActivitiesActivityParameterInterface
+     */
+    public function setContent($content);
+
+    /**
+     * Get the parameter content
+     *
+     * @return string The parameter content.
+     */
+    public function getContent();
 
     /**
      * Tells if the parameter is linkable or not.

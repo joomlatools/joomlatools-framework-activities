@@ -45,20 +45,6 @@ interface ComActivitiesActivityInterface
     public function getActorUrl();
 
     /**
-     * Get the actor activity message parameter configuration
-     *
-     * @param KObjectConfig $config The message parameter configuration object.
-     */
-    public function getActorParameter(KObjectConfig $config);
-
-    /**
-     * Get the action activity message parameter configuration.
-     *
-     * @param KObjectConfig $config The activity message parameter configuration object.
-     */
-    public function getActionParameter(KObjectConfig $config);
-
-    /**
      * Check if the activity object still exists, i.e. it is still stored or reachable.
      *
      * @return boolean True if still exists, false otherwise.
@@ -78,20 +64,6 @@ interface ComActivitiesActivityInterface
      * @return string The object type.
      */
     public function getObjectType();
-
-    /**
-     * Get the object activity message parameter configuration.
-     *
-     * @param KObjectConfig $config The activity message parameter configuration object.
-     */
-    public function getObjectParameter(KObjectConfig $config);
-
-    /**
-     * Get the title activity message parameter configuration.
-     *
-     * @param KObjectConfig $config The activity message parameter configuration object.
-     */
-    public function getTitleParameter(KObjectConfig $config);
 
     /**
      * Checks if the activity target still exists, i.e. it is still stored or reachable.
