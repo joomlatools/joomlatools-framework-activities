@@ -63,7 +63,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         $this->_translator = $config->translator;
 
         $this->setFormat($config->format);
-        $this->setScripts($config->scripts);
     }
 
     /**
@@ -78,7 +77,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         $config->append(array(
             'format'     => '{actor} {action} {object} {title}',
-            'scripts'    => null,
             'parameter'  => 'com:activities.message.parameter',
             'translator' => 'com:activities.message.translator'
         ));
@@ -87,7 +85,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the object identifier
+     * Instantiate the object
      *
      * @param   KObjectConfigInterface $config      Configuration options
      * @param 	KObjectManagerInterface $manager	A KObjectManagerInterface object
@@ -358,28 +356,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     public function getFormat()
     {
         return $this->_format;
-    }
-
-    /**
-     * Set the message scripts
-     *
-     * @param string $scripts Scripts to be included with the message.
-     * @return ComActivitiesMessageInterface
-     */
-    public function setScripts($scripts)
-    {
-        $this->_scripts = $scripts;
-        return $this;
-    }
-
-    /**
-     * Get the message scripts
-     *
-     * @return string Scripts to be included with the message.
-     */
-    public function getScripts()
-    {
-        return $this->_scripts;
     }
 
     /**

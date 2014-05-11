@@ -46,21 +46,6 @@ interface ComActivitiesMessageInterface
     public function getActivityParameters();
 
     /**
-     * Set the message scripts
-     *
-     * @param string $scripts Scripts to be included with the message.
-     * @return ComActivitiesMessageInterface
-     */
-    public function setScripts($scripts);
-
-    /**
-     * Get the message scripts
-     *
-     * @return string Scripts to be included with the message.
-     */
-    public function getScripts();
-
-    /**
      * Set the message translator
      *
      * @param ComActivitiesMessageTranslatorInterface $translator The message translator.
