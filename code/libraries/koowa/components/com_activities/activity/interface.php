@@ -8,12 +8,18 @@
  */
 
 /**
- * Activity Message Interface.
+ * Activity Interface.
+ *
+ * In its simplest form, an activity consists of an actor, a verb, an an object, and a target. It tells the story of a
+ * person performing an action on or with an object -- "Geraldine posted a photo to her album" or "John shared a video".
+ * In most cases these components will be explicit, but they may also be implied.
+ *
+ * @see http://activitystrea.ms/specs/json/1.0/
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-interface ComActivitiesMessageInterface
+interface ComActivitiesActivityInterface
 {
     /**
      * Get the message format
@@ -126,7 +132,7 @@ interface ComActivitiesMessageInterface
     /**
      * Get the message translator
      *
-     * @return ComActivitiesMessageTranslatorInterface The message translator.
+     * @return ComActivitiesActivityTranslatorInterface The message translator.
      */
     public function getTranslator();
 

@@ -8,25 +8,25 @@
  */
 
 /**
- * Message Translator Class.
+ * Activity Translator Class.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesMessageTranslator extends ComKoowaTranslatorAbstract implements ComActivitiesMessageTranslatorInterface, KObjectMultiton
+class ComActivitiesActivityTranslator extends ComKoowaTranslatorAbstract implements ComActivitiesActivityTranslatorInterface, KObjectMultiton
 {
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
             'alias_catalogue' => 'lib:translator.catalogue',
             'prefix'          => 'KLS_ACTIVITY_',
-            'catalogue'       => 'com:activities.message.translator.catalogue.message'
+            'catalogue'       => 'com:activities.activity.translator.catalogue.message'
         ));
 
         parent::_initialize($config);
     }
 
-    public function translateMessage(ComActivitiesMessageInterface $message)
+    public function translateMessage(ComActivitiesActivityInterface $message)
     {
         $format     = $message->getFormat();
         $parameters = $message->getActivityParameters();

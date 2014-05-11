@@ -65,10 +65,10 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
     /**
      * Activity message Html renderer.
      *
-     * @param ComActivitiesMessageInterface $message The activity message.
+     * @param ComActivitiesActivityInterface $message The activity message.
      * @return string The Html message.
      */
-    protected function _renderHtml(ComActivitiesMessageInterface $message)
+    protected function _renderHtml(ComActivitiesActivityInterface $message)
     {
         //Render activity parameters
         foreach ($message->getActivityParameters() as $parameter)
@@ -116,10 +116,10 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
     /**
      * Activity message text renderer.
      *
-     * @param ComActivitiesMessageInterface $message The activity message.
+     * @param ComActivitiesActivityInterface $message The activity message.
      * @return string The text message.
      */
-    protected function _renderText(ComActivitiesMessageInterface $message)
+    protected function _renderText(ComActivitiesActivityInterface $message)
     {
         return $message->toString();
     }

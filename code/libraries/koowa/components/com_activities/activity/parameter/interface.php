@@ -8,12 +8,12 @@
  */
 
 /**
- * Message Parameter Interface
+ * Activity Parameter Interface
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-interface ComActivitiesMessageParameterInterface extends KObjectHandlable
+interface ComActivitiesActivityParameterInterface extends KObjectHandlable
 {
     /**
      * Get the parameter name
@@ -28,7 +28,7 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
      * Get the parameter value
      *
      * @param mixed $value The parameter value.
-     * @return ComActivitiesMessageParameterInterface
+     * @return ComActivitiesActivityParameterInterface
      */
     public function setValue($value);
 
@@ -43,7 +43,7 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
      * Set the parameter content
      *
      * @param string $content The parameter content.
-     * @return ComActivitiesMessageParameterInterface
+     * @return ComActivitiesActivityParameterInterface
      */
     public function setContent($content);
 
@@ -58,7 +58,7 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
      * Set the URL
      *
      * @param string $url The parameter URL.
-     * @return ComActivitiesMessageParameterInterface
+     * @return ComActivitiesActivityParameterInterface
      */
     public function setUrl($url);
 
@@ -73,7 +73,7 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
      * Set the parameter link attributes
      *
      * @param array $attributes The parameter link attributes.
-     * @return ComActivitiesMessageParameterInterface
+     * @return ComActivitiesActivityParameterInterface
      */
     public function setLinkAttributes($attributes);
 
@@ -88,7 +88,7 @@ interface ComActivitiesMessageParameterInterface extends KObjectHandlable
      * Set the parameter attributes
      *
      * @param array $attributes The parameter attributes.
-     * @return ComActivitiesMessageParameterInterface
+     * @return ComActivitiesActivityParameterInterface
      */
     public function setAttributes($attributes);
 

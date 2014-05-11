@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjectInstantiable, ComActivitiesMessageInterface
+class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjectInstantiable, ComActivitiesActivityInterface
 {
     /**
      * The message format.
@@ -76,8 +76,8 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         $config->append(array(
             'format'     => '{actor} {action} {object} {title}',
-            'parameter'  => 'com:activities.message.parameter',
-            'translator' => 'com:activities.message.translator'
+            'parameter'  => 'com:activities.activity.parameter',
+            'translator' => 'com:activities.activity.translator'
         ));
 
         parent::_initialize($config);
@@ -421,11 +421,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     /**
      * Get the activity translator
      *
-     * @return ComActivitiesMessageTranslatorInterface The message translator.
+     * @return ComActivitiesActivityTranslatorInterface The message translator.
      */
     public function getTranslator()
     {
-        if (!$this->_translator instanceof ComActivitiesMessageTranslatorInterface) {
+        if (!$this->_translator instanceof ComActivitiesActivityTranslatorInterface) {
             $this->_translator = $this->getObject($this->_translator);
         }
 

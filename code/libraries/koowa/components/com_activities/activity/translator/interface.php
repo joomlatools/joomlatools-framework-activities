@@ -8,18 +8,18 @@
  */
 
 /**
- * Message Translator Interface
+ * Activity Translator Interface
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-interface ComActivitiesMessageTranslatorInterface
+interface ComActivitiesActivityTranslatorInterface
 {
     /**
      * Translates an activity message.
      *
-     * @param ComActivitiesMessageInterface $message The activity message.
+     * @param ComActivitiesActivityInterface $message The activity message.
      * @return string The translated activity message.
      */
-    public function translateMessage(ComActivitiesMessageInterface $message);
+    public function translateMessage(ComActivitiesActivityInterface $message);
 }

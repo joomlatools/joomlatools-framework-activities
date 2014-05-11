@@ -8,12 +8,12 @@
  */
 
 /**
- * Message Parameter Class
+ * Activity Parameter Class
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesMessageParameter extends KObject implements ComActivitiesMessageParameterInterface
+class ComActivitiesActivityParameter extends KObject implements ComActivitiesActivityParameterInterface
 {
     /**
      * The parameter name
@@ -127,7 +127,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
      * Get the parameter value
      *
      * @param mixed $value The parameter value.
-     * @return ComActivitiesMessageParameterInterface
+     * @return ComActivitiesActivityParameterInterface
      */
     public function setValue($value)
     {
@@ -155,7 +155,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
      * Set the parameter content
      *
      * @param string $content The parameter content.
-     * @return ComActivitiesMessageParameterInterface
+     * @return ComActivitiesActivityParameterInterface
      */
     public function setContent($content)
     {
@@ -181,7 +181,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
      * Set the URL
      *
      * @param string $url The parameter URL.
-     * @return ComActivitiesMessageParameterInterface
+     * @return ComActivitiesActivityParameterInterface
      */
     public function setUrl($url)
     {
@@ -203,7 +203,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
      * Set the attributes
      *
      * @param array $attributes The parameter attributes.
-     * @return ComActivitiesMessageParameterInterface
+     * @return ComActivitiesActivityParameterInterface
      */
     public function setAttributes($attributes)
     {
@@ -225,7 +225,7 @@ class ComActivitiesMessageParameter extends KObject implements ComActivitiesMess
      * Link attributes setter.
      *
      * @param array $attributes The parameter link attributes.
-     * @return ComActivitiesMessageParameterInterface
+     * @return ComActivitiesActivityParameterInterface
      */
     public function setLinkAttributes($attributes)
     {
