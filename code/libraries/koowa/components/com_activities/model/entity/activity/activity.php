@@ -37,20 +37,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     protected $_parameter;
 
     /**
-     * The database table name
-     *
-     * @var string
-     */
-    protected $_table_name;
-
-    /**
-     * The database table column
-     *
-     * @var string
-     */
-    protected $_table_column;
-
-    /**
      * A list of required columns.
      *
      * @var array
@@ -70,18 +56,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         $this->_parameter  = $config->parameter;
         $this->_translator = $config->translator;
 
-        if(empty($config->table)) {
-            $this->_table = $this->package . '_' . KStringInflector::pluralize($this->name);
-        } else {
-            $this->_table = $config->table;
-        }
-
-        if(empty($config->table_column)) {
-            $this->_table_column = $this->package . '_' . $this->name . '_' . 'id';
-        } else {
-            $this->_table_column = $config->table_column;
-        }
-
         self::$_scripts_loaded = array();
     }
 
@@ -96,8 +70,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'table'         => null,
-            'table_column'  => null,
             'parameter'     => 'com:activities.message.parameter',
             'message'       => 'com:activities.message'
         ));
@@ -294,22 +266,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     public function hasObject()
     {
-        $db     = $this->getTable()->getAdapter();
-        $table  = $this->_table;
-        $column = $this->_column;
-
-        $query = $this->getObject('lib:database.query.select');
-        $query->columns('COUNT(*)')->table($table)->where($column . ' = :value')
-            ->bind(array('value' => $this->row));
-
-        // Need to catch exceptions here as table may not longer exist.
-        try {
-            $result = $db->select($query, KDatabase::FETCH_FIELD);
-        } catch (Exception $e) {
-            $result = 0;
-        }
-
-        return (bool) $result;
+        return false;
     }
 
     /**
