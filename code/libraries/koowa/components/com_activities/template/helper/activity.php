@@ -43,10 +43,10 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
         return $this->$renderer($entity->message);
     }
 
-    /** Activity message Html renderer.
+    /**
+     * Activity message Html renderer.
      *
      * @param ComActivitiesMessageInterface $message The activity message.
-     *
      * @return string The Html message.
      */
     protected function _renderHtml(ComActivitiesMessageInterface $message)
@@ -84,7 +84,6 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
      * Activity message text renderer.
      *
      * @param ComActivitiesMessageInterface $message The activity message.
-     *
      * @return string The text message.
      */
     protected function _renderText(ComActivitiesMessageInterface $message)
