@@ -23,6 +23,13 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     static protected $_scripts_loaded;
 
     /**
+     * The message format.
+     *
+     * @var string
+     */
+    protected $_format;
+
+    /**
      * Message object identifier.
      *
      * @var mixed
@@ -56,6 +63,8 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         $this->_parameter  = $config->parameter;
         $this->_translator = $config->translator;
 
+        $this->setFormat($config->format);
+
         self::$_scripts_loaded = array();
     }
 
@@ -70,8 +79,9 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'parameter'     => 'com:activities.message.parameter',
-            'message'       => 'com:activities.message'
+            'format'     => '{actor} {action} {object} {title}',
+            'parameter'  => 'com:activities.message.parameter',
+            'message'    => 'com:activities.message'
         ));
 
         parent::_initialize($config);
@@ -212,7 +222,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      */
     public function getPropertyMessage()
     {
-        $config = array('format' => $this->_getMessageFormat());
+        $config = array('format' => $this->getFormat());
 
         $identifier = (string) $this->getIdentifier();
 
@@ -369,16 +379,28 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Message key getter.
+     * Set the message format
+     *
+     * @param string $format The message format.
+     * @return ComActivitiesMessageInterface
+     */
+    public function setFormat($format)
+    {
+        $this->_format = (string) $format;
+        return $this;
+    }
+
+    /**
+     * Get the message format
      *
      * An activity message format is a compact representation of the activity which also provides information
      * about the parameters it may contain.
      *
      * @return string The activity message format.
      */
-    protected function _getMessageFormat()
+    public function getFormat()
     {
-        return '{actor} {action} {object} {title}';
+        return $this->_format;
     }
 
     /**
@@ -398,7 +420,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         $parameters = array();
 
-        if (preg_match_all('/\{(.*?)\}/', $this->_getMessageFormat(), $matches) !== false)
+        if (preg_match_all('/\{(.*?)\}/', $this->getFormat(), $matches) !== false)
         {
             foreach ($matches[1] as $parameter)
             {
