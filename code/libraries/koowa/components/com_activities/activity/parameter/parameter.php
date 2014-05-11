@@ -42,10 +42,12 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
         parent::__construct($config);
 
         $this->append(array(
-            'value'     => '',
-            'url'       => '',
-            'link_attributes' => array(),
-            'attributes'      => array(
+            'value' => '',
+            'link'  => array(
+                'href'    => '',
+                'attribs' => array()
+            ),
+            'attribs' => array(
                 'class' => array('parameter')
             )
         ));
@@ -90,28 +92,6 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
     }
 
     /**
-     * Set the URL
-     *
-     * @param string $url The parameter URL.
-     * @return ComActivitiesActivityParameterInterface
-     */
-    public function setUrl($url)
-    {
-        $this->url = (string) $url;
-        return $this;
-    }
-
-    /**
-     * Get the URL
-     *
-     * @return string The parameter url.
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
-    /**
      * Set the attributes
      *
      * @param array $attributes The parameter attributes.
@@ -119,7 +99,7 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
      */
     public function setAttributes($attributes)
     {
-        $this->attributes = $attributes;
+        $this->attribs = $attributes;
         return $this;
     }
 
@@ -130,29 +110,29 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
      */
     public function getAttributes()
     {
-        return $this->attributes;
+        return $this->attribs;
     }
 
     /**
-     * Link attributes setter.
+     * Set the link attributes
      *
-     * @param array $attributes The parameter link attributes.
+     * @param array $attributes The link attributes.
      * @return ComActivitiesActivityParameterInterface
      */
-    public function setLinkAttributes($attributes)
+    public function setLink($attributes)
     {
-        $this->link_attributes = $attributes;
+        $this->link = $attributes;
         return $this;
     }
 
     /**
      * Get the link attributes
      *
-     * @return array The parameter attributes.
+     * @return array The link attributes
      */
-    public function getLinkAttributes()
+    public function getLink()
     {
-        return $this->link_attributes;
+        return $this->link;
     }
 
     /**
@@ -188,7 +168,7 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
      */
     public function isLinkable()
     {
-        return (bool) $this->getUrl();
+        return (bool) $this->getLink()->href;
     }
 
     /**

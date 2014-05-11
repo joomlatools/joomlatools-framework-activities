@@ -77,11 +77,11 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
 
             if ($parameter->isLinkable())
             {
-                $link_attributes = $parameter->getLinkAttributes();
+                $link = $parameter->getLink();
 
                 $view       = $this->getTemplate()->getView();
-                $url        = $view->getActivityRoute($parameter->getUrl());
-                $attributes = !empty($link_attributes) ? $this->buildAttributes($link_attributes) : '';
+                $url        = $view->getActivityRoute($link->href);
+                $attributes = !empty($link->attribs) ? $this->buildAttributes($link->attribs) : '';
 
                 $output = '<a ' . $attributes . ' href="' . $url . '">' . $output . '</a>';
             }

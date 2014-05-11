@@ -16,7 +16,7 @@
 interface ComActivitiesActivityParameterInterface
 {
     /**
-     * Constructor.
+     * Constructor
      *
      * @param	string $name The parameter name
      * @param   array|KObjectConfig $config An associative array of configuration settings or a KObjectConfig instance.
@@ -48,36 +48,6 @@ interface ComActivitiesActivityParameterInterface
     public function getValue();
 
     /**
-     * Set the URL
-     *
-     * @param string $url The parameter URL.
-     * @return ComActivitiesActivityParameterInterface
-     */
-    public function setUrl($url);
-
-    /**
-     * Get the URL
-     *
-     * @return string The parameter url.
-     */
-    public function getUrl();
-
-    /**
-     * Set the parameter link attributes
-     *
-     * @param array $attributes The parameter link attributes.
-     * @return ComActivitiesActivityParameterInterface
-     */
-    public function setLinkAttributes($attributes);
-
-    /**
-     * Get the parameter link attributes
-     *
-     * @return array The parameter attributes.
-     */
-    public function getLinkAttributes();
-
-    /**
      * Set the parameter attributes
      *
      * @param array $attributes The parameter attributes.
@@ -91,6 +61,21 @@ interface ComActivitiesActivityParameterInterface
      * @return array The parameter attributes.
      */
     public function getAttributes();
+
+    /**
+     * Set the link attributes
+     *
+     * @param array $attributes The link attributes.
+     * @return ComActivitiesActivityParameterInterface
+     */
+    public function setLink($attributes);
+
+    /**
+     * Get the link attributes
+     *
+     * @return array The link attributes
+     */
+    public function getLink();
 
     /**
      * Set the parameter content

@@ -374,7 +374,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         if ($this->hasActor())
         {
-            $parameter->url = $this->getActorUrl();
+            $parameter->link->href = $this->getActorUrl();
             $value  = $this->created_by_name;
         }
         else
@@ -408,7 +408,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         $parameter->value = $this->getObject('translator')->translate($this->name);
 
         $parameter->append(array(
-            'attributes' => array('class' => array('object')),
+            'attribs' => array('class' => array('object')),
         ));
     }
 
@@ -423,11 +423,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         $parameter->value = $this->title;
 
         if ($this->hasObject()) {
-            $parameter->url = $this->getObjectUrl();
+            $parameter->link->href = $this->getObjectUrl();
         }
 
         if ($this->status == 'deleted') {
-            $parameter->attributes = array('class' => array('deleted'));
+            $parameter->attribs = array('class' => array('deleted'));
         }
     }
 
