@@ -144,21 +144,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return parent::save();
     }
 
-    public function setProperty($name, $value, $modified = true)
-    {
-        // Map metadata to parameters (POST data contains a metadata key not parameters).
-        if ($name == 'metadata') {
-            $name = 'parameters';
-        }
-
-        return parent::setProperty($name, $value, $modified);
-    }
-
-    public function setPropertyVerb($value)
-    {
-        $this->setProperty('action', $value);
-    }
-
     public function removeProperty($name)
     {
         if ($name == 'package') {
@@ -168,15 +153,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return parent::removeProperty($name);
     }
 
-    public function getPropertyVerb()
-    {
-        return $this->getProperty('action');
-    }
-
-    public function getPropertyMetadata()
-    {
-        return  $this->getParameters();
-    }
 
     public function setPropertyPackage($value)
     {
@@ -185,6 +161,26 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         }
 
         return $value;
+    }
+
+    /**
+     * Verb is an alias for action
+     *
+     * @return mixed
+     */
+    public function getPropertyVerb()
+    {
+        return $this->getProperty('action');
+    }
+
+    /**
+     * Varb is an alias for action
+     *
+     * @param $value
+     */
+    public function setPropertyVerb($value)
+    {
+        $this->setProperty('action', $value);
     }
 
     /**

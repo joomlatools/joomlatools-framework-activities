@@ -18,9 +18,8 @@ class ComActivitiesDatabaseTableActivities extends KDatabaseTableAbstract
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'column_map' => array('parameters' => 'metadata'),
-            'behaviors'  => array('creatable', 'identifiable', 'parameterizable'),
-            'filters'    => array('parameters' => 'json')
+            'behaviors'  => array('creatable', 'identifiable', 'parameterizable' => array('column' => 'metadata')),
+            'filters'    => array('metadata' => 'json')
         ));
 
         parent::_initialize($config);
