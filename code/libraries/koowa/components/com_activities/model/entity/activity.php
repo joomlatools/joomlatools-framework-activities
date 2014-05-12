@@ -30,13 +30,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     protected $_parameters;
 
     /**
-     * The message translator.
-     *
-     * @var mixed
-     */
-    protected $_translator;
-
-    /**
      * A list of required columns.
      *
      * @var array
@@ -52,8 +45,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         parent::__construct($config);
 
-        $this->_format     = $config->format;
-        $this->_translator = $config->translator;
+        $this->_format = $config->format;
     }
 
     /**
