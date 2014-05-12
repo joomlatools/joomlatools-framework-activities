@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstract
+class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstract implements ComActivitiesActivityLoggerInterface
 {
     /**
      * List of actions to log
@@ -36,15 +36,29 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
      */
     protected $_controller;
 
+    /**
+     * Constructor.
+     *
+     * @param   KObjectConfig $config Configuration options
+     */
     public function __construct(KObjectConfig $config)
     {
         parent::__construct($config);
 
-        $this->_actions      = KObjectConfig::unbox($config->actions);
         $this->_title_column = KObjectConfig::unbox($config->title_column);
         $this->_controller   = $config->controller;
+
+        $this->setActions(KObjectConfig::unbox($config->actions));
     }
 
+    /**
+     * Initializes the options for the object
+     *
+     * Called from {@link __construct()} as a first step of object instantiation.
+     *
+     * @param   KObjectConfig $config Configuration options.
+     * @return  void
+     */
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
@@ -57,52 +71,104 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
         parent::_initialize($config);
     }
 
-    public function execute(KCommandInterface $command, KCommandChainInterface $chain)
+    /**
+     * Log an activity
+     *
+     * @param string $action                       The action to log
+     * @param KModelEntityInterface $object        The activity object on which the action is performed
+     * @param KObjectIdentifierInterface $subject  The activity subject who is performing the action
+     * @return ComActivitiesActivityLoggerInterface
+     */
+    public function log($action, KModelEntityInterface $object, KObjectIdentifierInterface $subject)
     {
-        $name = $command->getName();
+        $controller = $this->getObject($this->_controller);
 
-        if (in_array($name, $this->_actions))
+        if($controller instanceof KControllerModellable)
         {
-            $entity = $this->_getActivityEntity($command);
-
-            if ($entity instanceof KModelEntityInterface)
+            foreach($object as $entity)
             {
-                foreach ($entity as $object)
+                //Only log if the entity status is valid.
+                $status = $this->getActivityStatus($entity, $action);
+
+                if (!empty($status) && $status !== $entity::STATUS_FAILED)
                 {
-                    //Only log if the row status is valid.
-                    $status = $this->_getStatus($object, $name);
+                    //Get the activity data
+                    $data = $this->getActivityData($entity, $subject);
 
-                    if (!empty($status) && $status !== KDatabase::STATUS_FAILED)
-                    {
-                        $config = new KObjectConfig(array(
-                            'object'  => $object,
-                            'status'  => $status,
-                            'command' => $command));
-
-                        try {
-                            $this->getObject($this->_controller)->add($this->_getActivityData($config));
-                        }
-                        catch (Exception $e)
-                        {
-                            if (JDEBUG) {
-                                throw $e;
-                            }
-                        }
+                    //Set the status
+                    if(!isset($data['status'] )) {
+                        $data['status'] = $status;
                     }
+
+                    //Set the action
+                    if(!isset($data['action']))
+                    {
+                        $parts = explode('.', $action);
+                        $data['action'] = $parts[1];
+                    }
+
+                    $controller->add($data);
                 }
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Command handler
+     *
+     * @param KCommandInterface         $command    The command
+     * @param KCommandChainInterface    $chain      The chain executing the command
+     * @return mixed If a handler breaks, returns the break condition. Returns the result of the handler otherwise.
+     */
+    final public function execute(KCommandInterface $command, KCommandChainInterface $chain)
+    {
+        $action = $command->getName();
+
+        if (in_array($action, $this->getActions()))
+        {
+            $object = $this->getActivityObject($command);
+
+            if ($object instanceof KModelEntityInterface)
+            {
+                $subject = $this->getActivitySubject($command);
+                $this->log($action, $object, $subject);
             }
         }
     }
 
     /**
-     * Activity Entity Getter.
+     * Return a list of actions the logger should log
      *
-     * The activity entity is the object(s) against which the action is executed.
+     * @return array List of actions
+     */
+    public function getActions()
+    {
+        return $this->_actions;
+    }
+
+    /**
+     * Return a list of actions the logger should log
+     *
+     * @param array $actions List of actions
+     * @return ComActivitiesActivityLoggerInterface
+     */
+    public function setActions($actions)
+    {
+        $this->_actions = $actions;
+        return $this;
+    }
+
+    /**
+     * Get the activity object
+     *
+     * The activity object is the entity on which the action is executed.
      *
      * @param KCommandInterface $command The command.
      * @return KModelEntityInterface The entity.
      */
-    protected function _getActivityEntity(KCommandInterface $command)
+    public function getActivityObject(KCommandInterface $command)
     {
         $parts = explode('.', $command->getName());
 
@@ -117,26 +183,54 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     }
 
     /**
-     * Activity data getter.
+     * Get the activity status
      *
-     * @param KObjectConfig $config Configuration object containing event related information.
+     * The activity state is the status of the entity at the time the action happened
+     *
+     * @param KModelEntityInterface $object The activity object on which the action is performed
+     * @param string                $action The command action being executed.
+     * @return string
+     */
+    public function getActivityStatus(KModelEntityInterface $object, $action = null)
+    {
+        $status = $object->getStatus();
+
+        // Commands may change the original status of an action.
+        if ($action == 'after.add' && $status == $object::STATUS_UPDATED) {
+            $status = $object::STATUS_CREATED;
+        }
+
+        return $status;
+    }
+
+    /**
+     * Get the activity subject
+     *
+     * The activity subject is the identifier of the entity that generates the event.
+     *
+     * @param KCommandInterface $context The command context object.
+     * @return KObjectIdentifier The activity identifier.
+     */
+    public function getActivitySubject(KCommandInterface $command)
+    {
+        return $command->getSubject()->getIdentifier();
+    }
+
+    /**
+     * Get the activity data
+     *
+     * @param KModelEntityInterface $object        The activity object on which the action is performed
+     * @param KObjectIdentifierInterface $subject  The activity subject who is performing the action
      * @return array Activity data.
      */
-    protected function _getActivityData(KObjectConfig $config)
+    public function getActivityData(KModelEntityInterface $object, KObjectIdentifierInterface $subject)
     {
-        $command    = $config->command;
-        $identifier = $this->getActivityIdentifier($command);
-
         $data = array(
-            'action'      => $command->action,
-            'application' => $identifier->domain,
-            'type'        => $identifier->type,
-            'package'     => $identifier->package,
-            'name'        => $identifier->name,
-            'status'      => $config->status
+            'application' => $subject->domain,
+            'type'        => $subject->type,
+            'package'     => $subject->package,
+            'name'        => $subject->name,
         );
-
-        $object = $config->object;
 
         if (is_array($this->_title_column))
         {
@@ -163,35 +257,13 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     }
 
     /**
-     * Status getter.
+     * Get an object handle
      *
-     * @param KModelEntityInterface $entity
-     * @param string                $action The command action being executed.
-     * @return string
-     */
-    protected function _getStatus(KModelEntityInterface $entity, $action)
-    {
-        $status = $entity->getStatus();
-
-        // Commands may change the original status of an action.
-        if ($action == 'after.add' && $status == KDatabase::STATUS_UPDATED) {
-            $status = KDatabase::STATUS_CREATED;
-        }
-
-        return $status;
-    }
-
-    /**
-     * Activity identifier getter.
+     * Force the object to be enqueue in the command chain.
      *
-     * @param KCommandInterface $context The command context object.
-     * @return KObjectIdentifier The activity identifier.
+     * @return string A string that is unique, or NULL
+     * @see execute()
      */
-    public function getActivityIdentifier(KCommandInterface $command)
-    {
-        return $command->getSubject()->getIdentifier();
-    }
-
     public function getHandle()
     {
         return KObjectMixinAbstract::getHandle();
