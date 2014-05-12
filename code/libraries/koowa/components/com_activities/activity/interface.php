@@ -98,7 +98,7 @@ interface ComActivitiesActivityInterface
      *
      * @return array The activity parameters.
      */
-    public function getActivityParameters();
+    public function getParameters();
 
     /**
      * Casts an activity to a string.

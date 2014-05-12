@@ -36,7 +36,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
         }
 
         //Render activity parameters
-        foreach ($activity->getActivityParameters() as $parameter)
+        foreach ($activity->getParameters() as $parameter)
         {
             $output = '<span class="text">' . $parameter->getValue() . '</span>';
 

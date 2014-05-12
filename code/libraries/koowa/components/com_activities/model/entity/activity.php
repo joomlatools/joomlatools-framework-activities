@@ -297,11 +297,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the message parameters
+     * Get the activity parameters
      *
-     * @return array The message parameters.
+     * @return array The activity parameters.
      */
-    public function getActivityParameters()
+    public function getParameters()
     {
        if(!isset($this->_parameters))
        {
@@ -335,7 +335,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     public function toString()
     {
         $format      = $this->getFormat();
-        $parameters  = $this->getActivityParameters();
+        $parameters  = $this->getParameters();
 
         return $this->getObject('com:activities.activity.translator')->translate($format, $parameters);
     }
