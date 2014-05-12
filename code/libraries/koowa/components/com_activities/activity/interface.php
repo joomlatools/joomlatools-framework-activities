@@ -31,18 +31,18 @@ interface ComActivitiesActivityInterface
     public function getFormat();
 
     /**
+     * Get the activity parameters
+     *
+     * @return array The activity parameters.
+     */
+    public function getParameters();
+
+    /**
      * Check if the activity actor still exists, i.e. it is still stored or reachable.
      *
      * @return boolean True if still exists, false otherwise.
      */
     public function hasActor();
-
-    /**
-     * Get the activity actor URL
-     *
-     * @return string|null The activity actor URL, null if not linkable or reachable.
-     */
-    public function getActorUrl();
 
     /**
      * Check if the activity object still exists, i.e. it is still stored or reachable.
@@ -52,53 +52,11 @@ interface ComActivitiesActivityInterface
     public function hasObject();
 
     /**
-     * Get the activity object URL
-     *
-     * @return string|null The activity object URL, null if not linkable.
-     */
-    public function getObjectUrl();
-
-    /**
-     * Get the activity object type
-     *
-     * @return string The object type.
-     */
-    public function getObjectType();
-
-    /**
      * Checks if the activity target still exists, i.e. it is still stored or reachable.
      *
      * @return boolean True if still exists, false otherwise.
      */
     public function hasTarget();
-
-    /**
-     * Get the activity target identifier
-     *
-     * @return string|null The identifier of the target, null if no target.
-     */
-    public function getTargetId();
-
-    /**
-     * Get the activity target URL
-     *
-     * @return string|null The activity target URL, null if not linkable.
-     */
-    public function getTargetUrl();
-
-    /**
-     * Get the activity target type
-     *
-     * @return string|null The target type, null if no target.
-     */
-    public function getTargetType();
-
-    /**
-     * Get the activity parameters
-     *
-     * @return array The activity parameters.
-     */
-    public function getParameters();
 
     /**
      * Casts an activity to a string.
