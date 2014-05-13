@@ -139,6 +139,18 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     }
 
     /**
+     * Get the behavior name
+     *
+     * Hardcode the name to 'loggable'.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return 'loggable';
+    }
+
+    /**
      * Return a list of actions the logger should log
      *
      * @return array List of actions
