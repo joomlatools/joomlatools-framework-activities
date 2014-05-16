@@ -109,7 +109,6 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      * Renders a plain text activity message.
      *
      * @param ComActivitiesModelEntityActivity $activity The activity to render.
-     *
      * @return string Plain text activity message.
      */
     protected function _render(ComActivitiesModelEntityActivity $activity)
@@ -120,8 +119,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
         {
             $content = $parameter->getValue();
 
-            if ($parameter->isTranslatable())
-            {
+            if ($parameter->isTranslatable()) {
                 $content = $translator->translate($content);
             }
 
