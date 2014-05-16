@@ -10,31 +10,26 @@
 /**
  * Loggable Controller Behavior
  *
+ * This behavior will delegate controller action logging to one or more loggers.
+ *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstract implements ComActivitiesActivityLoggerInterface
+class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstract
 {
     /**
-     * List of actions to log
+     * List of loggers
      *
      * @var array
      */
-    protected $_actions;
+    protected $_loggers = array();
 
     /**
-     * The name of the column to use as the title column in the log entry
+     * Logger queue
      *
-     * @var string
+     * @var	KObjectQueue
      */
-    protected $_title_column;
-
-    /**
-     * Activity controller identifier.
-     *
-     * @param string|KObjectIdentifierInterface
-     */
-    protected $_controller;
+    protected $_queue;
 
     /**
      * Constructor.
@@ -45,10 +40,20 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     {
         parent::__construct($config);
 
-        $this->_title_column = KObjectConfig::unbox($config->title_column);
-        $this->_controller   = $config->controller;
+        //Create the logger queue
+        $this->_queue = $this->getObject('lib:object.queue');
 
-        $this->setActions(KObjectConfig::unbox($config->actions));
+        //Attach the loggers
+        $loggers = KObjectConfig::unbox($config->loggers);
+
+        foreach ($loggers as $key => $value)
+        {
+            if (is_numeric($key)) {
+                $this->attachLogger($value);
+            } else {
+                $this->attachLogger($key, $value);
+            }
+        }
     }
 
     /**
@@ -62,57 +67,11 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'priority'     => self::PRIORITY_LOWEST,
-            'actions'      => array('after.edit', 'after.add', 'after.delete'),
-            'title_column' => array('title', 'name'),
-            'controller'   => 'com:activities.controller.activity'
+            'priority' => self::PRIORITY_LOWEST,
+            'loggers'  => array(),
         ));
 
         parent::_initialize($config);
-    }
-
-    /**
-     * Log an activity
-     *
-     * @param string $action                       The action to log
-     * @param KModelEntityInterface $object        The activity object on which the action is performed
-     * @param KObjectIdentifierInterface $subject  The activity subject who is performing the action
-     * @return ComActivitiesActivityLoggerInterface
-     */
-    public function log($action, KModelEntityInterface $object, KObjectIdentifierInterface $subject)
-    {
-        $controller = $this->getObject($this->_controller);
-
-        if($controller instanceof KControllerModellable)
-        {
-            foreach($object as $entity)
-            {
-                //Only log if the entity status is valid.
-                $status = $this->getActivityStatus($entity, $action);
-
-                if (!empty($status) && $status !== $entity::STATUS_FAILED)
-                {
-                    //Get the activity data
-                    $data = $this->getActivityData($entity, $subject);
-
-                    //Set the status
-                    if(!isset($data['status'] )) {
-                        $data['status'] = $status;
-                    }
-
-                    //Set the action
-                    if(!isset($data['action']))
-                    {
-                        $parts = explode('.', $action);
-                        $data['action'] = $parts[1];
-                    }
-
-                    $controller->add($data);
-                }
-            }
-        }
-
-        return $this;
     }
 
     /**
@@ -126,16 +85,50 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     {
         $action = $command->getName();
 
-        if (in_array($action, $this->getActions()))
+        foreach($this->_queue as $logger)
         {
-            $object = $this->getActivityObject($command);
-
-            if ($object instanceof KModelEntityInterface)
+            if (in_array($action, $logger->getActions()))
             {
-                $subject = $this->getActivitySubject($command);
-                $this->log($action, $object, $subject);
+                $object = $logger->getActivityObject($command);
+
+                if ($object instanceof KModelEntityInterface)
+                {
+                    $subject = $logger->getActivitySubject($command);
+                    $logger->log($action, $object, $subject);
+                }
             }
         }
+    }
+
+    /**
+     * Attach a logger
+     *
+     * @param   mixed  $logger An object that implements ObjectInterface, ObjectIdentifier object
+     *                         or valid identifier string
+     * @param   array $config  An optional associative array of configuration settings
+     * @throws UnexpectedValueException
+     * @return ComActivitiesControllerBehaviorLoggable
+     */
+    public function attachLogger($logger, $config = array())
+    {
+        $identifier = $this->getIdentifier($logger);
+
+        if (!in_array((string) $identifier, $this->_loggers))
+        {
+            $logger = $this->getObject($identifier, $config);
+
+            if (!($logger instanceof ComActivitiesActivityLoggerInterface))
+            {
+                throw new UnexpectedValueException(
+                    "Logger $identifier does not implement ComActivitiesActivityLoggerInterface"
+                );
+            }
+
+            $this->_queue->enqueue($logger, self::PRIORITY_NORMAL);
+            $this->_loggers[] = $identifier;
+        }
+
+        return $this;
     }
 
     /**
@@ -148,124 +141,6 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     public function getName()
     {
         return 'loggable';
-    }
-
-    /**
-     * Return a list of actions the logger should log
-     *
-     * @return array List of actions
-     */
-    public function getActions()
-    {
-        return $this->_actions;
-    }
-
-    /**
-     * Return a list of actions the logger should log
-     *
-     * @param array $actions List of actions
-     * @return ComActivitiesActivityLoggerInterface
-     */
-    public function setActions($actions)
-    {
-        $this->_actions = $actions;
-        return $this;
-    }
-
-    /**
-     * Get the activity object
-     *
-     * The activity object is the entity on which the action is executed.
-     *
-     * @param KCommandInterface $command The command.
-     * @return KModelEntityInterface The entity.
-     */
-    public function getActivityObject(KCommandInterface $command)
-    {
-        $parts = explode('.', $command->getName());
-
-        // Properly fetch data for the event.
-        if ($parts[0] == 'before') {
-            $object = $this->getMixer()->getModel()->fetch();
-        } else {
-            $object = $command->result;
-        }
-
-        return $object;
-    }
-
-    /**
-     * Get the activity status
-     *
-     * The activity state is the status of the entity at the time the action happened
-     *
-     * @param KModelEntityInterface $object The activity object on which the action is performed
-     * @param string                $action The command action being executed.
-     * @return string
-     */
-    public function getActivityStatus(KModelEntityInterface $object, $action = null)
-    {
-        $status = $object->getStatus();
-
-        // Commands may change the original status of an action.
-        if ($action == 'after.add' && $status == $object::STATUS_UPDATED) {
-            $status = $object::STATUS_CREATED;
-        }
-
-        return $status;
-    }
-
-    /**
-     * Get the activity subject
-     *
-     * The activity subject is the identifier of the entity that generates the event.
-     *
-     * @param KCommandInterface $context The command context object.
-     * @return KObjectIdentifier The activity identifier.
-     */
-    public function getActivitySubject(KCommandInterface $command)
-    {
-        return $command->getSubject()->getIdentifier();
-    }
-
-    /**
-     * Get the activity data
-     *
-     * @param KModelEntityInterface $object        The activity object on which the action is performed
-     * @param KObjectIdentifierInterface $subject  The activity subject who is performing the action
-     * @return array Activity data.
-     */
-    public function getActivityData(KModelEntityInterface $object, KObjectIdentifierInterface $subject)
-    {
-        $data = array(
-            'application' => $subject->domain,
-            'type'        => $subject->type,
-            'package'     => $subject->package,
-            'name'        => $subject->name,
-        );
-
-        if (is_array($this->_title_column))
-        {
-            foreach ($this->_title_column as $title)
-            {
-                if ($object->{$title})
-                {
-                    $data['title'] = $object->{$title};
-                    break;
-                }
-            }
-        }
-        elseif ($object->{$this->_title_column}) {
-            $data['title'] = $object->{$this->_title_column};
-        }
-
-        if (!isset($data['title'])) {
-            $data['title'] = '#' . $object->id;
-        }
-
-        $data['row'] = $object->id;
-
-        return $data;
     }
 
     /**
