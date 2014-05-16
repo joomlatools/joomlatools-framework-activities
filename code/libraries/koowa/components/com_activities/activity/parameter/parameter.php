@@ -42,12 +42,13 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
         parent::__construct($config);
 
         $this->append(array(
-            'value' => '',
-            'link'  => array(
+            'translate' => true,
+            'value'     => '',
+            'link'      => array(
                 'href'    => '',
                 'attribs' => array()
             ),
-            'attribs' => array(
+            'attribs'   => array(
                 'class' => array('parameter')
             )
         ));
@@ -169,6 +170,16 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
     public function isLinkable()
     {
         return (bool) $this->getLink()->href;
+    }
+
+    /**
+     * Tells if the parameter is translatable or not.
+     *
+     * @return bool
+     */
+    public function isTranslatable()
+    {
+        return (bool) $this->translate;
     }
 
     /**
