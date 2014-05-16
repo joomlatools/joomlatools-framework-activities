@@ -35,10 +35,18 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
             throw new InvalidArgumentException('Activity Not Found');
         }
 
+        $translator = $this->getObject('translator');
+
         //Render activity parameters
         foreach ($activity->getParameters() as $parameter)
         {
-            $output = '<span class="text">' . $parameter->getValue() . '</span>';
+            $output = $parameter->getValue();
+
+            if ($parameter->isTranslatable()) {
+                $output = $translator->translate($output);
+            }
+
+            $output = '<span class="text">' . $output . '</span>';
 
             if ($parameter->isLinkable())
             {
