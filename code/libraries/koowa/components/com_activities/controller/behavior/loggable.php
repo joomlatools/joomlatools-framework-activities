@@ -18,18 +18,11 @@
 class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstract
 {
     /**
-     * List of loggers
-     *
-     * @var array
-     */
-    protected $_loggers = array();
-
-    /**
      * Logger queue
      *
      * @var	KObjectQueue
      */
-    protected $_queue;
+    private $__queue;
 
     /**
      * Constructor.
@@ -41,7 +34,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
         parent::__construct($config);
 
         //Create the logger queue
-        $this->_queue = $this->getObject('lib:object.queue');
+        $this->__queue = $this->getObject('lib:object.queue');
 
         //Attach the loggers
         $loggers = KObjectConfig::unbox($config->loggers);
@@ -85,7 +78,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     {
         $action = $command->getName();
 
-        foreach($this->_queue as $logger)
+        foreach($this->__queue as $logger)
         {
             if (in_array($action, $logger->getActions()))
             {
@@ -113,7 +106,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     {
         $identifier = $this->getIdentifier($logger);
 
-        if (!in_array((string) $identifier, $this->_loggers))
+        if (!$this->__queue->hasIdentifier($identifier))
         {
             $logger = $this->getObject($identifier, $config);
 
@@ -124,8 +117,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                 );
             }
 
-            $this->_queue->enqueue($logger, self::PRIORITY_NORMAL);
-            $this->_loggers[] = $identifier;
+            $this->__queue->enqueue($logger, self::PRIORITY_NORMAL);
         }
 
         return $this;
