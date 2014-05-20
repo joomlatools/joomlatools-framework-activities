@@ -21,7 +21,7 @@ interface ComActivitiesActivityLoggerInterface
      * @param string $action                       The action to log
      * @param KModelEntityInterface $object        The activity object on which the action is performed
      * @param KObjectIdentifierInterface $subject  The activity subject who is performing the action
-     * @return ComActivitiesActivityLoggerInterface
+     * @return mixed|null If the logger breaks, returns the break condition. NULL otherwise.
      */
     public function log($action, KModelEntityInterface $object, KObjectIdentifierInterface $subject);
 
