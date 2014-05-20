@@ -36,11 +36,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
 
     protected function _getEntity(KModelEntityInterface $entity)
     {
-        $data = parent::_getEntity($entity);
-
-        unset($data['links']); // Cleanup.
-
-        return $data;
+        return $this->_getActivity($entity);
     }
 
     protected function _getActivity(KModelEntityInterface $entity)
@@ -63,11 +59,11 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                     'objectType'  => 'user',
                     'displayName' => $entity->created_by_name));
 
-            if ($entity->hasObject()) {
+            if ($entity->findObject()) {
                 $item['object']['url'] = $this->getActivityRoute($entity->getObjectUrl(), false);
             }
 
-            if ($entity->hasActor()) {
+            if ($entity->findActor()) {
                 $item['actor']['url'] = $this->getActivityRoute($entity->getActorUrl(), false);
             }
 
@@ -77,30 +73,39 @@ class ComActivitiesViewActivitiesJson extends KViewJson
             if (in_array($object_type, array('image', 'photo', 'photograph', 'picture', 'icon')))
             {
                 // Append media info.
-                if ($entity->hasObject())
+                if ($entity->findObject())
                 {
                     $item['object']['image'] = array(
                         'url' => $this->getActivityRoute($entity->getObjectUrl(), false)
                     );
 
-                    if ($entity->metadata->width && $entity->metadata->height)
+                    $metadata = $entity->getMetadata();
+
+                    if ($metadata->width && $metadata->height)
                     {
-                        $item['object']['image']['width']  = $entity->metadata->width;
-                        $item['object']['image']['height'] = $entity->metadata->height;
+                        $item['object']['image']['width']  = $metadata->width;
+                        $item['object']['image']['height'] = $metadata->height;
                     }
                 }
             }
 
-            if ($entity->hasTarget())
+            if ($entity->getTargetId())
             {
                 $item['target'] = array(
                     'id'         => $entity->getTargetId(),
-                    'objectType' => $entity->getTargetType(),
-                    'url'        => $this->getActivityRoute($entity->getTargetUrl(), false)
+                    'objectType' => $entity->getTargetType()
                 );
+
+                if ($entity->findTarget()) {
+                    $item['target']['url'] = $this->getActivityRoute($entity->getTargetUrl(), false);
+                }
+            }
+        } else {
+            $item = $entity->toArray();
+            if (!empty($this->_fields)) {
+                $item = array_intersect_key($item, array_flip($this->_fields));
             }
         }
-        else $item = $entity->toArray();
 
         return $item;
     }
