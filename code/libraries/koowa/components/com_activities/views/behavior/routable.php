@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesViewBehaviorRoutable extends KBehaviorAbstract
+class ComActivitiesViewBehaviorRoutable extends KViewBehaviorAbstract
 {
     /**
      * Activity Route Getter.
