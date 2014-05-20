@@ -193,7 +193,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      *
      * @return boolean True if still exists, false otherwise.
      */
-    public function hasActor()
+    public function findActor()
     {
         return (bool) $this->getObject('user.provider')->load($this->created_by)->getId();
     }
@@ -207,7 +207,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         $url = null;
 
-        if($this->hasActor())
+        if($this->findActor())
         {
             if ($this->created_by) {
                 $url = 'option=com_users&task=user.edit&id=' . $this->created_by;
@@ -222,7 +222,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      *
      * @return boolean True if still exists, false otherwise.
      */
-    public function hasObject()
+    public function findObject()
     {
         return false;
     }
@@ -236,7 +236,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         $url = null;
 
-        if($this->hasObject())
+        if($this->findObject())
         {
             if ($this->package && $this->name && $this->row) {
                 $url = 'option=com_' . $this->package . '&task=' . $this->name . '.edit&id=' . $this->row;
@@ -261,7 +261,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      *
      * @return boolean True if still exists, false otherwise.
      */
-    public function hasTarget()
+    public function findTarget()
     {
         return false; // Activities don't have targets by default.
     }
@@ -348,7 +348,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      */
     protected function _parameterActor(ComActivitiesActivityParameterInterface $parameter)
     {
-        if ($this->hasActor())
+        if ($this->findActor())
         {
             $parameter->link->href = $this->getActorUrl();
             $parameter->translate  = false;
@@ -399,7 +399,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         $parameter->value     = $this->title;
         $parameter->translate = false;
 
-        if ($this->hasObject()) {
+        if ($this->findObject()) {
             $parameter->link->href = $this->getObjectUrl();
         }
 
