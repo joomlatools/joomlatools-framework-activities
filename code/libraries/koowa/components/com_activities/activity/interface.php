@@ -42,21 +42,21 @@ interface ComActivitiesActivityInterface
      *
      * @return boolean True if still exists, false otherwise.
      */
-    public function hasActor();
+    public function findActor();
 
     /**
      * Check if the activity object still exists, i.e. it is still stored or reachable.
      *
      * @return boolean True if still exists, false otherwise.
      */
-    public function hasObject();
+    public function findObject();
 
     /**
      * Checks if the activity target still exists, i.e. it is still stored or reachable.
      *
      * @return boolean True if still exists, false otherwise.
      */
-    public function hasTarget();
+    public function findTarget();
 
     /**
      * Casts an activity to a string.
