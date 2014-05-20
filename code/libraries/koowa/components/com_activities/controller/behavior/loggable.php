@@ -76,16 +76,18 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
      */
     final public function execute(KCommandInterface $command, KCommandChainInterface $chain)
     {
+        $action = $command->getName();
+
         foreach($this->__queue as $logger)
         {
-            if ($logger->canLog($command))
+            if (in_array($action, $logger->getActions()))
             {
                 $object = $logger->getActivityObject($command);
 
                 if ($object instanceof KModelEntityInterface)
                 {
                     $subject = $logger->getActivitySubject($command);
-                    $logger->log($command->getName(), $object, $subject);
+                    $logger->log($action, $object, $subject);
                 }
             }
         }
