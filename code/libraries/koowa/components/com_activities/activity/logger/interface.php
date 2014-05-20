@@ -26,14 +26,6 @@ interface ComActivitiesActivityLoggerInterface
     public function log($action, KModelEntityInterface $object, KObjectIdentifierInterface $subject);
 
     /**
-     * Determines if the logger should or should not log an activity given the command.
-     *
-     * @param KCommandInterface $command The command.
-     * @return boolean True if it can, false otherwise.
-     */
-    public function canLog(KCommandInterface $command);
-
-    /**
      * Return a list of actions the logger should log
      *
      * @return array List of actions
