@@ -90,14 +90,10 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      */
     public static function getInstance(KObjectConfigInterface $config, KObjectManagerInterface $manager)
     {
-        if (!$package = $config->data->package) {
-            throw new RuntimeException('Unable to determine the activity package');
-        }
-
         if ($config->object_identifier->class == get_class())
         {
             $identifier            = $config->object_identifier->toArray();
-            $identifier['package'] = $package;
+            $identifier['package'] = $config->data->package;
 
             if ($class = $manager->getClass($identifier, false)) {
                 return $manager->getObject($identifier, $config->toArray());
