@@ -226,16 +226,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      */
     public function getActorUrl()
     {
-        $url = null;
-
-        if($this->findActor())
-        {
-            if ($this->created_by) {
-                $url = 'option=com_users&task=user.edit&id=' . $this->created_by;
-            }
-        }
-
-        return $url;
+        return 'option=com_users&task=user.edit&id=' . $this->created_by;
     }
 
     public function getActorType()
