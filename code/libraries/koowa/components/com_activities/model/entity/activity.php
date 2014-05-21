@@ -198,6 +198,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return (bool) $this->getObject('user.provider')->load($this->created_by)->getId();
     }
 
+    public function getActorId()
+    {
+        return $this->created_by;
+    }
+
     /**
      * Get the activity actor URL
      *
@@ -217,6 +222,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return $url;
     }
 
+    public function getActorType()
+    {
+        return 'user';
+    }
+
     /**
      * Check if the activity object still exists, i.e. it is still stored or reachable.
      *
@@ -225,6 +235,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     public function findObject()
     {
         return false;
+    }
+
+    public function getObjectId()
+    {
+        return $this->row;
     }
 
     /**
@@ -263,7 +278,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      */
     public function findTarget()
     {
-        return false; // Activities don't have targets by default.
+        return false;
     }
 
     /**
@@ -283,7 +298,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      */
     public function getTargetUrl()
     {
-        return null; // Non-linkable as no target by default.
+        return null; // Activities don't have targets by default.
     }
 
     /**
