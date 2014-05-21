@@ -37,6 +37,20 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     protected $_required = array('package', 'name', 'action', 'title', 'status');
 
     /**
+     * The activity object database table name.
+     *
+     * @var string
+     */
+    protected $_object_table;
+
+    /**
+     * The activity object database table id column.
+     *
+     * @var string
+     */
+    protected $_object_column;
+
+    /**
      * Constructor.
      *
      * @param   KObjectConfig $config Configuration options
@@ -60,6 +74,8 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         $config->append(array(
             'format' => '{actor} {action} {object} {title}',
+            'object_table' => $config->data->package . '_' . KStringInflector::pluralize($config->data->name),
+            'object_column' => $config->data->package . '_' . $config->data->name . '_id'
         ));
 
         parent::_initialize($config);
