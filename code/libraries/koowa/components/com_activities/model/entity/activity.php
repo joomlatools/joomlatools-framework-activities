@@ -265,16 +265,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      */
     public function getObjectUrl()
     {
-        $url = null;
-
-        if($this->findObject())
-        {
-            if ($this->package && $this->name && $this->row) {
-                $url = 'option=com_' . $this->package . '&task=' . $this->name . '.edit&id=' . $this->row;
-            }
-        }
-
-        return $url;
+        return 'option=com_' . $this->package . '&task=' . $this->name . '.edit&id=' . $this->row;
     }
 
     /**
