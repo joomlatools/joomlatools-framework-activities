@@ -10,9 +10,9 @@
 /**
  * Activity Interface.
  *
- * In its simplest form, an activity consists of an actor, a verb, an an object, and a target. It tells the story of a
- * person performing an action on or with an object -- "Geraldine posted a photo to her album" or "John shared a video".
- * In most cases these components will be explicit, but they may also be implied.
+ * In its simplest form, an activity consists of an actor, a verb, an object, and optionally a target. It tells the
+ * story of a person performing an action on or with an object -- "Geraldine posted a photo to her album" or "John
+ * shared a video". In most cases these components will be explicit, but they may also be implied.
  *
  * @see http://activitystrea.ms/specs/json/1.0/
  *
@@ -24,7 +24,8 @@ interface ComActivitiesActivityInterface
     /**
      * Get the activity string format
      *
-     * Default format is '{actor} {action} {object} {title}'
+     * The string format is a compact representation of the activity which also provides information about the
+     * parameters it may contain.
      *
      * @return string The activity string format.
      */
@@ -38,25 +39,88 @@ interface ComActivitiesActivityInterface
     public function getParameters();
 
     /**
-     * Check if the activity actor still exists, i.e. it is still stored or reachable.
+     * Looks for the activity actor.
      *
-     * @return boolean True if still exists, false otherwise.
+     * @return boolean True if found, false otherwise.
      */
     public function findActor();
 
     /**
-     * Check if the activity object still exists, i.e. it is still stored or reachable.
+     * Activity actor id getter.
      *
-     * @return boolean True if still exists, false otherwise.
+     * @return mixed The activity actor id.
+     */
+    public function getActorId();
+
+    /**
+     * Activity actor URL getter.
+     *
+     * @return mixed The activity actor url.
+     */
+    public function getActorUrl();
+
+    /**
+     * Activity actor type getter.
+     *
+     * @return mixed The activity actor type.
+     */
+    public function getActorType();
+
+    /**
+     * Looks for the activity object.
+     *
+     * @return boolean True if found, false otherwise.
      */
     public function findObject();
 
     /**
-     * Checks if the activity target still exists, i.e. it is still stored or reachable.
+     * Activity object id getter.
      *
-     * @return boolean True if still exists, false otherwise.
+     * @return mixed The activity object id.
+     */
+    public function getObjectId();
+
+    /**
+     * Activity object URL getter.
+     *
+     * @return mixed The activity object url.
+     */
+    public function getObjectUrl();
+
+    /**
+     * Activity object type getter.
+     *
+     * @return mixed The activity object type.
+     */
+    public function getObjectType();
+
+    /**
+     * Looks for the activity target.
+     *
+     * @return boolean True if found, false otherwise.
      */
     public function findTarget();
+
+    /**
+     * Activity target id getter.
+     *
+     * @return mixed The activity target id, null if the activity has no target.
+     */
+    public function getTargetId();
+
+    /**
+     * Activity target URL getter.
+     *
+     * @return mixed The activity target URL, null if the activity has no target.
+     */
+    public function getTargetUrl();
+
+    /**
+     * Activity target type getter.
+     *
+     * @return mixed The activity target type, null if the activity has no target.
+     */
+    public function getTargetType();
 
     /**
      * Casts an activity to a string.
