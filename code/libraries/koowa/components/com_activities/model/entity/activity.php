@@ -82,7 +82,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Instantiate the object
+     * Instantiates the object
      *
      * @param   KObjectConfigInterface $config      Configuration options
      * @param 	KObjectManagerInterface $manager	A KObjectManagerInterface object
@@ -182,7 +182,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Varb is an alias for action
+     * Verb is an alias for action
      *
      * @param $value
      */
@@ -191,24 +191,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         $this->setProperty('action', $value);
     }
 
-    /**
-     * Get the message format
-     *
-     * An activity message format is a compact representation of the activity which also provides information
-     * about the parameters it may contain.
-     *
-     * @return string The activity message format.
-     */
     public function getFormat()
     {
         return $this->_format;
     }
 
-    /**
-     * Check if the activity actor still exists, i.e. it is still stored or reachable.
-     *
-     * @return boolean True if still exists, false otherwise.
-     */
     public function findActor()
     {
         return (bool) $this->getObject('user.provider')->load($this->created_by)->getId();
@@ -219,11 +206,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return $this->created_by;
     }
 
-    /**
-     * Get the activity actor URL
-     *
-     * @return string|null The activity actor URL, null if not linkable or reachable.
-     */
     public function getActorUrl()
     {
         return 'option=com_users&task=user.edit&id=' . $this->created_by;
@@ -234,11 +216,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return 'user';
     }
 
-    /**
-     * Check if the activity object still exists, i.e. it is still stored or reachable.
-     *
-     * @return boolean True if still exists, false otherwise.
-     */
     public function findObject()
     {
         $db     = $this->getTable()->getAdapter();
@@ -264,61 +241,31 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return $this->row;
     }
 
-    /**
-     * Get the activity object URL
-     *
-     * @return string|null The activity object URL, null if not linkable.
-     */
     public function getObjectUrl()
     {
         return 'option=com_' . $this->package . '&task=' . $this->name . '.edit&id=' . $this->row;
     }
 
-    /**
-     * Get the activity object type
-     *
-     * @return string The object type.
-     */
     public function getObjectType()
     {
         return $this->name;
     }
 
-    /**
-     * Checks if the activity target still exists, i.e. it is still stored or reachable.
-     *
-     * @return boolean True if still exists, false otherwise.
-     */
     public function findTarget()
     {
-        return false;
+        return false; // Activities don't have targets by default.
     }
 
-    /**
-     * Get the activity target identifier
-     *
-     * @return string|null The identifier of the target, null if no target.
-     */
     public function getTargetId()
     {
         return null; // Activities don't have targets by default.
     }
 
-    /**
-     * Get the activity target URL
-     *
-     * @return string|null The activity target URL, null if not linkable.
-     */
     public function getTargetUrl()
     {
         return null; // Activities don't have targets by default.
     }
 
-    /**
-     * Get the activity target type
-     *
-     * @return string|null The target type, null if no target.
-     */
     public function getTargetType()
     {
         return null; // Activities don't have targets by default.
@@ -355,11 +302,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return $this->_parameters;
     }
 
-    /**
-     * Casts an activity message to string.
-     *
-     * @return string The string representation of an activity message.
-     */
     public function toString()
     {
         $format      = $this->getFormat();
@@ -369,7 +311,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Actor Activity Parameter
+     * Actor activity Parameter
      *
      * @param ComActivitiesActivityParameterInterface $parameter The activity parameter.
      * @return  void
@@ -391,7 +333,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Action Activity parameter
+     * Action activity parameter
      *
      * @param ComActivitiesActivityParameterInterface $parameter The activity parameter.
      * @return  void
@@ -402,7 +344,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Object Activity Parameter
+     * Object activity parameter
      *
      * @param ComActivitiesActivityParameterInterface $parameter The activity parameter.
      * @return  void
@@ -417,7 +359,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Title Activity Parameter
+     * Title activity parameter
      *
      * @param ComActivitiesActivityParameterInterface $parameter The activity parameter.
      * @return  void
