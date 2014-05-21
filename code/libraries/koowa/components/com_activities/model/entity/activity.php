@@ -241,7 +241,22 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      */
     public function findObject()
     {
-        return false;
+        $db     = $this->getTable()->getAdapter();
+        $table  = $this->_object_table;
+        $column = $this->_object_column;
+
+        $query = $this->getObject('lib:database.query.select');
+        $query->columns('COUNT(*)')->table($table)->where($column . ' = :value')
+            ->bind(array('value' => $this->row));
+
+        // Need to catch exceptions here as table may not longer exist.
+        try {
+            $result = $db->select($query, KDatabase::FETCH_FIELD);
+        } catch (Exception $e) {
+            $result = 0;
+        }
+
+        return (bool) $result;
     }
 
     public function getObjectId()
