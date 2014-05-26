@@ -249,7 +249,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     public function findTarget()
     {
-        return false; // Activities don't have targets by default.
+        return null; // Activities don't have targets by default.
     }
 
     public function getTargetId()
