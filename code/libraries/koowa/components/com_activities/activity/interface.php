@@ -104,21 +104,21 @@ interface ComActivitiesActivityInterface
     /**
      * Activity target id getter.
      *
-     * @return mixed The activity target id, null if the activity has no target.
+     * @return mixed The activity target id.
      */
     public function getTargetId();
 
     /**
      * Activity target URL getter.
      *
-     * @return mixed The activity target URL, null if the activity has no target.
+     * @return mixed The activity target URL.
      */
     public function getTargetUrl();
 
     /**
      * Activity target type getter.
      *
-     * @return mixed The activity target type, null if the activity has no target.
+     * @return mixed The activity target type.
      */
     public function getTargetType();
 
