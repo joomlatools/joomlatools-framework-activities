@@ -59,7 +59,9 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         parent::__construct($config);
 
-        $this->_format = $config->format;
+        $this->_format        = $config->format;
+        $this->_object_table  = $config->object_table;
+        $this->_object_column = $config->object_column;
     }
 
     /**
