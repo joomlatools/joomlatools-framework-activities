@@ -97,7 +97,7 @@ interface ComActivitiesActivityInterface
     /**
      * Looks for the activity target.
      *
-     * @return boolean True if found, false otherwise.
+     * @return bool|null True if found, false if not found, null if the activity has no target.
      */
     public function findTarget();
 
