@@ -42,19 +42,20 @@ class ComActivitiesActivityTranslator extends ComKoowaTranslatorAbstract impleme
             }
         }
 
-        //Translate format
+        // Translate
         $translation = parent::translate($format, $parameters);
 
-        //Translate context
+        // Process context translations.
         if (preg_match_all('/\{(.+?):(.+?)\}/', $translation, $matches) !== false)
         {
             for ($i = 0; $i < count($matches[0]); $i++)
             {
                 foreach ($parameters as $parameter)
                 {
-                    if ($parameter->getName() ==  $matches[1][$i])
+                    if ($parameter->isTranslatable() && $parameter->getName() ==  $matches[1][$i])
                     {
-                        $translation = str_replace($matches[0][$i], $parameter->getContent(), $translation);
+                        $parameter->setValue($matches[2][$i])->setTranslatable(false);
+                        $translation = str_replace($matches[0][$i], $parameter->toString(), $translation);
                         break;
                     }
                 }
