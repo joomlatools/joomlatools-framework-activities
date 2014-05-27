@@ -32,12 +32,20 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
     protected $_content;
 
     /**
+     * The parameter translator.
+     *
+     * @var KTranslatorInterface
+     */
+    protected $_translator;
+
+    /**
      * Constructor.
      *
-     * @param	string 			$name The command name
-     * @param   array|KObjectConfig 	$config An associative array of configuration settings or a KObjectConfig instance.
+     * @param    string             $name                The command name
+     * @param                       KTranslatorInterface The parameter translator.
+     * @param   array|KObjectConfig $config              An associative array of configuration settings or a KObjectConfig instance.
      */
-    public function __construct( $name, $config = array())
+    public function __construct( $name, KTranslatorInterface $translator, $config = array())
     {
         parent::__construct($config);
 
@@ -53,8 +61,11 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
             )
         ));
 
-        //Set the command name
+        //Set the parameter name.
         $this->__name = $name;
+
+        // Set the parameter translator.
+        $this->_translator = $translator;
     }
 
     /**
@@ -88,8 +99,7 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
      */
     public function getValue()
     {
-        $value = $this->value;
-        return $value;
+        return $this->value;
     }
 
     /**
@@ -155,11 +165,7 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
      */
     public function getContent()
     {
-        if (!$content = $this->_content) {
-            $content = $this->getValue();
-        }
-
-        return $content;
+        return $this->_content;
     }
 
     /**
@@ -182,6 +188,12 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
         return (bool) $this->translate;
     }
 
+    public function setTranslatable($status = true)
+    {
+        $this->translate = (bool) $status;
+        return $this;
+    }
+
     /**
      * Casts an activity parameter to string.
      *
@@ -189,7 +201,12 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
      */
     public function toString()
     {
-        return $this->getContent();
+        $content = $this->getContent() ? : '%s';
+        $value   = $this->getValue();
+
+        if ($this->isTranslatable()) $value = $this->_translator->translate($value);
+
+        return sprintf($content, $value);
     }
 
     /**
