@@ -38,7 +38,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
         //Render activity parameters
         foreach ($activity->getParameters() as $parameter)
         {
-            $output = '<span class="text">%s</span>';
+            $format = '<span class="text">%s</span>';
 
             if ($parameter->isLinkable())
             {
@@ -48,16 +48,16 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
                 $url        = $view->getActivityRoute($link->href);
                 $attributes = !empty($link->attribs) ? $this->buildAttributes($link->attribs) : '';
 
-                $output = '<a ' . $attributes . ' href="' . $url . '">' . $output . '</a>';
+                $format = '<a ' . $attributes . ' href="' . $url . '">' . $format . '</a>';
             }
 
             $attribs = $parameter->getAttributes();
 
             if (count($attribs)) {
-                $output = '<span ' . $this->buildAttributes($attribs) . '>' . $output . '</span>';
+                $format = '<span ' . $this->buildAttributes($attribs) . '>' . $format . '</span>';
             }
 
-            $parameter->setContent($output);
+            $parameter->setFormat($format);
         }
 
         //Render activity message

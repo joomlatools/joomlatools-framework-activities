@@ -79,19 +79,19 @@ interface ComActivitiesActivityParameterInterface
     public function getLink();
 
     /**
-     * Set the parameter content
+     * Set the parameter format
      *
-     * @param string $content The parameter content.
+     * @param string $format The parameter format.
      * @return ComActivitiesActivityParameterInterface
      */
-    public function setContent($content);
+    public function setFormat($format);
 
     /**
-     * Get the parameter content
+     * Get the parameter format
      *
-     * @return string The parameter content.
+     * @return string The parameter format.
      */
-    public function getContent();
+    public function getFormat();
 
     /**
      * Tells if the parameter is linkable or not.

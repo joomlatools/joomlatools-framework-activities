@@ -23,13 +23,11 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
     private $__name;
 
     /**
-     * The parameter content.
-     *
-     * This property contains the formatted text that is be used for rendering activity messages.
+     * The parameter format.
      *
      * @var string
      */
-    protected $_content;
+    protected $_format;
 
     /**
      * The parameter translator.
@@ -147,25 +145,25 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
     }
 
     /**
-     * Set the parameter content
+     * Set the parameter format
      *
-     * @param string $content The parameter content.
+     * @param string $format The parameter format.
      * @return ComActivitiesActivityParameterInterface
      */
-    public function setContent($content)
+    public function setFormat($format)
     {
-        $this->_content = $content;
+        $this->_format = $format;
         return $this;
     }
 
     /**
-     * Get the parameter content
+     * Get the parameter format.
      *
-     * @return string The parameter content.
+     * @return string The parameter format.
      */
-    public function getContent()
+    public function getFormat()
     {
-        return $this->_content;
+        return $this->_format;
     }
 
     /**
@@ -201,12 +199,12 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
      */
     public function toString()
     {
-        $content = $this->getContent() ? : '%s';
-        $value   = $this->getValue();
+        $format = $this->getFormat() ? : '%s';
+        $value  = $this->getValue();
 
         if ($this->isTranslatable()) $value = $this->_translator->translate($value);
 
-        return sprintf($content, $value);
+        return sprintf($format, $value);
     }
 
     /**
