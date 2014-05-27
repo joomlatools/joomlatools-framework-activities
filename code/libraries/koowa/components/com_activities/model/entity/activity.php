@@ -282,13 +282,15 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
            if (preg_match_all('/\{(.*?)\}/', $this->getFormat(), $matches) !== false)
            {
+               $translator = $this->getObject('translator');
+
                foreach ($matches[1] as $name)
                {
                    $method = '_parameter'.ucfirst($name);
 
                    if (method_exists($this, $method))
                    {
-                       $parameter = new ComActivitiesActivityParameter($name);
+                       $parameter = new ComActivitiesActivityParameter($name, $translator);
                        $this->$method($parameter);
 
                        $this->_parameters[$parameter->getName()] = $parameter;
