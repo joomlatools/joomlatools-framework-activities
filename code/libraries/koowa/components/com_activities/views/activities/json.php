@@ -45,7 +45,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
         {
             $item = array(
                 'id'        => $entity->uuid,
-                'title'     => $this->_render($entity),
+                'title'     => $entity->toString(),
                 'published' => $this->getObject('com://admin/koowa.template.helper.date')->format(array(
                         'date'   => $entity->created_on,
                         'format' => 'c'
@@ -108,29 +108,5 @@ class ComActivitiesViewActivitiesJson extends KViewJson
         }
 
         return $item;
-    }
-
-    /**
-     * Renders a plain text activity message.
-     *
-     * @param ComActivitiesModelEntityActivity $activity The activity to render.
-     * @return string Plain text activity message.
-     */
-    protected function _render(ComActivitiesModelEntityActivity $activity)
-    {
-        $translator = $this->getObject('translator');
-
-        foreach ($activity->getParameters() as $parameter)
-        {
-            $content = $parameter->getValue();
-
-            if ($parameter->isTranslatable()) {
-                $content = $translator->translate($content);
-            }
-
-            $parameter->setContent($content);
-        }
-
-        return $activity->toString();
     }
 }
