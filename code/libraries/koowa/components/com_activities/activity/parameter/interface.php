@@ -107,6 +107,15 @@ interface ComActivitiesActivityParameterInterface
     public function isTranslatable();
 
     /**
+     * Sets the translatable status of the parameter.
+     *
+     * @param bool $status True for setting it as translatable, false otherwise.
+     *
+     * @return ComActivitiesActivityParameterInterface
+     */
+    public function setTranslatable($status = true);
+
+    /**
      * Casts an activity parameter to string.
      *
      * @return string The string representation of an activity parameter.
