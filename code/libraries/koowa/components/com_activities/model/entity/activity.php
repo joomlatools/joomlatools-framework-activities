@@ -30,6 +30,13 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     protected $_parameters;
 
     /**
+     * Stream objects.
+     *
+     * @var KObjectArray
+     */
+    protected $_objects;
+
+    /**
      * A list of required columns.
      *
      * @var array
@@ -189,7 +196,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         $this->setProperty('action', $value);
     }
 
-    public function getFormat()
+    public function getMessageFormat()
     {
         return $this->_format;
     }
@@ -197,21 +204,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     public function findActor()
     {
         return (bool) $this->getObject('user.provider')->load($this->created_by)->getId();
-    }
-
-    public function getActorId()
-    {
-        return $this->created_by;
-    }
-
-    public function getActorUrl()
-    {
-        return 'option=com_users&task=user.edit&id=' . $this->created_by;
-    }
-
-    public function getActorType()
-    {
-        return 'user';
     }
 
     public function findObject()
@@ -234,39 +226,58 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return (bool) $result;
     }
 
-    public function getObjectId()
-    {
-        return $this->row;
-    }
-
-    public function getObjectUrl()
-    {
-        return 'option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row;
-    }
-
-    public function getObjectType()
-    {
-        return $this->name;
-    }
-
     public function findTarget()
     {
-        return null; // Activities don't have targets by default.
+        return null; // Activities do not have targets by default.
     }
 
-    public function getTargetId()
+    public function getStreamObjects()
     {
-        return null; // Activities don't have targets by default.
+        if (!$this->_objects)
+        {
+            $objects = $this->getObject('lib:object.array');
+
+            foreach ($this->getMethods() as $method)
+            {
+                if (strstr($method, '_object'))
+                {
+                    $name   = strtolower(str_replace('_object', '', $method));
+                    $object = new ComActivitiesActivityStreamObject($name);
+
+                    $this->$method($object);
+
+                    $objects[$name] = $object;
+                }
+            }
+
+            $this->_objects = $objects;
+        }
+
+        return $this->_objects;
     }
 
-    public function getTargetUrl()
+    protected function _objectActor(ComActivitiesActivityStreamObjectInterface $object)
     {
-        return null; // Activities don't have targets by default.
+        $object->objectType = 'user';
+        $object->id         = $this->created_by;
+        $object->url        = 'option=com_users&task=user.edit&id=' . $this->created_by;
+
+        if (!$this->findActor())
+        {
+            $object->setDeleted(true);
+        }
     }
 
-    public function getTargetType()
+    protected function _objectObject(ComActivitiesActivityStreamObjectInterface $object)
     {
-        return null; // Activities don't have targets by default.
+        $object->id         = $this->row;
+        $object->objectType = $this->name;
+        $object->url        = 'option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row;
+
+        if (!$this->findObject())
+        {
+            $object->setDeleted(true);
+        }
     }
 
     /**
@@ -274,13 +285,13 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      *
      * @return array The activity parameters.
      */
-    public function getParameters()
+    public function getMessageParameters()
     {
        if(!isset($this->_parameters))
        {
            $this->_parameters = array();
 
-           if (preg_match_all('/\{(.*?)\}/', $this->getFormat(), $matches) !== false)
+           if (preg_match_all('/\{(.*?)\}/', $this->getMessageFormat(), $matches) !== false)
            {
                $translator = $this->getObject('translator');
 
@@ -302,14 +313,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return $this->_parameters;
     }
 
-    public function toString()
-    {
-        $format      = $this->getFormat();
-        $parameters  = $this->getParameters();
-
-        return $this->getObject('com:activities.activity.translator')->translate($format, $parameters);
-    }
-
     /**
      * Actor activity Parameter
      *
@@ -318,9 +321,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      */
     protected function _parameterActor(ComActivitiesActivityParameterInterface $parameter)
     {
-        if ($this->findActor())
+        $actor = $this->getStreamObjects()->actor;
+
+        if (!$actor->isDeleted())
         {
-            $parameter->link->href = $this->getActorUrl();
+            $parameter->link->href = $actor->url;
             $parameter->translate  = false;
             $value                 = $this->created_by_name;
         }
@@ -369,13 +374,23 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         $parameter->value     = $this->title;
         $parameter->translate = false;
 
-        if ($this->findObject()) {
-            $parameter->link->href = $this->getObjectUrl();
+        $object = $this->getStreamObjects()->object;
+
+        if (!$object->isDeleted()) {
+            $parameter->link->href = $object->url;
         }
 
         if ($this->status == 'deleted') {
             $parameter->attribs = array('class' => array('deleted'));
         }
+    }
+
+    public function toString()
+    {
+        $format      = $this->getMessageFormat();
+        $parameters  = $this->getMessageParameters();
+
+        return $this->getObject('com:activities.activity.translator')->translate($format, $parameters);
     }
 
     /**
