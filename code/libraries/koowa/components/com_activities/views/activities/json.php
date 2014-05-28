@@ -50,55 +50,12 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                         'date'   => $entity->created_on,
                         'format' => 'c'
                     )),
-                'verb'      => $entity->action,
-                'object'    => array(
-                    'id'         => $entity->row,
-                    'objectType' => $entity->name),
-                'actor'     => array(
-                    'id'          => $entity->created_by,
-                    'objectType'  => 'user',
-                    'displayName' => $entity->created_by_name));
+                'verb'      => $entity->action
+            );
 
-            if ($entity->findObject()) {
-                $item['object']['url'] = $this->getActivityRoute($entity->getObjectUrl(), false);
-            }
-
-            if ($entity->findActor()) {
-                $item['actor']['url'] = $this->getActivityRoute($entity->getActorUrl(), false);
-            }
-
-            $object_type = $entity->getObjectType();
-            $item['object']['objectType'] = $object_type;
-
-            if (in_array($object_type, array('image', 'photo', 'photograph', 'picture', 'icon')))
+            foreach ($entity->getStreamObjects() as $name => $object)
             {
-                // Append media info.
-                if ($entity->findObject())
-                {
-                    $item['object']['image'] = array(
-                        'url' => $this->getActivityRoute($entity->getObjectUrl(), false)
-                    );
-
-                    $metadata = $entity->getMetadata();
-
-                    if ($metadata->width && $metadata->height)
-                    {
-                        $item['object']['image']['width']  = $metadata->width;
-                        $item['object']['image']['height'] = $metadata->height;
-                    }
-                }
-            }
-
-            if ($entity->getTargetId())
-            {
-                $item['target'] = array(
-                    'id'         => $entity->getTargetId(),
-                    'objectType' => $entity->getTargetType()
-                );
-
-                if ($entity->findTarget()) {
-                    $item['target']['url'] = $this->getActivityRoute($entity->getTargetUrl(), false);
-                }
+                $item[$name] = $this->_getStreamObjectData($object);
             }
         } else {
             $item = $entity->toArray();
@@ -108,5 +65,43 @@ class ComActivitiesViewActivitiesJson extends KViewJson
         }
 
         return $item;
+    }
+
+    /**
+     * Activity stream object data getter.
+     *
+     * @param ComActivitiesActivityStreamObjectInterface $object The stream object.
+     *
+     * @return array The data.
+     */
+    protected function _getStreamObjectData(ComActivitiesActivityStreamObjectInterface $object)
+    {
+        $data = $object->toArray();
+
+        // Route object URL.
+        if ($url = $object->getUrl()) {
+            $data['url'] = $this->getActivityRoute($url, false);
+        }
+
+        // Route image URL if any.
+        if (($image = $object->getImage()) && ($url = $image->getUrl())) {
+            $data['image']['url'] = $this->getActivityRoute($url, false);
+        }
+
+        $attachments = array();
+
+        // Process attachments if any.
+        foreach ($object->getAttachments() as $attachment) {
+            $attachments[] = $this->_getStreamObjectData($attachment);
+        }
+
+        $data['attachments'] = $attachments;
+
+        // Remove properties with empty arrays.
+        foreach ($data as $name => $value) {
+            if (is_array($value) && empty($value)) unset($data[$name]);
+        }
+
+        return $data;
     }
 }
