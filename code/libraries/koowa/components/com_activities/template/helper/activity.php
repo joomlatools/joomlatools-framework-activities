@@ -48,13 +48,13 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
                 $url        = $view->getActivityRoute($link->href);
                 $attributes = !empty($link->attribs) ? $this->buildAttributes($link->attribs) : '';
 
-                $format = '<a ' . $attributes . ' href="' . $url . '">' . $format . '</a>';
+                $format = '<a ' . $this->_escapeString($attributes) . ' href="' . $this->_escapeString($url) . '">' . $format . '</a>';
             }
 
             $attribs = $parameter->getAttributes();
 
             if (count($attribs)) {
-                $format = '<span ' . $this->buildAttributes($attribs) . '>' . $format . '</span>';
+                $format = '<span ' . $this->_escapeString($this->buildAttributes($attribs)) . '>' . $format . '</span>';
             }
 
             $parameter->setFormat($format);
@@ -65,5 +65,17 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
         $html .= $activity->toString();
 
         return $html;
+    }
+
+    /**
+     * Escapes special sprintf characters.
+     *
+     * @param $string The string to escape.
+     *
+     * @return mixed The escaped string.
+     */
+    protected function _escapeString($string)
+    {
+        return str_replace('%', '%%', $string);
     }
 }
