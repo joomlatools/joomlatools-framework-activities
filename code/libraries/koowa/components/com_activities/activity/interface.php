@@ -22,21 +22,28 @@
 interface ComActivitiesActivityInterface
 {
     /**
-     * Get the activity string format
+     * Get the activity message string format
      *
-     * The string format is a compact representation of the activity which also provides information about the
+     * The message string format is a compact representation of the activity which also provides information about the
      * parameters it may contain.
      *
-     * @return string The activity string format.
+     * @return string The activity message string format.
      */
-    public function getFormat();
+    public function getMessageFormat();
 
     /**
-     * Get the activity parameters
+     * Activity message parameters getter.
      *
-     * @return array The activity parameters.
+     * @return array An array of ComActivitiesActivityParameterInterface objects.
      */
-    public function getParameters();
+    public function getMessageParameters();
+
+    /**
+     * Activity stream objects getter.
+     *
+     * @return Array An array of ComActivitiesActivityObjectInterface objects.
+     */
+    public function getStreamObjects();
 
     /**
      * Looks for the activity actor.
@@ -46,27 +53,6 @@ interface ComActivitiesActivityInterface
     public function findActor();
 
     /**
-     * Activity actor id getter.
-     *
-     * @return mixed The activity actor id.
-     */
-    public function getActorId();
-
-    /**
-     * Activity actor URL getter.
-     *
-     * @return mixed The activity actor url.
-     */
-    public function getActorUrl();
-
-    /**
-     * Activity actor type getter.
-     *
-     * @return mixed The activity actor type.
-     */
-    public function getActorType();
-
-    /**
      * Looks for the activity object.
      *
      * @return boolean True if found, false otherwise.
@@ -74,53 +60,11 @@ interface ComActivitiesActivityInterface
     public function findObject();
 
     /**
-     * Activity object id getter.
-     *
-     * @return mixed The activity object id.
-     */
-    public function getObjectId();
-
-    /**
-     * Activity object URL getter.
-     *
-     * @return mixed The activity object url.
-     */
-    public function getObjectUrl();
-
-    /**
-     * Activity object type getter.
-     *
-     * @return mixed The activity object type.
-     */
-    public function getObjectType();
-
-    /**
      * Looks for the activity target.
      *
      * @return bool|null True if found, false if not found, null if the activity has no target.
      */
     public function findTarget();
-
-    /**
-     * Activity target id getter.
-     *
-     * @return mixed The activity target id.
-     */
-    public function getTargetId();
-
-    /**
-     * Activity target URL getter.
-     *
-     * @return mixed The activity target URL.
-     */
-    public function getTargetUrl();
-
-    /**
-     * Activity target type getter.
-     *
-     * @return mixed The activity target type.
-     */
-    public function getTargetType();
 
     /**
      * Casts an activity to a string.
