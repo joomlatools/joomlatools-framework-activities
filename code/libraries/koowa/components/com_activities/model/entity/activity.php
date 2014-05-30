@@ -75,8 +75,8 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'format' => '{actor} {action} {object} {title}',
-            'object_table' => $config->data->package . '_' . KStringInflector::pluralize($config->data->name),
+            'format'        => '{actor} {action} {object} {title}',
+            'object_table'  => $config->data->package . '_' . KStringInflector::pluralize($config->data->name),
             'object_column' => $config->data->package . '_' . $config->data->name . '_id'
         ));
 
@@ -189,31 +189,64 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         $this->setProperty('action', $value);
     }
 
+    /**
+     * Get the activity string format
+     *
+     * The string format is a compact representation of the activity which also provides information about the
+     * parameters it may contain.
+     *
+     * @return string The activity string format.
+     */
     public function getFormat()
     {
         return $this->_format;
     }
 
+    /**
+     * Looks for the activity actor.
+     *
+     * @return boolean True if found, false otherwise.
+     */
     public function findActor()
     {
         return (bool) $this->getObject('user.provider')->load($this->created_by)->getId();
     }
 
+    /**
+     * Activity actor id getter.
+     *
+     * @return mixed The activity actor id.
+     */
     public function getActorId()
     {
         return $this->created_by;
     }
 
+    /**
+     * Activity actor URL getter.
+     *
+     * @return mixed The activity actor url.
+     */
     public function getActorUrl()
     {
         return 'option=com_users&task=user.edit&id=' . $this->created_by;
     }
 
+    /**
+     * Activity actor type getter.
+     *
+     * @return mixed The activity actor type.
+     */
     public function getActorType()
     {
         return 'user';
     }
 
+    /**
+     * Looks for the activity object.
+     *
+     * @return boolean True if found, false otherwise.
+     */
     public function findObject()
     {
         $db     = $this->getTable()->getAdapter();
@@ -234,36 +267,71 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return (bool) $result;
     }
 
+    /**
+     * Activity object id getter.
+     *
+     * @return mixed The activity object id.
+     */
     public function getObjectId()
     {
         return $this->row;
     }
 
+    /**
+     * Activity object URL getter.
+     *
+     * @return mixed The activity object url.
+     */
     public function getObjectUrl()
     {
         return 'option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row;
     }
 
+    /**
+     * Activity object type getter.
+     *
+     * @return mixed The activity object type.
+     */
     public function getObjectType()
     {
         return $this->name;
     }
 
+    /**
+     * Looks for the activity target.
+     *
+     * @return bool|null True if found, false if not found, null if the activity has no target.
+     */
     public function findTarget()
     {
         return null; // Activities don't have targets by default.
     }
 
+    /**
+     * Activity target id getter.
+     *
+     * @return mixed The activity target id.
+     */
     public function getTargetId()
     {
         return null; // Activities don't have targets by default.
     }
 
+    /**
+     * Activity target URL getter.
+     *
+     * @return mixed The activity target URL.
+     */
     public function getTargetUrl()
     {
         return null; // Activities don't have targets by default.
     }
 
+    /**
+     * Activity target type getter.
+     *
+     * @return mixed The activity target type.
+     */
     public function getTargetType()
     {
         return null; // Activities don't have targets by default.
@@ -302,6 +370,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return $this->_parameters;
     }
 
+    /**
+     * Casts an activity to a string.
+     *
+     * @return string The string representation of an activity
+     */
     public function toString()
     {
         $format      = $this->getFormat();

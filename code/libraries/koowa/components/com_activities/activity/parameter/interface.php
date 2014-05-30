@@ -25,6 +25,14 @@ interface ComActivitiesActivityParameterInterface
     public function __construct( $name, KTranslatorInterface $translator, $config = array());
 
     /**
+     * Sets the translatable status of the parameter.
+     *
+     * @param bool $status True for setting it as translatable, false otherwise.
+     * @return ComActivitiesActivityParameterInterface
+     */
+    public function translate($status = true);
+
+    /**
      * Get the parameter name
      *
      * A name uniquely identifies a parameter.
@@ -106,15 +114,6 @@ interface ComActivitiesActivityParameterInterface
      * @return bool
      */
     public function isTranslatable();
-
-    /**
-     * Sets the translatable status of the parameter.
-     *
-     * @param bool $status True for setting it as translatable, false otherwise.
-     *
-     * @return ComActivitiesActivityParameterInterface
-     */
-    public function setTranslatable($status = true);
 
     /**
      * Casts an activity parameter to string.

@@ -23,18 +23,18 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
     private $__name;
 
     /**
+     * The parameter translator.
+     *
+     * @var KTranslatorInterface
+     */
+    protected $__translator;
+
+    /**
      * The parameter format.
      *
      * @var string
      */
     protected $_format;
-
-    /**
-     * The parameter translator.
-     *
-     * @var KTranslatorInterface
-     */
-    protected $_translator;
 
     /**
      * Constructor.
@@ -63,7 +63,19 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
         $this->__name = $name;
 
         // Set the parameter translator.
-        $this->_translator = $translator;
+        $this->__translator = $translator;
+    }
+
+    /**
+     * Sets the translatable status of the parameter.
+     *
+     * @param bool $status True for setting it as translatable, false otherwise.
+     * @return ComActivitiesActivityParameterInterface
+     */
+    public function translate($status = true)
+    {
+        $this->translate = (bool) $status;
+        return $this;
     }
 
     /**
@@ -76,6 +88,16 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
     public function getName()
     {
         return $this->__name;
+    }
+
+    /**
+     * Get the parameter translator
+     *
+     * @return string The parameter name
+     */
+    public function getTranslator()
+    {
+        return $this->__translator;
     }
 
     /**
@@ -186,12 +208,6 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
         return (bool) $this->translate;
     }
 
-    public function setTranslatable($status = true)
-    {
-        $this->translate = (bool) $status;
-        return $this;
-    }
-
     /**
      * Casts an activity parameter to string.
      *
@@ -202,7 +218,7 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
         $format = $this->getFormat() ? : '%s';
         $value  = $this->getValue();
 
-        if ($this->isTranslatable()) $value = $this->_translator->translate($value);
+        if ($this->isTranslatable()) $value = $this->getTranslator()->translate($value);
 
         return sprintf($format, $value);
     }

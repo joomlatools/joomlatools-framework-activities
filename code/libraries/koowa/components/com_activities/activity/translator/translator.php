@@ -54,7 +54,7 @@ class ComActivitiesActivityTranslator extends ComKoowaTranslatorAbstract impleme
                 {
                     if ($parameter->getName() ==  $matches[1][$i])
                     {
-                        $parameter->setValue($matches[2][$i])->setTranslatable(false);
+                        $parameter->setValue($matches[2][$i])->translate(false);
                         $translation = str_replace($matches[0][$i], $parameter->toString(), $translation);
                         break;
                     }

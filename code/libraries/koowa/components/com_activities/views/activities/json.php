@@ -36,11 +36,6 @@ class ComActivitiesViewActivitiesJson extends KViewJson
 
     protected function _getEntity(KModelEntityInterface $entity)
     {
-        return $this->_getActivity($entity);
-    }
-
-    protected function _getActivity(KModelEntityInterface $entity)
-    {
         if ($this->_layout == 'stream')
         {
             $item = array(
@@ -100,7 +95,9 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                     $item['target']['url'] = $this->getActivityRoute($entity->getTargetUrl(), false);
                 }
             }
-        } else {
+        }
+        else
+        {
             $item = $entity->toArray();
             if (!empty($this->_fields)) {
                 $item = array_intersect_key($item, array_flip($this->_fields));
