@@ -70,7 +70,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
     /**
      * Escapes special sprintf characters.
      *
-     * @param $string The string to escape.
+     * @param string $string The string to escape.
      *
      * @return mixed The escaped string.
      */

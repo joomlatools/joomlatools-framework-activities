@@ -18,9 +18,9 @@ interface ComActivitiesActivityParameterInterface
     /**
      * Constructor.
      *
-     * @param    string             $name                The command name
-     * @param                       KTranslatorInterface The parameter translator.
-     * @param   array|KObjectConfig $config              An associative array of configuration settings or a KObjectConfig instance.
+     * @param string               $name       The command name
+     * @param KTranslatorInterface $translator The parameter translator.
+     * @param array|KObjectConfig  $config     An associative array of configuration settings or a KObjectConfig instance.
      */
     public function __construct( $name, KTranslatorInterface $translator, $config = array());
 
