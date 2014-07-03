@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesActivityStreamObject extends KObjectConfigJson implements ComActivitiesActivityStreamObjectInterface
+class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivitiesActivityObjectInterface
 {
     /**
      * The activity object name, e.g. (actor, object, target, ...).

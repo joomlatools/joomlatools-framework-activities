@@ -15,7 +15,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-interface ComActivitiesActivityStreamObjectInterface
+interface ComActivitiesActivityObjectInterface
 {
     /**
      * Activity object name setter.
