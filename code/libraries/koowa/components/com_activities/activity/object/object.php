@@ -22,18 +22,12 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
      */
     private $__name;
 
-    /**
-     * Object deleted status.
-     *
-     * @var bool
-     */
-    private $__deleted;
-
     public function __construct($name, $config = array())
     {
         parent::__construct($config);
 
         $this->append(array(
+            'deleted'              => false,
             'attachments'          => array(),
             'downstreamDuplicates' => array(),
             'upstreamDuplicates'   => array(),
@@ -213,13 +207,13 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
 
     public function setDeleted($status)
     {
-        $this->__deleted = (bool) $status;
+        $this->deleted = (bool) $status;
         return $this;
     }
 
     public function isDeleted()
     {
-        return $this->__deleted;
+        return $this->deleted;
     }
 
     public function toArray()
