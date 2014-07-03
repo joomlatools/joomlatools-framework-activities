@@ -209,6 +209,11 @@ class ComActivitiesViewActivitiesJson extends KViewJson
             if (is_array($value) && empty($value)) unset($data[$name]);
         }
 
+        // Remove deleted property if the object isn't deleted or deletable.
+        if (!$object->isDeleted()) {
+            unset($data['deleted']);
+        }
+
         return $data;
     }
 
