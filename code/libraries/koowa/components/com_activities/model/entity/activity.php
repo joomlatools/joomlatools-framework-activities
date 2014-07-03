@@ -675,7 +675,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
         $object = $this->getObjectObject();
 
-        if (!$object->isDeleted()) {
+        if (!$object->isDeleted() && $object->url) {
             $parameter->link->href = $object->url;
         }
 
