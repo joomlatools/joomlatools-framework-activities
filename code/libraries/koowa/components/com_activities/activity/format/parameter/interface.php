@@ -8,21 +8,20 @@
  */
 
 /**
- * Activity Parameter Interface
+ * Activity Format Parameter Interface
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-interface ComActivitiesActivityParameterInterface
+interface ComActivitiesActivityFormatParameterInterface
 {
     /**
      * Constructor.
      *
-     * @param    string             $name                The command name
-     * @param                       KTranslatorInterface The parameter translator.
-     * @param   array|KObjectConfig $config              An associative array of configuration settings or a KObjectConfig instance.
+     * @param    string             $name   The parameter name
+     * @param   array|KObjectConfig $config An associative array of configuration settings or a KObjectConfig instance.
      */
-    public function __construct( $name, KTranslatorInterface $translator, $config = array());
+    public function __construct($name, $config = array());
 
     /**
      * Get the parameter name
@@ -37,7 +36,7 @@ interface ComActivitiesActivityParameterInterface
      * Get the parameter value
      *
      * @param mixed $value The parameter value.
-     * @return ComActivitiesActivityParameterInterface
+     * @return ComActivitiesActivityFormatParameterInterface
      */
     public function setValue($value);
 
@@ -52,7 +51,7 @@ interface ComActivitiesActivityParameterInterface
      * Set the parameter attributes
      *
      * @param array $attributes The parameter attributes.
-     * @return ComActivitiesActivityParameterInterface
+     * @return ComActivitiesActivityFormatParameterInterface
      */
     public function setAttributes($attributes);
 
@@ -67,7 +66,7 @@ interface ComActivitiesActivityParameterInterface
      * Set the link attributes
      *
      * @param array $attributes The link attributes.
-     * @return ComActivitiesActivityParameterInterface
+     * @return ComActivitiesActivityFormatParameterInterface
      */
     public function setLink($attributes);
 
@@ -77,21 +76,6 @@ interface ComActivitiesActivityParameterInterface
      * @return array The link attributes
      */
     public function getLink();
-
-    /**
-     * Set the parameter format
-     *
-     * @param string $format The parameter format.
-     * @return ComActivitiesActivityParameterInterface
-     */
-    public function setFormat($format);
-
-    /**
-     * Get the parameter format
-     *
-     * @return string The parameter format.
-     */
-    public function getFormat();
 
     /**
      * Tells if the parameter is linkable or not.
@@ -112,14 +96,7 @@ interface ComActivitiesActivityParameterInterface
      *
      * @param bool $status True for setting it as translatable, false otherwise.
      *
-     * @return ComActivitiesActivityParameterInterface
+     * @return ComActivitiesActivityFormatParameterInterface
      */
     public function setTranslatable($status = true);
-
-    /**
-     * Casts an activity parameter to string.
-     *
-     * @return string The string representation of an activity parameter.
-     */
-    public function toString();
 }

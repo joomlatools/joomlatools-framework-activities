@@ -8,12 +8,12 @@
  */
 
 /**
- * Activity Parameter
+ * Activity Format Parameter Class
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesActivityParameter extends KObjectConfig implements ComActivitiesActivityParameterInterface
+class ComActivitiesActivityFormatParameter extends KObjectConfig implements ComActivitiesActivityFormatParameterInterface
 {
     /**
      * The parameter name
@@ -30,20 +30,12 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
     protected $_format;
 
     /**
-     * The parameter translator.
-     *
-     * @var KTranslatorInterface
-     */
-    protected $_translator;
-
-    /**
      * Constructor.
      *
-     * @param    string             $name                The command name
-     * @param                       KTranslatorInterface The parameter translator.
-     * @param   array|KObjectConfig $config              An associative array of configuration settings or a KObjectConfig instance.
+     * @param    string             $name   The parameter name
+     * @param   array|KObjectConfig $config An associative array of configuration settings or a KObjectConfig instance.
      */
-    public function __construct( $name, KTranslatorInterface $translator, $config = array())
+    public function __construct( $name, $config = array())
     {
         parent::__construct($config);
 
@@ -61,9 +53,6 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
 
         //Set the parameter name.
         $this->__name = $name;
-
-        // Set the parameter translator.
-        $this->_translator = $translator;
     }
 
     /**
@@ -145,28 +134,6 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
     }
 
     /**
-     * Set the parameter format
-     *
-     * @param string $format The parameter format.
-     * @return ComActivitiesActivityParameterInterface
-     */
-    public function setFormat($format)
-    {
-        $this->_format = $format;
-        return $this;
-    }
-
-    /**
-     * Get the parameter format.
-     *
-     * @return string The parameter format.
-     */
-    public function getFormat()
-    {
-        return $this->_format;
-    }
-
-    /**
      * Tells if the parameter is linkable or not.
      *
      * @return bool
@@ -193,21 +160,6 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
     }
 
     /**
-     * Casts an activity parameter to string.
-     *
-     * @return string The string representation of an activity parameter.
-     */
-    public function toString()
-    {
-        $format = $this->getFormat() ? : '%s';
-        $value  = $this->getValue();
-
-        if ($this->isTranslatable()) $value = $this->_translator->translate($value);
-
-        return sprintf($format, $value);
-    }
-
-    /**
      * Set a parameter property
      *
      * @param  string $name
@@ -221,15 +173,5 @@ class ComActivitiesActivityParameter extends KObjectConfig implements ComActivit
         }
 
         parent::set($name, $value);
-    }
-
-    /**
-     * Allow PHP casting of this object
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->toString();
     }
 }
