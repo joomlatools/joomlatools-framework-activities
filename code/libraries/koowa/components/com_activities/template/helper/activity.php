@@ -16,17 +16,19 @@
 class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implements KObjectMultiton
 {
     /**
-     * Renders an activity
+     * Renders an activity.
      *
      * @param  array $config An optional configuration array.
+     *
      * @throws InvalidArgumentException
-     * @return  string  Html
+     * @return string The rendered activity
      */
     public function render($config = array())
     {
         $config = new KObjectConfig($config);
+
         $config->append(array(
-            'entity' => null,
+            'html' => true,
         ));
 
         $activity = $config->entity;
@@ -35,47 +37,78 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
             throw new InvalidArgumentException('Activity Not Found');
         }
 
-        //Render activity parameters
-        foreach ($activity->getMessageParameters() as $parameter)
+        $output = $activity->getFormat()->getString();
+
+        if (preg_match_all('/{(.*?)}/', $output, $replacements))
         {
-            $format = '<span class="text">%s</span>';
+            $parameters = $activity->getFormat()->getParameters();
 
-            if ($parameter->isLinkable())
+            foreach($replacements[1] as $replacement)
             {
-                $link = $parameter->getLink();
+                $parts = explode(':', $replacement);
 
-                $view       = $this->getTemplate()->getView();
-                $url        = $view->getActivityRoute($link->href);
-                $attributes = !empty($link->attribs) ? $this->buildAttributes($link->attribs) : '';
+                if (isset($parameters[$parts[0]]))
+                {
+                    $parameter = $parameters[$parts[0]];
 
-                $format = '<a ' . $this->_escapeString($attributes) . ' href="' . $this->_escapeString($url) . '">' . $format . '</a>';
+                    // Deal with context translations.
+                    if (count($parts) === 2)
+                    {
+                        $parameter = clone $parameter;
+                        $parameter->setValue($parts[1]);
+                        $parameter->setTranslatable(false);
+                    }
+
+                    if ($config->html) {
+                        $parameter = $this->_renderHtmlParameter($parameter);
+                    } else {
+                        $value     = $parameter->getValue();
+                        $parameter = $parameter->isTranslatable() ? $value : $this->translate($value);
+                    }
+
+                    $output = str_replace('{'.$replacement.'}', $parameter, $output);
+                }
             }
-
-            $attribs = $parameter->getAttributes();
-
-            if (count($attribs)) {
-                $format = '<span ' . $this->_escapeString($this->buildAttributes($attribs)) . '>' . $format . '</span>';
-            }
-
-            $parameter->setFormat($format);
         }
 
-        //Render activity message
-        $html = '';
-        $html .= $activity->toString();
-
-        return $html;
+        return $output;
     }
 
     /**
-     * Escapes special sprintf characters.
+     * Renders an HTML formatted activity format parameter.
      *
-     * @param $string The string to escape.
+     * @param ComActivitiesActivityFormatParameterInterface $parameter The activity format parameter.
      *
-     * @return mixed The escaped string.
+     * @return string The HTML formatted format parameter.
      */
-    protected function _escapeString($string)
+    protected function _renderHtmlParameter(ComActivitiesActivityFormatParameterInterface $parameter)
     {
-        return str_replace('%', '%%', $string);
+        $output = $parameter->getValue();
+
+        if ($parameter->isTranslatable())
+        {
+            $output = $this->translate($output);
+        }
+
+        if ($parameter->isLinkable())
+        {
+            $link = $parameter->getLink();
+
+            $view    = $this->getTemplate()->getView();
+            $url     = $view->getActivityRoute($link->href);
+            $attribs = !empty($link->attribs) ? $this->buildAttributes($link->attribs) : '';
+
+            $output = "<a {$attribs} href=\"{$url}\">{$output}</a>";
+        }
+
+        $attribs = $parameter->getAttributes();
+
+        if (count($attribs))
+        {
+            $attribs = $this->buildAttributes($attribs);
+            $output  = "<span {$attribs}>{$output}</span>";
+        }
+
+        return $output;
     }
 }
