@@ -43,7 +43,6 @@ class ComActivitiesActivityFormatParameter extends KObjectConfig implements ComA
             'translate' => true,
             'value'     => '',
             'link'      => array(
-                'href'    => '',
                 'attribs' => array()
             ),
             'attribs'   => array(
