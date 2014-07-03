@@ -15,7 +15,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-interface ComActivitiesActivityStreamMedialinkInterface
+interface ComActivitiesActivityMedialinkInterface
 {
     /**
      * Duration setter.
