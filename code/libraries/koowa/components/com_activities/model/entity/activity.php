@@ -442,28 +442,23 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     public function getObjectActor()
     {
-        if (!$this->_actor instanceof ComActivitiesActivityObjectInterface) {
-            $this->setObjectActor($this->_getObject('actor'));
+        if (!$this->_actor instanceof ComActivitiesActivityObjectInterface)
+        {
+            $actor = new ComActivitiesActivityObject('actor');
+
+            $actor->objectType = 'user';
+            $actor->id         = $this->created_by;
+            $actor->url        = 'option=com_users&task=user.edit&id=' . $this->created_by;
+
+            if (!$this->getObject('user.provider')->load($this->created_by)->getId())
+            {
+                $actor->setDeleted(true);
+            }
+
+            $this->setObjectActor($actor);
         }
 
         return $this->_actor;
-    }
-
-    /**
-     * Activity actor object configurator.
-     *
-     * @param ComActivitiesActivityObjectInterface $actor
-     */
-    protected function _objectActor(ComActivitiesActivityObjectInterface $actor)
-    {
-        $actor->objectType = 'user';
-        $actor->id         = $this->created_by;
-        $actor->url        = 'option=com_users&task=user.edit&id=' . $this->created_by;
-
-        if (!$this->getObject('user.provider')->load($this->created_by)->getId())
-        {
-            $actor->setDeleted(true);
-        }
     }
 
     public function setObjectObject(ComActivitiesActivityObjectInterface $object)
@@ -474,28 +469,23 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     public function getObjectObject()
     {
-        if (!$this->_object instanceof ComActivitiesActivityObjectInterface) {
-            $this->setObjectObject($this->_getObject('object'));
+        if (!$this->_object instanceof ComActivitiesActivityObjectInterface)
+        {
+            $object = new ComActivitiesActivityObject('object');
+
+            $object->id         = $this->row;
+            $object->objectType = $this->name;
+            $object->url        = 'option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row;
+
+            if (!$this->_findObjectObject())
+            {
+                $object->setDeleted(true);
+            }
+
+            $this->setObjectObject($object);
         }
 
         return $this->_object;
-    }
-
-    /**
-     * Activity object object configurator.
-     *
-     * @param ComActivitiesActivityObjectInterface $object
-     */
-    protected function _objectObject(ComActivitiesActivityObjectInterface $object)
-    {
-        $object->id         = $this->row;
-        $object->objectType = $this->name;
-        $object->url        = 'option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row;
-
-        if (!$this->_findObjectObject())
-        {
-            $object->setDeleted(true);
-        }
     }
 
     public function setObjectTarget(ComActivitiesActivityObjectInterface $target)
@@ -519,21 +509,12 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         if (!$this->_generator instanceof ComActivitiesActivityObjectInterface)
         {
-            $this->setObjectGenerator($this->_getObject('generator'));
+            $generator = new ComActivitiesActivityObject('generator');
+            $generator->setDisplayName('com_activities')->setObjectType('component');
+            $this->setObjectGenerator($generator);
         }
 
         return $this->_generator;
-    }
-
-    /**
-     * Activity generator object configurator.
-     *
-     * @param ComActivitiesActivityObjectInterface $generator
-     */
-    protected function _objectGenerator(ComActivitiesActivityObjectInterface $generator)
-    {
-        $generator->setDisplayName('com_activities');
-        $generator->setObjectType('component');
     }
 
     public function setObjectProvider(ComActivitiesActivityObjectInterface $provider)
@@ -546,42 +527,12 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         if (!$this->_provider instanceof ComActivitiesActivityObjectInterface)
         {
-            $this->setObjectProvider($this->_getObject('provider'));
+            $provider = new ComActivitiesActivityObject('provider');
+            $$provider->setDisplayName('com_activities')->setObjectType('component');
+            $this->setObjectProvider($provider);
         }
 
         return $this->_provider;
-    }
-
-    /**
-     * Activity provider object configurator.
-     *
-     * @param ComActivitiesActivityObjectInterface $provider
-     */
-    protected function _objectProvider(ComActivitiesActivityObjectInterface $provider)
-    {
-        $this->_objectGenerator($provider); // Same as generator.
-    }
-
-    /**
-     * Activity object by name getter.
-     *
-     * @param string $name The object name.
-     *
-     * @return mixed The activity object.
-     */
-    protected function _getObject($name)
-    {
-        $object = new ComActivitiesActivityObject($name);
-
-        $method = '_object' . ucfirst($name);
-
-        // Call object configurator if any.
-        if (method_exists($this, $method))
-        {
-            $this->$method($object);
-        }
-
-        return $object;
     }
 
     public function getObjects()
