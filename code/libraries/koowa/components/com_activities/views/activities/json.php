@@ -251,6 +251,15 @@ class ComActivitiesViewActivitiesJson extends KViewJson
             $data['link']['href'] = $this->getActivityRoute($parameter->getLink()->href, false);
         }
 
+        // Cleanup.
+        if (empty($data['link']['attribs'])) {
+            unset($data['link']['attribs']);
+        }
+
+        if (empty($data['link'])) {
+            unset($data['link']);
+        }
+
         return $data;
     }
 }
