@@ -528,7 +528,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         if (!$this->_provider instanceof ComActivitiesActivityObjectInterface)
         {
             $provider = new ComActivitiesActivityObject('provider');
-            $$provider->setDisplayName('com_activities')->setObjectType('component');
+            $provider->setDisplayName('com_activities')->setObjectType('component');
             $this->setObjectProvider($provider);
         }
 
