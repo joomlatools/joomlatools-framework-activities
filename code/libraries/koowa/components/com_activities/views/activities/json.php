@@ -191,8 +191,8 @@ class ComActivitiesViewActivitiesJson extends KViewJson
         }
 
         // Route image URL if any.
-        if (($image = $object->getImage()) && ($url = $image->getUrl())) {
-            $data['image']['url'] = $this->getActivityRoute($url, false);
+        if ($image = $object->getImage()) {
+            $data['image'] = $this->_getMediaLinkData($image);
         }
 
         $attachments = array();
