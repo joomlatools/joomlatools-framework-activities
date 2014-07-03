@@ -26,43 +26,29 @@ class ComActivitiesActivityTranslator extends ComKoowaTranslatorAbstract impleme
         parent::_initialize($config);
     }
 
-    public function translate($format, array $parameters = array())
+    public function translate($string, array $parameters = array())
     {
-        //Find a format override
+        return parent::translate($this->getOverride($string, $parameters), array());
+    }
+
+    public function getOverride($string, $parameters = array())
+    {
+        $override = $string;
+
         if ($parameters)
         {
-            foreach ($this->_getOverrides($format, $parameters) as $override)
+            foreach ($this->_getOverrides($string, $parameters) as $candidate)
             {
-                // Check if a key for the $override exists.
-                if ($this->isTranslatable($override))
+                // Check if a key for the override exists.
+                if ($this->isTranslatable($candidate))
                 {
-                    $format = $override;
+                    $override = $candidate;
                     break;
                 }
             }
         }
 
-        // Translate
-        $translation = parent::translate($format, $parameters);
-
-        // Process context translations.
-        if (preg_match_all('/\{(.+?):(.+?)\}/', $translation, $matches) !== false)
-        {
-            for ($i = 0; $i < count($matches[0]); $i++)
-            {
-                foreach ($parameters as $parameter)
-                {
-                    if ($parameter->getName() ==  $matches[1][$i])
-                    {
-                        $parameter->setValue($matches[2][$i])->setTranslatable(false);
-                        $translation = str_replace($matches[0][$i], $parameter->toString(), $translation);
-                        break;
-                    }
-                }
-            }
-        }
-
-        return $translation;
+        return $override;
     }
 
     /**
