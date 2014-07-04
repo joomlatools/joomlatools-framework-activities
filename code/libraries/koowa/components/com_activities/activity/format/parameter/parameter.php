@@ -152,7 +152,7 @@ class ComActivitiesActivityFormatParameter extends KObjectConfig implements ComA
         return (bool) $this->translate;
     }
 
-    public function setTranslatable($status = true)
+    public function translate($status = true)
     {
         $this->translate = (bool) $status;
         return $this;

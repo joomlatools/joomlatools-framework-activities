@@ -56,7 +56,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
                     {
                         $parameter = clone $parameter;
                         $parameter->setValue($parts[1]);
-                        $parameter->setTranslatable(false);
+                        $parameter->translate(false);
                     }
 
                     if ($config->html) {

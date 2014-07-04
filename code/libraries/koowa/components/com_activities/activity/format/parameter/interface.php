@@ -98,5 +98,5 @@ interface ComActivitiesActivityFormatParameterInterface
      *
      * @return ComActivitiesActivityFormatParameterInterface
      */
-    public function setTranslatable($status = true);
+    public function translate($status = true);
 }
