@@ -50,9 +50,9 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                     'id'         => $entity->row,
                     'objectType' => $entity->name),
                 'actor'     => array(
-                    'id'          => $entity->created_by,
+                    'id'          => $entity->getAuthor()->getId(),
                     'objectType'  => 'user',
-                    'displayName' => $entity->created_by_name));
+                    'displayName' => $entity->getAuthor()->getName()));
 
             if ($entity->findObject()) {
                 $item['object']['url'] = $this->getActivityRoute($entity->getObjectUrl(), false);
