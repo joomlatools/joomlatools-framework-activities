@@ -69,16 +69,7 @@ class ComActivitiesModelActivities extends KModelDatabase
 				->columns($state->column)
 				->columns(array('activities_activity_id' => $state->column));
 		}
-		else
-		{
-			parent::_buildQueryColumns($query);
-			$query->columns(array('created_by_name' => 'users.name'));
-		}
-	}
-
-	protected function _buildQueryJoins(KDatabaseQueryInterface $query)
-	{
-		$query->join(array('users' => 'users'), 'users.id = tbl.created_by');
+		else parent::_buildQueryColumns($query);
 	}
 
 	protected function _buildQueryWhere(KDatabaseQueryInterface $query)
