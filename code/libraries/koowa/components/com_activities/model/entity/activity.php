@@ -473,9 +473,10 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         {
             $object = new ComActivitiesActivityObject('object');
 
-            $object->id         = $this->row;
-            $object->objectType = $this->name;
-            $object->url        = 'option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row;
+            $object->id          = $this->row;
+            $object->objectType  = $this->name;
+            $object->url         = 'option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row;
+            $object->displayName = $this->title;
 
             if (!$this->_findObjectObject())
             {
@@ -621,10 +622,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      */
     protected function _parameterTitle(ComActivitiesActivityFormatParameterInterface $parameter)
     {
-        $parameter->value     = $this->title;
         $parameter->translate = false;
 
         $object = $this->getObjectObject();
+
+        $parameter->value = $object->displayName;
 
         if (!$object->isDeleted() && $object->url) {
             $parameter->link->href = $object->url;
