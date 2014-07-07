@@ -450,6 +450,10 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
             $actor->id         = $this->created_by;
             $actor->url        = 'option=com_users&task=user.edit&id=' . $this->created_by;
 
+            if ($name = $this->created_by_name) {
+                $actor->displayName = $name;
+            }
+
             if (!$this->getObject('user.provider')->load($this->created_by)->getId())
             {
                 $actor->setDeleted(true);
