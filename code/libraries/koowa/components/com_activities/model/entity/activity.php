@@ -582,12 +582,9 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         {
             $parameter->link->href = $actor->url;
             $parameter->translate  = false;
-            $value                 = $this->created_by_name;
+            $value                 = $this->getAuthor()->getName();
         }
-        else
-        {
-            $value = $this->created_by ? 'Deleted user' : 'Guest user';
-        }
+        else $value = $this->created_by ? 'Deleted user' : 'Guest user';
 
         $parameter->value = $value;
     }
