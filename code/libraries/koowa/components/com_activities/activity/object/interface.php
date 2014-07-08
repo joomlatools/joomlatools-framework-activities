@@ -261,4 +261,36 @@ interface ComActivitiesActivityObjectInterface
      * @return bool True if the object has been deleted, false otherwise.
      */
     public function isDeleted();
+
+    /**
+     * Atrributes setter.
+     *
+     * @param array $attribs An array containing object attributes.
+     *
+     * @return ComActivitiesActivityObjectInterface
+     */
+    public function setAttributes(array $attribs = array());
+
+    /**
+     * Attributes getter.
+     *
+     * @return array An array containing object attributes.
+     */
+    public function getAttributes();
+
+    /**
+     * Value setter.
+     *
+     * @param string $value The value.
+     *
+     * @return ComActivitiesActivityObjectInterface
+     */
+    public function setValue($value);
+
+    /**
+     * Value getter.
+     *
+     * @return string|null The value, null if the object has no value.
+     */
+    public function getValue();
 }
