@@ -49,31 +49,23 @@ class ComActivitiesViewActivitiesJson extends KViewJson
         if ($this->_layout == 'stream')
         {
             $activity   = $entity;
-            $format = $activity->getFormat();
-
-            // Set the activity and story
-            $activity->setTitle($this->_renderTitle($activity));
-            $activity->setStory($this->_renderStory($activity));
 
             $item = array(
-                'id'        => $activity->getId(),
-                'title'     => $activity->getTitle(),
-                'content'   => $activity->getContent(),
-                'story'     => $activity->getStory(),
-                'published' => $activity->getPublished()->format('c'),
-                'verb'      => $activity->getVerb(),
-                'format'    => array(
-                    'string'     => $format->getString(),
-                    'parameters' => $this->_getFormatParametersData($format->getParameters()))
+                'id'        => $activity->getActivityId(),
+                'title'     => $this->_getActivityTitle($activity),
+                'story'     => $this->_getActivityStory($activity),
+                'published' => $activity->getActivityPublished()->format('c'),
+                'verb'      => $activity->getActivityVerb(),
+                'format'    => $activity->getActivityFormat()
             );
 
-            if ($activity->getIcon()) {
-                $item['icon'] = $this->_getMediaLinkData($activity->getIcon());
+            if ($icon = $activity->getActivityIcon()) {
+                $item['icon'] = $this->_getActivityMediaLinkData($icon);
             }
 
-            foreach ($activity->getObjects() as $name => $object)
+            foreach ($activity->getActivityObjects() as $name => $object)
             {
-                $item[$name] = $this->_getObjectData($object);
+                $item[$name] = $this->_getActivityObjectData($object);
             }
         }
         else
@@ -148,25 +140,25 @@ class ComActivitiesViewActivitiesJson extends KViewJson
     }
 
     /**
-     * Renders the activity title.
+     * Activity title getter.
      *
      * @param ComActivitiesModelEntityActivity $activity The activity object.
      *
      * @return string The activity title.
      */
-    protected function _renderTitle(ComActivitiesModelEntityActivity $activity)
+    protected function _getActivityTitle(ComActivitiesModelEntityActivity $activity)
     {
         return $this->getHelper()->render(array('entity' => $activity, 'html' => true));
     }
 
     /**
-     * Renders the activity story.
+     * Activity story getter.
      *
      * @param ComActivitiesModelEntityActivity $activity The activity object.
      *
      * @return string The activity story.
      */
-    protected function _renderStory(ComActivitiesModelEntityActivity $activity)
+    protected function _getActivityStory(ComActivitiesModelEntityActivity $activity)
     {
         return $this->getHelper()->render(array('entity' => $activity, 'html' => false));
     }
@@ -178,7 +170,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      *
      * @return array The data.
      */
-    protected function _getObjectData(ComActivitiesActivityObjectInterface $object)
+    protected function _getActivityObjectData(ComActivitiesActivityObjectInterface $object)
     {
         $data = $object->toArray();
 
@@ -211,6 +203,19 @@ class ComActivitiesViewActivitiesJson extends KViewJson
             unset($data['deleted']);
         }
 
+        // Route link URL if any.
+        if ($object->isLinkable()) {
+            $data['link']['href'] = $this->getActivityRoute($object->getLink()->href, false);
+        }
+
+        // Translate value if any and if needed.
+        if ($object->isTranslatable() && $object->getValue()) {
+            $data['value'] = $this->getObject('translator')->translate($object->getValue());
+        }
+
+        // Remove translatable status.
+        unset($data['translate']);
+
         return $data;
     }
 
@@ -221,45 +226,13 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      *
      * @return array The data.
      */
-    protected function _getMediaLinkData(ComActivitiesActivityMedialinkInterface $medialink)
+    protected function _getActivityMediaLinkData(ComActivitiesActivityMedialinkInterface $medialink)
     {
         $data = $medialink->toArray();
 
         // Route medialink URL.
         if ($url = $medialink->getUrl()) {
             $data['url'] = $this->getActivityRoute($url, false);
-        }
-
-        return $data;
-    }
-
-    protected function _getFormatParametersData(array $parameters = array())
-    {
-        $data = array();
-
-        foreach ($parameters as $parameter) {
-            $data[$parameter->getName()] = $this->_getFormatParameterData($parameter);
-        }
-
-        return $data;
-    }
-
-    protected function _getFormatParameterData(ComActivitiesActivityFormatParameterInterface $parameter)
-    {
-        $data = $parameter->toArray();
-
-        // Route link URL if any.
-        if ($parameter->isLinkable()) {
-            $data['link']['href'] = $this->getActivityRoute($parameter->getLink()->href, false);
-        }
-
-        // Cleanup.
-        if (empty($data['link']['attribs'])) {
-            unset($data['link']['attribs']);
-        }
-
-        if (empty($data['link'])) {
-            unset($data['link']);
         }
 
         return $data;
