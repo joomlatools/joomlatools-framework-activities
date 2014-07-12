@@ -53,11 +53,11 @@ interface ComActivitiesActivityObjectInterface
     /**
      * Author setter.
      *
-     * @param ComActivitiesActivityObjectInterface $author The author.
+     * @param ComActivitiesActivityObjectInterface|null $author The author.
      *
      * @return ComActivitiesActivityObjectInterface
      */
-    public function setAuthor(ComActivitiesActivityObjectInterface $author);
+    public function setAuthor($author);
 
     /**
      * Author getter.
@@ -119,7 +119,7 @@ interface ComActivitiesActivityObjectInterface
     /**
      * Id setter.
      *
-     * @param string $id
+     * @param string|null $id
      *
      * @return ComActivitiesActivityObjectInterface
      */
@@ -135,23 +135,23 @@ interface ComActivitiesActivityObjectInterface
     /**
      * Image setter.
      *
-     * @param ComActivitiesActivityStreamMedialinkInterface $image The image.
+     * @param ComActivitiesActivityMedialinkInterface|null $image The image.
      *
      * @return ComActivitiesActivityObjectInterface
      */
-    public function setImage(ComActivitiesActivityStreamMedialinkInterface $image);
+    public function setImage($image);
 
     /**
      * Image getter.
      *
-     * @return ComActivitiesActivityObjectInterface|null The image, null if the object does not have an image property.
+     * @return ComActivitiesActivityMedialinkInterface|null The image, null if the object does not have an image property.
      */
     public function getImage();
 
     /**
      * Object type setter.
      *
-     * @param string $type The object type.
+     * @param string|null $type The object type.
      *
      * @return ComActivitiesActivityObjectInterface
      */
@@ -171,7 +171,7 @@ interface ComActivitiesActivityObjectInterface
      *
      * @return ComActivitiesActivityObjectInterface
      */
-    public function setPublished(KDate $date);
+    public function setPublished($date);
 
     /**
      * Published date getter.
@@ -183,7 +183,7 @@ interface ComActivitiesActivityObjectInterface
     /**
      * Summary setter.
      *
-     * @param string $summary The summary.
+     * @param mixed $summary The summary.
      *
      * @return ComActivitiesActivityObjectInterface
      */
@@ -199,11 +199,11 @@ interface ComActivitiesActivityObjectInterface
     /**
      * Updated date setter.
      *
-     * @param KDate $date The updated date.
+     * @param KDate|null $date The updated date.
      *
      * @return ComActivitiesActivityObjectInterface
      */
-    public function setUpdated(KDate $date);
+    public function setUpdated($date);
 
     /**
      * Updated date getter.
@@ -233,7 +233,7 @@ interface ComActivitiesActivityObjectInterface
     /**
      * Url setter.
      *
-     * @param string $url
+     * @param string|null $url
      *
      * @return ComActivitiesActivityObjectInterface
      */
@@ -242,7 +242,7 @@ interface ComActivitiesActivityObjectInterface
     /**
      * Url getter.
      *
-     * @return string The url, null if the object does not have a url property.
+     * @return string|null The url, null if the object does not have a url property.
      */
     public function getUrl();
 
@@ -263,25 +263,9 @@ interface ComActivitiesActivityObjectInterface
     public function isDeleted();
 
     /**
-     * Atrributes setter.
-     *
-     * @param array $attribs An array containing object attributes.
-     *
-     * @return ComActivitiesActivityObjectInterface
-     */
-    public function setAttributes(array $attribs = array());
-
-    /**
-     * Attributes getter.
-     *
-     * @return array An array containing object attributes.
-     */
-    public function getAttributes();
-
-    /**
      * Value setter.
      *
-     * @param string $value The value.
+     * @param string|null $value The value.
      *
      * @return ComActivitiesActivityObjectInterface
      */
@@ -293,4 +277,54 @@ interface ComActivitiesActivityObjectInterface
      * @return string|null The value, null if the object has no value.
      */
     public function getValue();
+
+    /**
+     * Link setter.
+     *
+     * @param array $attribs The link attributes.
+     * @param bool  $merge   Tells if link attributes should be replaced or merged with current existing link attributes.
+     *
+     * @return ComActivitiesActivityObjectInterface
+     */
+    public function setLink(array $attribs = array(), $merge = true);
+
+    /**
+     * Link getter.
+     *
+     * @return array The link attributes.
+     */
+    public function getLink();
+
+    /**
+     * Attributes setter.
+     *
+     * @param array $attributes The attributes.
+     * @param bool  $merge      Tells if attributes should be replaced or merged with current existing attributes.
+     *
+     * @return ComActivitiesActivityObjectInterface
+     */
+    public function setAttributes(array $attribs = array(), $merge = true);
+
+    /**
+     * Attributes getter.
+     *
+     * @return array The attributes.
+     */
+    public function getAttributes();
+
+    /**
+     * Tells if the object translatable or not.
+     *
+     * @return bool True if translatable, false otherwise.
+     */
+    public function isTranslatable();
+
+    /**
+     * Sets the translatable status of the object.
+     *
+     * @param bool $status True for setting it as translatable, false otherwise.
+     *
+     * @return ComActivitiesActivityObjectInterface
+     */
+    public function translate($status = true);
 }
