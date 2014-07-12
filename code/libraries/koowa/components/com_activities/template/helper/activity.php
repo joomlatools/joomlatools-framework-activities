@@ -37,36 +37,38 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
             throw new InvalidArgumentException('Activity Not Found');
         }
 
-        $output = $activity->getFormat()->getString();
+        $output = $config->format;
+
+        if (!$output) {
+            $output = $this->format(array('entity' => $activity));
+        }
 
         if (preg_match_all('/{(.*?)}/', $output, $replacements))
         {
-            $parameters = $activity->getFormat()->getParameters();
+            $objects = $activity->getActivityObjects();
 
             foreach($replacements[1] as $replacement)
             {
                 $parts = explode(':', $replacement);
 
-                if (isset($parameters[$parts[0]]))
+                if (isset($objects[$parts[0]]))
                 {
-                    $parameter = $parameters[$parts[0]];
+                    $parameter = $objects[$parts[0]];
 
                     // Deal with context translations.
                     if (count($parts) === 2)
                     {
                         $parameter = clone $parameter;
-                        $parameter->setValue($parts[1]);
-                        $parameter->translate(false);
+                        $parameter->setValue($parts[1])->translate(false);
                     }
+
+                    $content = $parameter->getValue();
 
                     if ($config->html) {
-                        $parameter = $this->_renderHtmlParameter($parameter);
-                    } else {
-                        $value     = $parameter->getValue();
-                        $parameter = $parameter->isTranslatable() ? $value : $this->translate($value);
+                        $content = $this->parameter(array('parameter' => $parameter));
                     }
 
-                    $output = str_replace('{'.$replacement.'}', $parameter, $output);
+                    $output = str_replace('{'.$replacement.'}', $content, $output);
                 }
             }
         }
@@ -75,39 +77,87 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
     }
 
     /**
+     * Renders an activity format.
+     *
+     * @param array $config An optional configuration array.
+     *
+     * @return string The activity format.
+     */
+    public function format($config = array())
+    {
+        $config = new KObjectConfig($config);
+
+        $activity = $config->entity;
+
+        if (!$activity instanceof ComActivitiesActivityInterface) {
+            throw new InvalidArgumentException('Activity Not Found');
+        }
+
+        $format = $activity->getActivityFormat();
+
+        $parameters = array();
+
+        if (preg_match_all('/\{(.*?)\}/', $format, $matches) !== false)
+        {
+            $objects = $activity->getActivityObjects();
+
+            foreach ($matches[1] as $name)
+            {
+                if (isset($objects[$name]))
+                {
+                    $parameters[] = $objects[$name];
+                }
+            }
+        }
+
+        $translator = $this->getObject('com:activities.activity.translator');
+
+        // Translate format to a readable translated string.
+        return $translator->translate($translator->getOverride($format, $parameters));
+    }
+
+    /**
      * Renders an HTML formatted activity format parameter.
      *
-     * @param ComActivitiesActivityFormatParameterInterface $parameter The activity format parameter.
+     * @param array $config An optional configuration array.
      *
      * @return string The HTML formatted format parameter.
      */
-    protected function _renderHtmlParameter(ComActivitiesActivityFormatParameterInterface $parameter)
+    public function parameter(array $config = array())
     {
+        $config = new KObjectConfig($config);
+
+        $parameter = $config->parameter;
+
+        if (!$parameter instanceof ComActivitiesActivityObjectInterface)
+        {
+            throw new InvalidArgumentException('Parameter Not Found');
+        }
+
         $output = $parameter->getValue();
 
-        if ($parameter->isTranslatable())
-        {
+        if ($parameter->isTranslatable()) {
             $output = $this->translate($output);
         }
 
-        if ($parameter->isLinkable())
+        if ($parameter->getLink())
         {
+            $view   = $this->getTemplate()->getView();
             $link = $parameter->getLink();
 
-            $view    = $this->getTemplate()->getView();
-            $url     = $view->getActivityRoute($link->href);
-            $attribs = !empty($link->attribs) ? $this->buildAttributes($link->attribs) : '';
+            // Route link URL if any.
+            if (isset($link['href'])) {
+                $link['href'] = $view->getActivityRoute($link['href']);
+            }
 
-            $output = "<a {$attribs} href=\"{$url}\">{$output}</a>";
+            $attribs = $this->buildAttributes($parameter->getAttributes());
+
+            $output = "<a {$attribs}>{$output}</a>";
         }
 
-        $attribs = $parameter->getAttributes();
+        $attribs = $parameter->getAttributes() ? $this->buildAttributes($parameter->getAttributes()) : '';
 
-        if (count($attribs))
-        {
-            $attribs = $this->buildAttributes($attribs);
-            $output  = "<span {$attribs}>{$output}</span>";
-        }
+        $output = "<span {$attribs}>{$output}</span>";
 
         return $output;
     }
