@@ -26,220 +26,65 @@
 interface ComActivitiesActivityInterface
 {
     /**
-     * Activity format setter.
-     *
-     * @param ComActivitiesActivityFormatInterface $format
-     *
-     * @return ComActivitiesActivityInterface
-     */
-    public function setFormat(ComActivitiesActivityFormatInterface $format);
-
-    /**
      * Activity format getter.
      *
      * @return string The activity string format.
      */
-    public function getFormat();
-
-    /**
-     * Activity content getter.
-     *
-     * @param string $string The activity content.
-     *
-     * @return ComActivitiesActivityInterface
-     */
-    public function setContent($content);
-
-    /**
-     * Activity content getter.
-     *
-     * @return string|null The activity content, null if the activity does not have a content.
-     */
-    public function getContent();
-
-    /**
-     * Activity icon setter.
-     *
-     * @param ComActivitiesActivityMedialinkInterface $icon The activity icon.
-     *
-     * @return ComActivitiesActivityInterface
-     */
-    public function setIcon(ComActivitiesActivityMedialinkInterface $icon);
+    public function getActivityFormat();
 
     /**
      * Activity icon getter.
      *
      * @return ComActivitiesActivityMedialinkInterface|null The activity icon, null if the activity does not have an icon.
      */
-    public function getIcon();
-
-    /**
-     * Activity ID setter.
-     *
-     * @param string $id The activity ID.
-     *
-     * @return ComActivitiesActivityInterface
-     */
-    public function setId($id);
+    public function getActivityIcon();
 
     /**
      * Activity ID getter.
      *
      * @return string The activity ID.
      */
-    public function getId();
-
-    /**
-     * Activity published date setter.
-     *
-     * @param KDate $date The published date.
-     *
-     * @return ComActivitiesActivityInterface
-     */
-    public function setPublished(KDate $date);
+    public function getActivityId();
 
     /**
      * Activity published date getter.
      *
      * @return KDate The published date.
      */
-    public function getPublished();
-
-    /**
-     * Activity title setter.
-     *
-     * @param string $title The activity title.
-     *
-     * @return ComActivitiesActivityInterface
-     */
-    public function setTitle($title);
-
-    /**
-     * Activity title getter.
-     *
-     * @return string|null The activity title, null is the activity does not have a title.
-     */
-    public function getTitle();
-
-    /**
-     * Activity actor object setter.
-     *
-     * @param ComActivitiesActivityObjectInterface $actor The actor object.
-     *
-     * @return ComActivitiesActivityInterface
-     */
-    public function setObjectActor(ComActivitiesActivityObjectInterface $actor);
+    public function getActivityPublished();
 
     /**
      * Activity actor object getter.
      *
      * @return ComActivitiesActivityObjectInterface The actor object.
      */
-    public function getObjectActor();
-
-    /**
-     * Activity object object setter.
-     *
-     * @param ComActivitiesActivityObjectInterface $object The activity object object.
-     *
-     * @return ComActivitiesActivityInterface
-     */
-    public function setObjectObject(ComActivitiesActivityObjectInterface $object);
+    public function getActivityObjectActor();
 
     /**
      * Activity object object getter.
      *
      * @return ComActivitiesActivityObjectInterface|null The object object, null if the activity does not have an object.
      */
-    public function getObjectObject();
-
-    /**
-     * Activity target object setter.
-     *
-     * @param ComActivitiesActivityObjectInterface $target The target object.
-     *
-     * @return ComActivitiesActivityInterface
-     */
-    public function setObjectTarget(ComActivitiesActivityObjectInterface $target);
+    public function getActivityObjectObject();
 
     /**
      * Activity target object getter.
      *
      * @return ComActivitiesActivityObjectInterface|null The target object, null if the activity does no have a target.
      */
-    public function getObjectTarget();
-
-
-    /**
-     * Activity generator object setter.
-     *
-     * @param ComActivitiesActivityObjectInterface $generator The generator object.
-     *
-     * @return ComActivitiesActivityInterface
-     */
-    public function setObjectGenerator(ComActivitiesActivityObjectInterface $generator);
-
-    /**
-     * Activity generator object getter.
-     *
-     * @return ComActivitiesActivityObjectInterface The generator object.
-     */
-    public function getObjectGenerator();
-
-    /**
-     * Activity generator object setter.
-     *
-     * @param ComActivitiesActivityObjectInterface $generator The generator object.
-     *
-     * @return ComActivitiesActivityInterface
-     */
-    public function setObjectProvider(ComActivitiesActivityObjectInterface $generator);
-
-    /**
-     * Activity provider object getter.
-     *
-     * @return ComActivitiesActivityObjectInterface The provider object.
-     */
-    public function getObjectProvider();
+    public function getActivityObjectTarget();
 
     /**
      * Activity objects getter.
      *
      * @return Array An array of ComActivitiesActivityObjectInterface objects.
      */
-    public function getObjects();
-
-    /**
-     * Activity verb setter.
-     *
-     * @param string $verb The activity verb.
-     *
-     * @return ComActivitiesActivityInterface
-     */
-    public function setVerb($verb);
+    public function getActivityObjects();
 
     /**
      * Activity verb getter.
      *
      * @return string The activity verb.
      */
-    public function getVerb();
-
-    /**
-     * Activity story setter.
-     *
-     * The activity story is the plain-text natural-language title or headline for the activity.
-     *
-     * @param string $story The activity story.
-     *
-     * @return ComActivitiesActivityInterface
-     */
-    public function setStory($story);
-
-    /**
-     * Activity story getter.
-     *
-     * @return string The activity story.
-     */
-    public function getStory();
+    public function getActivityVerb();
 }
