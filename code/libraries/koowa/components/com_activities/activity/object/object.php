@@ -27,10 +27,13 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
         parent::__construct($config);
 
         $this->append(array(
+            'translate'            => true,
             'deleted'              => false,
             'attachments'          => array(),
             'downstreamDuplicates' => array(),
             'upstreamDuplicates'   => array(),
+            'attributes'           => array(),
+            'link'                 => array()
         ));
 
         $this->setName($name);
@@ -47,6 +50,21 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
         return $this->__name;
     }
 
+    public function setValue($value)
+    {
+        if (!is_null($value)) {
+            $value = (string) $value;
+        }
+
+        $this->value = $value;
+        return $this;
+    }
+
+    public function getValue()
+    {
+        return $this->value;
+    }
+
     public function setAttachments(array $attachments, $merge = true)
     {
         if ($merge) {
@@ -60,11 +78,15 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
 
     public function getAttachments()
     {
-        return $this->attachments;
+        return $this->attachments->toArray();
     }
 
-    public function setAuthor(ComActivitiesActivityObjectInterface $author)
+    public function setAuthor($author)
     {
+        if (!is_null($author) && !$author instanceof ComActivitiesActivityObjectInterface) {
+            throw new InvalidArgumentException('Invalid author type.');
+        }
+
         $this->author = $author;
         return $this;
     }
@@ -76,7 +98,11 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
 
     public function setContent($content)
     {
-        $this->content = (string) $content;
+        if (!is_null($content)) {
+            $content = (string) $content;
+        }
+
+        $this->content = $content;
         return $this;
     }
 
@@ -87,7 +113,11 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
 
     public function setDisplayName($name)
     {
-        $this->displayName = (string) $name;
+        if (!is_null($name)) {
+            $name = (string) $name;
+        }
+
+        $this->displayName = $name;
         return $this;
     }
 
@@ -99,7 +129,7 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
     public function setDownstreamDuplicates(array $duplicates, $merge = true)
     {
         if ($merge) {
-            $this->append(array('downstreamDuplicates' => $duplicates));
+            $this->downstreamDuplicates->append($duplicates);
         } else {
             $this->downstreamDuplicates = $duplicates;
         }
@@ -114,7 +144,11 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
 
     public function setId($id)
     {
-        $this->id = (string) $id;
+        if (!is_null($id)) {
+            $id = (string) $id;
+        }
+
+        $this->id = $id;
         return $this;
     }
 
@@ -123,8 +157,12 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
         return $this->id;
     }
 
-    public function setImage(ComActivitiesActivityStreamMedialinkInterface $image)
+    public function setImage($image)
     {
+        if (!is_null($image) && !$image instanceof ComActivitiesActivityMedialinkInterface) {
+            throw new InvalidArgumentException('Invalid image type.');
+        }
+
         $this->image = $image;
         return $this;
     }
@@ -136,7 +174,11 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
 
     public function setObjectType($type)
     {
-        $this->objectType = (string) $type;
+        if (!is_null($type)) {
+            $type = (string) $type;
+        }
+
+        $this->objectType = $type;
         return $this;
     }
 
@@ -145,8 +187,12 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
         return $this->objectType;
     }
 
-    public function setPublished(KDate $date)
+    public function setPublished($date)
     {
+        if (!is_null($date) && !$date instanceof KDate) {
+            throw new InvalidArgumentException('Invalid date type.');
+        }
+
         $this->published = $date;
         return $this;
     }
@@ -158,7 +204,11 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
 
     public function setSummary($summary)
     {
-        $this->summary = (string) $summary;
+        if (!is_null($summary)) {
+            $summary = (string) $summary;
+        }
+
+        $this->summary = $summary;
         return $this;
     }
 
@@ -167,8 +217,12 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
         return $this->summary;
     }
 
-    public function setUpdated(KDate $date)
+    public function setUpdated($date)
     {
+        if (!is_null($date) && !$date instanceof KDate) {
+            throw new InvalidArgumentException('Invalid date type.');
+        }
+
         $this->updated = $date;
         return $this;
     }
@@ -181,7 +235,7 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
     public function setUpstreamDuplicates(array $duplicates, $merge = true)
     {
         if ($merge) {
-            $this->append(array('downstreamDuplicates' => $duplicates));
+            $this->downstreamDuplicates->append($duplicates);
         } else {
             $this->upstreamDuplicates = $duplicates;
         }
@@ -196,7 +250,11 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
 
     public function setUrl($url)
     {
-        $this->url = (string) $url;
+        if (!is_null($url)) {
+            $url = (string) $url;
+        }
+
+        $this->url = $url;
         return $this;
     }
 
@@ -216,6 +274,49 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
         return $this->deleted;
     }
 
+    public function setLink(array $attribs = array(), $merge = true)
+    {
+        if ($merge) {
+            $this->link->append($attribs);
+        } else {
+            $this->link = $attribs;
+        }
+
+        return $this;
+    }
+
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    public function setAttributes(array $attribs = array(), $merge = true)
+    {
+        if ($merge) {
+            $this->attributes->append($attribs);
+        } else {
+            $this->attributes = $attribs;
+        }
+
+        return $this;
+    }
+
+    public function getAttributes()
+    {
+        return $this->attributes->toArray();
+    }
+
+    public function translate($status = true)
+    {
+        $this->translate = (bool) $status;
+        return $this;
+    }
+
+    public function isTranslatable()
+    {
+        return $this->translate;
+    }
+
     public function toArray()
     {
         $data = parent::toArray();
@@ -230,7 +331,29 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
             }
         }
 
+        $data = $this->_cleanup($data);
+
         return $data;
+    }
+
+    /**
+     * Removes empty entries.
+     *
+     * @param array $data The data to be cleaned up.
+     *
+     * @return array Cleaned up data.
+     */
+    protected function _cleanup(array $data = array())
+    {
+        $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($data), RecursiveIteratorIterator::CHILD_FIRST);
+
+        foreach ($iterator as $key => $value) {
+            if (empty($value)) {
+                $iterator->offsetUnset($key);
+            }
+        }
+
+        return $iterator->getArrayCopy();
     }
 
     /**
