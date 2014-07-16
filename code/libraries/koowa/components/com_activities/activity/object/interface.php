@@ -327,4 +327,21 @@ interface ComActivitiesActivityObjectInterface
      * @return ComActivitiesActivityObjectInterface
      */
     public function translate($status = true);
+
+    /**
+     * Tells if the object is a format parameter.
+     *
+     * @return bool True if the object is a parameter, false otherwise.
+     */
+    public function isParameter();
+
+    /**
+     * Sets the parameter status of the object.
+     *
+     * @param bool $status True for setting the object as parameter, false otherwise.
+     *
+     * @return ComActivitiesActivityObjectInterface
+     */
+    public function parameter($status = true);
+
 }
