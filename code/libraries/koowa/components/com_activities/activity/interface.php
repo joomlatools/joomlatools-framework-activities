@@ -80,11 +80,4 @@ interface ComActivitiesActivityInterface
      * @return string The activity verb.
      */
     public function getActivityVerb();
-
-    /**
-     * Activity objects getter.
-     *
-     * @return array An array of ComActivitiesActivityObjectInterface object.
-     */
-    public function getActivityObjects();
 }
