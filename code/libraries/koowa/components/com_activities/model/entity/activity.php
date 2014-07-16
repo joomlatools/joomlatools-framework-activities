@@ -51,6 +51,20 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     static protected $_found_objects = array();
 
     /**
+     * An associative array containing activity objects.
+     *
+     * @var array
+     */
+    protected $_objects = array();
+
+    /**
+     * A list of activity object getters.
+     *
+     * @var array
+     */
+    protected $_object_getters;
+
+    /**
      * Constructor.
      *
      * @param   KObjectConfig $config Configuration options
@@ -59,9 +73,9 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         parent::__construct($config);
 
-        $this->_format           = $config->format;
-        $this->_object_table     = $config->object_table;
-        $this->_object_column    = $config->object_column;
+        $this->_format        = $config->format;
+        $this->_object_table  = $config->object_table;
+        $this->_object_column = $config->object_column;
     }
 
     /**
@@ -77,9 +91,9 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         $data = $config->data;
 
         $config->append(array(
-            'format'           => '{actor} {action} {object} {title}',
-            'object_table'     => $data->package . '_' . KStringInflector::pluralize($data->name),
-            'object_column'    => $data->package . '_' . $data->name . '_id'
+            'format'        => '{actor} {action} {object} {title}',
+            'object_table'  => $data->package . '_' . KStringInflector::pluralize($data->name),
+            'object_column' => $data->package . '_' . $data->name . '_id'
         ));
 
         parent::_initialize($config);
@@ -235,76 +249,145 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return $this->verb;
     }
 
-    public function getActivityObjectActor()
+    public function getActivityActor()
     {
-        $actor = $this->_getActivityObject('actor')->setObjectType('user')->setId($this->created_by)
-                      ->setUrl('option=com_users&task=user.edit&id=' . $this->created_by)
-                      ->setDisplayName($this->getAuthor()->getName());
+        return $this->_getObjectActor();
+    }
 
-        if (!$this->getObject('user.provider')->load($this->created_by)->getId()) {
-            $actor->setDeleted(true)->setValue($this->created_by ? 'Deleted user' : 'Guest user');
-        } else {
-            $actor->setLink(array('href' => $actor->getUrl()))->translate(false)->setValue($actor->getDisplayName());
+    protected function _getObjectActor()
+    {
+        if (!$this->_getActivityObject('actor'))
+        {
+            $actor = $this->_getActivityObject()->setName('actor')->setObjectType('user')->setId($this->created_by)
+                          ->setUrl('option=com_users&task=user.edit&id=' . $this->created_by)
+                          ->setDisplayName($this->getAuthor()->getName());
+
+            if (!$this->_findObjectActor()) {
+                $actor->setDeleted(true)->setValue($this->created_by ? 'Deleted user' : 'Guest user');
+            } else {
+                $actor->setLink(array('href' => $actor->getUrl()))->translate(false)->setValue($actor->getDisplayName());
+            }
+
+            $this->_setObjectActor($actor);
         }
 
         return $actor;
     }
 
-    public function getActivityObjectObject()
+    public function getActivityObject()
     {
-        $object = $this->_getActivityObject('object')->setId($this->row)->setObjectType($this->name)
-                       ->setUrl('option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row)
-                       ->setDisplayName($this->title);
+        return $this->_getObjectObject();
+    }
 
-        if (!$this->_findObjectObject()) {
-            $object->setDeleted(true);
+    protected function _getObjectObject()
+    {
+        if (!$this->_getObject('object'))
+        {
+            $object = $this->_getObject()->setName('object')->setId($this->row)->setObjectType($this->name)
+                           ->setUrl('option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row)
+                           ->setDisplayName($this->title);
+
+            if (!$this->_findObjectObject()) {
+                $object->setDeleted(true);
+            }
+
+            $object->setValue($object->getObjectType())->setAttributes(array('class' => array('object')));
+
+            $this->_setObjectObject($object);
         }
-
-        $object->setValue($object->getObjectType())->setAttributes(array('class' => array('object')));
 
         return $object;
     }
 
-    public function getActivityObjectTarget()
+    public function getActivityTarget()
+    {
+        return $this->_getObjectTarget();
+    }
+
+    protected function _getObjectTarget()
     {
         return null; // Activities do not have targets by default.
     }
 
-    public function getActivityObjectGenerator()
+    protected function _getObjectGenerator()
     {
-        return $this->_getActivityObject('generator')->setDisplayName('com_activities')->setObjectType('component');
+        if (!$generator = $this->_getObject('generator'))
+        {
+            $generator = $this->_getObject()->setName('generator')->setDisplayName('com_activities')
+                              ->setObjectType('component');
+
+            $this->_setObjectGenerator($generator);
+        }
+
+        return $generator;
     }
 
-    public function getActivityObjectProvider()
+    protected function _getObjectProvider()
     {
-        return $this->_getActivityObject('provider')->setDisplayName('com_activities')->setObjectType('component');
+        if (!$provider = $this->_getObject('provider'))
+        {
+            $provider = $this->_getObject()->setName('provider')->setDisplayName('com_activities')
+                             ->setObjectType('component');
+
+            $this->_setObjectProvider($provider);
+        }
+
+        return $provider;
     }
 
-
-    public function getActivityObjectAction()
+    protected function _getObjectAction()
     {
-        return $this->_getActivityParameter(array('name' => 'action', 'value' => $this->status));
+        if (!$action = $this->_getObject('action'))
+        {
+            $action = $this->_getParameter(array('name' => 'action', 'value' => $this->status));
+            $this->_setObjectAction($action);
+        }
+
+        return $action;
     }
 
-    public function getActivityObjectTitle()
+    protected function _getObjectTitle()
     {
-        return $this->_getActivityParameter(array(
-            'name'      => 'title',
-            'translate' => false,
-            'linkable'  => true
-        ));
+        if (!$title = $this->_getObject('title'))
+        {
+            $title = $this->_getParameter(array('name' => 'title', 'linkable' => true, 'translate' => false));
+            $this->_setObjectTitle($title);
+        }
+
+        return $title;
     }
 
     /**
      * Activity object getter.
      *
-     * @param $name The name of the activity object.
+     * @param string|null $name The name of the activity object to look for, null for requesting a new object.
      *
-     * @return ComActivitiesActivityObject The activity object.
+     * @return ComActivitiesActivityObject|null The activity object, null if there is no object with the provided name.
      */
-    protected function _getActivityObject($name)
+    protected function _getObject($name = null)
     {
-        return new ComActivitiesActivityObject($name);
+        $object = null;
+
+        if ($name && in_array(array_keys($this->_objects), $name)) {
+            $object = $this->_objects[$name];
+        } else {
+            $object = new ComActivitiesActivityObject('');
+        }
+
+        return $object;
+    }
+
+    /**
+     * Activity object setter.
+     *
+     * @param ComActivitiesActivityObjectInterface $object The activity object.
+     *
+     * @return $this
+     */
+    protected function _setObject(ComActivitiesActivityObjectInterface $object)
+    {
+        $this->_objects[$object->getName()] = $object;
+        return $this;
     }
 
     /**
@@ -317,7 +400,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      * @return ComActivitiesActivityObject|null The activity object, null if the activity does not have the requested
      * parameter, i.e. the activity format does not contain the parameter.
      */
-    protected function _getActivityParameter(array $config = array())
+    protected function _getParameter(array $config = array())
     {
         $config = new KObjectConfig($config);
 
@@ -338,7 +421,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         // Only instantiate the parameter if it is contained in the activity format string.
         if (strpos($this->getActivityFormat(), '{'.$config->name.'}') !== false)
         {
-            $parameter = $this->_getActivityObject($config->name);
+            $parameter = $this->_getObject()->setName($config->name);
 
             if ($config->find !== false)
             {
@@ -365,33 +448,39 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     public function getActivityObjects()
     {
-        if (empty($this->_objects))
+        $objects = array();
+
+        if (!$getters = $this->_object_getters)
         {
-            $objects = array();
+            $getters = array();
 
             foreach ($this->getMethods() as $method)
             {
-                if (strpos($method, 'getActivityObject') === 0 && !in_array($method,
-                        array('getActivityObject', 'getActivityObjects')))
+                if (strpos($method, '_getObject') === 0 && $method != '_getObject')
                 {
-                    $object = $this->$method();
-
-                    if ($object instanceof ComActivitiesActivityObjectInterface)
-                    {
-                        $name           = strtolower(str_replace('getActivityObject', '', $method));
-                        $objects[$name] = $object;
-                    }
+                    $name           = strtolower(str_replace('_getObject', '', $method));
+                    $getters[$name] = $method;
                 }
             }
 
-            $this->_objects = $objects;
+            $this->_object_getters = $getters;
         }
 
-        return $this->_objects;
+        foreach ($getters as $name => $method)
+        {
+            $object = $this->$method();
+
+            if ($object instanceof ComActivitiesActivityObjectInterface)
+            {
+                $objects[$name] = $object;
+            }
+        }
+
+        $objects;
     }
 
     /**
-     * Looks for the activity object object.
+     * Activity object object finder.
      *
      * This method may be overridden for activities persisting objects on storage systems other than local
      * database tables.
@@ -400,7 +489,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      */
     protected function _findObjectObject()
     {
-        $signature = $this->_getFoundSignature('object');
+        $signature = $this->_getSignatureObject();
 
         if (!isset(self::$_found_objects[$signature]))
         {
@@ -425,18 +514,54 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return self::$_found_objects[$signature];
     }
 
-    protected function _getFoundSignature($type)
+    /**
+     * Activity object signature getter.
+     *
+     * @return string The signature.
+     */
+    protected function _getSignatureObject()
     {
-        switch($type)
-        {
-            case 'object':
-                $signature = 'object' . $this->package . '.' . $this->name . '.' . $this->row;
-                break;
-            case 'actor':
-                $signature = 'actor.' . $this->created_by;
-                break;
+        return 'object' . $this->package . '.' . $this->name . '.' . $this->row;
+    }
+
+    /**
+     * Activity actor object finder.
+     *
+     *
+     * @return boolean True if found, false otherwise.
+     */
+    protected function _findObjectActor()
+    {
+        $signature = $this->_getSignatureActor();
+
+        if (!isset(self::$_found_objects[$signature])) {
+            self::$_found_objects[$signature] = (bool) getObject('user.provider')->load($this->created_by)->getId();
         }
 
-        return $signature;
+        return self::$_found_objects[$signature];
+    }
+
+    /**
+     * Activity actor signature getter.
+     *
+     * @return string The signature.
+     */
+    protected function _getSignatureActor()
+    {
+        return 'actor.' . $this->created_by;
+    }
+
+    public function __call($method, $arguments)
+    {
+        if (strpos($method, '_setObject') !== false && count($arguments))
+        {
+            $object = $arguments[0];
+
+            if ($object instanceof ComActivitiesActivityObjectInterface) {
+                return $this->_setObject($object); // Use generic setter.
+            }
+        }
+
+        parent::__call($method, $arguments);
     }
 }
