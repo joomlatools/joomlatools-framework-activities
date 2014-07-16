@@ -22,11 +22,19 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
      */
     private $__name;
 
+    /**
+     * An array containing allowed settable properties.
+     *
+     * @var array
+     */
+    protected $_allowed;
+
     public function __construct($name, $config = array())
     {
         parent::__construct($config);
 
         $this->append(array(
+            'parameter'            => false,
             'translate'            => true,
             'deleted'              => false,
             'attachments'          => array(),
@@ -35,6 +43,28 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
             'attributes'           => array(),
             'link'                 => array()
         ));
+
+        $this->_allowed = array(
+            'parameter',
+            'translate',
+            'deleted',
+            'attachments',
+            'downstreamDuplicates',
+            'upstreamDuplicates',
+            'attributes',
+            'link',
+            'author',
+            'content',
+            'displayName',
+            'id',
+            'image',
+            'type',
+            'published',
+            'summary',
+            'updated',
+            'url',
+            'value',
+        );
 
         $this->setName($name);
     }
@@ -306,15 +336,26 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
         return $this->attributes->toArray();
     }
 
+    public function isTranslatable()
+    {
+        return $this->translate;
+    }
+
     public function translate($status = true)
     {
         $this->translate = (bool) $status;
         return $this;
     }
 
-    public function isTranslatable()
+    public function isParameter()
     {
-        return $this->translate;
+        return $this->parameter;
+    }
+
+    public function parameter($status = true)
+    {
+        $this->parameter = (bool) $status;
+        return $this;
     }
 
     public function toArray()
@@ -365,10 +406,15 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
      */
     public function set($name, $value)
     {
-        if (is_array($value)) {
-            $value = new KObjectConfigJson($value);
+        if (in_array($name, $this->_allowed))
+        {
+            if (is_array($value)) {
+                $value = new KObjectConfigJson($value);
+            }
+
+            parent::set($name, $value);
         }
 
-        parent::set($name, $value);
+        return $this;
     }
 }
