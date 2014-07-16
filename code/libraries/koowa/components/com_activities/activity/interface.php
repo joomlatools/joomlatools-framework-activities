@@ -54,32 +54,25 @@ interface ComActivitiesActivityInterface
     public function getActivityPublished();
 
     /**
-     * Activity actor object getter.
+     * Activity actor getter.
      *
-     * @return ComActivitiesActivityObjectInterface The actor object.
+     * @return ComActivitiesActivityObjectInterface The activity actor object.
      */
-    public function getActivityObjectActor();
+    public function getActivityActor();
 
     /**
-     * Activity object object getter.
+     * Activity object getter.
      *
-     * @return ComActivitiesActivityObjectInterface|null The object object, null if the activity does not have an object.
+     * @return ComActivitiesActivityObjectInterface|null The activity object, null if the activity does not have an object.
      */
-    public function getActivityObjectObject();
+    public function getActivityObject();
 
     /**
-     * Activity target object getter.
+     * Activity target getter.
      *
-     * @return ComActivitiesActivityObjectInterface|null The target object, null if the activity does no have a target.
+     * @return ComActivitiesActivityObjectInterface|null The activity target object, null if the activity does no have a target.
      */
-    public function getActivityObjectTarget();
-
-    /**
-     * Activity objects getter.
-     *
-     * @return Array An array of ComActivitiesActivityObjectInterface objects.
-     */
-    public function getActivityObjects();
+    public function getActivityTarget();
 
     /**
      * Activity verb getter.
@@ -87,4 +80,11 @@ interface ComActivitiesActivityInterface
      * @return string The activity verb.
      */
     public function getActivityVerb();
+
+    /**
+     * Activity objects getter.
+     *
+     * @return array An array of ComActivitiesActivityObjectInterface object.
+     */
+    public function getActivityObjects();
 }
