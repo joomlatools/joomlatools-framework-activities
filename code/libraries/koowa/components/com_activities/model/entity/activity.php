@@ -235,10 +235,8 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
             }
         }
 
-        $translator = $this->getObject('com:activities.activity.translator');
-
         // Return translated format.
-        return $translator->translate($this->_format, $parameters);
+        return $this->getObject('com:activities.activity.translator')->translate($this->_format, $parameters);
     }
 
     public function getActivityIcon()
