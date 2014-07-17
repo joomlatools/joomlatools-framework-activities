@@ -243,7 +243,12 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     public function getActivityIcon()
     {
-        return null;
+        return $this->icon;
+    }
+
+    public function getPropertyIcon()
+    {
+        return null; // No icon by default.
     }
 
     public function getActivityId()
@@ -262,6 +267,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     public function getActivityActor()
+    {
+        return $this->actor;
+    }
+
+    public function getPropertyActor()
     {
         $actor = $this->_getObject('actor', array(
             'parameter'   => true,
@@ -284,6 +294,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     public function getActivityObject()
     {
+        return $this->object;
+    }
+
+    public function getPropertyObject()
+    {
         return $this->_getObject('object', array(
             'parameter'   => true,
             'id'          => $this->row,
@@ -298,15 +313,30 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     public function getActivityTarget()
     {
+        return $this->target;
+    }
+
+    public function getPropertyTarget()
+    {
         return null; // Activities do not have targets by default.
     }
 
     public function getActivityGenerator()
     {
+        return $this->generator;
+    }
+
+    public function getPropertyGenerator()
+    {
         return $this->_getObject('generator', array('displayName' => 'com_activities', 'objectType' => 'component'));
     }
 
     public function getActivityProvider()
+    {
+        return $this->provider;
+    }
+
+    public function getPropertyProvider()
     {
         return $this->_getObject('provider', array('displayName' => 'com_activities', 'objectType' => 'component'));
     }
