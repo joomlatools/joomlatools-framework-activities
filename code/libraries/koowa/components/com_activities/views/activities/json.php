@@ -19,11 +19,11 @@ class ComActivitiesViewActivitiesJson extends KViewJson
     protected $_layout;
 
     /**
-     * Template helper for rendering activities.
+     * Activities renderer.
      *
      * @var mixed
      */
-    protected $_helper;
+    protected $_renderer;
 
     public function __construct(KObjectConfig $config)
     {
@@ -31,13 +31,13 @@ class ComActivitiesViewActivitiesJson extends KViewJson
 
         parent::__construct($config);
 
-        $this->_helper = $config->helper;
+        $this->_renderer = $config->renderer;
     }
 
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'helper'    => 'activity',
+            'renderer'  => 'activity',
             'behaviors' => array('routable')
         ));
 
@@ -48,12 +48,13 @@ class ComActivitiesViewActivitiesJson extends KViewJson
     {
         if ($this->_layout == 'stream')
         {
-            $activity   = $entity;
+            $activity = $entity;
+            $renderer = $this->getRenderer();
 
             $item = array(
                 'id'        => $activity->getActivityId(),
-                'title'     => $this->_getActivityTitle($activity),
-                'story'     => $this->_getActivityStory($activity),
+                'title'     => $renderer->render($activity),
+                'story'     => $renderer->render($activity, array('html' => false)),
                 'published' => $activity->getActivityPublished()->format('c'),
                 'verb'      => $activity->getActivityVerb(),
                 'format'    => $activity->getActivityFormat()
@@ -63,7 +64,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                 $item['icon'] = $this->_getActivityMediaLinkData($icon);
             }
 
-            foreach ($activity->getActivityObjects() as $name => $object)
+            foreach ($activity->objects as $name => $object)
             {
                 $item[$name] = $this->_getActivityObjectData($object);
             }
@@ -80,87 +81,63 @@ class ComActivitiesViewActivitiesJson extends KViewJson
     }
 
     /**
-     * Template helper getter.
+     * Activity renderer getter.
      *
-     * @return KTemplateHelperInterface The template helper.
+     * @return KTemplateHelperInterface The activity renderer.
      * @throws UnexpectedValueException
      */
-    public function getHelper()
+    public function getRenderer()
     {
-        if (!$this->_helper instanceof KTemplateHelperInterface)
+        if (!$this->_renderer instanceof KTemplateHelperInterface)
         {
-            //Make sure we have a model identifier
-            if(!($this->_helper instanceof KObjectIdentifier)) {
-                $this->setHelper($this->_helper);
+            // Make sure we have an identifier
+            if(!($this->_renderer instanceof KObjectIdentifier)) {
+                $this->setRenderer($this->_renderer);
             }
 
-            $this->_helper = $this->getObject($this->_helper);
+            $this->_renderer = $this->getObject($this->_renderer);
 
-            if(!$this->_helper instanceof KTemplateHelperInterface)
+            if(!$this->_renderer instanceof ComActivitiesActivityRendererInterface)
             {
                 throw new UnexpectedValueException(
-                    'Helper: '.get_class($this->_model).' does not implement KTemplateHelperInterface'
+                    'Renderer: '.get_class($this->_renderer).' does not implement ComActivitiesActivityRendererInterface'
                 );
             }
 
             // Push view to the template for accessing view mixed methods within the template helper.
-            $this->_helper->getTemplate()->setView($this);
+            $this->_renderer->getTemplate()->setView($this);
         }
 
-        return $this->_helper;
+        return $this->_renderer;
     }
 
     /**
-     * Template helper setter.
+     * Activity renderer setter.
      *
-     * @param mixed $helper A template helper instance, identifier object or string.
+     * @param mixed $renderer An activity renderer instance, identifier object or string.
      *
      * @return $this
      */
-    public function setHelper($helper)
+    public function setRenderer($renderer)
     {
-        if(!$helper instanceof KTemplateHelperInterface)
+        if(!$renderer instanceof ComActivitiesActivityRendererInterface)
         {
-            if(is_string($helper) && strpos($helper, '.') === false )
+            if(is_string($renderer) && strpos($renderer, '.') === false )
             {
                 $identifier			= $this->getIdentifier()->toArray();
                 $identifier['path']	= array('template', 'helper');
-                $identifier['name']	= $helper;
+                $identifier['name']	= $renderer;
 
                 $identifier = $this->getIdentifier($identifier);
             }
-            else $identifier = $this->getIdentifier($helper);
+            else $identifier = $this->getIdentifier($renderer);
 
-            $helper = $identifier;
+            $renderer = $identifier;
         }
 
-        $this->_helper = $helper;
+        $this->_renderer = $renderer;
 
         return $this;
-    }
-
-    /**
-     * Activity title getter.
-     *
-     * @param ComActivitiesModelEntityActivity $activity The activity object.
-     *
-     * @return string The activity title.
-     */
-    protected function _getActivityTitle(ComActivitiesModelEntityActivity $activity)
-    {
-        return $this->getHelper()->render(array('entity' => $activity, 'html' => true));
-    }
-
-    /**
-     * Activity story getter.
-     *
-     * @param ComActivitiesModelEntityActivity $activity The activity object.
-     *
-     * @return string The activity story.
-     */
-    protected function _getActivityStory(ComActivitiesModelEntityActivity $activity)
-    {
-        return $this->getHelper()->render(array('entity' => $activity, 'html' => false));
     }
 
     /**
@@ -181,14 +158,14 @@ class ComActivitiesViewActivitiesJson extends KViewJson
 
         // Route image URL if any.
         if ($image = $object->getImage()) {
-            $data['image'] = $this->_getMediaLinkData($image);
+            $data['image'] = $this->_getActivityMediaLinkData($image);
         }
 
         $attachments = array();
 
         // Process attachments if any.
         foreach ($object->getAttachments() as $attachment) {
-            $attachments[] = $this->_getStreamObjectData($attachment);
+            $attachments[] = $this->_getActivityObjectData($attachment);
         }
 
         $data['attachments'] = $attachments;
@@ -204,13 +181,17 @@ class ComActivitiesViewActivitiesJson extends KViewJson
         }
 
         // Route link URL if any.
-        if ($object->isLinkable()) {
-            $data['link']['href'] = $this->getActivityRoute($object->getLink()->href, false);
+        if (($link = $object->getLink()) && isset($link['href'])) {
+            $data['link']['href'] = $this->getActivityRoute($link['href'], false);
         }
 
         // Translate value if any and if needed.
         if ($object->isTranslatable() && $object->getValue()) {
             $data['value'] = $this->getObject('translator')->translate($object->getValue());
+        }
+
+        if (!$object->isParameter()) {
+            unset($data['parameter']);
         }
 
         // Remove translatable status.
