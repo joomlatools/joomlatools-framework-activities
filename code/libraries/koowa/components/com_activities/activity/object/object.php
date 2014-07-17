@@ -317,7 +317,7 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
 
     public function getLink()
     {
-        return $this->link;
+        return $this->link->toArray();
     }
 
     public function setAttributes(array $attribs = array(), $merge = true)
