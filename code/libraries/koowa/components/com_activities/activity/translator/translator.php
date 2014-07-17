@@ -28,10 +28,10 @@ class ComActivitiesActivityTranslator extends ComKoowaTranslatorAbstract impleme
 
     public function translate($string, array $parameters = array())
     {
-        return parent::translate($this->getOverride($string, $parameters), array());
+        return parent::translate($this->_getOverride($string, $parameters), array());
     }
 
-    public function getOverride($string, $parameters = array())
+    protected function _getOverride($string, $parameters = array())
     {
         $override = $string;
 
