@@ -27,7 +27,28 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
      *
      * @var array
      */
-    protected $_allowed;
+    protected $_allowed = array(
+        'parameter',
+        'translate',
+        'objectType',
+        'deleted',
+        'attachments',
+        'downstreamDuplicates',
+        'upstreamDuplicates',
+        'attributes',
+        'link',
+        'author',
+        'content',
+        'displayName',
+        'id',
+        'image',
+        'type',
+        'published',
+        'summary',
+        'updated',
+        'url',
+        'value',
+    );
 
     public function __construct($name, $config = array())
     {
@@ -43,28 +64,6 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
             'attributes'           => array(),
             'link'                 => array()
         ));
-
-        $this->_allowed = array(
-            'parameter',
-            'translate',
-            'deleted',
-            'attachments',
-            'downstreamDuplicates',
-            'upstreamDuplicates',
-            'attributes',
-            'link',
-            'author',
-            'content',
-            'displayName',
-            'id',
-            'image',
-            'type',
-            'published',
-            'summary',
-            'updated',
-            'url',
-            'value',
-        );
 
         $this->setName($name);
     }
