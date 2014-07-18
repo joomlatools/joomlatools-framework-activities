@@ -403,11 +403,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         // Make parameter non-linkable if related object is not found.
         if ($config->find && !$this->_findObject($config->find)) {
             $config->linkable = false;
+            $config->deleted = true;
         }
 
         if (!$config->linkable) {
             unset($config->link->href);
-            $config->deleted = true;
         }
 
         return new ComActivitiesActivityObject($name, $config->toArray());
