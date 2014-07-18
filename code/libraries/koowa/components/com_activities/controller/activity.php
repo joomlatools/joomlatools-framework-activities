@@ -26,7 +26,21 @@ class ComActivitiesControllerActivity extends ComKoowaControllerModel
 
     protected function _actionPurge(KControllerContextInterface $context)
     {
-        if (!$this->getModel()->getTable()->getAdapter()->execute($this->getModel()->getPurgeQuery())) {
+        $model = $this->getModel();
+        $state = $model->getState();
+        $query = $this->getObject('lib:database.query.delete');
+
+        $query->table(array($model->getTable()->getName()));
+
+        if ($state->end_date && $state->end_date != '0000-00-00')
+        {
+            $end_date = $this->getObject('lib:date', array('date' => $state->end_date));
+            $end      = $end_date->format('Y-m-d');
+
+            $query->where('DATE(created_on) <= :end')->bind(array('end' => $end));
+        }
+
+        if (!$this->getModel()->getTable()->getAdapter()->execute($query)) {
             throw new KControllerExceptionActionFailed('Delete Action Failed');
         } else {
             $context->status = KHttpResponse::NO_CONTENT;

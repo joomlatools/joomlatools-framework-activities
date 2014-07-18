@@ -41,24 +41,6 @@ class ComActivitiesModelActivities extends KModelDatabase
 		$state->sort = 'created_on';
 	}
 
-    public function getPurgeQuery()
-    {
-        $state = $this->getState();
-        $query = $this->getObject('lib:database.query.delete');
-
-        $query->table(array($this->getTable()->getName()));
-
-        if ($state->end_date && $state->end_date != '0000-00-00')
-        {
-            $end_date = $this->getObject('lib:date', array('date' => $state->end_date));
-            $end      = $end_date->format('Y-m-d');
-
-            $query->where('DATE(created_on) <= :end')->bind(array('end' => $end));
-        }
-
-        return $query;
-    }
-
 	protected function _buildQueryColumns(KDatabaseQueryInterface $query)
 	{
         $state = $this->getState();
