@@ -55,38 +55,31 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
 
         $output = $activity->getActivityFormat();
 
-        if (preg_match_all('/{(.*?)}/', $output, $replacements))
+        if (preg_match_all('/{(.*?)}/', $output, $labels))
         {
-            $objects = $activity->objects;
+            $tokens = $activity->tokens;
 
-            foreach ($replacements[1] as $replacement)
+            foreach ($labels[1] as $label)
             {
-                $parts = explode(':', $replacement);
+                list($label, $translation) = explode(':', $label);
 
-                if (isset($objects[$parts[0]]))
+                if (isset($objects[$label]))
                 {
-                    $parameter = $objects[$parts[0]];
+                    $object = $tokens[$label];
 
                     // Deal with context translations.
-                    if (count($parts) === 2)
+                    if (isset($translation))
                     {
-                        $parameter = clone $parameter;
-                        $parameter->setValue($parts[1])->translate(false);
+                        $object = clone $object;
+                        $object->setDisplayName($translation);
                     }
 
-                    if (!$config->html)
-                    {
-                        $content = $parameter->getValue();
-
-                        if ($parameter->isTranslatable()) {
-                            $content = $this->translate($content);
-                        }
-
-                    }
-                    else $content = $this->parameter(array('parameter' => $parameter));
-
-                    $output = str_replace('{' . $replacement . '}', $content, $output);
+                    if (!$config->html) {
+                        $content = $object->getDisplayName();
+                    } else $content = $this->object(array('object' => $object));
                 }
+
+                $output = str_replace('{' . $label . '}', $content, $output);
             }
         }
 
@@ -94,43 +87,32 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
     }
 
     /**
-     * Renders an HTML formatted activity format parameter.
+     * Renders an HTML formatted activity object.
      *
      * @param array $config An optional configuration array.
      *
-     * @return string The HTML formatted format parameter.
+     * @return string The HTML formatted object.
      */
-    public function parameter($config = array())
+    public function object($config = array())
     {
         $config = new KObjectConfig($config);
 
         $output = '';
 
-        if ($parameter = $config->parameter)
+        $object = $config->object;
+
+        if ($object instanceof ComActivitiesActivityObjectInterface)
         {
-            $output = $parameter->getValue();
+            $output = $object->getDisplayName();
 
-            if ($parameter->isTranslatable()) {
-                $output = $this->translate($output);
-            }
+            $attribs = $object->getAttributes() ? $this->buildAttributes($object->getAttributes()) : '';
 
-            if ($link = $parameter->getLink())
+            if ($url = $object->getUrl())
             {
-                $view = $this->getTemplate()->getView();
+                $url = $this->getTemplate()->getView()->getActivityRoute($url);
+                $output = "<a {$attribs} href=\"{$url}\">{$output}</a>";
 
-                // Route link URL if any.
-                if (isset($link['href'])) {
-                    $link['href'] = $view->getActivityRoute($link['href']);
-                }
-
-                $attribs = $this->buildAttributes($link);
-
-                $output = "<a {$attribs}>{$output}</a>";
-            }
-
-            $attribs = $parameter->getAttributes() ? $this->buildAttributes($parameter->getAttributes()) : '';
-
-            $output = "<span {$attribs}>{$output}</span>";
+            } else $output = "<span {$attribs}>{$output}</span>";
         }
 
         return $output;
