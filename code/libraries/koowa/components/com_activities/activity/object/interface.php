@@ -315,39 +315,6 @@ interface ComActivitiesActivityObjectInterface
     public function isDeleted();
 
     /**
-     * Value setter.
-     *
-     * @param string|null $value The value.
-     *
-     * @return ComActivitiesActivityObjectInterface
-     */
-    public function setValue($value);
-
-    /**
-     * Value getter.
-     *
-     * @return string|null The value, null if the object has no value.
-     */
-    public function getValue();
-
-    /**
-     * Link setter.
-     *
-     * @param array $attribs The link attributes.
-     * @param bool  $merge   Tells if link attributes should be replaced or merged with current existing link attributes.
-     *
-     * @return ComActivitiesActivityObjectInterface
-     */
-    public function setLink(array $attribs = array(), $merge = true);
-
-    /**
-     * Link getter.
-     *
-     * @return array The link attributes.
-     */
-    public function getLink();
-
-    /**
      * Attributes setter.
      *
      * @param array $attributes The attributes.
@@ -363,36 +330,4 @@ interface ComActivitiesActivityObjectInterface
      * @return array The attributes.
      */
     public function getAttributes();
-
-    /**
-     * Tells if the object translatable or not.
-     *
-     * @return bool True if translatable, false otherwise.
-     */
-    public function isTranslatable();
-
-    /**
-     * Sets the translatable status of the object.
-     *
-     * @param bool $status True for setting it as translatable, false otherwise.
-     *
-     * @return ComActivitiesActivityObjectInterface
-     */
-    public function translate($status = true);
-
-    /**
-     * Tells if the object is a format parameter.
-     *
-     * @return bool True if the object is a parameter, false otherwise.
-     */
-    public function isParameter();
-
-    /**
-     * Sets the parameter status of the object.
-     *
-     * @param bool $status True for setting the object as parameter, false otherwise.
-     *
-     * @return ComActivitiesActivityObjectInterface
-     */
-    public function parameter($status = true);
 }
