@@ -231,8 +231,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
                     foreach ($methods as $name => $method)
                     {
-                        if (method_exists($object, $method))
-                        {
+                        if (method_exists($object, $method)) {
                             $config[$name] = $object->$method();
                         } else continue 2;
                     }
