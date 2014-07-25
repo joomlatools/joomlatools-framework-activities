@@ -28,8 +28,6 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
      * @var array
      */
     protected $_allowed = array(
-        'parameter',
-        'translate',
         'objectType',
         'displayType',
         'deleted',
@@ -37,19 +35,16 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
         'downstreamDuplicates',
         'upstreamDuplicates',
         'attributes',
-        'link',
         'author',
         'content',
         'objectName',
         'displayName',
         'id',
         'image',
-        'type',
         'published',
         'summary',
         'updated',
         'url',
-        'value',
     );
 
     public function __construct($label, $config = array())
@@ -63,8 +58,7 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
             'attachments'          => array(),
             'downstreamDuplicates' => array(),
             'upstreamDuplicates'   => array(),
-            'attributes'           => array(),
-            'link'                 => array()
+            'attributes'           => array()
         ));
 
         $this->setLabel($label);
