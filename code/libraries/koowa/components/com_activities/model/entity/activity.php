@@ -431,8 +431,8 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
         if ($translate = $config->translate)
         {
-            $translator = $this->getActivityObject('translator');
-            $translate  = (array)$translate;
+            $translator = $this->getObject('translator');
+            $translate  = (array) KObjectConfig::unbox($translate);
 
             foreach ($translate as $property)
             {
