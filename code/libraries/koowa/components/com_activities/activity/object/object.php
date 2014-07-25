@@ -16,11 +16,11 @@
 class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivitiesActivityObjectInterface
 {
     /**
-     * The activity object name, e.g. (actor, object, target, ...).
+     * The activity object label, e.g. (actor, object, target, ...).
      *
      * @var string
      */
-    private $__name;
+    private $__label;
 
     /**
      * An array containing allowed settable properties.
@@ -31,6 +31,7 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
         'parameter',
         'translate',
         'objectType',
+        'displayType',
         'deleted',
         'attachments',
         'downstreamDuplicates',
@@ -39,6 +40,7 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
         'link',
         'author',
         'content',
+        'objectName',
         'displayName',
         'id',
         'image',
@@ -50,7 +52,7 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
         'value',
     );
 
-    public function __construct($name, $config = array())
+    public function __construct($label, $config = array())
     {
         parent::__construct($config);
 
@@ -65,33 +67,18 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
             'link'                 => array()
         ));
 
-        $this->setName($name);
+        $this->setLabel($label);
     }
 
-    public function setName($name)
+    public function setLabel($label)
     {
-        $this->__name = (string) $name;
+        $this->__name = (string) $label;
         return $this;
     }
 
-    public function getName()
+    public function getLabel()
     {
-        return $this->__name;
-    }
-
-    public function setValue($value)
-    {
-        if (!is_null($value)) {
-            $value = (string) $value;
-        }
-
-        $this->value = $value;
-        return $this;
-    }
-
-    public function getValue()
-    {
-        return $this->value;
+        return $this->__label;
     }
 
     public function setAttachments(array $attachments, $merge = true)
@@ -138,6 +125,21 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
     public function getContent()
     {
         return $this->content;
+    }
+
+    public function setObjectName($name)
+    {
+        if (!is_null($name)) {
+            $name = (string) $name;
+        }
+
+        $this->objectName = $name;
+        return $this;
+    }
+
+    public function getObjectName()
+    {
+        return $this->objectName;
     }
 
     public function setDisplayName($name)
@@ -214,6 +216,21 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
     public function getObjectType()
     {
         return $this->objectType;
+    }
+
+    public function setDisplayType($type)
+    {
+        if (!is_null($type)) {
+            $type = (string) $type;
+        }
+
+        $this->displayType = $type;
+        return $this;
+    }
+
+    public function getDisplayType()
+    {
+        return $this->displayType;
     }
 
     public function setPublished($date)
@@ -303,22 +320,6 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
         return $this->deleted;
     }
 
-    public function setLink(array $attribs = array(), $merge = true)
-    {
-        if ($merge) {
-            $this->link->append($attribs);
-        } else {
-            $this->link = $attribs;
-        }
-
-        return $this;
-    }
-
-    public function getLink()
-    {
-        return $this->link->toArray();
-    }
-
     public function setAttributes(array $attribs = array(), $merge = true)
     {
         if ($merge) {
@@ -333,28 +334,6 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
     public function getAttributes()
     {
         return $this->attributes->toArray();
-    }
-
-    public function isTranslatable()
-    {
-        return $this->translate;
-    }
-
-    public function translate($status = true)
-    {
-        $this->translate = (bool) $status;
-        return $this;
-    }
-
-    public function isParameter()
-    {
-        return $this->parameter;
-    }
-
-    public function parameter($status = true)
-    {
-        $this->parameter = (bool) $status;
-        return $this;
     }
 
     public function toArray()
