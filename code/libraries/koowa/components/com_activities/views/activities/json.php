@@ -190,10 +190,6 @@ class ComActivitiesViewActivitiesJson extends KViewJson
             $data['value'] = $this->getObject('translator')->translate($object->getValue());
         }
 
-        if (!$object->isParameter()) {
-            unset($data['parameter']);
-        }
-
         // Remove translatable status.
         unset($data['translate']);
 
