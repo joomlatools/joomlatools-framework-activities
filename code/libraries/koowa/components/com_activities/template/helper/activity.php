@@ -61,25 +61,28 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
 
             foreach ($labels[1] as $label)
             {
-                list($label, $translation) = explode(':', $label);
+                $parts = explode(':', $label);
 
-                if (isset($objects[$label]))
+                $label = $parts[0];
+
+                if (isset($tokens[$label]))
                 {
                     $object = $tokens[$label];
 
                     // Deal with context translations.
-                    if (isset($translation))
+                    if (isset($parts[1]))
                     {
                         $object = clone $object;
-                        $object->setDisplayName($translation);
+                        $object->setDisplayName($parts[1]);
                     }
 
                     if (!$config->html) {
+
                         $content = $object->getDisplayName();
                     } else $content = $this->object(array('object' => $object));
-                }
 
-                $output = str_replace('{' . $label . '}', $content, $output);
+                    $output = str_replace('{' . $label . '}', $content, $output);
+                }
             }
         }
 
