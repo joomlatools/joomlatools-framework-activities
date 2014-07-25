@@ -26,20 +26,20 @@ class ComActivitiesActivityTranslator extends ComKoowaTranslatorAbstract impleme
         parent::_initialize($config);
     }
 
-    public function translate($string, array $parameters = array())
+    public function translate($string, array $tokens = array())
     {
-        return parent::translate($this->_getOverride($string, $parameters), array());
+        return parent::translate($this->_getOverride($string, $tokens), array());
     }
 
-    protected function _getOverride($string, $parameters = array())
+    protected function _getOverride($format, $tokens = array())
     {
-        $override = $string;
+        $override = $format;
 
-        if ($parameters)
+        if ($tokens)
         {
-            foreach ($this->_getOverrides($string, $parameters) as $candidate)
+            foreach ($this->_getOverrides($format, $tokens) as $candidate)
             {
-                // Check if a key for the override exists.
+                // Check if the override is translatable.
                 if ($this->isTranslatable($candidate))
                 {
                     $override = $candidate;
@@ -52,22 +52,23 @@ class ComActivitiesActivityTranslator extends ComKoowaTranslatorAbstract impleme
     }
 
     /**
-     * Returns a list of override strings for the provided string/parameters couple.
+     * Returns a list of activity format overrides.
      *
-     * @param  string  $format      The message format.
-     * @param  array   $parameters  The message parameter collection object.
+     * @param  string $format The activity format.
+     * @param  array $tokens An array of ComActivitiesActivityObjectInterface objects representing format tokens.
+     *
      * @return array A list of override strings.
      */
-    protected function _getOverrides($key, $parameters)
+    protected function _getOverrides($format, $tokens = array())
     {
         $overrides = array();
         $set       = array();
 
-        // Construct a set containing non-empty (with replacement texts) parameters.
-        foreach ($parameters as $parameter)
+        // Construct a set of non-empty tokens.
+        foreach ((array) $tokens as $token)
         {
-            if ($parameter->getValue()) {
-                $set[] = $parameter;
+            if ($token instanceof ComActivitiesActivityObjectInterface && $token->getDisplayName()) {
+                $set[] = $token;
             }
         }
 
@@ -76,9 +77,9 @@ class ComActivitiesActivityTranslator extends ComKoowaTranslatorAbstract impleme
             // Get the power set of the set of parameters and construct a list of string overrides from it.
             foreach ($this->_getPowerSet($set) as $subset)
             {
-                $override = $key;
-                foreach ($subset as $parameter) {
-                    $override = str_replace('{' . $parameter->getName() . '}', $parameter->getValue(), $override);
+                $override = $format;
+                foreach ($subset as $token) {
+                    $override = str_replace('{' . $token->getLabel() . '}', $token->getDisplayName(), $override);
                 }
 
                 $overrides[] = $override;
