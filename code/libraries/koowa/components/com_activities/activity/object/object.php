@@ -72,7 +72,7 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
 
     public function setLabel($label)
     {
-        $this->__name = (string) $label;
+        $this->__label = (string) $label;
         return $this;
     }
 
