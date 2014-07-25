@@ -85,7 +85,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         $data = $config->data;
 
         $config->append(array(
-            'format'        => '{actor} {action} {object} {title}',
+            'format'        => '{actor} {action} {object.type} title {object}',
             'merge'         => true,
             'object_table'  => $data->package . '_' . KStringInflector::pluralize($data->name),
             'object_column' => $data->package . '_' . $data->name . '_id'
@@ -189,28 +189,60 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     public function getPropertyObjects()
     {
-        $objects = $this->_objects;
+        return array_merge($this->_getObjects($this->_objects), $this->tokens);
+    }
 
-        $parameters = array();
+    public function getPropertyTokens()
+    {
+        $labels = array();
 
         if (preg_match_all('/\{(.*?)\}/', $this->_format, $matches)) {
-            $parameters = $matches[1];
+            $labels = $matches[1];
         }
 
-        // Merge format parameters with supported objects.
-        $objects = array_merge($objects, $parameters);
+        return $this->_getObjects(array_unique($labels));
+    }
 
+    protected function _getObjects(array $labels = array())
+    {
         $result = array();
 
-        foreach ($objects as $name)
+        foreach ($labels as $label)
         {
-            $method = 'getActivity'.ucfirst($name);
+            $parts  = explode('.', $label);
+            $method = 'getActivity' . ucfirst($parts[0]);
 
-            if (method_exists($this, $method)) {
+            if (method_exists($this, $method))
+            {
                 $object = $this->$method();
 
+                // Deal with dot notation cases.
+                if (count($parts) === 2)
+                {
+                    $config   = array();
+                    $property = $parts[1];
+
+                    // The objectName and displayName properties are mapped to getObjectXXX and getDisplayXXX
+                    // respectively.
+                    $methods = array(
+                        'objectName'  => 'getObject' . ucfirst($property),
+                        'displayName' => 'getDisplay' . ucfirst($property)
+                    );
+
+                    foreach ($methods as $name => $method)
+                    {
+                        if (method_exists($object, $method))
+                        {
+                            $config[$name] = $object->$method();
+                        } else continue 2;
+                    }
+
+                    // We create a new basic and minimal format token object.
+                    $object = $this->_getObject($label, $config);
+                }
+
                 if ($object instanceof ComActivitiesActivityObjectInterface) {
-                    $result[$name] = $object;
+                    $result[$object->getLabel()] = $object;
                 }
             }
         }
@@ -225,18 +257,8 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     public function getPropertyFormat()
     {
-        $parameters = array();
-
-        foreach ($this->objects as $object)
-        {
-            if ($object->isParameter())
-            {
-                $parameters[] = $object;
-            }
-        }
-
-        // Return translated format.
-        return $this->getObject('com:activities.activity.translator')->translate($this->_format, $parameters);
+        return $this->getObject('com:activities.activity.translator')
+            ->translate($this->_format, array_values($this->tokens));
     }
 
     public function getActivityIcon()
@@ -271,23 +293,31 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     public function getPropertyActor()
     {
-        $actor = $this->_getObject('actor', array(
-            'parameter'   => true,
-            'objectType'  => 'user',
-            'id'          => $this->created_by,
-            'url'         => 'option=com_users&task=user.edit&id=' . $this->created_by,
-            'link'        => array('href' => 'option=com_users&task=user.edit&id=' . $this->created_by),
-            'displayName' => $this->getAuthor()->getName(),
-            'find'        => 'actor'
-        ));
+        return $this->_getObject('actor', $this->_getConfig('actor'));
+    }
 
-        if ($actor->isDeleted()) {
-            $actor->setValue($this->created_by ? 'Deleted user' : 'Guest user');
-        } else {
-            $actor->translate(false)->setValue($actor->getDisplayName());
+    protected function _actorConfig(KObjectConfig $config)
+    {
+        if ($this->_findObjectActor())
+        {
+            $objectName = $this->getAuthor()->getName();
+            $translate  = array('displayType');
+
+        }
+        else
+        {
+            $objectName = $this->created_by ? 'Deleted user' : 'Guest user';
+            $translate  = array('displayName', 'displayType');
         }
 
-        return $actor;
+        return $config->append(array(
+            'objectType' => 'user',
+            'id'         => $this->created_by,
+            'url'        => 'option=com_users&task=user.edit&id=' . $this->created_by,
+            'objectName' => $objectName,
+            'translate'  => $config->translate ? array() : $translate,
+            'find'       => 'actor'
+        ));
     }
 
     public function getActivityObject()
@@ -297,16 +327,32 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     public function getPropertyObject()
     {
-        return $this->_getObject('object', array(
-            'parameter'   => true,
-            'id'          => $this->row,
-            'objectType'  => $this->name,
-            'url'         => 'option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row,
-            'displayName' => $this->title,
-            'value'       => $this->name,
-            'attributes'  => array('class' => array('object')),
-            'find'        => 'object'
+        return $this->_getObject('object', $this->_getConfig('object'));
+    }
+
+    protected function _objectConfig(KObjectConfig $config)
+    {
+        return $config->append(array(
+            'id'         => $this->row,
+            'objectName' => $this->title,
+            'objectType' => $this->name,
+            'url'        => 'option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row,
+            'attributes' => array('class' => array('object')),
+            'find'       => 'object'
         ));
+    }
+
+    protected function _getConfig($object)
+    {
+        $config = new KObjectConfig();
+
+        $method = '_' . strtolower($object) . 'Config';
+
+        if (method_exists($this, $method)) {
+            $config = $this->$method($config);
+        }
+
+        return $config;
     }
 
     public function getActivityTarget()
@@ -326,7 +372,12 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     public function getPropertyGenerator()
     {
-        return $this->_getObject('generator', array('displayName' => 'com_activities', 'objectType' => 'component'));
+        return $this->_getObject('generator', $this->_getConfig('generator'));
+    }
+
+    protected function _generatorConfig(KObjectConfig $config)
+    {
+        return $config->append(array('objectName' => 'com_activities', 'objectType' => 'component'));
     }
 
     public function getActivityProvider()
@@ -336,95 +387,77 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     public function getPropertyProvider()
     {
-        return $this->_getObject('provider', array('displayName' => 'com_activities', 'objectType' => 'component'));
+        return $this->_getObject('provider', $this->_getConfig('provider'));
+    }
+
+    protected function _providerConfig(KObjectConfig $config)
+    {
+        return $config->append(array('objectName' => 'com_activities', 'objectType' => 'component'));
     }
 
     public function getActivityAction()
     {
-        return $this->_getObject('action', array('value' => $this->status, 'parameter' => true));
+        return $this->_getObject('action', $this->_getConfig('action'));
     }
 
-    public function getActivityTitle()
+    protected function _actionConfig(KObjectConfig $config)
     {
-        return $this->_getObject('title', array('linkable' => true, 'translate' => false, 'parameter' => true));
+        return $config->append(array('objectName' => $this->status));
     }
 
     /**
      * Activity object getter.
      *
-     * @param string $name   The name of the activity object.
-     * @param array  $config An optional configuration array.
+     * @param string $label The label of the activity object.
+     * @param array $config An optional configuration array.
      *
      * @return ComActivitiesActivityObject The activity object.
      */
-    protected function _getObject($name, $config = array())
-    {
-        $config = new KObjectConfig($config);
-
-        if ($config->parameter) {
-            $object = $this->_getParameter($name, $config);
-        } else {
-            $object = new ComActivitiesActivityObject($name, $config->toArray());
-        }
-
-        // Set object as deleted if related object is not found.
-        if ($config->find && !$this->_findObject($config->find)) {
-            $object->setDeleted(true);
-        }
-
-        return $object;
-    }
-
-    /**
-     * Activity parameter getter.
-     *
-     * @param array $config An optional configuration array.
-     *
-     * @return ComActivitiesActivityObject The activity parameter object.
-     */
-    protected function _getParameter($name, $config = array())
+    protected function _getObject($label, $config = array())
     {
         $config = new KObjectConfig($config);
 
         $config->append(array(
-            'linkable'   => false,
-            'link'       => array('href' => 'option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row),
-            'translate'  => true,
-            'value'      => $this->title,
-            'attributes' => array()
+            'displayType' => $config->objectType,
+            'displayName' => $config->objectName,
+            'translate'   => $config->translate ? array() : array('displayName', 'displayType'),
+            'attributes'  => array()
         ));
 
-        if ($config->linkable) {
-           $config->append(array('find' => 'object'));
-        }
-
-        $config->parameter = true;
-
-        // Make parameter non-linkable if related object is not found.
+        // Make object non-linkable and set it as deleted if related entity is not found.
         if ($config->find && !$this->_findObject($config->find)) {
-            $config->linkable = false;
+            $config->url     = null;
             $config->deleted = true;
         }
 
-        if (!$config->linkable) {
-            unset($config->link->href);
+        if ($translate = $config->translate)
+        {
+            $translator = $this->getActivityObject('translator');
+            $translate  = (array)$translate;
+
+            foreach ($translate as $property)
+            {
+                if ($config->{$property}) {
+                    $config->{$property} = $translator->translate($config->{$property});
+                }
+            }
         }
 
-        return new ComActivitiesActivityObject($name, $config->toArray());
+        return new ComActivitiesActivityObject($label, $config->toArray());
     }
 
     /**
      * Object finder.
      *
-     * @param $name The object name.
+     * @param $label The object label.
      *
      * @return bool True if found, false otherwise.
      */
-    protected function _findObject($name)
+    protected function _findObject($label)
     {
         $result = false;
 
-        $method = '_findObject' . ucfirst($name);
+        $method = '_findObject' . ucfirst($label);
 
         if ( method_exists($this, $method)) {
             $result = (bool) $this->$method();
