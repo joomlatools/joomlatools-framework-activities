@@ -21,7 +21,7 @@ class ComActivitiesActivityMedialink extends KObjectConfigJson implements ComAct
     {
         parent::__construct($config);
 
-        $this->append(array('url' => ''));
+        $this->setUrl($config->url);
     }
 
     public function setDuration($duration)
@@ -46,9 +46,9 @@ class ComActivitiesActivityMedialink extends KObjectConfigJson implements ComAct
         return $this->height;
     }
 
-    public function setUrl($url)
+    public function setUrl(KHttpUrl $url)
     {
-        $this->url = (string) $url;
+        $this->url = $url;
         return $this;
     }
 
