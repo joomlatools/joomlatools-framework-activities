@@ -58,12 +58,13 @@ class ComActivitiesViewActivitiesJson extends KViewJson
             );
 
             if ($icon = $activity->getActivityIcon()) {
-                $item['icon'] = $this->_getActivityMediaLinkData($icon);
+                $item['icon'] = $this->_getMediaLinkData($icon);
             }
 
             foreach ($activity->objects as $name => $object)
             {
-                $item[$name] = $this->_getActivityObjectData($object);
+
+                $item[$name] = $this->_getObjectData($object);
             }
         }
         else
@@ -137,78 +138,92 @@ class ComActivitiesViewActivitiesJson extends KViewJson
         return $this;
     }
 
-    /**
-     * Activity object data getter.
-     *
-     * @param ComActivitiesActivityObjectInterface $object The object.
-     *
-     * @return array The data.
-     */
-    protected function _getActivityObjectData(ComActivitiesActivityObjectInterface $object)
+    protected function _getObjectData(ComActivitiesActivityObjectInterface $object)
     {
         $data = $object->toArray();
 
-        // Route object URL.
+        // Make sure we get fully qualified URLs.
         if ($url = $object->getUrl()) {
-            $data['url'] = $this->getActivityRoute($url, false);
-        }
-
-        // Route image URL if any.
-        if ($image = $object->getImage()) {
-            $data['image'] = $this->_getActivityMediaLinkData($image);
+            $data['url'] = $this->_getUrl($url);
         }
 
         $attachments = array();
 
-        // Process attachments if any.
-        foreach ($object->getAttachments() as $attachment) {
-            $attachments[] = $this->_getActivityObjectData($attachment);
+        // Handle attachments recursively.
+        foreach ($object->getAttachments() as $attachment)
+        {
+            $attachments[] = $this->_getObjectData($object);
         }
 
         $data['attachments'] = $attachments;
 
-        // Remove properties with empty arrays.
-        foreach ($data as $name => $value) {
-            if (is_array($value) && empty($value)) unset($data[$name]);
+        // Convert date objects to date time strings.
+        foreach (array('published', 'updated') as $property)
+        {
+            $method = 'get' . ucfirst($property);
+
+            if ($date = $object->$method()) {
+                $data[$property] = $date->format('M d Y H:i:s');
+            }
         }
 
-        // Remove deleted property if the object isn't deleted or deletable.
-        if (!$object->isDeleted()) {
-            unset($data['deleted']);
-        }
-
-        // Route link URL if any.
-        if (($link = $object->getLink()) && isset($link['href'])) {
-            $data['link']['href'] = $this->getActivityRoute($link['href'], false);
-        }
-
-        // Translate value if any and if needed.
-        if ($object->isTranslatable() && $object->getValue()) {
-            $data['value'] = $this->getObject('translator')->translate($object->getValue());
-        }
-
-        // Remove translatable status.
-        unset($data['translate']);
-
-        return $data;
+        return $this->_cleanupData($data);
     }
 
-    /**
-     * Activity object data getter.
-     *
-     * @param ComActivitiesActivityObjectInterface $object The object.
-     *
-     * @return array The data.
-     */
-    protected function _getActivityMediaLinkData(ComActivitiesActivityMedialinkInterface $medialink)
+    protected function _getMedialinkData(ComActivitiesActivityMedialinkInterface $medialink)
     {
         $data = $medialink->toArray();
 
-        // Route medialink URL.
-        if ($url = $medialink->getUrl()) {
-            $data['url'] = $this->getActivityRoute($url, false);
+        $data['url'] = $this->_getUrl($medialink->getUrl());
+
+        return $this->_cleanupData($data);
+    }
+
+    protected function _cleanupData(array $data = array())
+    {
+        $clean = array();
+
+        foreach ($data as $key => $value)
+        {
+            if (!empty($value)) {
+                $clean[$key] = $value;
+            }
         }
 
-        return $data;
+        return $clean;
+    }
+
+    /**
+     * URL getter.
+     *
+     * @param KHttpUrl $url The URL.
+     *
+     * @return string The fully qualified un-escaped URL.
+     */
+    protected function _getUrl(KHttpUrl $url)
+    {
+        $parts = array();
+
+        $url = clone $url;
+
+        // Do not escape URLs.
+        $url->escape = false;
+
+        $site_url = $this->getUrl();
+
+        foreach (array('scheme', 'host', 'port') as $part)
+        {
+            $method = 'get' . ucfirst($part);
+
+            if (!$url->$method() && ($value = $site_url->$method())) {
+                $parts[$part] = $value;
+            }
+        }
+
+        if (!empty($parts)) {
+            $url->setUrl($parts);
+        }
+
+        return $url->toString();
     }
 }
