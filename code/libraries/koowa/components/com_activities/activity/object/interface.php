@@ -319,9 +319,9 @@ interface ComActivitiesActivityObjectInterface
     /**
      * Url setter.
      *
-     * @param string|null $url
+     * @param KHttpUrl|null $url
      *
-     * @return ComActivitiesActivityObjectInterface
+     * @return KHttpUrl
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See url property.
      */
@@ -330,7 +330,7 @@ interface ComActivitiesActivityObjectInterface
     /**
      * Url getter.
      *
-     * @return string|null The url, null if the object does not have a url property.
+     * @return KHttpUrl|null The url, null if the object does not have a url property.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See url property.
      */
