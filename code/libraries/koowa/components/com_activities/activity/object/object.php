@@ -330,44 +330,7 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
         return $this->attributes->toArray();
     }
 
-    public function toArray()
-    {
-        $data = parent::toArray();
 
-        $properties = array('published', 'updated');
-
-        // Convert date objects to date time strings.
-        foreach ($properties as $property) {
-            if (isset($data[$property])) {
-                $date = $data[$property];
-                $data[$property] = $date->format('M d Y H:i:s');
-            }
-        }
-
-        $data = $this->_cleanup($data);
-
-        return $data;
-    }
-
-    /**
-     * Removes empty entries.
-     *
-     * @param array $data The data to be cleaned up.
-     *
-     * @return array Cleaned up data.
-     */
-    protected function _cleanup(array $data = array())
-    {
-        $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($data), RecursiveIteratorIterator::CHILD_FIRST);
-
-        foreach ($iterator as $key => $value) {
-            if (empty($value)) {
-                $iterator->offsetUnset($key);
-            }
-        }
-
-        return $iterator->getArrayCopy();
-    }
 
     /**
      * Set a parameter property
