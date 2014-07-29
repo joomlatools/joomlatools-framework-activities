@@ -52,8 +52,6 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
         parent::__construct($config);
 
         $this->append(array(
-            'parameter'            => false,
-            'translate'            => true,
             'deleted'              => false,
             'attachments'          => array(),
             'downstreamDuplicates' => array(),
@@ -329,8 +327,6 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
     {
         return $this->attributes->toArray();
     }
-
-
 
     /**
      * Set a parameter property
