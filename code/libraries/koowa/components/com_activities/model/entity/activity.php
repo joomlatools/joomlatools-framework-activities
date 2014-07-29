@@ -198,6 +198,13 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return $this->_getObjects(array_unique($labels));
     }
 
+    /**
+     * Returns a list of activity objects provided their labels.
+     *
+     * @param array $labels The object labels.
+     *
+     * @return array An array containing ComActivitiesActivityObjectInterface objects.
+     */
     protected function _getObjects(array $labels = array())
     {
         $result = array();
