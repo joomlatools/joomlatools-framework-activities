@@ -299,13 +299,10 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     protected function _actorConfig(KObjectConfig $config)
     {
-        if ($this->_findObjectActor())
-        {
-            $objectName = $this->getAuthor()->getName();
-            $translate  = array('displayType');
+        $objectName = $this->getAuthor()->getName();
+        $translate  = array('displayType');
 
-        }
-        else
+        if (!$this->_findObjectActor())
         {
             $objectName = $this->created_by ? 'Deleted user' : 'Guest user';
             $translate  = array('displayName', 'displayType');
