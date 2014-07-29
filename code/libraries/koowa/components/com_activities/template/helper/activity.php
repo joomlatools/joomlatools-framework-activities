@@ -77,9 +77,10 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
                     }
 
                     if (!$config->html) {
-
                         $content = $object->getDisplayName();
-                    } else $content = $this->object(array('object' => $object));
+                    } else {
+                        $content = $this->_renderObject($object);
+                    }
 
                     $output = str_replace('{' . $label . '}', $content, $output);
                 }
