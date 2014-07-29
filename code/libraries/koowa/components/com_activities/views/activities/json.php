@@ -36,10 +36,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
 
     protected function _initialize(KObjectConfig $config)
     {
-        $config->append(array(
-            'renderer'  => 'activity',
-            'behaviors' => array('routable')
-        ));
+        $config->append(array('renderer'  => 'activity'));
 
         parent::_initialize($config);
     }
