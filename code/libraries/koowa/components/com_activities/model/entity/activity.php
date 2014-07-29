@@ -86,15 +86,10 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
         $config->append(array(
             'format'        => '{actor} {action} {object.type} title {object}',
-            'merge'         => true,
             'object_table'  => $data->package . '_' . KStringInflector::pluralize($data->name),
-            'object_column' => $data->package . '_' . $data->name . '_id'
-        ))->append(array(
-                   'objects' => $config->merge ? array(
-                           'actor',
-                           'object',
-                           'generator',
-                           'provider') : array()));
+            'object_column' => $data->package . '_' . $data->name . '_id',
+            'objects'       => array('actor', 'object', 'generator', 'provider')
+        ));
 
         parent::_initialize($config);
     }
