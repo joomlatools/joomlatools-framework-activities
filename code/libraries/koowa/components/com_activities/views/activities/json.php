@@ -135,6 +135,13 @@ class ComActivitiesViewActivitiesJson extends KViewJson
         return $this;
     }
 
+    /**
+     * Activity object data getter.
+     *
+     * @param ComActivitiesActivityObjectInterface $object The activity object.
+     *
+     * @return array The object data.
+     */
     protected function _getObjectData(ComActivitiesActivityObjectInterface $object)
     {
         $data = $object->toArray();
@@ -166,6 +173,13 @@ class ComActivitiesViewActivitiesJson extends KViewJson
         return $this->_cleanupData($data);
     }
 
+    /**
+     * Activity medialink data getter.
+     *
+     * @param ComActivitiesActivityMedialinkInterface $medialink The medialink object.
+     *
+     * @return array The object data.
+     */
     protected function _getMedialinkData(ComActivitiesActivityMedialinkInterface $medialink)
     {
         $data = $medialink->toArray();
@@ -175,6 +189,13 @@ class ComActivitiesViewActivitiesJson extends KViewJson
         return $this->_cleanupData($data);
     }
 
+    /**
+     * Removes entries with empty values.
+     *
+     * @param array $data The data to cleanup.
+     *
+     * @return array The cleaned up data.
+     */
     protected function _cleanupData(array $data = array())
     {
         $clean = array();
@@ -191,6 +212,8 @@ class ComActivitiesViewActivitiesJson extends KViewJson
 
     /**
      * URL getter.
+     *
+     * Provides a fully qualified and un-escaped URL provided a URL object.
      *
      * @param KHttpUrl $url The URL.
      *
