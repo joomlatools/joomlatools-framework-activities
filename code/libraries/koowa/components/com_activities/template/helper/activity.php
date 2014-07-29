@@ -92,30 +92,21 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
     /**
      * Renders an HTML formatted activity object.
      *
-     * @param array $config An optional configuration array.
+     * @param ComActivitiesActivityObjectInterface $object The activity object.
      *
      * @return string The HTML formatted object.
      */
-    public function object($config = array())
+    protected function _renderObject(ComActivitiesActivityObjectInterface $object)
     {
-        $config = new KObjectConfig($config);
+        $output = $object->getDisplayName();
 
-        $output = '';
+        $attribs = $object->getAttributes() ? $this->buildAttributes($object->getAttributes()) : '';
 
-        $object = $config->object;
-
-        if ($object instanceof ComActivitiesActivityObjectInterface)
+        if ($url = $object->getUrl())
         {
-            $output = $object->getDisplayName();
-
-            $attribs = $object->getAttributes() ? $this->buildAttributes($object->getAttributes()) : '';
-
-            if ($url = $object->getUrl())
-            {
-                $url    = $url->toString();
-                $output = "<a {$attribs} href=\"{$url}\">{$output}</a>";
-            } else $output = "<span {$attribs}>{$output}</span>";
-        }
+            $url    = $url->toString();
+            $output = "<a {$attribs} href=\"{$url}\">{$output}</a>";
+        } else $output = "<span {$attribs}>{$output}</span>";
 
         return $output;
     }
