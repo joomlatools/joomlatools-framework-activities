@@ -101,9 +101,6 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                     'Renderer: '.get_class($this->_renderer).' does not implement ComActivitiesActivityRendererInterface'
                 );
             }
-
-            // Push view to the template for accessing view mixed methods within the template helper.
-            $this->_renderer->getTemplate()->setView($this);
         }
 
         return $this->_renderer;
