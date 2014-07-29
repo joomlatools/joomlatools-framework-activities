@@ -316,7 +316,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
             'id'         => $this->created_by,
             'url'        => '?option=com_users&task=user.edit&id=' . $this->created_by,
             'objectName' => $objectName,
-            'translate'  => $config->translate ? array() : $translate,
+            'translate'  => $translate,
             'find'       => 'actor'
         ));
     }
