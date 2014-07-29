@@ -52,16 +52,16 @@ interface ComActivitiesActivityMedialinkInterface
     /**
      * Url setter.
      *
-     * @param string $url The url.
+     * @param KHttpUrl $url The url.
      *
      * @return ComActivitiesActivityStreamMedialinkInterface
      */
-    public function setUrl( $url);
+    public function setUrl(KHttpUrl $url);
 
     /**
      * Url getter.
      *
-     * @return string The url.
+     * @return KHttpUrl The url.
      */
     public function getUrl();
 
