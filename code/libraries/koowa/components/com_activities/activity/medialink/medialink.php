@@ -20,8 +20,6 @@ class ComActivitiesActivityMedialink extends KObjectConfigJson implements ComAct
     public function __construct($config = array())
     {
         parent::__construct($config);
-
-        $this->setUrl($config->url);
     }
 
     public function setDuration($duration)
