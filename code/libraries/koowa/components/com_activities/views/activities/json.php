@@ -147,9 +147,8 @@ class ComActivitiesViewActivitiesJson extends KViewJson
         $attachments = array();
 
         // Handle attachments recursively.
-        foreach ($object->getAttachments() as $attachment)
-        {
-            $attachments[] = $this->_getObjectData($object);
+        foreach ($object->getAttachments() as $attachment) {
+            $attachments[] = $this->_getObjectData($attachment);
         }
 
         $data['attachments'] = $attachments;
