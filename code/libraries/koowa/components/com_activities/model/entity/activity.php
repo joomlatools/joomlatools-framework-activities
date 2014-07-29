@@ -218,31 +218,31 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
             {
                 $object = $this->$method();
 
-                // Deal with dot notation cases.
-                if (count($parts) === 2)
+                if ($object instanceof ComActivitiesActivityObjectInterface)
                 {
-                    $config   = array();
-                    $property = $parts[1];
-
-                    // The objectName and displayName properties are mapped to getObjectXXX and getDisplayXXX
-                    // respectively.
-                    $methods = array(
-                        'objectName'  => 'getObject' . ucfirst($property),
-                        'displayName' => 'getDisplay' . ucfirst($property)
-                    );
-
-                    foreach ($methods as $name => $method)
+                    // Deal with dot notation syntax.
+                    if (count($parts) === 2)
                     {
-                        if (method_exists($object, $method)) {
-                            $config[$name] = $object->$method();
-                        } else continue 2;
+                        $config   = array();
+                        $property = $parts[1];
+
+                        // objectName and displayName values are provided by getObjectXXX and getDisplayXXX respectively.
+                        $properties = array(
+                            'objectName'  => 'getObject' . ucfirst($property),
+                            'displayName' => 'getDisplay' . ucfirst($property)
+                        );
+
+                        foreach ($properties as $name => $getter)
+                        {
+                            if (method_exists($object, $getter)) {
+                                $config[$name] = $object->$getter();
+                            } else continue 2;
+                        }
+
+                        // We create a new basic and minimal format token object.
+                        $object = $this->_getObject($label, $config);
                     }
 
-                    // We create a new basic and minimal format token object.
-                    $object = $this->_getObject($label, $config);
-                }
-
-                if ($object instanceof ComActivitiesActivityObjectInterface) {
                     $result[$object->getLabel()] = $object;
                 }
             }
