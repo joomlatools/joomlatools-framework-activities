@@ -44,7 +44,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     protected $_object_column;
 
     /**
-     * An associative list of found activity objects.
+     * An associative list of found and not found activity objects.
      *
      * @var array
      */
