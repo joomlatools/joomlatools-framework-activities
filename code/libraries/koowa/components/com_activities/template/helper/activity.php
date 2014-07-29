@@ -112,9 +112,8 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
 
             if ($url = $object->getUrl())
             {
-                $url = $this->getTemplate()->getView()->getActivityRoute($url);
+                $url    = $url->toString();
                 $output = "<a {$attribs} href=\"{$url}\">{$output}</a>";
-
             } else $output = "<span {$attribs}>{$output}</span>";
         }
 
