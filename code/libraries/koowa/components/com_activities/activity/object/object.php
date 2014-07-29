@@ -290,8 +290,8 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
 
     public function setUrl($url)
     {
-        if (!is_null($url)) {
-            $url = (string) $url;
+        if (!is_null($url) && !$url instanceof KHttpUrl) {
+            throw new InvalidArgumentException('Invalid url type.');
         }
 
         $this->url = $url;
