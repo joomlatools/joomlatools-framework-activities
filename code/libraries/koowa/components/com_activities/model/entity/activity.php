@@ -473,7 +473,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
         $method = '_findObject' . ucfirst($label);
 
-        if ( method_exists($this, $method)) {
+        if (method_exists($this, $method)) {
             $result = (bool) $this->$method();
         }
 
