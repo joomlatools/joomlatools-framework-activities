@@ -418,9 +418,12 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         $config->append(array(
             'displayType' => $config->objectType,
             'displayName' => $config->objectName,
-            'translate'   => $config->translate ? array() : array('displayName', 'displayType'),
             'attributes'  => array()
         ));
+
+        if (!$config->translate && $config->translate !== false) {
+            $config->translate = array('displayName', 'displayType');
+        }
 
         if (is_string($config->url))
         {
