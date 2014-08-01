@@ -37,7 +37,6 @@ interface ComActivitiesActivityObjectInterface
      * Activity object name setter.
      *
      * Identifies the object using a human-readable and plain-text string. HTML markup MUST NOT be included.
-     * It usually corresponds to the un-translated version of the displayName value.
      *
      * @param string $name The activity object name.
      *
@@ -214,25 +213,6 @@ interface ComActivitiesActivityObjectInterface
      * @link http://activitystrea.ms/specs/json/1.0/#object See objectType property.
      */
     public function getObjectType();
-
-    /**
-     * Display type setter.
-     *
-     * A natural-language, human-readable and plain-text object type for the object. HTML markup MUST NOT be included.
-     * It usually corresponds to the translated version of the objectType value.
-     *
-     * @param string|null $type The display type.
-     *
-     * @return ComActivitiesActivityObjectInterface
-     */
-    public function setDisplayType($type);
-
-    /**
-     * Display type getter.
-     *
-     * @return string|null The display type, null if the object does not have a display type property.
-     */
-    public function getDisplayType();
 
     /**
      * Published date setter.
