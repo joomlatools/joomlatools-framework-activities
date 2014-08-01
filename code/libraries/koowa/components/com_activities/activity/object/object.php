@@ -22,31 +22,6 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
      */
     private $__label;
 
-    /**
-     * An array containing allowed settable properties.
-     *
-     * @var array
-     */
-    protected $_allowed = array(
-        'objectType',
-        'displayType',
-        'deleted',
-        'attachments',
-        'downstreamDuplicates',
-        'upstreamDuplicates',
-        'attributes',
-        'author',
-        'content',
-        'objectName',
-        'displayName',
-        'id',
-        'image',
-        'published',
-        'summary',
-        'updated',
-        'url',
-    );
-
     public function __construct($label, $config = array())
     {
         parent::__construct($config);
@@ -337,14 +312,11 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
      */
     public function set($name, $value)
     {
-        if (in_array($name, $this->_allowed))
-        {
-            if (is_array($value)) {
-                $value = new KObjectConfigJson($value);
-            }
-
-            parent::set($name, $value);
+        if (is_array($value)) {
+            $value = new KObjectConfigJson($value);
         }
+
+        parent::set($name, $value);
 
         return $this;
     }
