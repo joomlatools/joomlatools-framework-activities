@@ -221,14 +221,10 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      */
     protected function _getUrl(KHttpUrl $url)
     {
+        $activity_url = clone $url;
+        $site_url     = $this->getUrl();
+
         $parts = array();
-
-        $url = clone $url;
-
-        // Do not escape URLs.
-        $url->escape = false;
-
-        $site_url = $this->getUrl();
 
         foreach (array('scheme', 'host', 'port') as $part)
         {
@@ -240,9 +236,9 @@ class ComActivitiesViewActivitiesJson extends KViewJson
         }
 
         if (!empty($parts)) {
-            $url->setUrl($parts);
+            $activity_url->setUrl($parts);
         }
 
-        return $url->toString();
+        return $activity_url->toString(KHttpUrl::FULL, false);
     }
 }
