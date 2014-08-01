@@ -429,6 +429,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         {
             $parts = parse_url($config->url);
 
+            // Check if the URL should be routed or not.
             if (isset($parts['scheme']) || isset($parts['path']) ) {
                 $identifier = 'lib:http.url';
             } else {
