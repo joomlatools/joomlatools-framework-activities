@@ -185,21 +185,6 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
         return $this->objectType;
     }
 
-    public function setDisplayType($type)
-    {
-        if (!is_null($type)) {
-            $type = (string) $type;
-        }
-
-        $this->displayType = $type;
-        return $this;
-    }
-
-    public function getDisplayType()
-    {
-        return $this->displayType;
-    }
-
     public function setPublished($date)
     {
         if (!is_null($date) && !$date instanceof KDate) {
