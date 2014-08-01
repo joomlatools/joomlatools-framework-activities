@@ -458,6 +458,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
             }
         }
 
+        // Cleanup config file.
+        foreach (array('translate', 'find') as $property) {
+            unset($config[$property]);
+        }
+
         return new ComActivitiesActivityObject($label, $config->toArray());
     }
 
