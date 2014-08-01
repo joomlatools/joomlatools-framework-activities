@@ -223,24 +223,19 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
                     // Deal with dot notation syntax.
                     if (count($parts) === 2)
                     {
-                        $config   = array();
                         $property = $parts[1];
 
-                        // objectName and displayName values are provided by getObjectXXX and getDisplayXXX respectively.
-                        $properties = array(
-                            'objectName'  => 'getObject' . ucfirst($property),
-                            'displayName' => 'getDisplay' . ucfirst($property)
-                        );
-
-                        foreach ($properties as $name => $getter)
+                        if ($value = $object->{ 'object' . ucfirst($property)})
                         {
-                            if (method_exists($object, $getter)) {
-                                $config[$name] = $object->$getter();
-                            } else continue 2;
-                        }
+                            $config = array('objectName' => $value);
 
-                        // We create a new basic and minimal format token object.
-                        $object = $this->_getObject($label, $config);
+                            if ($value = $object->{'display' . ucfirst($property)}) {
+                                $config['displayName'] = $value;
+                            }
+
+                            // Create a new basic and minimal format token object.
+                            $object = $this->_getObject($label, $config);
+                        } else continue;
                     }
 
                     $result[$object->getLabel()] = $object;
