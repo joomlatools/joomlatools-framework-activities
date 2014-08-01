@@ -67,7 +67,7 @@ class ComActivitiesActivityTranslator extends ComKoowaTranslatorAbstract impleme
         // Construct a set of non-empty tokens.
         foreach ((array) $tokens as $token)
         {
-            if ($token instanceof ComActivitiesActivityObjectInterface && $token->getDisplayName()) {
+            if ($token instanceof ComActivitiesActivityObjectInterface && $token->getObjectName()) {
                 $set[] = $token;
             }
         }
@@ -79,7 +79,7 @@ class ComActivitiesActivityTranslator extends ComKoowaTranslatorAbstract impleme
             {
                 $override = $format;
                 foreach ($subset as $token) {
-                    $override = str_replace('{' . $token->getLabel() . '}', $token->getDisplayName(), $override);
+                    $override = str_replace('{' . $token->getLabel() . '}', $token->getObjectName(), $override);
                 }
 
                 $overrides[] = $override;
