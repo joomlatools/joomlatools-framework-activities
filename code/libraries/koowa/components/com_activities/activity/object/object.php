@@ -28,6 +28,7 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
 
         $this->append(array(
             'deleted'              => false,
+            'internal'             => false,
             'attachments'          => array(),
             'downstreamDuplicates' => array(),
             'upstreamDuplicates'   => array(),
@@ -261,9 +262,9 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
         return $this->url;
     }
 
-    public function setDeleted($status)
+    public function setDeleted($state)
     {
-        $this->deleted = (bool) $status;
+        $this->deleted = (bool) $state;
         return $this;
     }
 
@@ -304,5 +305,16 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
         parent::set($name, $value);
 
         return $this;
+    }
+
+    public function setInternal($state)
+    {
+        $this->internal = (bool) $state;
+        return $this;
+    }
+
+    public function isInternal()
+    {
+        return $this->internal;
     }
 }
