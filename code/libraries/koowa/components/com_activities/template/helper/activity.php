@@ -105,10 +105,42 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
 
         if ($url = $object->getUrl())
         {
-            $url    = $url->toString();
+            $url    = $this->_getUrl($url);
             $output = "<a {$attribs} href=\"{$url}\">{$output}</a>";
         } else $output = "<span {$attribs}>{$output}</span>";
 
         return $output;
+    }
+
+    /**
+     * URL getter.
+     *
+     * Provides a fully qualified and escaped URL provided a URL object.
+     *
+     * @param KHttpUrl $url The URL.
+     *
+     * @return string The fully qualified un-escaped URL.
+     */
+    protected function _getUrl(KHttpUrl $url)
+    {
+        $activity_url = clone $url;
+        $site_url     = $this->getTemplate()->getView()->getUrl();
+
+        $parts = array();
+
+        foreach (array('scheme', 'host', 'port', 'path') as $part)
+        {
+            $method = 'get' . ucfirst($part);
+
+            if (!$url->$method() && ($value = $site_url->$method())) {
+                $parts[$part] = $value;
+            }
+        }
+
+        if (!empty($parts)) {
+            $activity_url->setUrl($parts);
+        }
+
+        return $activity_url->toString(KHttpUrl::FULL, true);
     }
 }
