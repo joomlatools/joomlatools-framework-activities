@@ -63,8 +63,9 @@ class ComActivitiesViewActivitiesJson extends KViewJson
 
             foreach ($activity->objects as $name => $object)
             {
-
-                $item[$name] = $this->_getObjectData($object);
+                if (!$object->isInternal()) {
+                    $item[$name] = $this->_getObjectData($object);
+                }
             }
         }
         else
