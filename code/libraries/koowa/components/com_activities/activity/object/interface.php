@@ -348,4 +348,21 @@ interface ComActivitiesActivityObjectInterface
      * @return array The attributes.
      */
     public function getAttributes();
+
+    /**
+     * Internal state setter.
+     *
+     * @param bool $state The internal state.
+     *
+     * @return ComActivitiesActivityObjectInterface
+     */
+    public function setInternal($state);
+
+    /**
+     * Tells if the object is internal, i.e. used internally by an activity containing it. Internal objects are not
+     * meant to be exposed on streams or messages.
+     *
+     * @return bool True if the object is internal, false otherwise.
+     */
+    public function isInternal();
 }
