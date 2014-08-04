@@ -410,14 +410,27 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         $config = new KObjectConfig($config);
 
-        $config->append(array(
-            'displayType' => $config->objectType,
-            'displayName' => $config->objectName,
-            'attributes'  => array()
-        ));
+        $config->append(array('attributes' => array()));
 
-        if (!$config->translate && $config->translate !== false) {
-            $config->translate = array('displayName', 'displayType');
+        $defaults = array();
+
+        // Determine default properties and their values.
+        foreach ($config as $key => $value)
+        {
+            if (strpos($key, 'object') === 0 && isset($value)) {
+                $defaults['display' . ucfirst(substr($key, 6))] = $value;
+            }
+        }
+
+        if ($defaults)
+        {
+            // Append default properties.
+            $config->append($defaults);
+
+            // Set default translatable properties.
+            if (!$config->translate && $config->translate !== false) {
+                $config->translate = array_keys($defaults);
+            }
         }
 
         if (is_string($config->url))
