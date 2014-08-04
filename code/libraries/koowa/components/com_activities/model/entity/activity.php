@@ -410,7 +410,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         $config = new KObjectConfig($config);
 
-        $config->append(array('attributes' => array()));
+        $config->append(array('attributes' => array(), 'route' => true));
 
         $defaults = array();
 
