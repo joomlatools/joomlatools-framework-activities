@@ -435,16 +435,13 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
         if (is_string($config->url))
         {
-            $parts = parse_url($config->url);
-
-            // Check if the URL should be routed or not.
-            if (isset($parts['scheme']) || isset($parts['path']) ) {
-                $identifier = 'lib:http.url';
+            if ($config->route) {
+                $url = $this->getObject('lib:dispatcher.router.route', array('url' => array('query' => $config->url)));
             } else {
-                $identifier = 'lib:dispatcher.router.route';
+                $url = $this->getObject('lib:http.url', array('url' => $config->url));
             }
 
-            $config->url = $this->getObject($identifier, array('url' => $config->url));
+            $config->url = $url;
         }
 
         // Make object non-linkable and set it as deleted if related entity is not found.
