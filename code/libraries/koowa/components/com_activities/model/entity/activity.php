@@ -227,7 +227,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
                         if ($value = $object->{ 'object' . ucfirst($property)})
                         {
-                            $config = array('objectName' => $value);
+                            $config = array('objectName' => $value, 'internal' => true);
 
                             if ($value = $object->{'display' . ucfirst($property)}) {
                                 $config['displayName'] = $value;
