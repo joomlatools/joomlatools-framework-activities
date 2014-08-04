@@ -317,13 +317,13 @@ interface ComActivitiesActivityObjectInterface
     public function getUrl();
 
     /**
-     * Deleted status setter.
+     * Deleted state setter.
      *
-     * @param bool $status The deleted status
+     * @param bool $state The deleted state
      *
      * @return ComActivitiesActivityObjectInterface
      */
-    public function setDeleted($status);
+    public function setDeleted($state);
 
     /**
      * Tells if the object has been deleted, i.e. no longer reachable or persisted.
