@@ -171,6 +171,14 @@ class ComActivitiesViewActivitiesJson extends KViewJson
             }
         }
 
+        if ($image = $object->getImage()) {
+            $data['image'] = $this->_getMedialinkData($image);
+        }
+
+        if ($author = $object->getAuthor()) {
+            $data['author'] = $this->_getObjectData($object);
+        }
+
         return $this->_cleanupData($data);
     }
 
