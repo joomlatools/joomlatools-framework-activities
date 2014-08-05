@@ -15,7 +15,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesActivityMedialink extends KObjectConfigJson implements ComActivitiesActivityMedialinkInterface
+class ComActivitiesActivityMedialink extends KObjectArray implements ComActivitiesActivityMedialinkInterface
 {
     public function __construct($config = array())
     {
