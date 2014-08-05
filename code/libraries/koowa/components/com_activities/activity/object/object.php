@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivitiesActivityObjectInterface
+class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesActivityObjectInterface
 {
     /**
      * The activity object label, e.g. (actor, object, target, ...).
@@ -22,20 +22,22 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
      */
     private $__label;
 
-    public function __construct($label, $config = array())
+    public function __construct(KObjectConfig $config)
     {
-        parent::__construct($config);
-
-        $this->append(array(
-            'deleted'              => false,
-            'internal'             => false,
-            'attachments'          => array(),
-            'downstreamDuplicates' => array(),
-            'upstreamDuplicates'   => array(),
-            'attributes'           => array()
+        $config->append(array(
+            'data' => array(
+                'deleted'              => false,
+                'internal'             => false,
+                'attachments'          => array(),
+                'downstreamDuplicates' => array(),
+                'upstreamDuplicates'   => array(),
+                'attributes'           => array()
+            )
         ));
 
-        $this->setLabel($label);
+        parent::__construct($config);
+
+        $this->setLabel($config->label);
     }
 
     public function setLabel($label)
@@ -52,7 +54,7 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
     public function setAttachments(array $attachments, $merge = true)
     {
         if ($merge) {
-            $this->attachments->append($attachments);
+            $this->attachments = array_merge($this->attachments, $attachments);
         } else {
             $this->attachments = $attachments;
         }
@@ -62,7 +64,7 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
 
     public function getAttachments()
     {
-        return $this->attachments->toArray();
+        return $this->attachments;
     }
 
     public function setAuthor($author)
@@ -128,7 +130,7 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
     public function setDownstreamDuplicates(array $duplicates, $merge = true)
     {
         if ($merge) {
-            $this->downstreamDuplicates->append($duplicates);
+            $this->downstreamDuplicates = array_merge($this->downstreamDuplicates, $duplicates);
         } else {
             $this->downstreamDuplicates = $duplicates;
         }
@@ -234,7 +236,7 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
     public function setUpstreamDuplicates(array $duplicates, $merge = true)
     {
         if ($merge) {
-            $this->downstreamDuplicates->append($duplicates);
+            $this->downstreamDuplicates = array_merge($this->downstreamDuplicates, $duplicates);
         } else {
             $this->upstreamDuplicates = $duplicates;
         }
@@ -276,7 +278,7 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
     public function setAttributes(array $attribs = array(), $merge = true)
     {
         if ($merge) {
-            $this->attributes->append($attribs);
+            $this->attributes = array_merge($this->attributes, $attribs);
         } else {
             $this->attributes = $attribs;
         }
@@ -286,25 +288,7 @@ class ComActivitiesActivityObject extends KObjectConfigJson implements ComActivi
 
     public function getAttributes()
     {
-        return $this->attributes->toArray();
-    }
-
-    /**
-     * Set a parameter property
-     *
-     * @param  string $name
-     * @param  mixed  $value
-     * @return void
-     */
-    public function set($name, $value)
-    {
-        if (is_array($value)) {
-            $value = new KObjectConfigJson($value);
-        }
-
-        parent::set($name, $value);
-
-        return $this;
+        return $this->attributes;
     }
 
     public function setInternal($state)
