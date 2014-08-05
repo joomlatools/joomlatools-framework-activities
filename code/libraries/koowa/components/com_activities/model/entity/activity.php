@@ -472,7 +472,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
             unset($config[$property]);
         }
 
-        return new ComActivitiesActivityObject($label, $config->toArray());
+        return $this->getObject('com:activities.activity.object', array('label' => $label, 'data' => $config));
     }
 
     /**
