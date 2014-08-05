@@ -60,20 +60,4 @@ class ComActivitiesActivityMedialink extends KObjectArray implements ComActiviti
     {
         return $this->width;
     }
-
-    /**
-     * Set a parameter property
-     *
-     * @param  string $name
-     * @param  mixed  $value
-     * @return void
-     */
-    public function set($name, $value)
-    {
-        if (is_array($value)) {
-            $value = new KObjectConfigJson($value);
-        }
-
-        parent::set($name, $value);
-    }
 }
