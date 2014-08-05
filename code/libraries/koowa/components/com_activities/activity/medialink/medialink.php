@@ -21,7 +21,6 @@ class ComActivitiesActivityMedialink extends KObjectArray implements ComActiviti
     {
         parent::__construct($config);
     }
-
     public function setDuration($duration)
     {
         $this->duration = (int) $duration;
