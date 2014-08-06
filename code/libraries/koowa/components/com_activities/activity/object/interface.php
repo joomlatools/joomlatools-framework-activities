@@ -18,22 +18,6 @@
 interface ComActivitiesActivityObjectInterface
 {
     /**
-     * Label setter.
-     *
-     * @param string $label The label.
-     *
-     * @return ComActivitiesActivityObjectInterface
-     */
-    public function setLabel($label);
-
-    /**
-     * Label getter.
-     *
-     * @return string The label.
-     */
-    public function getLabel();
-
-    /**
      * Activity object name setter.
      *
      * Identifies the object using a human-readable and plain-text string. HTML markup MUST NOT be included.
