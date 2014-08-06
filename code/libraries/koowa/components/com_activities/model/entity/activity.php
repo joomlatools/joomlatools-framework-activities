@@ -470,9 +470,9 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
             $config->image      = $this->getObject('com:activities.activity.medialink', array('data' => $config->image));
         }
 
-        // Cleanup config file.
+        // Cleanup config.
         foreach (array('translate', 'find', 'route') as $property) {
-            unset($config[$property]);
+            unset($config->$property);
         }
 
         return $this->getObject('com:activities.activity.object', array('data' => $config));
