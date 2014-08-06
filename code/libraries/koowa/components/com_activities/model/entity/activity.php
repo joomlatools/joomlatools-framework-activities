@@ -438,13 +438,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
         if (is_string($config->url))
         {
-            if ($config->route) {
-                $url = $this->getObject('lib:dispatcher.router.route', array('url' => array('query' => $config->url)));
-            } else {
-                $url = $this->getObject('lib:http.url', array('url' => $config->url));
-            }
-
-            $config->url = $url;
+            $config->url = $this->_getRoute($config);
         }
 
         // Make object non-linkable and set it as deleted if related entity is not found.
@@ -466,8 +460,14 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
             }
         }
 
-        if ($config->image instanceof KObjectConfig) {
-            $config->image = $this->getObject('com:activities.activity.medialink', array('data' => $config->image));
+        if ($config->image instanceof KObjectConfig)
+        {
+            $config->image->url = $this->_getRoute($config->image);
+
+            // Cleanup config.
+            unset($config->image->route);
+
+            $config->image      = $this->getObject('com:activities.activity.medialink', array('data' => $config->image));
         }
 
         // Cleanup config file.
@@ -476,6 +476,24 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         }
 
         return $this->getObject('com:activities.activity.object', array('data' => $config));
+    }
+
+    /**
+     * Route getter.
+     *
+     * @param KObjectConfig $config The configuration object.
+     *
+     * @return KHttpUrlInterface The route.
+     */
+    protected function _getRoute(KObjectConfig $config)
+    {
+        if ($config->route) {
+            $url = $this->getObject('lib:dispatcher.router.route', array('url' => array('query' => $config->url)));
+        } else {
+            $url = $this->getObject('lib:http.url', array('url' => $config->url));
+        }
+
+        return $url;
     }
 
     /**
