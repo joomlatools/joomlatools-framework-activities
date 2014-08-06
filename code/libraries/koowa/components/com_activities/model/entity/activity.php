@@ -238,11 +238,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
                             }
 
                             // Create a new basic and minimal format token object.
-                            $object = $this->_getObject($label, $config);
+                            $object = $this->_getObject($config);
                         } else continue;
                     }
 
-                    $result[$object->getLabel()] = $object;
+                    $result[$label] = $object;
                 }
             }
         }
@@ -258,7 +258,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     public function getPropertyFormat()
     {
         return $this->getObject('com:activities.activity.translator')
-            ->translate($this->_format, array_values($this->tokens));
+            ->translate($this->_format, $this->tokens);
     }
 
     public function getActivityIcon()
@@ -293,7 +293,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     public function getPropertyActor()
     {
-        return $this->_getObject('actor', $this->_getConfig('actor'));
+        return $this->_getObject($this->_getConfig('actor'));
     }
 
     protected function _actorConfig(KObjectConfig $config)
@@ -324,7 +324,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     public function getPropertyObject()
     {
-        return $this->_getObject('object', $this->_getConfig('object'));
+        return $this->_getObject($this->_getConfig('object'));
     }
 
     protected function _objectConfig(KObjectConfig $config)
@@ -369,7 +369,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     public function getPropertyGenerator()
     {
-        return $this->_getObject('generator', $this->_getConfig('generator'));
+        return $this->_getObject($this->_getConfig('generator'));
     }
 
     protected function _generatorConfig(KObjectConfig $config)
@@ -384,7 +384,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     public function getPropertyProvider()
     {
-        return $this->_getObject('provider', $this->_getConfig('provider'));
+        return $this->_getObject($this->_getConfig('provider'));
     }
 
     protected function _providerConfig(KObjectConfig $config)
@@ -394,7 +394,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     public function getActivityAction()
     {
-        return $this->_getObject('action', $this->_getConfig('action'));
+        return $this->_getObject($this->_getConfig('action'));
     }
 
     protected function _actionConfig(KObjectConfig $config)
@@ -405,12 +405,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     /**
      * Activity object getter.
      *
-     * @param string $label The label of the activity object.
      * @param array $config An optional configuration array.
      *
      * @return ComActivitiesActivityObject The activity object.
      */
-    protected function _getObject($label, $config = array())
+    protected function _getObject($config = array())
     {
         $config = new KObjectConfig($config);
 
@@ -476,7 +475,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
             unset($config[$property]);
         }
 
-        return $this->getObject('com:activities.activity.object', array('label' => $label, 'data' => $config));
+        return $this->getObject('com:activities.activity.object', array('data' => $config));
     }
 
     /**

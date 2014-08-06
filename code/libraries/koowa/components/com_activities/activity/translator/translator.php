@@ -65,10 +65,10 @@ class ComActivitiesActivityTranslator extends ComKoowaTranslatorAbstract impleme
         $set       = array();
 
         // Construct a set of non-empty tokens.
-        foreach ((array) $tokens as $token)
+        foreach ((array) $tokens as $label => $object)
         {
-            if ($token instanceof ComActivitiesActivityObjectInterface && $token->getObjectName()) {
-                $set[] = $token;
+            if ($object instanceof ComActivitiesActivityObjectInterface && $object->getObjectName()) {
+                $set[] = $label;
             }
         }
 
@@ -78,8 +78,11 @@ class ComActivitiesActivityTranslator extends ComKoowaTranslatorAbstract impleme
             foreach ($this->_getPowerSet($set) as $subset)
             {
                 $override = $format;
-                foreach ($subset as $token) {
-                    $override = str_replace('{' . $token->getLabel() . '}', $token->getObjectName(), $override);
+
+                foreach ($subset as $label)
+                {
+                    $object   = $tokens[$label];
+                    $override = str_replace('{' . $label . '}', $object->getObjectName(), $override);
                 }
 
                 $overrides[] = $override;
