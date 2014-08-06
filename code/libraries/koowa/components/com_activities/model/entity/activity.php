@@ -92,7 +92,9 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      */
     public static function getInstance(KObjectConfigInterface $config, KObjectManagerInterface $manager)
     {
-        if ($config->object_identifier->class == get_class())
+        $class = $manager->getClass($config->object_identifier);
+
+        if ($class == get_class())
         {
             $identifier            = $config->object_identifier->toArray();
             $identifier['package'] = $config->data->package;
@@ -102,7 +104,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
             }
         }
 
-        return new $config->object_identifier->class($config);
+        return new $class($config);
     }
 
     public function save()
