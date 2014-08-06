@@ -230,7 +230,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      */
     protected function _getUrl(KHttpUrl $url)
     {
-        $view_url = $this->getTemplate()->getView()->getUrl();
+        $view_url = $this->getUrl();
 
         if (!$url->getHost() && !$url->getScheme()) {
             $url->setUrl($view_url->toString(KHttpUrl::AUTHORITY));
