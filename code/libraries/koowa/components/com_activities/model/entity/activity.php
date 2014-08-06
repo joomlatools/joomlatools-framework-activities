@@ -191,6 +191,10 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         $labels = array();
 
+        if (!$this->_format) {
+            $this->format; // Try generating the actual activity format. This is where computed short formats are calculated.
+        }
+
         if (preg_match_all('/\{(.*?)\}/', $this->_format, $matches)) {
             $labels = $matches[1];
         }
