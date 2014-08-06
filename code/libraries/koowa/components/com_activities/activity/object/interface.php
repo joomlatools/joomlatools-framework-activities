@@ -38,23 +38,23 @@ interface ComActivitiesActivityObjectInterface
      *
      * Identifies the object using a human-readable and plain-text string. HTML markup MUST NOT be included.
      *
-     * @param string $name The activity object name.
+     * @param string|null $name The activity object name.
      *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setObjectName($name);
 
     /**
-     * Activity object name (actor, object, target, ...) getter.
+     * Activity object name getter.
      *
-     * @return string The activity object name.
+     * @return string|null The activity object name, null if the object does not have a name.
      */
     public function getObjectName();
 
     /**
      * Display name setter.
      *
-     * @param string $name The display name.
+     * @param string|null $name The display name.
      *
      * @return ComActivitiesActivityObjectInterface
      *
