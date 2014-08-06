@@ -15,13 +15,6 @@
  */
 class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesActivityObjectInterface
 {
-    /**
-     * The activity object label, e.g. (actor, object, target, ...).
-     *
-     * @var string
-     */
-    private $__label;
-
     public function __construct(KObjectConfig $config)
     {
         $config->append(array(
@@ -36,19 +29,6 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
         ));
 
         parent::__construct($config);
-
-        $this->setLabel($config->label);
-    }
-
-    public function setLabel($label)
-    {
-        $this->__label = (string) $label;
-        return $this;
-    }
-
-    public function getLabel()
-    {
-        return $this->__label;
     }
 
     public function setAttachments(array $attachments, $merge = true)
