@@ -413,7 +413,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     {
         $config = new KObjectConfig($config);
 
-        $config->append(array('attributes' => array(), 'route' => true));
+        $config->append(array('attributes' => array()));
 
         $defaults = array();
 
@@ -438,7 +438,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
         if (is_string($config->url))
         {
-            $config->url = $this->_getRoute($config);
+            $config->url = $this->_getUrl($config->url);
         }
 
         // Make object non-linkable and set it as deleted if related entity is not found.
@@ -462,16 +462,12 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
         if ($config->image instanceof KObjectConfig)
         {
-            $config->image->url = $this->_getRoute($config->image);
-
-            // Cleanup config.
-            unset($config->image->route);
-
+            $config->image->url = $this->_getUrl($config->image->url);
             $config->image      = $this->getObject('com:activities.activity.medialink', array('data' => $config->image));
         }
 
         // Cleanup config.
-        foreach (array('translate', 'find', 'route') as $property) {
+        foreach (array('translate', 'find') as $property) {
             unset($config->$property);
         }
 
@@ -479,18 +475,34 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Route getter.
+     * Url getter.
      *
-     * @param KObjectConfig $config The configuration object.
+     * @param string $url The URL.
+     * @param bool|null $route Whether or not the Url should be routed. If null is passed, the method automatically
+     * determines if the Url should be routed based on the provided Url.
      *
-     * @return KHttpUrlInterface The route.
+     * @return KHttpUrlInterface The Url.
      */
-    protected function _getRoute(KObjectConfig $config)
+    protected function _getUrl($url, $route = null)
     {
-        if ($config->route) {
-            $url = $this->getObject('lib:dispatcher.router.route', array('url' => array('query' => $config->url)));
-        } else {
-            $url = $this->getObject('lib:http.url', array('url' => $config->url));
+        if (is_string($url))
+        {
+            if (is_null($route))
+            {
+                $parts = parse_url($url);
+
+                if (!empty($parts['path']) || !empty($parts['host'])) {
+                    $route = false;
+                } else {
+                    $route = true;
+                }
+            }
+
+            if ($route) {
+                $url = $this->getObject('lib:dispatcher.router.route', array('url' => array('query' => $url)));
+            } else {
+                $url = $this->getObject('lib:http.url', array('url' => $url));
+            }
         }
 
         return $url;
