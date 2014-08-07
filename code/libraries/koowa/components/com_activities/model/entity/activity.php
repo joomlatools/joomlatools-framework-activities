@@ -310,7 +310,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return $config->append(array(
             'objectType' => 'user',
             'id'         => $this->created_by,
-            'url'        => 'option=com_users&task=user.edit&id=' . $this->created_by,
+            'url'        => '?option=com_users&task=user.edit&id=' . $this->created_by,
             'objectName' => $objectName,
             'translate'  => $translate,
             'find'       => 'actor'
@@ -333,7 +333,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
             'id'         => $this->row,
             'objectName' => $this->title,
             'objectType' => $this->name,
-            'url'        => 'option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row,
+            'url'        => '?option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row,
             'attributes' => array('class' => array('object')),
             'find'       => 'object'
         ));
