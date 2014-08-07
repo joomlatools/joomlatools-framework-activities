@@ -235,8 +235,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
                         {
                             $config = array('objectName' => $value, 'internal' => true);
 
-                            if ($value = $object->{'display' . ucfirst($property)}) {
+                            // If display property is set use it and disable properties translations.
+                            if ($value = $object->{'display' . ucfirst($property)})
+                            {
                                 $config['displayName'] = $value;
+                                $config['translate']   = false;
                             }
 
                             // Create a new basic and minimal format token object.
