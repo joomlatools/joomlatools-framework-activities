@@ -499,7 +499,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
             }
 
             if ($route) {
-                $url = $this->getObject('lib:dispatcher.router.route', array('url' => array('query' => $url)));
+                $url = $this->getObject('lib:dispatcher.router.route', array('url' => $url));
             } else {
                 $url = $this->getObject('lib:http.url', array('url' => $url));
             }
