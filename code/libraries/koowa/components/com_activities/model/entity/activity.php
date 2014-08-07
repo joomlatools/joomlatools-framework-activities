@@ -1,10 +1,10 @@
 <?php
 /**
- * Koowa Framework - http://developer.joomlatools.com/koowa
+ * Nooku Framework - http://nooku.org/framework
  *
  * @copyright      Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
  * @license        GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link           http://github.com/joomlatools/koowa-activities for the canonical source repository
+ * @link           http://github.com/nooku/nooku-activities for the canonical source repository
  */
 
 /**
@@ -103,7 +103,9 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      */
     public static function getInstance(KObjectConfigInterface $config, KObjectManagerInterface $manager)
     {
-        if ($config->object_identifier->class == get_class())
+        $class = $manager->getClass($config->object_identifier);
+
+        if ($class == get_class())
         {
             $identifier            = $config->object_identifier->toArray();
             $identifier['package'] = $config->data->package;
@@ -113,7 +115,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
             }
         }
 
-        return new $config->object_identifier->class($config);
+        return new $class($config);
     }
 
     public function save()
