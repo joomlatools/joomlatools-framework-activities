@@ -491,7 +491,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
             {
                 $parts = parse_url($url);
 
-                if (!empty($parts['path']) || !empty($parts['host'])) {
+                if (!empty($parts['path']) || !empty($parts['scheme'])) {
                     $route = false;
                 } else {
                     $route = true;
