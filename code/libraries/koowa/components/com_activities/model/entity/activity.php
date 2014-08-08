@@ -16,18 +16,11 @@
 class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjectInstantiable, ComActivitiesActivityInterface
 {
     /**
-     * The message format.
+     * The activity format.
      *
      * @var string
      */
     protected $_format;
-
-    /**
-     * Message parameters
-     *
-     * @param mixed
-     */
-    protected $_parameters;
 
     /**
      * A list of required columns.
@@ -51,6 +44,20 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     protected $_object_column;
 
     /**
+     * An associative list of found and not found activity objects.
+     *
+     * @var array
+     */
+    static protected $_found_objects = array();
+
+    /**
+     * A list of supported activity object names.
+     *
+     * @var KObjectArray
+     */
+    protected $_objects;
+
+    /**
      * Constructor.
      *
      * @param   KObjectConfig $config Configuration options
@@ -60,6 +67,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         parent::__construct($config);
 
         $this->_format        = $config->format;
+        $this->_objects       = KObjectConfig::unbox($config->objects);
         $this->_object_table  = $config->object_table;
         $this->_object_column = $config->object_column;
     }
@@ -74,10 +82,13 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      */
     protected function _initialize(KObjectConfig $config)
     {
+        $data = $config->data;
+
         $config->append(array(
-            'format'        => '{actor} {action} {object} {title}',
-            'object_table'  => $config->data->package . '_' . KStringInflector::pluralize($config->data->name),
-            'object_column' => $config->data->package . '_' . $config->data->name . '_id'
+            'format'        => '{actor} {action} {object.type} title {object}',
+            'object_table'  => $data->package . '_' . KStringInflector::pluralize($data->name),
+            'object_column' => $data->package . '_' . $data->name . '_id',
+            'objects'       => array('actor', 'object', 'generator', 'provider')
         ));
 
         parent::_initialize($config);
@@ -114,8 +125,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
             throw new RuntimeException('Activities cannot be modified.');
         }
 
-        $translator = $this->getObject('translator');
-
         if (!$this->status)
         {
             // Attempt to provide a default status.
@@ -144,7 +153,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
             if (empty($this->$column))
             {
                 $this->setStatus(KDatabase::STATUS_FAILED);
-                $this->setStatusMessage($translator->translate('Missing required data'));
+                $this->setStatusMessage($this->getObject('translator')->translate('Missing required data'));
                 return false;
             }
         }
@@ -161,7 +170,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return parent::removeProperty($name);
     }
 
-
     public function setPropertyPackage($value)
     {
         if ($this->package && $this->package != $value) {
@@ -171,292 +179,431 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return $value;
     }
 
-    /**
-     * Verb is an alias for action
-     *
-     * @return mixed
-     */
     public function getPropertyVerb()
     {
-        return $this->getProperty('action');
+        return $this->action;
     }
 
-    /**
-     * Verb is an alias for action
-     *
-     * @param $value
-     */
-    public function setPropertyVerb($value)
+    public function getPropertyObjects()
     {
-        $this->setProperty('action', $value);
+        return array_merge($this->_getObjects($this->_objects), $this->tokens);
     }
 
-    /**
-     * Get the activity string format
-     *
-     * The string format is a compact representation of the activity which also provides information about the
-     * parameters it may contain.
-     *
-     * @return string The activity string format.
-     */
-    public function getFormat()
+    public function getPropertyTokens()
     {
-        return $this->_format;
-    }
+        $labels = array();
 
-    /**
-     * Looks for the activity actor.
-     *
-     * @return boolean True if found, false otherwise.
-     */
-    public function findActor()
-    {
-        return (bool) $this->getObject('user.provider')->load($this->created_by)->getId();
-    }
-
-    /**
-     * Activity actor id getter.
-     *
-     * @return mixed The activity actor id.
-     */
-    public function getActorId()
-    {
-        return $this->created_by;
-    }
-
-    /**
-     * Activity actor URL getter.
-     *
-     * @return mixed The activity actor url.
-     */
-    public function getActorUrl()
-    {
-        return 'option=com_users&task=user.edit&id=' . $this->created_by;
-    }
-
-    /**
-     * Activity actor type getter.
-     *
-     * @return mixed The activity actor type.
-     */
-    public function getActorType()
-    {
-        return 'user';
-    }
-
-    /**
-     * Looks for the activity object.
-     *
-     * @return boolean True if found, false otherwise.
-     */
-    public function findObject()
-    {
-        $db     = $this->getTable()->getAdapter();
-        $table  = $this->_object_table;
-        $column = $this->_object_column;
-
-        $query = $this->getObject('lib:database.query.select');
-        $query->columns('COUNT(*)')->table($table)->where($column . ' = :value')
-            ->bind(array('value' => $this->row));
-
-        // Need to catch exceptions here as table may not longer exist.
-        try {
-            $result = $db->select($query, KDatabase::FETCH_FIELD);
-        } catch (Exception $e) {
-            $result = 0;
+        if (!$this->_format) {
+            $this->format; // Try generating the actual activity format. This is where computed short formats are calculated.
         }
 
-        return (bool) $result;
+        if (preg_match_all('/\{(.*?)\}/', $this->_format, $matches)) {
+            $labels = $matches[1];
+        }
+
+        return $this->_getObjects(array_unique($labels));
     }
 
     /**
-     * Activity object id getter.
+     * Returns a list of activity objects provided their labels.
      *
-     * @return mixed The activity object id.
-     */
-    public function getObjectId()
-    {
-        return $this->row;
-    }
-
-    /**
-     * Activity object URL getter.
+     * @param array $labels The object labels.
      *
-     * @return mixed The activity object url.
+     * @return array An array containing ComActivitiesActivityObjectInterface objects.
      */
-    public function getObjectUrl()
+    protected function _getObjects(array $labels = array())
     {
-        return 'option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row;
-    }
+        $result = array();
 
-    /**
-     * Activity object type getter.
-     *
-     * @return mixed The activity object type.
-     */
-    public function getObjectType()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Looks for the activity target.
-     *
-     * @return bool|null True if found, false if not found, null if the activity has no target.
-     */
-    public function findTarget()
-    {
-        return null; // Activities don't have targets by default.
-    }
-
-    /**
-     * Activity target id getter.
-     *
-     * @return mixed The activity target id.
-     */
-    public function getTargetId()
-    {
-        return null; // Activities don't have targets by default.
-    }
-
-    /**
-     * Activity target URL getter.
-     *
-     * @return mixed The activity target URL.
-     */
-    public function getTargetUrl()
-    {
-        return null; // Activities don't have targets by default.
-    }
-
-    /**
-     * Activity target type getter.
-     *
-     * @return mixed The activity target type.
-     */
-    public function getTargetType()
-    {
-        return null; // Activities don't have targets by default.
-    }
-
-    /**
-     * Get the activity parameters
-     *
-     * @return array The activity parameters.
-     */
-    public function getParameters()
-    {
-       if(!isset($this->_parameters))
-       {
-           $this->_parameters = array();
-
-           if (preg_match_all('/\{(.*?)\}/', $this->getFormat(), $matches) !== false)
-           {
-               $translator = $this->getObject('translator');
-
-               foreach ($matches[1] as $name)
-               {
-                   $method = '_parameter'.ucfirst($name);
-
-                   if (method_exists($this, $method))
-                   {
-                       $parameter = new ComActivitiesActivityParameter($name, $translator);
-                       $this->$method($parameter);
-
-                       $this->_parameters[$parameter->getName()] = $parameter;
-                   }
-               }
-           }
-       }
-
-        return $this->_parameters;
-    }
-
-    /**
-     * Casts an activity to a string.
-     *
-     * @return string The string representation of an activity
-     */
-    public function toString()
-    {
-        $format      = $this->getFormat();
-        $parameters  = $this->getParameters();
-
-        return $this->getObject('com:activities.activity.translator')->translate($format, $parameters);
-    }
-
-    /**
-     * Actor activity Parameter
-     *
-     * @param ComActivitiesActivityParameterInterface $parameter The activity parameter.
-     * @return  void
-     */
-    protected function _parameterActor(ComActivitiesActivityParameterInterface $parameter)
-    {
-        if ($this->findActor())
+        foreach ($labels as $label)
         {
-            $parameter->link->href = $this->getActorUrl();
-            $parameter->translate  = false;
-            $value                 = $this->getAuthor()->getName();
+            $parts  = explode('.', $label);
+            $method = 'getActivity' . ucfirst($parts[0]);
+
+            if (method_exists($this, $method))
+            {
+                $object = $this->$method();
+
+                if ($object instanceof ComActivitiesActivityObjectInterface)
+                {
+                    // Deal with dot notation syntax.
+                    if (count($parts) === 2)
+                    {
+                        $property = $parts[1];
+
+                        if ($value = $object->{ 'object' . ucfirst($property)})
+                        {
+                            $config = array('objectName' => $value, 'internal' => true);
+
+                            // If display property is set use it and disable properties translations.
+                            if ($value = $object->{'display' . ucfirst($property)})
+                            {
+                                $config['displayName'] = $value;
+                                $config['translate']   = false;
+                            }
+
+                            // Create a new basic and minimal format token object.
+                            $object = $this->_getObject($config);
+                        } else continue;
+                    }
+
+                    $result[$label] = $object;
+                }
+            }
         }
-        else $value = $this->created_by ? 'Deleted user' : 'Guest user';
 
-        $parameter->value = $value;
+        return $result;
     }
 
-    /**
-     * Action activity parameter
-     *
-     * @param ComActivitiesActivityParameterInterface $parameter The activity parameter.
-     * @return  void
-     */
-    protected function _parameterAction(ComActivitiesActivityParameterInterface $parameter)
+    public function getActivityFormat()
     {
-        $parameter->value = $this->status;
+      return $this->format;
     }
 
-    /**
-     * Object activity parameter
-     *
-     * @param ComActivitiesActivityParameterInterface $parameter The activity parameter.
-     * @return  void
-     */
-    protected function _parameterObject(ComActivitiesActivityParameterInterface $parameter)
+    public function getPropertyFormat()
     {
-        $parameter->value = $this->name;
+        return $this->getObject('com:activities.activity.translator')
+            ->translate($this->_format, $this->tokens);
+    }
 
-        $parameter->append(array(
-            'attribs' => array('class' => array('object')),
+    public function getActivityIcon()
+    {
+        return $this->icon;
+    }
+
+    public function getPropertyIcon()
+    {
+        return null; // No icon by default.
+    }
+
+    public function getActivityId()
+    {
+        return $this->uuid;
+    }
+
+    public function getActivityPublished()
+    {
+        return $this->getObject('lib:date', array('date' => $this->created_on));
+    }
+
+    public function getActivityVerb()
+    {
+        return $this->verb;
+    }
+
+    public function getActivityActor()
+    {
+        return $this->actor;
+    }
+
+    public function getPropertyActor()
+    {
+        return $this->_getObject($this->_getConfig('actor'));
+    }
+
+    protected function _actorConfig(KObjectConfig $config)
+    {
+        $objectName = $this->getAuthor()->getName();
+        $translate  = array('displayType');
+
+        if (!$this->_findObjectActor())
+        {
+            $objectName = $this->created_by ? 'Deleted user' : 'Guest user';
+            $translate  = array('displayName', 'displayType');
+        }
+
+        return $config->append(array(
+            'objectType' => 'user',
+            'id'         => $this->created_by,
+            'url'        => '?option=com_users&task=user.edit&id=' . $this->created_by,
+            'objectName' => $objectName,
+            'translate'  => $translate,
+            'find'       => 'actor'
         ));
     }
 
-    /**
-     * Title activity parameter
-     *
-     * @param ComActivitiesActivityParameterInterface $parameter The activity parameter.
-     * @return  void
-     */
-    protected function _parameterTitle(ComActivitiesActivityParameterInterface $parameter)
+    public function getActivityObject()
     {
-        $parameter->value     = $this->title;
-        $parameter->translate = false;
+        return $this->object;
+    }
 
-        if ($this->findObject()) {
-            $parameter->link->href = $this->getObjectUrl();
+    public function getPropertyObject()
+    {
+        return $this->_getObject($this->_getConfig('object'));
+    }
+
+    protected function _objectConfig(KObjectConfig $config)
+    {
+        return $config->append(array(
+            'id'         => $this->row,
+            'objectName' => $this->title,
+            'objectType' => $this->name,
+            'url'        => '?option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row,
+            'attributes' => array('class' => array('object')),
+            'find'       => 'object'
+        ));
+    }
+
+    protected function _getConfig($object)
+    {
+        $config = new KObjectConfig();
+
+        $method = '_' . strtolower($object) . 'Config';
+
+        if (method_exists($this, $method)) {
+            $config = $this->$method($config);
         }
 
-        if ($this->status == 'deleted') {
-            $parameter->attribs = array('class' => array('deleted'));
-        }
+        return $config;
+    }
+
+    public function getActivityTarget()
+    {
+        return $this->target;
+    }
+
+    public function getPropertyTarget()
+    {
+        return null; // Activities do not have targets by default.
+    }
+
+    public function getActivityGenerator()
+    {
+        return $this->generator;
+    }
+
+    public function getPropertyGenerator()
+    {
+        return $this->_getObject($this->_getConfig('generator'));
+    }
+
+    protected function _generatorConfig(KObjectConfig $config)
+    {
+        return $config->append(array('objectName' => 'com_activities', 'objectType' => 'component'));
+    }
+
+    public function getActivityProvider()
+    {
+        return $this->provider;
+    }
+
+    public function getPropertyProvider()
+    {
+        return $this->_getObject($this->_getConfig('provider'));
+    }
+
+    protected function _providerConfig(KObjectConfig $config)
+    {
+        return $config->append(array('objectName' => 'com_activities', 'objectType' => 'component'));
+    }
+
+    public function getActivityAction()
+    {
+        return $this->_getObject($this->_getConfig('action'));
+    }
+
+    protected function _actionConfig(KObjectConfig $config)
+    {
+        return $config->append(array('objectName' => $this->status));
     }
 
     /**
-     * Allow PHP casting of this object
+     * Activity object getter.
      *
-     * @return string
+     * @param array $config An optional configuration array.
+     *
+     * @return ComActivitiesActivityObject The activity object.
      */
-    public function __toString()
+    protected function _getObject($config = array())
     {
-        return $this->toString();
+        $config = new KObjectConfig($config);
+
+        $config->append(array('attributes' => array()));
+
+        $defaults = array();
+
+        // Determine default properties and their values.
+        foreach ($config as $key => $value)
+        {
+            if (strpos($key, 'object') === 0 && isset($value)) {
+                $defaults['display' . ucfirst(substr($key, 6))] = $value;
+            }
+        }
+
+        if ($defaults)
+        {
+            // Append default properties.
+            $config->append($defaults);
+
+            // Set default translatable properties.
+            if (!$config->translate && $config->translate !== false) {
+                $config->translate = array_keys($defaults);
+            }
+        }
+
+        if (is_string($config->url))
+        {
+            $config->url = $this->_getUrl($config->url);
+        }
+
+        // Make object non-linkable and set it as deleted if related entity is not found.
+        if ($config->find && !$this->_findObject($config->find)) {
+            $config->url     = null;
+            $config->deleted = true;
+        }
+
+        if ($translate = $config->translate)
+        {
+            $translator = $this->getObject('translator');
+            $translate  = (array) KObjectConfig::unbox($translate);
+
+            foreach ($translate as $property)
+            {
+                if ($config->{$property}) {
+                    $config->{$property} = $translator->translate($config->{$property});
+                }
+            }
+        }
+
+        if ($config->image instanceof KObjectConfig)
+        {
+            $config->image->url = $this->_getUrl($config->image->url);
+            $config->image      = $this->getObject('com:activities.activity.medialink', array('data' => $config->image));
+        }
+
+        // Cleanup config.
+        foreach (array('translate', 'find') as $property) {
+            unset($config->$property);
+        }
+
+        return $this->getObject('com:activities.activity.object', array('data' => $config));
+    }
+
+    /**
+     * Url getter.
+     *
+     * @param string $url The URL.
+     * @param bool|null $route Whether or not the Url should be routed. If null is passed, the method automatically
+     * determines if the Url should be routed based on the provided Url.
+     *
+     * @return KHttpUrlInterface The Url.
+     */
+    protected function _getUrl($url, $route = null)
+    {
+        if (is_string($url))
+        {
+            if (is_null($route))
+            {
+                $parts = parse_url($url);
+
+                if (!empty($parts['path']) || !empty($parts['scheme'])) {
+                    $route = false;
+                } else {
+                    $route = true;
+                }
+            }
+
+            if ($route) {
+                $url = $this->getObject('lib:dispatcher.router.route', array('url' => $url));
+            } else {
+                $url = $this->getObject('lib:http.url', array('url' => $url));
+            }
+        }
+
+        return $url;
+    }
+
+    /**
+     * Object finder.
+     *
+     * @param $label The object label.
+     *
+     * @return bool True if found, false otherwise.
+     */
+    protected function _findObject($label)
+    {
+        $result = false;
+
+        $method = '_findObject' . ucfirst($label);
+
+        if (method_exists($this, $method)) {
+            $result = (bool) $this->$method();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Activity object object finder.
+     *
+     * This method may be overridden for activities persisting objects on storage systems other than local
+     * database tables.
+     *
+     * @return boolean True if found, false otherwise.
+     */
+    protected function _findObjectObject()
+    {
+        $signature = $this->_getObjectSignature();
+
+        if (!isset(self::$_found_objects[$signature]))
+        {
+            $db     = $this->getTable()->getAdapter();
+            $table  = $this->_object_table;
+            $column = $this->_object_column;
+
+            $query = $this->getObject('lib:database.query.select');
+            $query->columns('COUNT(*)')->table($table)->where($column . ' = :value')
+                  ->bind(array('value' => $this->row));
+
+            // Need to catch exceptions here as table may not longer exist.
+            try {
+                $result = $db->select($query, KDatabase::FETCH_FIELD);
+            } catch (Exception $e) {
+                $result = 0;
+            }
+
+            self::$_found_objects[$signature] = (bool) $result;
+        }
+
+        return self::$_found_objects[$signature];
+    }
+
+    /**
+     * Activity object signature getter.
+     *
+     * @return string The signature.
+     */
+    protected function _getObjectSignature()
+    {
+        return 'object' . $this->package . '.' . $this->name . '.' . $this->row;
+    }
+
+    /**
+     * Activity actor object finder.
+     *
+     *
+     * @return boolean True if found, false otherwise.
+     */
+    protected function _findObjectActor()
+    {
+        $signature = $this->_getActorSignature();
+
+        if (!isset(self::$_found_objects[$signature]))
+        {
+            $user                             = $this->getObject('user.provider')->load($this->created_by);
+            self::$_found_objects[$signature] = (bool) $user->getId();
+        }
+
+        return self::$_found_objects[$signature];
+    }
+
+    /**
+     * Activity actor signature getter.
+     *
+     * @return string The signature.
+     */
+    protected function _getActorSignature()
+    {
+        return 'actor.' . $this->created_by;
     }
 }

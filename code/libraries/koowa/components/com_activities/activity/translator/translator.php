@@ -26,62 +26,49 @@ class ComActivitiesActivityTranslator extends ComKoowaTranslatorAbstract impleme
         parent::_initialize($config);
     }
 
-    public function translate($format, array $parameters = array())
+    public function translate($string, array $tokens = array())
     {
-        //Find a format override
-        if ($parameters)
+        return parent::translate($this->_getOverride($string, $tokens), array());
+    }
+
+    protected function _getOverride($format, $tokens = array())
+    {
+        $override = $format;
+
+        if ($tokens)
         {
-            foreach ($this->_getOverrides($format, $parameters) as $override)
+            foreach ($this->_getOverrides($format, $tokens) as $candidate)
             {
-                // Check if a key for the $override exists.
-                if ($this->isTranslatable($override))
+                // Check if the override is translatable.
+                if ($this->isTranslatable($candidate))
                 {
-                    $format = $override;
+                    $override = $candidate;
                     break;
                 }
             }
         }
 
-        // Translate
-        $translation = parent::translate($format, $parameters);
-
-        // Process context translations.
-        if (preg_match_all('/\{(.+?):(.+?)\}/', $translation, $matches) !== false)
-        {
-            for ($i = 0; $i < count($matches[0]); $i++)
-            {
-                foreach ($parameters as $parameter)
-                {
-                    if ($parameter->getName() ==  $matches[1][$i])
-                    {
-                        $parameter->setValue($matches[2][$i])->translate(false);
-                        $translation = str_replace($matches[0][$i], $parameter->toString(), $translation);
-                        break;
-                    }
-                }
-            }
-        }
-
-        return $translation;
+        return $override;
     }
 
     /**
-     * Returns a list of override strings for the provided string/parameters couple.
+     * Returns a list of activity format overrides.
      *
-     * @param  string  $format      The message format.
-     * @param  array   $parameters  The message parameter collection object.
+     * @param  string $format The activity format.
+     * @param  array $tokens An array of ComActivitiesActivityObjectInterface objects representing format tokens.
+     *
      * @return array A list of override strings.
      */
-    protected function _getOverrides($key, $parameters)
+    protected function _getOverrides($format, $tokens = array())
     {
         $overrides = array();
         $set       = array();
 
-        // Construct a set containing non-empty (with replacement texts) parameters.
-        foreach ($parameters as $parameter)
+        // Construct a set of non-empty tokens.
+        foreach ((array) $tokens as $label => $object)
         {
-            if ($parameter->getValue()) {
-                $set[] = $parameter;
+            if ($object instanceof ComActivitiesActivityObjectInterface && $object->getObjectName()) {
+                $set[] = $label;
             }
         }
 
@@ -90,9 +77,12 @@ class ComActivitiesActivityTranslator extends ComKoowaTranslatorAbstract impleme
             // Get the power set of the set of parameters and construct a list of string overrides from it.
             foreach ($this->_getPowerSet($set) as $subset)
             {
-                $override = $key;
-                foreach ($subset as $parameter) {
-                    $override = str_replace('{' . $parameter->getName() . '}', $parameter->getValue(), $override);
+                $override = $format;
+
+                foreach ($subset as $label)
+                {
+                    $object   = $tokens[$label];
+                    $override = str_replace('{' . $label . '}', $object->getObjectName(), $override);
                 }
 
                 $overrides[] = $override;

@@ -13,69 +13,103 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implements KObjectMultiton
+class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implements KObjectMultiton, ComActivitiesActivityRendererInterface
 {
     /**
-     * Renders an activity
+     * Renders an activity.
      *
-     * @param  array $config An optional configuration array.
-     * @throws InvalidArgumentException
-     * @return  string  Html
+     * Wraps around ::render for easy use on layouts.
+     *
+     * @param array $config An optional configuration array.
+     *
+     * @return string The rendered activity.
      */
-    public function render($config = array())
+    public function activity($config = array())
     {
         $config = new KObjectConfig($config);
-        $config->append(array(
-            'entity' => null,
-        ));
 
-        $activity = $config->entity;
+        $output = '';
 
-        if (!$activity instanceof ComActivitiesActivityInterface) {
-            throw new InvalidArgumentException('Activity Not Found');
+        if ($activity = $config->entity) {
+            $output = $this->render($activity, $config);
         }
 
-        //Render activity parameters
-        foreach ($activity->getParameters() as $parameter)
-        {
-            $format = '<span class="text">%s</span>';
-
-            if ($parameter->isLinkable())
-            {
-                $link = $parameter->getLink();
-
-                $view       = $this->getTemplate()->getView();
-                $url        = $view->getActivityRoute($link->href);
-                $attributes = !empty($link->attribs) ? $this->buildAttributes($link->attribs) : '';
-
-                $format = '<a ' . $this->_escapeString($attributes) . ' href="' . $this->_escapeString($url) . '">' . $format . '</a>';
-            }
-
-            $attribs = $parameter->getAttributes();
-
-            if (count($attribs)) {
-                $format = '<span ' . $this->_escapeString($this->buildAttributes($attribs)) . '>' . $format . '</span>';
-            }
-
-            $parameter->setFormat($format);
-        }
-
-        //Render activity message
-        $html = '';
-        $html .= $activity->toString();
-
-        return $html;
+        return $output;
     }
 
     /**
-     * Escapes special sprintf characters.
+     * Renders an activity.
      *
-     * @param string $string The string to escape.
+     * @param ComActivitiesActivityInterface $activity The activity object.
+     * @param  array                         $config   An optional configuration array.
      *
-     * @return mixed The escaped string.
+     * @return string The rendered activity.
      */
-    protected function _escapeString($string)
+    public function render(ComActivitiesActivityInterface $activity, $config = array())
     {
-        return str_replace('%', '%%', $string);
+        $config = new KObjectConfig($config);
+
+        $config->append(array(
+            'html' => true,
+        ));
+
+        $output = $activity->getActivityFormat();
+
+        if (preg_match_all('/{(.*?)}/', $output, $labels))
+        {
+            $tokens = $activity->tokens;
+
+            foreach ($labels[1] as $label)
+            {
+                $parts = explode(':', $label);
+
+                $label = $parts[0];
+
+                if (isset($tokens[$label]))
+                {
+                    $object = $tokens[$label];
+
+                    // Deal with context translations.
+                    if (isset($parts[1]))
+                    {
+                        $object = clone $object;
+                        $object->setDisplayName($parts[1]);
+                    }
+
+                    if (!$config->html) {
+                        $content = $object->getDisplayName();
+                    } else {
+                        $content = $this->_renderObject($object);
+                    }
+
+                    $output = str_replace('{' . $label . '}', $content, $output);
+                }
+            }
+        }
+
+        return $output;
+    }
+
+    /**
+     * Renders an HTML formatted activity object.
+     *
+     * @param ComActivitiesActivityObjectInterface $object The activity object.
+     *
+     * @return string The HTML formatted object.
+     */
+    protected function _renderObject(ComActivitiesActivityObjectInterface $object)
+    {
+        $output = $object->getDisplayName();
+
+        $attribs = $object->getAttributes() ? $this->buildAttributes($object->getAttributes()) : '';
+
+        if ($url = $object->getUrl())
+        {
+            $url = $url->toString(KHttpUrl::FULL, true);
+
+            $output = "<a {$attribs} href=\"{$url}\">{$output}</a>";
+        } else $output = "<span {$attribs}>{$output}</span>";
+
+        return $output;
     }
 }

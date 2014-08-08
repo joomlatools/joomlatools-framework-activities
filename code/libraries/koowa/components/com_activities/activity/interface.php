@@ -14,7 +14,7 @@
  * story of a person performing an action on or with an object -- "Geraldine posted a photo to her album" or "John
  * shared a video". In most cases these components will be explicit, but they may also be implied.
  *
- * @see http://activitystrea.ms/specs/json/1.0/
+ * @link http://activitystrea.ms/specs/json/1.0/#activity
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
@@ -22,110 +22,74 @@
 interface ComActivitiesActivityInterface
 {
     /**
-     * Get the activity string format
+     * Activity format getter.
      *
-     * The string format is a compact representation of the activity which also provides information about the
-     * parameters it may contain.
+     * An activity format consist on a template for rendering activity messages.
      *
      * @return string The activity string format.
      */
-    public function getFormat();
+    public function getActivityFormat();
 
     /**
-     * Get the activity parameters
+     * Activity icon getter.
      *
-     * @return array The activity parameters.
+     * @return ComActivitiesActivityMedialinkInterface|null The activity icon, null if the activity does not have an icon.
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#activity See icon property.
      */
-    public function getParameters();
+    public function getActivityIcon();
 
     /**
-     * Looks for the activity actor.
+     * Activity ID getter.
      *
-     * @return boolean True if found, false otherwise.
+     * @return string The activity ID.
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#activity See id property.
      */
-    public function findActor();
+    public function getActivityId();
 
     /**
-     * Activity actor id getter.
+     * Activity published date getter.
      *
-     * @return mixed The activity actor id.
+     * @return KDate The published date.
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#activity See published property.
      */
-    public function getActorId();
+    public function getActivityPublished();
 
     /**
-     * Activity actor URL getter.
+     * Activity actor getter.
      *
-     * @return mixed The activity actor url.
+     * @return ComActivitiesActivityObjectInterface The activity actor object.
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#activity See actor property.
      */
-    public function getActorUrl();
+    public function getActivityActor();
 
     /**
-     * Activity actor type getter.
+     * Activity object getter.
      *
-     * @return mixed The activity actor type.
+     * @return ComActivitiesActivityObjectInterface|null The activity object, null if the activity does not have an object.
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#activity See object property.
      */
-    public function getActorType();
+    public function getActivityObject();
 
     /**
-     * Looks for the activity object.
+     * Activity target getter.
      *
-     * @return boolean True if found, false otherwise.
+     * @return ComActivitiesActivityObjectInterface|null The activity target object, null if the activity does no have a target.
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#activity See target property.
      */
-    public function findObject();
+    public function getActivityTarget();
 
     /**
-     * Activity object id getter.
+     * Activity verb getter.
      *
-     * @return mixed The activity object id.
-     */
-    public function getObjectId();
-
-    /**
-     * Activity object URL getter.
+     * @return string The activity verb.
      *
-     * @return mixed The activity object url.
+     * @link http://activitystrea.ms/specs/json/1.0/#activity See verb property.
      */
-    public function getObjectUrl();
-
-    /**
-     * Activity object type getter.
-     *
-     * @return mixed The activity object type.
-     */
-    public function getObjectType();
-
-    /**
-     * Looks for the activity target.
-     *
-     * @return bool|null True if found, false if not found, null if the activity has no target.
-     */
-    public function findTarget();
-
-    /**
-     * Activity target id getter.
-     *
-     * @return mixed The activity target id.
-     */
-    public function getTargetId();
-
-    /**
-     * Activity target URL getter.
-     *
-     * @return mixed The activity target URL.
-     */
-    public function getTargetUrl();
-
-    /**
-     * Activity target type getter.
-     *
-     * @return mixed The activity target type.
-     */
-    public function getTargetType();
-
-    /**
-     * Casts an activity to a string.
-     *
-     * @return string The string representation of an activity
-     */
-    public function toString();
+    public function getActivityVerb();
 }

@@ -15,5 +15,13 @@
  */
 interface ComActivitiesActivityTranslatorInterface
 {
-
+    /**
+     * Translates an activity format string.
+     *
+     * @param       $string     The format string.
+     * @param array $parameters An array containing format parameters.
+     *
+     * @return string Translated activity format string.
+     */
+    public function translate($string, array $parameters = array());
 }
