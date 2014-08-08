@@ -262,8 +262,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
     public function getPropertyFormat()
     {
-        return $this->getObject('com:activities.activity.translator')
-            ->translate($this->_format, $this->tokens);
+        return $this->getObject('com:activities.activity.translator')->translate($this->_format, $this->tokens);
     }
 
     public function getActivityIcon()
