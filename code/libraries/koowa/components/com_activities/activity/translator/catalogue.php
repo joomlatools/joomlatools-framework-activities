@@ -13,26 +13,36 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesActivityTranslatorCatalogue extends ComKoowaTranslatorCatalogue
+class ComActivitiesActivityTranslatorCatalogue extends ComKoowaTranslatorCatalogueAbstract
 {
     /**
-     * Overloaded for avoiding key length limit.
+     * Initializes the options for the object
+     *
+     * Called from {@link __construct()} as a first step of object instantiation.
+     *
+     * @param   KObjectConfig $config An optional KObjectConfig object with configuration options
+     * @return  void
      */
-    public function generateKey($string)
+    protected function _initialize(KObjectConfig $config)
     {
-        $string = strtolower($string);
+        $config->append(array(
+            'prefix'  => 'KLS_ACTIVITY_',
+        ));
 
-        $key = strip_tags($string);
-        $key = preg_replace('#\s+#m', ' ', $key);
-        $key = preg_replace('#\{([A-Za-z0-9_\-\.]+)\}#', '$1', $key);
-        $key = preg_replace('#(%[^%|^\s|^\b]+)#', 'X', $key);
-        $key = preg_replace('#&.*?;#', '', $key);
-        $key = preg_replace('#[\s-]+#', '_', $key);
-        $key = preg_replace('#[^A-Za-z0-9_]#', '', $key);
-        $key = preg_replace('#_+#', '_', $key);
-        $key = trim($key, '_');
-        $key = trim(strtoupper($key));
+        parent::_initialize($config);
+    }
 
-        return $key;
+    /**
+     * Generates a translation key that is safe for INI format
+     *
+     * Overloaded for avoiding key length limit.
+     *
+     * @param  string $string
+     * @param  int    $limit    Max key length, should be larger then 0. If -1 no limit will be used.
+     * @return string
+     */
+    public function generateKey($string, $limit = 40)
+    {
+        return parent::generateKey($string, -1);
     }
 }
