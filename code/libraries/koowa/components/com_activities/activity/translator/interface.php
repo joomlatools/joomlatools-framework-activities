@@ -18,7 +18,7 @@ interface ComActivitiesActivityTranslatorInterface
     /**
      * Translates an activity format string.
      *
-     * @param       $string     The format string.
+     * @param string $string     The format string.
      * @param array $parameters An array containing format parameters.
      *
      * @return string Translated activity format string.
