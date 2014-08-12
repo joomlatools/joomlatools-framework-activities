@@ -1,10 +1,10 @@
 <?php
 /**
- * Koowa Framework - http://developer.joomlatools.com/koowa
+ * Nooku Framework - http://nooku.org/framework
  *
- * @copyright      Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license        GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link           http://github.com/joomlatools/koowa-activities for the canonical source repository
+ * @copyright	Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link		http://github.com/nooku/nooku-activities for the canonical source repository
  */
 
 /**
@@ -13,7 +13,6 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-
 interface ComActivitiesActivityRendererInterface
 {
     /**
@@ -21,7 +20,6 @@ interface ComActivitiesActivityRendererInterface
      *
      * @param ComActivitiesActivityInterface $activity The activity object.
      * @param array                          $config   An optional configuration array.
-     *
      * @return string The rendered activity.
      */
     public function render(ComActivitiesActivityInterface $activity, $config = array());

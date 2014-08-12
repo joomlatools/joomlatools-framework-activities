@@ -21,7 +21,6 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
      * Wraps around ::render for easy use on layouts.
      *
      * @param array $config An optional configuration array.
-     *
      * @return string The rendered activity.
      */
     public function activity($config = array())
@@ -42,7 +41,6 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
      *
      * @param ComActivitiesActivityInterface $activity The activity object.
      * @param  array                         $config   An optional configuration array.
-     *
      * @return string The rendered activity.
      */
     public function render(ComActivitiesActivityInterface $activity, $config = array())
@@ -62,7 +60,6 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
             foreach ($labels[1] as $label)
             {
                 $parts = explode(':', $label);
-
                 $label = $parts[0];
 
                 if (isset($tokens[$label]))
@@ -94,21 +91,19 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
      * Renders an HTML formatted activity object.
      *
      * @param ComActivitiesActivityObjectInterface $object The activity object.
-     *
      * @return string The HTML formatted object.
      */
     protected function _renderObject(ComActivitiesActivityObjectInterface $object)
     {
-        $output = $object->getDisplayName();
-
+        $output  = $object->getDisplayName();
         $attribs = $object->getAttributes() ? $this->buildAttributes($object->getAttributes()) : '';
 
         if ($url = $object->getUrl())
         {
-            $url = $url->toString(KHttpUrl::FULL, true);
-
+            $url    = $url->toString(KHttpUrl::FULL, true);
             $output = "<a {$attribs} href=\"{$url}\">{$output}</a>";
-        } else $output = "<span {$attribs}>{$output}</span>";
+        }
+        else $output = "<span {$attribs}>{$output}</span>";
 
         return $output;
     }

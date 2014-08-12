@@ -1,10 +1,10 @@
 <?php
 /**
- * Koowa Framework - http://developer.joomlatools.com/koowa
+ * Nooku Framework - http://nooku.org/framework
  *
- * @copyright      Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license        GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link           http://github.com/joomlatools/koowa-activities for the canonical source repository
+ * @copyright	Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link		http://github.com/nooku/nooku-activities for the canonical source repository
  */
 
 /**
@@ -18,57 +18,43 @@
 interface ComActivitiesActivityObjectInterface
 {
     /**
-     * Activity object name setter.
-     *
-     * Identifies the object using a human-readable and plain-text string. HTML markup MUST NOT be included.
-     *
-     * @param string|null $name The activity object name.
-     *
-     * @return ComActivitiesActivityObjectInterface
-     */
-    public function setObjectName($name);
-
-    /**
-     * Activity object name getter.
+     * Get the activity object name
      *
      * @return string|null The activity object name, null if the object does not have a name.
      */
     public function getObjectName();
 
     /**
-     * Display name setter.
+     * Set the activity object name
      *
-     * @param string|null $name The display name.
+     * Identifies the object using a human-readable and plain-text string. HTML markup MUST NOT be included.
      *
+     * @param string|null $name The activity object name
      * @return ComActivitiesActivityObjectInterface
-     *
-     * @link http://activitystrea.ms/specs/json/1.0/#object See displayName property.
      */
-    public function setDisplayName($name);
+    public function setObjectName($name);
 
     /**
-     * Display name getter.
-     *
-     * @return string|null The display name, null if the object does not have a display name property.
+     * Get the display name
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See displayName property.
+     *
+     * @return string|null The display name, null if the object does not have a display name property.
      */
     public function getDisplayName();
 
     /**
-     * Attachments setter.
+     * Set the display name
      *
-     * @param array $attachments An array of ComActivitiesActivityObjectInterface objects.
-     * @param bool  $merge Tells if attachments should be replaced or merged with current existing attachments.
+     * @link http://activitystrea.ms/specs/json/1.0/#object See displayName property.
      *
+     * @param string|null $name The display name.
      * @return ComActivitiesActivityObjectInterface
-     *
-     * @link http://activitystrea.ms/specs/json/1.0/#object See attachments property.
      */
-    public function setAttachments(array $attachments, $merge = true);
+    public function setDisplayName($name);
 
     /**
-     * Attachments getter.
+     * Get the attachments
      *
      * @return array An array of ComActivitiesActivityObjectInterface objects.
      *
@@ -77,140 +63,134 @@ interface ComActivitiesActivityObjectInterface
     public function getAttachments();
 
     /**
-     * Author setter.
+     * Set the attachments
      *
-     * @param ComActivitiesActivityObjectInterface|null $author The author.
+     *  @link http://activitystrea.ms/specs/json/1.0/#object See attachments property.
      *
+     * @param array $attachments An array of ComActivitiesActivityObjectInterface objects.
+     * @param bool  $merge Tells if attachments should be replaced or merged with current existing attachments.
      * @return ComActivitiesActivityObjectInterface
-     *
-     * @link http://activitystrea.ms/specs/json/1.0/#object See author property.
      */
-    public function setAuthor($author);
+    public function setAttachments(array $attachments, $merge = true);
 
     /**
-     * Author getter.
-     *
-     * @return ComActivitiesActivityObjectInterface|null The author, null if the object does not have an actor property.
+     * Get the author
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See author property.
+     *
+     * @return ComActivitiesActivityObjectInterface|null The author, null if the object does not have an actor property.
      */
     public function getAuthor();
 
     /**
-     * Content setter.
+     * Set the author
      *
-     * @param string $content The content.
+     * @link http://activitystrea.ms/specs/json/1.0/#object See author property.
      *
+     * @param ComActivitiesActivityObjectInterface|null $author The author.
      * @return ComActivitiesActivityObjectInterface
-     *
-     * @link http://activitystrea.ms/specs/json/1.0/#object See content property.
      */
-    public function setContent($content);
+    public function setAuthor($author);
 
     /**
-     * Content getter.
-     *
-     * @return string|null The content, null if the object does not have a content property.
+     * Get the content
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See content property.
+     *
+     * @return string|null The content, null if the object does not have a content property.
      */
     public function getContent();
 
     /**
-     * Downstream duplicates setter.
+     * Set the content
      *
-     * @param array $duplicates An array of ComActivitiesActivityObjectInterface objects.
-     * @param bool $merge Tells if downstream duplicates should be replaced or merged with current existing
-     *                    downstream duplicates.
+     * @link http://activitystrea.ms/specs/json/1.0/#object See content property.
      *
+     * @param string $content The content.
      * @return ComActivitiesActivityObjectInterface
-     *
-     * @link http://activitystrea.ms/specs/json/1.0/#object See downstreamDuplicates property.
      */
-    public function setDownstreamDuplicates(array $duplicates, $merge = true);
+    public function setContent($content);
 
     /**
-     * Downstream duplicates getter.
-     *
-     * @return array An array of ComActivitiesActivityObjectInterface objects.
+     * Get the downstream duplicates
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See downstreamDuplicates property.
+     *
+     * @return array An array of ComActivitiesActivityObjectInterface objects.
      */
     public function getDownstreamDuplicates();
 
     /**
-     * Id setter.
+     * Set the downstream duplicates
      *
-     * @param string|null $id
+     * @link http://activitystrea.ms/specs/json/1.0/#object See downstreamDuplicates property.
      *
+     * @param array $duplicates An array of ComActivitiesActivityObjectInterface objects.
+     * @param bool $merge Tells if downstream duplicates should be replaced or merged with current existing
+     *                    downstream duplicates.
      * @return ComActivitiesActivityObjectInterface
-     *
-     * @link http://activitystrea.ms/specs/json/1.0/#object See id property.
      */
-    public function setId($id);
+    public function setDownstreamDuplicates(array $duplicates, $merge = true);
 
     /**
-     * Id getter.
-     *
-     * @return string|null The id, null if the object does not have an id property.
+     * Get the Id
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See id property.
+     *
+     * @return string|null The id, null if the object does not have an id property.
      */
     public function getId();
 
     /**
-     * Image setter.
+     * Set the Id
      *
-     * @param ComActivitiesActivityMedialinkInterface|null $image The image.
+     * @link http://activitystrea.ms/specs/json/1.0/#object See id property.
      *
+     * @param string|null $id
      * @return ComActivitiesActivityObjectInterface
-     *
-     * @link http://activitystrea.ms/specs/json/1.0/#object See image property.
      */
-    public function setImage($image);
+    public function setId($id);
 
     /**
-     * Image getter.
-     *
-     * @return ComActivitiesActivityMedialinkInterface|null The image, null if the object does not have an image property.
+     * Get the image
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See image property.
+     *
+     * @return ComActivitiesActivityMedialinkInterface|null The image, null if the object does not have an image property.
      */
     public function getImage();
 
     /**
-     * Object type setter.
+     * Set the image
      *
-     * @param string|null $type The object type.
+     * @link http://activitystrea.ms/specs/json/1.0/#object See image property.
      *
+     * @param ComActivitiesActivityMedialinkInterface|null $image The image.
      * @return ComActivitiesActivityObjectInterface
-     *
-     * @link http://activitystrea.ms/specs/json/1.0/#object See objectType property.
      */
-    public function setObjectType($type);
+    public function setImage($image);
 
     /**
-     * Object type getter.
-     *
-     * @return string|null The object type, null if the object does not have an object type property.
+     * Get the object type
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See objectType property.
+     *
+     * @return string|null The object type, null if the object does not have an object type property.
      */
     public function getObjectType();
 
     /**
-     * Published date setter.
+     * Set the object type
      *
-     * @param KDate $date The published date.
+     * @link http://activitystrea.ms/specs/json/1.0/#object See objectType property.
      *
+     * @param string|null $type The object type.
      * @return ComActivitiesActivityObjectInterface
-     *
-     * @link http://activitystrea.ms/specs/json/1.0/#object See published property.
      */
-    public function setPublished($date);
+    public function setObjectType($type);
 
     /**
-     * Published date getter.
+     * Get the published date
      *
      * @return KDate|null The published date, null if the object does not have a published property.
      *
@@ -219,95 +199,124 @@ interface ComActivitiesActivityObjectInterface
     public function getPublished();
 
     /**
-     * Summary setter.
+     * Set the published date
      *
-     * @param mixed $summary The summary.
+     * @link http://activitystrea.ms/specs/json/1.0/#object See published property.
      *
+     * @param KDate $date The published date.
      * @return ComActivitiesActivityObjectInterface
-     *
-     * @link http://activitystrea.ms/specs/json/1.0/#object See summary property.
      */
-    public function setSummary($summary);
+    public function setPublished($date);
 
     /**
-     * Summary getter.
+     * Get the summary
+     *
+     *  @link http://activitystrea.ms/specs/json/1.0/#object See summary property.
      *
      * @return string|null The summary, null if the object does not have a summary property.
-     *
-     * @link http://activitystrea.ms/specs/json/1.0/#object See summary property.
      */
     public function getSummary();
 
     /**
-     * Updated date setter.
+     * Set the summary
      *
-     * @param KDate|null $date The updated date.
+     * @link http://activitystrea.ms/specs/json/1.0/#object See summary property.
      *
+     * @param mixed $summary The summary.
      * @return ComActivitiesActivityObjectInterface
-     *
-     * @link http://activitystrea.ms/specs/json/1.0/#object See updated property.
      */
-    public function setUpdated($date);
+    public function setSummary($summary);
 
     /**
-     * Updated date getter.
-     *
-     * @return KDate|null The updated date, null if the object does not have an updated date property.
+     * Get the updated date
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See updated property.
+     *
+     * @return KDate|null The updated date, null if the object does not have an updated date property.
      */
     public function getUpdated();
 
     /**
-     * Upstream duplicates setter.
+     * Set the updated date
      *
-     * @param array $duplicates An array of ComActivitiesActivityObjectInterface objects.
-     * @param bool $merge Tells if upstream duplicates should be replaced or merged with current existing
-     *                    upstream duplicates.
+     * @link http://activitystrea.ms/specs/json/1.0/#object See updated property.
      *
+     * @param KDate|null $date The updated date.
      * @return ComActivitiesActivityObjectInterface
-     *
-     * @link http://activitystrea.ms/specs/json/1.0/#object See upstreamDuplicates property.
      */
-    public function setUpstreamDuplicates(array $duplicates, $merge = true);
+    public function setUpdated($date);
 
     /**
-     * Upstream duplicates getter.
-     *
-     * @return array An array of ComActivitiesActivityObjectInterface objects.
+     * Get the upstream duplicates
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See upstreamDuplicates property.
+     *
+     * @return array An array of ComActivitiesActivityObjectInterface objects.
      */
     public function getUpstreamDuplicates();
 
     /**
-     * Url setter.
+     * Set the upstream duplicates
      *
-     * @param KHttpUrl|null $url
+     * @link http://activitystrea.ms/specs/json/1.0/#object See upstreamDuplicates property.
      *
-     * @return KHttpUrl
-     *
-     * @link http://activitystrea.ms/specs/json/1.0/#object See url property.
+     * @param array $duplicates An array of ComActivitiesActivityObjectInterface objects.
+     * @param bool $merge Tells if upstream duplicates should be replaced or merged with current existing
+     *                    upstream duplicates.
+     * @return ComActivitiesActivityObjectInterface
      */
-    public function setUrl($url);
+    public function setUpstreamDuplicates(array $duplicates, $merge = true);
 
     /**
-     * Url getter.
-     *
-     * @return KHttpUrl|null The url, null if the object does not have a url property.
+     * Get the url
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See url property.
+     *
+     * @return KHttpUrl|null The url, null if the object does not have a url property.
      */
     public function getUrl();
 
     /**
-     * Deleted state setter.
+     * Set the url
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See url property.
+     *
+     * @param KHttpUrl|null $url
+     * @return KHttpUrl
+     */
+    public function setUrl($url);
+
+    /**
+     * Get the attributes
+     *
+     * @return array The attributes.
+     */
+    public function getAttributes();
+
+    /**
+     * Set the attributes
+     *
+     * @param array $attributes The attributes.
+     * @param bool  $merge      Tells if attributes should be replaced or merged with current existing attributes.
+     * @return ComActivitiesActivityObjectInterface
+     */
+    public function setAttributes(array $attribs = array(), $merge = true);
+
+    /**
+     * Set the deleted state
      *
      * @param bool $state The deleted state
-     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setDeleted($state);
+
+    /**
+     * Set the internal state
+     *
+     * @param bool $state The internal state.
+     * @return ComActivitiesActivityObjectInterface
+     */
+    public function setInternal($state);
 
     /**
      * Tells if the object has been deleted, i.e. no longer reachable or persisted.
@@ -315,32 +324,6 @@ interface ComActivitiesActivityObjectInterface
      * @return bool True if the object has been deleted, false otherwise.
      */
     public function isDeleted();
-
-    /**
-     * Attributes setter.
-     *
-     * @param array $attributes The attributes.
-     * @param bool  $merge      Tells if attributes should be replaced or merged with current existing attributes.
-     *
-     * @return ComActivitiesActivityObjectInterface
-     */
-    public function setAttributes(array $attribs = array(), $merge = true);
-
-    /**
-     * Attributes getter.
-     *
-     * @return array The attributes.
-     */
-    public function getAttributes();
-
-    /**
-     * Internal state setter.
-     *
-     * @param bool $state The internal state.
-     *
-     * @return ComActivitiesActivityObjectInterface
-     */
-    public function setInternal($state);
 
     /**
      * Tells if the object is internal, i.e. used internally by an activity containing it. Internal objects are not

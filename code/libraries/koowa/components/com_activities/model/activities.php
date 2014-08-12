@@ -15,6 +15,11 @@
  */
 class ComActivitiesModelActivities extends KModelDatabase
 {
+    /**
+     * Constructor.
+     *
+     * @param   KObjectConfig $config Configuration options
+     */
 	public function __construct(KObjectConfig $config)
 	{
 		parent::__construct($config);
@@ -41,6 +46,11 @@ class ComActivitiesModelActivities extends KModelDatabase
 		$state->sort = 'created_on';
 	}
 
+    /**
+     * Builds SELECT columns list for the query
+     *
+     * @param KDatabaseQueryInterface $query
+     */
 	protected function _buildQueryColumns(KDatabaseQueryInterface $query)
 	{
         $state = $this->getState();
@@ -54,6 +64,11 @@ class ComActivitiesModelActivities extends KModelDatabase
 		else parent::_buildQueryColumns($query);
 	}
 
+    /**
+     * Builds WHERE clause for the query
+     *
+     * @param KDatabaseQueryInterface $query
+     */
 	protected function _buildQueryWhere(KDatabaseQueryInterface $query)
 	{
 		parent::_buildQueryWhere($query);
@@ -115,6 +130,11 @@ class ComActivitiesModelActivities extends KModelDatabase
         }
 	}
 
+    /**
+     * Builds GROUP BY clause for the query
+     *
+     * @param KDatabaseQueryInterface $query
+     */
 	protected function _buildQueryOrder(KDatabaseQueryInterface $query)
 	{
         $state = $this->getState();

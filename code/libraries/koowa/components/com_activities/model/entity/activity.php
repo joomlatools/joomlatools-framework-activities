@@ -161,40 +161,234 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return parent::save();
     }
 
-    public function removeProperty($name)
+    /**
+     * Get the activity format
+     *
+     * An activity format consist on a template for rendering activity messages.
+     *
+     * @return string The activity string format.
+     */
+    public function getActivityFormat()
     {
-        if ($name == 'package') {
-            throw new RuntimeException('Entity package property cannot be removed.');
-        }
-
-        return parent::removeProperty($name);
+        return $this->format;
     }
 
-    public function setPropertyPackage($value)
+    /**
+     * Get the activity icon
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#activity See icon property.
+     *
+     * @return ComActivitiesActivityMedialinkInterface|null The activity icon, null if the activity does not have an icon.
+     */
+    public function getActivityIcon()
     {
-        if ($this->package && $this->package != $value) {
-            throw new RuntimeException('Entity package cannot be modified.');
-        }
-
-        return $value;
+        return $this->icon;
     }
 
+    /**
+     * Get the activity id
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#activity See id property.
+     *
+     * @return string The activity ID.
+     */
+    public function getActivityId()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * Get the activity published date
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#activity See published property.
+     *
+     * @return KDate The published date.
+     */
+    public function getActivityPublished()
+    {
+        return $this->getObject('lib:date', array('date' => $this->created_on));
+    }
+
+    /**
+     * Get the activity verb
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#activity See verb property.
+     *
+     * @return string The activity verb.
+     */
+    public function getActivityVerb()
+    {
+        return $this->verb;
+    }
+
+    /**
+     * Get the activity actor
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#activity See actor property.
+     *
+     * @return ComActivitiesActivityObjectInterface The activity actor object.
+     */
+    public function getActivityActor()
+    {
+        return $this->actor;
+    }
+
+    /**
+     * Get the activity object
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#activity See object property.
+     *
+     * @return ComActivitiesActivityObjectInterface|null The activity object, null if the activity does not have an object.
+     */
+    public function getActivityObject()
+    {
+        return $this->object;
+    }
+
+    /**
+     * Get the activity target
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#activity See target property.
+     *
+     * @return ComActivitiesActivityObjectInterface|null The activity target object, null if the activity does no have a target.
+     */
+    public function getActivityTarget()
+    {
+        return $this->target;
+    }
+
+    /**
+     * Get the activity generator
+     *
+     * @return string
+     */
+    public function getActivityGenerator()
+    {
+        return $this->generator;
+    }
+
+    /**
+     * Get the activity provider
+     *
+     * @return string
+     */
+    public function getActivityProvider()
+    {
+        return $this->provider;
+    }
+
+    /**
+     * Get the activity action
+     *
+     * @return string
+     */
+    public function getActivityAction()
+    {
+        return $this->_getObject($this->_getConfig('action'));
+    }
+
+    /**
+     * Get the format property
+     *
+     * @return string
+     */
+    public function getPropertyFormat()
+    {
+        return $this->getObject('com:activities.activity.translator')->translate($this->_format, $this->tokens);
+    }
+
+    /**
+     * Get the verb property
+     *
+     * @return string
+     */
     public function getPropertyVerb()
     {
         return $this->action;
     }
 
+    /**
+     * Get the icon property
+     *
+     * @return null
+     */
+    public function getPropertyIcon()
+    {
+        return null; // No icon by default.
+    }
+
+    /**
+     * Get the actor property
+     *
+     * @return null
+     */
+    public function getPropertyActor()
+    {
+        return $this->_getObject($this->_getConfig('actor'));
+    }
+
+    /**
+     * Get the target property
+     *
+     * @return null
+     */
+    public function getPropertyTarget()
+    {
+        return null; // Activities do not have targets by default.
+    }
+
+    /**
+     * Get the object property
+     *
+     * @return ComActivitiesActivityObject
+     */
+    public function getPropertyObject()
+    {
+        return $this->_getObject($this->_getConfig('object'));
+    }
+
+    /**
+     * Get the generator property
+     *
+     * @return ComActivitiesActivityObject
+     */
+    public function getPropertyGenerator()
+    {
+        return $this->_getObject($this->_getConfig('generator'));
+    }
+
+    /**
+     * Get the provider property
+     *
+     * @return ComActivitiesActivityObject
+     */
+    public function getPropertyProvider()
+    {
+        return $this->_getObject($this->_getConfig('provider'));
+    }
+
+    /**
+     * Get the activity objects
+     *
+     * @return array
+     */
     public function getPropertyObjects()
     {
         return array_merge($this->_getObjects($this->_objects), $this->tokens);
     }
 
+    /**
+     * Get the activity tokens
+     *
+     * @return array An array containing ComActivitiesActivityObjectInterface objects.
+     */
     public function getPropertyTokens()
     {
         $labels = array();
 
+        // Try generating the actual activity format. This is where computed short formats are calculated.
         if (!$this->_format) {
-            $this->format; // Try generating the actual activity format. This is where computed short formats are calculated.
+            $this->format;
         }
 
         if (preg_match_all('/\{(.*?)\}/', $this->_format, $matches)) {
@@ -205,10 +399,39 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
+     * Prevent setting the package property
+     *
+     * @return array An array containing ComActivitiesActivityObjectInterface objects.
+     */
+    public function setPropertyPackage($value)
+    {
+        if ($this->package && $this->package != $value) {
+            throw new RuntimeException('Entity package cannot be modified.');
+        }
+
+        return $value;
+    }
+
+    /**
+     * Prevent removing the package property
+     *
+     * @param string $name
+     * @throws RuntimeException
+     * @return KDatabaseRowAbstract
+     */
+    public function removeProperty($name)
+    {
+        if ($name == 'package') {
+            throw new RuntimeException('Entity package property cannot be removed.');
+        }
+
+        return parent::removeProperty($name);
+    }
+
+    /**
      * Returns a list of activity objects provided their labels.
      *
      * @param array $labels The object labels.
-     *
      * @return array An array containing ComActivitiesActivityObjectInterface objects.
      */
     protected function _getObjects(array $labels = array())
@@ -255,51 +478,31 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return $result;
     }
 
-    public function getActivityFormat()
+    /**
+     * Get an activity object config
+     *
+     * @param string $object The object name
+     * @return KObjectConfig
+     */
+    protected function _getConfig($object)
     {
-      return $this->format;
+        $config = new KObjectConfig();
+
+        $method = '_' . strtolower($object) . 'Config';
+
+        if (method_exists($this, $method)) {
+            $config = $this->$method($config);
+        }
+
+        return $config;
     }
 
-    public function getPropertyFormat()
-    {
-        return $this->getObject('com:activities.activity.translator')->translate($this->_format, $this->tokens);
-    }
-
-    public function getActivityIcon()
-    {
-        return $this->icon;
-    }
-
-    public function getPropertyIcon()
-    {
-        return null; // No icon by default.
-    }
-
-    public function getActivityId()
-    {
-        return $this->uuid;
-    }
-
-    public function getActivityPublished()
-    {
-        return $this->getObject('lib:date', array('date' => $this->created_on));
-    }
-
-    public function getActivityVerb()
-    {
-        return $this->verb;
-    }
-
-    public function getActivityActor()
-    {
-        return $this->actor;
-    }
-
-    public function getPropertyActor()
-    {
-        return $this->_getObject($this->_getConfig('actor'));
-    }
-
+    /**
+     * Get the actor config
+     *
+     * @param KObjectConfig $config The actor config
+     * @return KObjectConfig
+     */
     protected function _actorConfig(KObjectConfig $config)
     {
         $objectName = $this->getAuthor()->getName();
@@ -321,19 +524,15 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         ));
     }
 
-    public function getActivityObject()
-    {
-        return $this->object;
-    }
-
-    public function getPropertyObject()
-    {
-        return $this->_getObject($this->_getConfig('object'));
-    }
-
+    /**
+     * Get the object config
+     *
+     * @param KObjectConfig $config The object config
+     * @return KObjectConfig
+     */
     protected function _objectConfig(KObjectConfig $config)
     {
-        return $config->append(array(
+        $config->append(array(
             'id'         => $this->row,
             'objectName' => $this->title,
             'objectType' => $this->name,
@@ -341,76 +540,47 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
             'attributes' => array('class' => array('object')),
             'find'       => 'object'
         ));
-    }
-
-    protected function _getConfig($object)
-    {
-        $config = new KObjectConfig();
-
-        $method = '_' . strtolower($object) . 'Config';
-
-        if (method_exists($this, $method)) {
-            $config = $this->$method($config);
-        }
 
         return $config;
     }
 
-    public function getActivityTarget()
-    {
-        return $this->target;
-    }
-
-    public function getPropertyTarget()
-    {
-        return null; // Activities do not have targets by default.
-    }
-
-    public function getActivityGenerator()
-    {
-        return $this->generator;
-    }
-
-    public function getPropertyGenerator()
-    {
-        return $this->_getObject($this->_getConfig('generator'));
-    }
-
+    /**
+     * Get the generator config
+     *
+     * @param KObjectConfig $config The generator config
+     * @return KObjectConfig
+     */
     protected function _generatorConfig(KObjectConfig $config)
     {
         return $config->append(array('objectName' => 'com_activities', 'objectType' => 'component'));
     }
 
-    public function getActivityProvider()
-    {
-        return $this->provider;
-    }
-
-    public function getPropertyProvider()
-    {
-        return $this->_getObject($this->_getConfig('provider'));
-    }
-
+    /**
+     * Get the generator config
+     *
+     * @param KObjectConfig $config The generator config
+     * @return KObjectConfig
+     */
     protected function _providerConfig(KObjectConfig $config)
     {
         return $config->append(array('objectName' => 'com_activities', 'objectType' => 'component'));
     }
 
-    public function getActivityAction()
-    {
-        return $this->_getObject($this->_getConfig('action'));
-    }
-
+    /**
+     * Get the action config
+     *
+     * @param KObjectConfig $config The action config
+     * @return KObjectConfig
+     */
     protected function _actionConfig(KObjectConfig $config)
     {
         return $config->append(array('objectName' => $this->status));
     }
 
     /**
-     * Activity object getter.
+     * Get an activity object
      *
      * @param array $config An optional configuration array.
-     *
      * @return ComActivitiesActivityObject The activity object.
      */
     protected function _getObject($config = array())
@@ -446,7 +616,8 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         }
 
         // Make object non-linkable and set it as deleted if related entity is not found.
-        if ($config->find && !$this->_findObject($config->find)) {
+        if ($config->find && !$this->_findObject($config->find))
+        {
             $config->url     = null;
             $config->deleted = true;
         }
@@ -479,44 +650,29 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Url getter.
+     * Get the activity object signature
      *
-     * @param string $url The URL.
-     * @param bool|null $route Whether or not the Url should be routed. If null is passed, the method automatically
-     * determines if the Url should be routed based on the provided Url.
-     *
-     * @return KHttpUrlInterface The Url.
+     * @return string The signature.
      */
-    protected function _getUrl($url, $route = null)
+    protected function _getObjectSignature()
     {
-        if (is_string($url))
-        {
-            if (is_null($route))
-            {
-                $parts = parse_url($url);
-
-                if (!empty($parts['path']) || !empty($parts['scheme'])) {
-                    $route = false;
-                } else {
-                    $route = true;
-                }
-            }
-
-            if ($route) {
-                $url = $this->getObject('lib:dispatcher.router.route', array('url' => $url));
-            } else {
-                $url = $this->getObject('lib:http.url', array('url' => $url));
-            }
-        }
-
-        return $url;
+        return 'object' . $this->package . '.' . $this->name . '.' . $this->row;
     }
 
     /**
-     * Object finder.
+     * Get the activity actor signature
      *
-     * @param $label The object label.
+     * @return string The signature.
+     */
+    protected function _getActorSignature()
+    {
+        return 'actor.' . $this->created_by;
+    }
+
+    /**
+     * Find an activity object
      *
+     * @param string $label The object label.
      * @return bool True if found, false otherwise.
      */
     protected function _findObject($label)
@@ -533,7 +689,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Activity object object finder.
+     * Find the activity object object
      *
      * This method may be overridden for activities persisting objects on storage systems other than local
      * database tables.
@@ -568,18 +724,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Activity object signature getter.
-     *
-     * @return string The signature.
-     */
-    protected function _getObjectSignature()
-    {
-        return 'object' . $this->package . '.' . $this->name . '.' . $this->row;
-    }
-
-    /**
-     * Activity actor object finder.
-     *
+     * Find the activity actor object
      *
      * @return boolean True if found, false otherwise.
      */
@@ -596,13 +741,37 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return self::$_found_objects[$signature];
     }
 
+
     /**
-     * Activity actor signature getter.
+     * Get the activity url
      *
-     * @return string The signature.
+     * @param string $url The URL.
+     * @param bool|null $route Whether or not the Url should be routed. If null is passed, the method automatically
+     *                        determines if the Url should be routed based on the provided Url.
+     * @return KHttpUrlInterface The Url.
      */
-    protected function _getActorSignature()
+    protected function _getUrl($url, $route = null)
     {
-        return 'actor.' . $this->created_by;
+        if (is_string($url))
+        {
+            if (is_null($route))
+            {
+                $parts = parse_url($url);
+
+                if (!empty($parts['path']) || !empty($parts['scheme'])) {
+                    $route = false;
+                } else {
+                    $route = true;
+                }
+            }
+
+            if ($route) {
+                $url = $this->getObject('lib:dispatcher.router.route', array('url' => $url));
+            } else {
+                $url = $this->getObject('lib:http.url', array('url' => $url));
+            }
+        }
+
+        return $url;
     }
 }

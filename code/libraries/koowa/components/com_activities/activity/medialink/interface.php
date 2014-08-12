@@ -1,10 +1,10 @@
 <?php
 /**
- * Koowa Framework - http://developer.joomlatools.com/koowa
+ * Nooku Framework - http://nooku.org/framework
  *
- * @copyright      Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license        GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link           http://github.com/joomlatools/koowa-activities for the canonical source repository
+ * @copyright	Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link		http://github.com/nooku/nooku-activities for the canonical source repository
  */
 
 /**
@@ -18,66 +18,62 @@
 interface ComActivitiesActivityMedialinkInterface
 {
     /**
-     * Duration setter.
-     *
-     * @param int $duration The duration.
-     *
-     * @return ComActivitiesActivityStreamMedialinkInterface
-     */
-    public function setDuration($duration);
-
-    /**
-     * Duration getter.
+     * Get Duration
      *
      * @return int|null The duration, null if the media link does not have a duration property.
      */
     public function getDuration();
 
     /**
-     * Height setter.
+     * Set Duration
      *
-     * @param int $height The height.
-     *
-     * @return ComActivitiesActivityStreamMedialinkInterface
+     * @param int $duration The duration.
+     * @return ComActivitiesActivityMedialinkInterface
      */
-    public function setHeight($height);
+    public function setDuration($duration);
 
     /**
-     * Height getter.
+     * Get Height
      *
      * @return int|null The height, null if the media link does not have a height property.
      */
     public function getHeight();
 
     /**
-     * Url setter.
+     * Set Height
      *
-     * @param KHttpUrl $url The url.
-     *
-     * @return ComActivitiesActivityStreamMedialinkInterface
+     * @param int $height The height.
+     * @return ComActivitiesActivityMedialinkInterface
      */
-    public function setUrl(KHttpUrl $url);
+    public function setHeight($height);
 
     /**
-     * Url getter.
+     * Get Url
      *
      * @return KHttpUrl The url.
      */
     public function getUrl();
 
     /**
-     * Width setter.
+     * Set Url
      *
-     * @param int $width The width.
-     *
-     * @return ComActivitiesActivityStreamMedialinkInterface
+     * @param KHttpUrl $url The url.
+     * @return ComActivitiesActivityMedialinkInterface
      */
-    public function setWidth($width);
+    public function setUrl(KHttpUrl $url);
 
     /**
-     * Width getter.
+     * Get Width
      *
      * @return int|null The width, null if the media link does not have a width property.
      */
     public function getWidth();
+
+    /**
+     * Set Width
+     *
+     * @param int $width The width.
+     * @return ComActivitiesActivityMedialinkInterface
+     */
+    public function setWidth($width);
 }

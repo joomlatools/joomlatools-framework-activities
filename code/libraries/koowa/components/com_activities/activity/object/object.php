@@ -1,10 +1,10 @@
 <?php
 /**
- * Koowa Framework - http://developer.joomlatools.com/koowa
+ * Nooku Framework - http://nooku.org/framework
  *
- * @copyright      Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license        GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link           http://github.com/joomlatools/koowa-activities for the canonical source repository
+ * @copyright	Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link		http://github.com/nooku/nooku-activities for the canonical source repository
  */
 
 /**
@@ -31,6 +31,85 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
         parent::__construct($config);
     }
 
+    /**
+     * Get the activity object name
+     *
+     * @return string|null The activity object name, null if the object does not have a name.
+     */
+    public function getObjectName()
+    {
+        return $this->objectName;
+    }
+
+    /**
+     * Set the activity object name
+     *
+     * Identifies the object using a human-readable and plain-text string. HTML markup MUST NOT be included.
+     *
+     * @param string|null $name The activity object name
+     * @return ComActivitiesActivityObjectInterface
+     */
+    public function setObjectName($name)
+    {
+        if (!is_null($name)) {
+            $name = (string) $name;
+        }
+
+        $this->objectName = $name;
+        return $this;
+    }
+
+    /**
+     * Get the display name
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See displayName property.
+     *
+     * @return string|null The display name, null if the object does not have a display name property.
+     */
+    public function getDisplayName()
+    {
+        return $this->displayName;
+    }
+
+    /**
+     * Set the display name
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See displayName property.
+     *
+     * @param string|null $name The display name.
+     * @return ComActivitiesActivityObjectInterface
+     */
+    public function setDisplayName($name)
+    {
+        if (!is_null($name)) {
+            $name = (string) $name;
+        }
+
+        $this->displayName = $name;
+        return $this;
+    }
+
+    /**
+     * Get the attachments
+     *
+     * @return array An array of ComActivitiesActivityObjectInterface objects.
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See attachments property.
+     */
+    public function getAttachments()
+    {
+        return $this->attachments;
+    }
+
+    /**
+     * Set the attachments
+     *
+     *  @link http://activitystrea.ms/specs/json/1.0/#object See attachments property.
+     *
+     * @param array $attachments An array of ComActivitiesActivityObjectInterface objects.
+     * @param bool  $merge Tells if attachments should be replaced or merged with current existing attachments.
+     * @return ComActivitiesActivityObjectInterface
+     */
     public function setAttachments(array $attachments, $merge = true)
     {
         if ($merge) {
@@ -42,11 +121,26 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
         return $this;
     }
 
-    public function getAttachments()
+    /**
+     * Get the author
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See author property.
+     *
+     * @return ComActivitiesActivityObjectInterface|null The author, null if the object does not have an actor property.
+     */
+    public function getAuthor()
     {
-        return $this->attachments;
+        return $this->author;
     }
 
+    /**
+     * Set the author
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See author property.
+     *
+     * @param ComActivitiesActivityObjectInterface|null $author The author.
+     * @return ComActivitiesActivityObjectInterface
+     */
     public function setAuthor($author)
     {
         if (!is_null($author) && !$author instanceof ComActivitiesActivityObjectInterface) {
@@ -57,11 +151,26 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
         return $this;
     }
 
-    public function getAuthor()
+    /**
+     * Get the content
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See content property.
+     *
+     * @return string|null The content, null if the object does not have a content property.
+     */
+    public function getContent()
     {
-        return $this->author;
+        return $this->content;
     }
 
+    /**
+     * Set the content
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See content property.
+     *
+     * @param string $content The content.
+     * @return ComActivitiesActivityObjectInterface
+     */
     public function setContent($content)
     {
         if (!is_null($content)) {
@@ -72,41 +181,28 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
         return $this;
     }
 
-    public function getContent()
+    /**
+     * Get the downstream duplicates
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See downstreamDuplicates property.
+     *
+     * @return array An array of ComActivitiesActivityObjectInterface objects.
+     */
+    public function getDownstreamDuplicates()
     {
-        return $this->content;
+        return $this->downstreamDuplicates;
     }
 
-    public function setObjectName($name)
-    {
-        if (!is_null($name)) {
-            $name = (string) $name;
-        }
-
-        $this->objectName = $name;
-        return $this;
-    }
-
-    public function getObjectName()
-    {
-        return $this->objectName;
-    }
-
-    public function setDisplayName($name)
-    {
-        if (!is_null($name)) {
-            $name = (string) $name;
-        }
-
-        $this->displayName = $name;
-        return $this;
-    }
-
-    public function getDisplayName()
-    {
-        return $this->displayName;
-    }
-
+    /**
+     * Set the downstream duplicates
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See downstreamDuplicates property.
+     *
+     * @param array $duplicates An array of ComActivitiesActivityObjectInterface objects.
+     * @param bool $merge Tells if downstream duplicates should be replaced or merged with current existing
+     *                    downstream duplicates.
+     * @return ComActivitiesActivityObjectInterface
+     */
     public function setDownstreamDuplicates(array $duplicates, $merge = true)
     {
         if ($merge) {
@@ -118,11 +214,26 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
         return $this;
     }
 
-    public function getDownstreamDuplicates()
+    /**
+     * Get the Id
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See id property.
+     *
+     * @return string|null The id, null if the object does not have an id property.
+     */
+    public function getId()
     {
-        return $this->downstreamDuplicates;
+        return $this->id;
     }
 
+    /**
+     * Set the Id
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See id property.
+     *
+     * @param string|null $id
+     * @return ComActivitiesActivityObjectInterface
+     */
     public function setId($id)
     {
         if (!is_null($id)) {
@@ -133,11 +244,26 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
         return $this;
     }
 
-    public function getId()
+    /**
+     * Get the image
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See image property.
+     *
+     * @return ComActivitiesActivityMedialinkInterface|null The image, null if the object does not have an image property.
+     */
+    public function getImage()
     {
-        return $this->id;
+        return $this->image;
     }
 
+    /**
+     * Set the image
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See image property.
+     *
+     * @param ComActivitiesActivityMedialinkInterface|null $image The image.
+     * @return ComActivitiesActivityObjectInterface
+     */
     public function setImage($image)
     {
         if (!is_null($image) && !$image instanceof ComActivitiesActivityMedialinkInterface) {
@@ -148,11 +274,26 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
         return $this;
     }
 
-    public function getImage()
+    /**
+     * Get the object type
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See objectType property.
+     *
+     * @return string|null The object type, null if the object does not have an object type property.
+     */
+    public function getObjectType()
     {
-        return $this->image;
+        return $this->objectType;
     }
 
+    /**
+     * Set the object type
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See objectType property.
+     *
+     * @param string|null $type The object type.
+     * @return ComActivitiesActivityObjectInterface
+     */
     public function setObjectType($type)
     {
         if (!is_null($type)) {
@@ -163,11 +304,26 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
         return $this;
     }
 
-    public function getObjectType()
+    /**
+     * Get the published date
+     *
+     * @return KDate|null The published date, null if the object does not have a published property.
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See published property.
+     */
+    public function getPublished()
     {
-        return $this->objectType;
+        return $this->published;
     }
 
+    /**
+     * Set the published date
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See published property.
+     *
+     * @param KDate $date The published date.
+     * @return ComActivitiesActivityObjectInterface
+     */
     public function setPublished($date)
     {
         if (!is_null($date) && !$date instanceof KDate) {
@@ -178,11 +334,26 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
         return $this;
     }
 
-    public function getPublished()
+    /**
+     * Get the summary
+     *
+     *  @link http://activitystrea.ms/specs/json/1.0/#object See summary property.
+     *
+     * @return string|null The summary, null if the object does not have a summary property.
+     */
+    public function getSummary()
     {
-        return $this->published;
+        return $this->summary;
     }
 
+    /**
+     * Set the summary
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See summary property.
+     *
+     * @param mixed $summary The summary.
+     * @return ComActivitiesActivityObjectInterface
+     */
     public function setSummary($summary)
     {
         if (!is_null($summary)) {
@@ -193,11 +364,26 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
         return $this;
     }
 
-    public function getSummary()
+    /**
+     * Get the updated date
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See updated property.
+     *
+     * @return KDate|null The updated date, null if the object does not have an updated date property.
+     */
+    public function getUpdated()
     {
-        return $this->summary;
+        return $this->updated;
     }
 
+    /**
+     * Set the updated date
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See updated property.
+     *
+     * @param KDate|null $date The updated date.
+     * @return ComActivitiesActivityObjectInterface
+     */
     public function setUpdated($date)
     {
         if (!is_null($date) && !$date instanceof KDate) {
@@ -208,11 +394,28 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
         return $this;
     }
 
-    public function getUpdated()
+    /**
+     * Get the upstream duplicates
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See upstreamDuplicates property.
+     *
+     * @return array An array of ComActivitiesActivityObjectInterface objects.
+     */
+    public function getUpstreamDuplicates()
     {
-        return $this->updated;
+        return $this->upstreamDuplicates;
     }
 
+    /**
+     * Set the upstream duplicates
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See upstreamDuplicates property.
+     *
+     * @param array $duplicates An array of ComActivitiesActivityObjectInterface objects.
+     * @param bool $merge Tells if upstream duplicates should be replaced or merged with current existing
+     *                    upstream duplicates.
+     * @return ComActivitiesActivityObjectInterface
+     */
     public function setUpstreamDuplicates(array $duplicates, $merge = true)
     {
         if ($merge) {
@@ -224,11 +427,26 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
         return $this;
     }
 
-    public function getUpstreamDuplicates()
+    /**
+     * Get the url
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See url property.
+     *
+     * @return KHttpUrl|null The url, null if the object does not have a url property.
+     */
+    public function getUrl()
     {
-        return $this->upstreamDuplicates;
+        return $this->url;
     }
 
+    /**
+     * Set the url
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#object See url property.
+     *
+     * @param KHttpUrl|null $url
+     * @return KHttpUrl
+     */
     public function setUrl($url)
     {
         if (!is_null($url) && !$url instanceof KHttpUrl) {
@@ -239,22 +457,23 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
         return $this;
     }
 
-    public function getUrl()
+    /**
+     * Get the attributes
+     *
+     * @return array The attributes.
+     */
+    public function getAttributes()
     {
-        return $this->url;
+        return $this->attributes;
     }
 
-    public function setDeleted($state)
-    {
-        $this->deleted = (bool) $state;
-        return $this;
-    }
-
-    public function isDeleted()
-    {
-        return $this->deleted;
-    }
-
+    /**
+     * Set the attributes
+     *
+     * @param array $attributes The attributes.
+     * @param bool  $merge      Tells if attributes should be replaced or merged with current existing attributes.
+     * @return ComActivitiesActivityObjectInterface
+     */
     public function setAttributes(array $attribs = array(), $merge = true)
     {
         if ($merge) {
@@ -266,17 +485,46 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
         return $this;
     }
 
-    public function getAttributes()
+    /**
+     * Set the deleted state
+     *
+     * @param bool $state The deleted state
+     * @return ComActivitiesActivityObjectInterface
+     */
+    public function setDeleted($state)
     {
-        return $this->attributes;
+        $this->deleted = (bool) $state;
+        return $this;
     }
 
+    /**
+     * Set the internal state
+     *
+     * @param bool $state The internal state.
+     * @return ComActivitiesActivityObjectInterface
+     */
     public function setInternal($state)
     {
         $this->internal = (bool) $state;
         return $this;
     }
 
+    /**
+     * Tells if the object has been deleted, i.e. no longer reachable or persisted.
+     *
+     * @return bool True if the object has been deleted, false otherwise.
+     */
+    public function isDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Tells if the object is internal, i.e. used internally by an activity containing it. Internal objects are not
+     * meant to be exposed on streams or messages.
+     *
+     * @return bool True if the object is internal, false otherwise.
+     */
     public function isInternal()
     {
         return $this->internal;

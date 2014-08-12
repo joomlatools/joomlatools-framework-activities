@@ -2,9 +2,9 @@
 /**
  * Nooku Framework - http://nooku.org/framework
  *
- * @copyright      Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license        GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link           http://github.com/nooku/nooku-activities for the canonical source repository
+ * @copyright	Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link		http://github.com/nooku/nooku-activities for the canonical source repository
  */
 
 /**
@@ -15,6 +15,14 @@
  */
 class ComActivitiesActivityTranslator extends ComKoowaTranslator implements KObjectSingleton
 {
+    /**
+     * Initializes the options for the object
+     *
+     * Called from {@link __construct()} as a first step of object instantiation.
+     *
+     * @param   KObjectConfig $config Configuration options.
+     * @return  void
+     */
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
@@ -24,6 +32,16 @@ class ComActivitiesActivityTranslator extends ComKoowaTranslator implements KObj
         parent::_initialize($config);
     }
 
+    /**
+     * Translates an activity and handles parameter replacements
+     *
+     * Activity parameters are wrapped in curly braces. So {foo} would be replaced with bar given that
+     * $parameters['foo'] = 'bar'
+     *
+     * @param string $string String to translate
+     * @param array  $parameters An array of parameters
+     * @return string Translated string
+     */
     public function translate($string, array $tokens = array())
     {
         $override = $this->_getOverride($string, $tokens);
@@ -31,6 +49,14 @@ class ComActivitiesActivityTranslator extends ComKoowaTranslator implements KObj
         return parent::translate($string, array());
     }
 
+    /**
+     * Get an activity override based on an activity format
+     *
+     * @param  string $format The activity format.
+     * @param  array $tokens An array of ComActivitiesActivityObjectInterface objects representing format tokens.
+     *
+     * @return array A list of override strings.
+     */
     protected function _getOverride($format, $tokens = array())
     {
         $override = $format;

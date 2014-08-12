@@ -22,7 +22,7 @@
 interface ComActivitiesActivityInterface
 {
     /**
-     * Activity format getter.
+     * Get the activity format
      *
      * An activity format consist on a template for rendering activity messages.
      *
@@ -31,65 +31,65 @@ interface ComActivitiesActivityInterface
     public function getActivityFormat();
 
     /**
-     * Activity icon getter.
-     *
-     * @return ComActivitiesActivityMedialinkInterface|null The activity icon, null if the activity does not have an icon.
+     * Get the activity icon
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See icon property.
+     *
+     * @return ComActivitiesActivityMedialinkInterface|null The activity icon, null if the activity does not have an icon.
      */
     public function getActivityIcon();
 
     /**
-     * Activity ID getter.
-     *
-     * @return string The activity ID.
+     * Get the activity id
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See id property.
+     *
+     * @return string The activity ID.
      */
     public function getActivityId();
 
     /**
-     * Activity published date getter.
-     *
-     * @return KDate The published date.
+     * Get the activity published date
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See published property.
+     *
+     * @return KDate The published date.
      */
     public function getActivityPublished();
 
     /**
-     * Activity actor getter.
-     *
-     * @return ComActivitiesActivityObjectInterface The activity actor object.
+     * Get the activity actor
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See actor property.
+     *
+     * @return ComActivitiesActivityObjectInterface The activity actor object.
      */
     public function getActivityActor();
 
     /**
-     * Activity object getter.
-     *
-     * @return ComActivitiesActivityObjectInterface|null The activity object, null if the activity does not have an object.
+     * Get the activity object
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See object property.
+     *
+     * @return ComActivitiesActivityObjectInterface|null The activity object, null if the activity does not have an object.
      */
     public function getActivityObject();
 
     /**
-     * Activity target getter.
-     *
-     * @return ComActivitiesActivityObjectInterface|null The activity target object, null if the activity does no have a target.
+     * Get the activity target
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See target property.
+     *
+     * @return ComActivitiesActivityObjectInterface|null The activity target object, null if the activity does no have a target.
      */
     public function getActivityTarget();
 
     /**
-     * Activity verb getter.
-     *
-     * @return string The activity verb.
+     * Get the activity verb
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See verb property.
+     *
+     * @return string The activity verb.
      */
     public function getActivityVerb();
 }

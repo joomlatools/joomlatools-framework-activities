@@ -15,15 +15,25 @@
  */
 class ComActivitiesControllerActivity extends ComKoowaControllerModel
 {
+    /**
+     * Constructor.
+     *
+     * @param   KObjectConfig $config Configuration options
+     */
     public function __construct(KObjectConfig $config)
     {
         parent::__construct($config);
 
         $this->getObject('translator')->loadTranslations('com_activities');
-
-        $this->addCommandCallback('before.add', '_setIp');
     }
 
+    /**
+     * Purge action. Deletes all activities between start and and date.
+     *
+     * @param	KControllerContextInterface	$context A command context object
+     * @throws  KControllerExceptionActionFailed   If the activities cannot be purged
+     * @return  KModelEntityInterface
+     */
     protected function _actionPurge(KControllerContextInterface $context)
     {
         $model = $this->getModel();
@@ -47,7 +57,13 @@ class ComActivitiesControllerActivity extends ComKoowaControllerModel
         }
     }
 
-    protected function _setIp(KControllerContextInterface $context)
+    /**
+     * Set the ip address if we are adding a new activity
+     *
+     * @param	KControllerContextInterface	$context A command context object
+     * @return  KModelEntityInterface
+     */
+    protected function _beforeAdd(KControllerContextInterface $context)
     {
         $context->request->data->ip = $this->getObject('request')->getAddress();
     }

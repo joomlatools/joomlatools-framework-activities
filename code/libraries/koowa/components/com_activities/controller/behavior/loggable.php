@@ -133,7 +133,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
      *
      * @return string
      */
-    public function getName()
+    final public function getName()
     {
         return 'loggable';
     }
@@ -146,7 +146,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
      * @return string A string that is unique, or NULL
      * @see execute()
      */
-    public function getHandle()
+    final public function getHandle()
     {
         return KObjectMixinAbstract::getHandle();
     }

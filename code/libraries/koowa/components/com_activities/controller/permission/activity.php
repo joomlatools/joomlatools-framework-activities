@@ -15,11 +15,21 @@
  */
 class ComActivitiesControllerPermissionActivity extends ComKoowaControllerPermissionAbstract
 {
+    /**
+     * Do not allow activities to be added if the controller is not dispatched.
+     *
+     * @return  boolean  Return TRUE if action is permitted. FALSE otherwise.
+     */
     public function canAdd()
     {
         return !$this->isDispatched();
     }
 
+    /**
+     * Do not allow activities to be edited
+     *
+     * @return  boolean  Return TRUE if action is permitted. FALSE otherwise.
+     */
     public function canEdit()
     {
         return false;
