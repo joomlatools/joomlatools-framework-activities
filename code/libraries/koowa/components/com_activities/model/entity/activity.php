@@ -370,7 +370,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     /**
      * Get the activity objects
      *
-     * @return array
+     * @return array An array containing ComActivitiesActivityObjectInterface objects.
      */
     public function getPropertyObjects()
     {
@@ -467,7 +467,8 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
                             // Create a new basic and minimal format token object.
                             $object = $this->_getObject($config);
-                        } else continue;
+                        }
+                        else continue;
                     }
 
                     $result[$label] = $object;
@@ -479,105 +480,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get an activity object config
-     *
-     * @param string $object The object name
-     * @return KObjectConfig
-     */
-    protected function _getConfig($object)
-    {
-        $config = new KObjectConfig();
-
-        $method = '_' . strtolower($object) . 'Config';
-
-        if (method_exists($this, $method)) {
-            $config = $this->$method($config);
-        }
-
-        return $config;
-    }
-
-    /**
-     * Get the actor config
-     *
-     * @param KObjectConfig $config The actor config
-     * @return KObjectConfig
-     */
-    protected function _actorConfig(KObjectConfig $config)
-    {
-        $objectName = $this->getAuthor()->getName();
-        $translate  = array('displayType');
-
-        if (!$this->_findObjectActor())
-        {
-            $objectName = $this->created_by ? 'Deleted user' : 'Guest user';
-            $translate  = array('displayName', 'displayType');
-        }
-
-        return $config->append(array(
-            'objectType' => 'user',
-            'id'         => $this->created_by,
-            'url'        => '?option=com_users&task=user.edit&id=' . $this->created_by,
-            'objectName' => $objectName,
-            'translate'  => $translate,
-            'find'       => 'actor'
-        ));
-    }
-
-    /**
-     * Get the object config
-     *
-     * @param KObjectConfig $config The object config
-     * @return KObjectConfig
-     */
-    protected function _objectConfig(KObjectConfig $config)
-    {
-        $config->append(array(
-            'id'         => $this->row,
-            'objectName' => $this->title,
-            'objectType' => $this->name,
-            'url'        => '?option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row,
-            'attributes' => array('class' => array('object')),
-            'find'       => 'object'
-        ));
-
-        return $config;
-    }
-
-    /**
-     * Get the generator config
-     *
-     * @param KObjectConfig $config The generator config
-     * @return KObjectConfig
-     */
-    protected function _generatorConfig(KObjectConfig $config)
-    {
-        return $config->append(array('objectName' => 'com_activities', 'objectType' => 'component'));
-    }
-
-    /**
-     * Get the generator config
-     *
-     * @param KObjectConfig $config The generator config
-     * @return KObjectConfig
-     */
-    protected function _providerConfig(KObjectConfig $config)
-    {
-        return $config->append(array('objectName' => 'com_activities', 'objectType' => 'component'));
-    }
-
-    /**
-     * Get the action config
-     *
-     * @param KObjectConfig $config The action config
-     * @return KObjectConfig
-     */
-    protected function _actionConfig(KObjectConfig $config)
-    {
-        return $config->append(array('objectName' => $this->status));
-    }
-
-    /**
      * Get an activity object
      *
      * @param array $config An optional configuration array.
@@ -586,8 +488,9 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     protected function _getObject($config = array())
     {
         $config = new KObjectConfig($config);
-
-        $config->append(array('attributes' => array()));
+        $config->append(array(
+            'attributes' => array()
+        ));
 
         $defaults = array();
 
@@ -647,6 +550,107 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         }
 
         return $this->getObject('com:activities.activity.object', array('data' => $config));
+    }
+
+    /**
+     * Get an activity object config
+     *
+     * @param string $object The object name
+     * @return KObjectConfig
+     */
+    protected function _getConfig($object)
+    {
+        $config = new KObjectConfig();
+
+        $method = '_' . strtolower($object) . 'Config';
+
+        if (method_exists($this, $method)) {
+            $config = $this->$method($config);
+        }
+
+        return $config;
+    }
+
+    /**
+     * Get the actor config
+     *
+     * @param KObjectConfig $config The actor config
+     * @return KObjectConfig
+     */
+    protected function _actorConfig(KObjectConfig $config)
+    {
+        $objectName = $this->getAuthor()->getName();
+        $translate  = array('displayType');
+
+        if (!$this->_findObjectActor())
+        {
+            $objectName = $this->created_by ? 'Deleted user' : 'Guest user';
+            $translate  = array('displayName', 'displayType');
+        }
+
+        $config->append(array(
+            'objectType' => 'user',
+            'id'         => $this->created_by,
+            'url'        => '?option=com_users&task=user.edit&id=' . $this->created_by,
+            'objectName' => $objectName,
+            'translate'  => $translate,
+            'find'       => 'actor'
+        ));
+
+        return $config;
+    }
+
+    /**
+     * Get the object config
+     *
+     * @param KObjectConfig $config The object config
+     * @return KObjectConfig
+     */
+    protected function _objectConfig(KObjectConfig $config)
+    {
+        $config->append(array(
+            'id'         => $this->row,
+            'objectName' => $this->title,
+            'objectType' => $this->name,
+            'url'        => '?option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row,
+            'attributes' => array('class' => array('object')),
+            'find'       => 'object'
+        ));
+
+        return $config;
+    }
+
+    /**
+     * Get the generator config
+     *
+     * @param KObjectConfig $config The generator config
+     * @return KObjectConfig
+     */
+    protected function _generatorConfig(KObjectConfig $config)
+    {
+        return $config->append(array('objectName' => 'com_activities', 'objectType' => 'component'));
+    }
+
+    /**
+     * Get the generator config
+     *
+     * @param KObjectConfig $config The generator config
+     * @return KObjectConfig
+     */
+    protected function _providerConfig(KObjectConfig $config)
+    {
+        return $config->append(array('objectName' => 'com_activities', 'objectType' => 'component'));
+    }
+
+    /**
+     * Get the action config
+     *
+     * @param KObjectConfig $config The action config
+     * @return KObjectConfig
+     */
+    protected function _actionConfig(KObjectConfig $config)
+    {
+        return $config->append(array('objectName' => $this->status));
     }
 
     /**
