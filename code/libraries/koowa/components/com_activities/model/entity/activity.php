@@ -16,6 +16,13 @@
 class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjectInstantiable, ComActivitiesActivityInterface
 {
     /**
+     * An associative list of found and not found activity objects.
+     *
+     * @var array
+     */
+    static protected $_found_objects = array();
+
+    /**
      * The activity format.
      *
      * @var string
@@ -42,13 +49,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      * @var string
      */
     protected $_object_column;
-
-    /**
-     * An associative list of found and not found activity objects.
-     *
-     * @var array
-     */
-    static protected $_found_objects = array();
 
     /**
      * A list of supported activity object names.
