@@ -24,7 +24,7 @@ class ComActivitiesControllerActivity extends ComKoowaControllerModel
     {
         parent::__construct($config);
 
-        $this->getObject('translator')->loadTranslations('com_activities');
+        $this->getObject('translator')->load('com:activities');
     }
 
     /**
