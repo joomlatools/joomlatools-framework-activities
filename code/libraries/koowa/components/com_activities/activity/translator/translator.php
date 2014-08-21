@@ -8,7 +8,7 @@
  */
 
 /**
- * Activity Translator Class.
+ * Activity Translator
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
