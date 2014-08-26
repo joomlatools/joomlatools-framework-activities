@@ -13,8 +13,16 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesActivityTranslator extends ComKoowaTranslator implements KObjectSingleton
+class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KObjectSingleton
 {
+    public function __construct(KObjectConfig $config)
+    {
+        parent::__construct($config);
+
+        $this->getCatalogue()->setPrefix('KLS_ACTIVITY_');
+        $this->getCatalogue()->getConfig()->key_length = false;
+    }
+
     /**
      * Initializes the options for the object
      *
@@ -26,7 +34,7 @@ class ComActivitiesActivityTranslator extends ComKoowaTranslator implements KObj
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'catalogue' => 'com:activities.activity.translator.catalogue'
+            'catalogue' => 'com:koowa.translator.catalogue.default'
         ));
 
         parent::_initialize($config);
@@ -39,14 +47,14 @@ class ComActivitiesActivityTranslator extends ComKoowaTranslator implements KObj
      * $parameters['foo'] = 'bar'
      *
      * @param string $string String to translate
-     * @param array  $parameters An array of parameters
+     * @param array  $tokens An array of parameters
      * @return string Translated string
      */
     public function translate($string, array $tokens = array())
     {
         $override = $this->_getOverride($string, $tokens);
 
-        return parent::translate($string, array());
+        return parent::translate($override, array());
     }
 
     /**
