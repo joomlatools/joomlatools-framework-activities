@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesControllerActivity extends ComKoowaControllerModel
+class ComActivitiesControllerActivity extends KControllerModel
 {
     /**
      * Constructor.
@@ -27,34 +27,13 @@ class ComActivitiesControllerActivity extends ComKoowaControllerModel
         $this->getObject('translator')->load('com:activities');
     }
 
-    /**
-     * Purge action. Deletes all activities between start and and date.
-     *
-     * @param	KControllerContextInterface	$context A command context object
-     * @throws  KControllerExceptionActionFailed   If the activities cannot be purged
-     * @return  KModelEntityInterface
-     */
-    protected function _actionPurge(KControllerContextInterface $context)
+    protected function _initialize(KObjectConfig $config)
     {
-        $model = $this->getModel();
-        $state = $model->getState();
-        $query = $this->getObject('lib:database.query.delete');
+        $config->append(array(
+            'behaviors' => array('purgeable')
+        ));
 
-        $query->table(array($model->getTable()->getName()));
-
-        if ($state->end_date && $state->end_date != '0000-00-00')
-        {
-            $end_date = $this->getObject('lib:date', array('date' => $state->end_date));
-            $end      = $end_date->format('Y-m-d');
-
-            $query->where('DATE(created_on) <= :end')->bind(array('end' => $end));
-        }
-
-        if (!$this->getModel()->getTable()->getAdapter()->execute($query)) {
-            throw new KControllerExceptionActionFailed('Delete Action Failed');
-        } else {
-            $context->status = KHttpResponse::NO_CONTENT;
-        }
+        parent::_initialize($config);
     }
 
     /**
