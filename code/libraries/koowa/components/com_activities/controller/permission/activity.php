@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesControllerPermissionActivity extends ComKoowaControllerPermissionAbstract
+class ComActivitiesControllerPermissionActivity extends KControllerPermissionAbstract
 {
     /**
      * Do not allow activities to be added if the controller is not dispatched.
