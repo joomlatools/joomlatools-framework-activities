@@ -15,31 +15,6 @@
  */
 class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KObjectSingleton
 {
-    public function __construct(KObjectConfig $config)
-    {
-        parent::__construct($config);
-
-        $this->getCatalogue()->setPrefix('KLS_ACTIVITY_');
-        $this->getCatalogue()->getConfig()->key_length = false;
-    }
-
-    /**
-     * Initializes the options for the object
-     *
-     * Called from {@link __construct()} as a first step of object instantiation.
-     *
-     * @param   KObjectConfig $config Configuration options.
-     * @return  void
-     */
-    protected function _initialize(KObjectConfig $config)
-    {
-        $config->append(array(
-            'catalogue' => 'com:koowa.translator.catalogue.default'
-        ));
-
-        parent::_initialize($config);
-    }
-
     /**
      * Translates an activity and handles parameter replacements
      *
