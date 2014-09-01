@@ -85,6 +85,24 @@ interface ComActivitiesActivityInterface
     public function getActivityTarget();
 
     /**
+     * Get the activity generator.
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#activity See generator property.
+     *
+     * @return ComActivitiesActivityObjectInterface|null The activity generator object, null if the activity does not have a generator.
+     */
+    public function getActivityGenerator();
+
+    /**
+     * Get the activity provider.
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#activity See provider property.
+     *
+     * @return ComActivitiesActivityObjectInterface|null The activity provider object, null if the activity does not have a provider.
+     */
+    public function getActivityProvider();
+
+    /**
      * Get the activity verb
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See verb property.

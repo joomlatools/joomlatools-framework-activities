@@ -258,9 +258,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the activity generator
+     * Get the activity generator.
      *
-     * @return string
+     * @link http://activitystrea.ms/specs/json/1.0/#activity See generator property.
+     *
+     * @return ComActivitiesActivityObjectInterface|null The activity generator object, null if the activity does not have a generator.
      */
     public function getActivityGenerator()
     {
@@ -268,9 +270,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the activity provider
+     * Get the activity provider.
      *
-     * @return string
+     * @link http://activitystrea.ms/specs/json/1.0/#activity See provider property.
+     *
+     * @return ComActivitiesActivityObjectInterface|null The activity provider object, null if the activity does not have a provider.
      */
     public function getActivityProvider()
     {
