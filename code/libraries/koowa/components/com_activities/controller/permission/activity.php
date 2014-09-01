@@ -34,4 +34,9 @@ class ComActivitiesControllerPermissionActivity extends KControllerPermissionAbs
     {
         return false;
     }
+
+    public function canPurge()
+    {
+       return !$this->isDispatched() || $this->canDelete();
+    }
 }
