@@ -482,7 +482,18 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     /**
      * Get an activity object
      *
-     * @param array $config An optional configuration array.
+     * @param array $config An optional configuration array. The configuration array may contain
+     * activity object data as defined by ComActivitiesActivityObjectInterface. Additionally the
+     * following parameters may be passed in the configuration array:
+     *
+     * - find (string): the label of an object to look for. If not found the object being created
+     * is set as deleted (with its deleted property set to true) and non-linkable (with its url
+     * property set to null). A call to a _findObjectLabel method will be attempted for determining if an
+     * object with label as defined by Label exists.
+     *
+     * - translate (array): a list of property names to be translated. By default all properties containing
+     * the display prefix are set as translatables.
+     *
      * @return ComActivitiesActivityObject The activity object.
      */
     protected function _getObject($config = array())
