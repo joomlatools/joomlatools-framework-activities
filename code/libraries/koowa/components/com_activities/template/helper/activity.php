@@ -69,13 +69,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
                         $object->setDisplayName($parts[1]);
                     }
 
-                    if (!$config->html) {
-                        $content = $object->getDisplayName();
-                    } else {
-                        $content = $this->_renderObject($object);
-                    }
-
-                    $output = str_replace('{' . $label . '}', $content, $output);
+                    $output = str_replace('{' . $label . '}', $this->_renderObject($object, $config), $output);
                 }
             }
         }
@@ -84,22 +78,34 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
     }
 
     /**
-     * Renders an HTML formatted activity object.
+     * Renders an activity object.
      *
      * @param ComActivitiesActivityObjectInterface $object The activity object.
-     * @return string The HTML formatted object.
+     * @param KObjectConfig The configuration object.
+     *
+     * @return string The rendered object.
      */
-    protected function _renderObject(ComActivitiesActivityObjectInterface $object)
+    protected function _renderObject(ComActivitiesActivityObjectInterface $object, KObjectConfig $config)
     {
-        $output  = $object->getDisplayName();
-        $attribs = $object->getAttributes() ? $this->buildAttributes($object->getAttributes()) : '';
+        $config->append(array('html' => true, 'escaped_urls' => true, 'fqr' => false));
 
-        if ($url = $object->getUrl())
+        if ($config->html)
         {
-            $url    = $url->toString(KHttpUrl::FULL, true);
-            $output = "<a {$attribs} href=\"{$url}\">{$output}</a>";
-        }
-        else $output = "<span {$attribs}>{$output}</span>";
+            $output  = $object->getDisplayName();
+            $attribs = $object->getAttributes() ? $this->buildAttributes($object->getAttributes()) : '';
+
+            if ($url = $object->getUrl())
+            {
+                // Make sure we have a fully qualified route.
+                if ($config->fqr && !$url->getHost()) {
+                    $url->setUrl($this->getTemplate()->url()->toString(KHttpUrl::AUTHORITY));
+                }
+
+                $url    = $url->toString(KHttpUrl::FULL, $config->escaped_urls);
+                $output = "<a {$attribs} href=\"{$url}\">{$output}</a>";
+            } else $output = "<span {$attribs}>{$output}</span>";
+
+        } else $output = $object->getDisplayName();
 
         return $output;
     }
