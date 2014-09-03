@@ -89,7 +89,7 @@ class ComActivitiesActivityLogger extends KObject implements ComActivitiesActivi
                 //Only log if the entity status is valid.
                 $status = $this->getActivityStatus($entity, $action);
 
-                if (!empty($status) && $status !== $entity::STATUS_FAILED)
+                if (!empty($status) && $status !== KModelEntityInterface::STATUS_FAILED)
                 {
                     //Get the activity data
                     $data = $this->getActivityData($entity, $subject);
@@ -170,8 +170,8 @@ class ComActivitiesActivityLogger extends KObject implements ComActivitiesActivi
         $status = $object->getStatus();
 
         // Commands may change the original status of an action.
-        if ($action == 'after.add' && $status == $object::STATUS_UPDATED) {
-            $status = $object::STATUS_CREATED;
+        if ($action == 'after.add' && $status == KModelEntityInterface::STATUS_UPDATED) {
+            $status = KModelEntityInterface::STATUS_CREATED;
         }
 
         return $status;
