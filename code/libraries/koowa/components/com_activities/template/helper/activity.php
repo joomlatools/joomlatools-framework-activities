@@ -47,10 +47,6 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
     {
         $config = new KObjectConfig($config);
 
-        $config->append(array(
-            'html' => true,
-        ));
-
         $output = $activity->getActivityFormat();
 
         if (preg_match_all('/{(.*?)}/', $output, $labels))
