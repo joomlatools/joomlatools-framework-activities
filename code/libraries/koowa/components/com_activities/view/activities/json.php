@@ -82,7 +82,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
 
             $item = array(
                 'id'        => $activity->getActivityId(),
-                'title'     => $renderer->render($activity),
+                'title'     => $renderer->render($activity, array('escaped_urls' => false, 'fqr' => true)),
                 'story'     => $renderer->render($activity, array('html' => false)),
                 'published' => $activity->getActivityPublished()->format('c'),
                 'verb'      => $activity->getActivityVerb(),
