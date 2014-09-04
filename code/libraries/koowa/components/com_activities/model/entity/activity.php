@@ -599,8 +599,8 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
         if (!$this->_findObjectActor())
         {
-            $objectName = $this->created_by ? 'Deleted user' : 'Guest user';
-            $translate  = array('displayName', 'displayType');
+            $objectName = 'Deleted user';
+            $translate[]  = 'displayName';
         }
 
         $config->append(array(
