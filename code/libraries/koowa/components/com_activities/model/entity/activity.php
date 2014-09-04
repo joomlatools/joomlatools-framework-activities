@@ -753,8 +753,8 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
         if (!isset(self::$_found_objects[$signature]))
         {
-            $user                             = $this->getObject('user.provider')->load($this->created_by);
-            self::$_found_objects[$signature] = (bool) $user->getId();
+            $user                             = $this->getObject('user.provider')->fetch($this->created_by);
+            self::$_found_objects[$signature] = is_null($user) ? false : true;
         }
 
         return self::$_found_objects[$signature];
