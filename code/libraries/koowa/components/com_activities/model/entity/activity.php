@@ -528,9 +528,8 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
             }
         }
 
-        if (is_string($config->url))
-        {
-            $config->url = $this->_getUrl($config->url);
+        if (is_string($config->url)) {
+            $config->url = $this->_getRoute($config->url);
         }
 
         // Make object non-linkable and set it as deleted if related entity is not found.
@@ -555,7 +554,10 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
 
         if ($config->image instanceof KObjectConfig)
         {
-            $config->image->url = $this->_getUrl($config->image->url);
+            if (is_string($config->image->url)) {
+                $config->image->url = $this->_getRoute($config->image->url);
+            }
+
             $config->image      = $this->getObject('com:activities.activity.medialink', array('data' => $config->image));
         }
 
@@ -606,7 +608,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         $config->append(array(
             'objectType' => 'user',
             'id'         => $this->created_by,
-            'url'        => '?option=com_users&task=user.edit&id=' . $this->created_by,
+            'url'        => 'option=com_users&task=user.edit&id=' . $this->created_by,
             'objectName' => $objectName,
             'translate'  => $translate,
             'find'       => 'actor'
@@ -627,7 +629,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
             'id'         => $this->row,
             'objectName' => $this->title,
             'objectType' => $this->name,
-            'url'        => '?option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row,
+            'url'        => 'option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row,
             'attributes' => array('class' => array('object')),
             'find'       => 'object'
         ));
@@ -760,37 +762,17 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         return self::$_found_objects[$signature];
     }
 
-
     /**
-     * Get the activity url
+     * Route getter.
      *
-     * @param string $url The URL.
-     * @param bool|null $route Whether or not the Url should be routed. If null is passed, the method automatically
-     *                        determines if the Url should be routed based on the provided Url.
-     * @return KHttpUrlInterface The Url.
+     * @param string $url The URL to route.
+     *
+     * @return KHttpUrl The routed URL object.
      */
-    protected function _getUrl($url, $route = null)
+    protected function _getRoute($url)
     {
-        if (is_string($url))
-        {
-            if (is_null($route))
-            {
-                $parts = parse_url($url);
+        if (!is_string($url)) throw new InvalidArgumentException('The URL must be a query string');
 
-                if (!empty($parts['path']) || !empty($parts['scheme'])) {
-                    $route = false;
-                } else {
-                    $route = true;
-                }
-            }
-
-            if ($route) {
-                $url = $this->getObject('lib:dispatcher.router.route', array('url' => $url));
-            } else {
-                $url = $this->getObject('lib:http.url', array('url' => $url));
-            }
-        }
-
-        return $url;
+        return $this->getObject('lib:dispatcher.router.route', array('url' => array('query' => $url)));
     }
 }
