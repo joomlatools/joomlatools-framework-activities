@@ -114,8 +114,8 @@ class ComActivitiesViewActivitiesJson extends KViewJson
     /**
      * Get the activity renderer
      *
-     * @throws UnexpectedValueException
-     * @return KTemplateHelperInterface The activity renderer.
+     * @throws UnexpectedValueException if renderer has the wrong type.
+     * @return ComActivitiesActivityRendererInterface The activity renderer.
      */
     public function getRenderer()
     {
