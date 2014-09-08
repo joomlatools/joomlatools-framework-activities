@@ -18,7 +18,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
     /**
      * Renders an activity.
      *
-     * Wraps around ::render for easy use on layouts.
+     * Wraps around {@link render()} for easy use on layouts.
      *
      * @param array $config An optional configuration array.
      * @return string The rendered activity.
