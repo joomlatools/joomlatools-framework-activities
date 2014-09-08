@@ -53,7 +53,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     /**
      * A list of supported activity object names.
      *
-     * @var KObjectArray
+     * @var array
      */
     protected $_objects;
 
@@ -202,7 +202,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See published property.
      *
-     * @return KDate The published date.
+     * @return KDateInterface The published date.
      */
     public function getActivityPublished()
     {
@@ -282,9 +282,9 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the activity action
+     * Get the activity action.
      *
-     * @return string
+     * @return ComActivitiesActivityObjectInterface
      */
     public function getActivityAction()
     {
@@ -489,12 +489,12 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      * @param array $config An optional configuration array. The configuration array may contain
      * activity object data as defined by ComActivitiesActivityObjectInterface. Additionally the
      * following parameters may be passed in the configuration array:
-     *
+     * <br><br>
      * - find (string): the label of an object to look for. If not found the object being created
      * is set as deleted (with its deleted property set to true) and non-linkable (with its url
      * property set to null). A call to a _findObjectLabel method will be attempted for determining if an
-     * object with label as defined by Label exists.
-     *
+     * object with label as defined by Label exists. See {@link _findObjectActor()} as an example.
+     *  <br><br>
      * - translate (array): a list of property names to be translated. By default all properties containing
      * the display prefix are set as translatables.
      *
