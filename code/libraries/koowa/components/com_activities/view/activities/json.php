@@ -254,10 +254,10 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      *
      * Provides a fully qualified and un-escaped URL provided a URL object.
      *
-     * @param KHttpUrl $url The URL.
+     * @param KHttpUrlInterface $url The URL.
      * @return string The fully qualified un-escaped URL.
      */
-    protected function _getUrl(KHttpUrl $url)
+    protected function _getUrl(KHttpUrlInterface $url)
     {
         if (!$url->getHost() && !$url->getScheme()) {
             $url->setUrl($this->getUrl()->toString(KHttpUrl::AUTHORITY));
