@@ -11,7 +11,7 @@
  * Activities Json View
  *
  * JSON view has support for the 'stream' layout. If layout is stream the output will be rendered according to
- * the activitystreams standard. @link http://activitystrea.ms/specs/json/1.0
+ * the activitystreams standard.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
