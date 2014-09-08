@@ -68,7 +68,9 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      * Get the entity data
      *
      * Method adds support for the 'stream' layout. If layout is stream the json output will be rendered according to
-     * the activitystreams standard. @link http://activitystrea.ms/specs/json/1.0
+     * the activitystreams standard.
+     *
+     * @link http://activitystrea.ms/specs/json/1.0/#json See JSON serialization.
      *
      * @param KModelEntityInterface  $entity   Document row
      * @return array The array with data to be encoded to json
