@@ -56,9 +56,9 @@ interface ComActivitiesActivityObjectInterface
     /**
      * Get the attachments
      *
-     * @return array An array of ComActivitiesActivityObjectInterface objects.
-     *
      * @link http://activitystrea.ms/specs/json/1.0/#object See attachments property.
+     *
+     * @return array An array of {@link ComActivitiesActivityObjectInterface} objects.
      */
     public function getAttachments();
 
@@ -67,7 +67,7 @@ interface ComActivitiesActivityObjectInterface
      *
      *  @link http://activitystrea.ms/specs/json/1.0/#object See attachments property.
      *
-     * @param array $attachments An array of ComActivitiesActivityObjectInterface objects.
+     * @param array $attachments An array of {@link ComActivitiesActivityObjectInterface} objects.
      * @param bool  $merge Tells if attachments should be replaced or merged with current existing attachments.
      * @return ComActivitiesActivityObjectInterface
      */
@@ -106,7 +106,7 @@ interface ComActivitiesActivityObjectInterface
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See content property.
      *
-     * @param string $content The content.
+     * @param string|null $content The content.
      * @return ComActivitiesActivityObjectInterface
      */
     public function setContent($content);
@@ -116,7 +116,7 @@ interface ComActivitiesActivityObjectInterface
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See downstreamDuplicates property.
      *
-     * @return array An array of ComActivitiesActivityObjectInterface objects.
+     * @return array An array of {@link ComActivitiesActivityObjectInterface} objects.
      */
     public function getDownstreamDuplicates();
 
@@ -125,7 +125,7 @@ interface ComActivitiesActivityObjectInterface
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See downstreamDuplicates property.
      *
-     * @param array $duplicates An array of ComActivitiesActivityObjectInterface objects.
+     * @param array $duplicates An array of {@link ComActivitiesActivityObjectInterface} objects.
      * @param bool $merge Tells if downstream duplicates should be replaced or merged with current existing
      *                    downstream duplicates.
      * @return ComActivitiesActivityObjectInterface
@@ -192,7 +192,7 @@ interface ComActivitiesActivityObjectInterface
     /**
      * Get the published date
      *
-     * @return KDate|null The published date, null if the object does not have a published property.
+     * @return KDateInterface|null The published date, null if the object does not have a published property.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See published property.
      */
@@ -203,7 +203,7 @@ interface ComActivitiesActivityObjectInterface
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See published property.
      *
-     * @param KDate $date The published date.
+     * @param KDateInterface|null $date The published date.
      * @return ComActivitiesActivityObjectInterface
      */
     public function setPublished($date);
@@ -232,7 +232,7 @@ interface ComActivitiesActivityObjectInterface
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See updated property.
      *
-     * @return KDate|null The updated date, null if the object does not have an updated date property.
+     * @return KDateInterface|null The updated date, null if the object does not have an updated date property.
      */
     public function getUpdated();
 
@@ -241,7 +241,7 @@ interface ComActivitiesActivityObjectInterface
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See updated property.
      *
-     * @param KDate|null $date The updated date.
+     * @param KDateInterface|null $date The updated date.
      * @return ComActivitiesActivityObjectInterface
      */
     public function setUpdated($date);
@@ -251,7 +251,7 @@ interface ComActivitiesActivityObjectInterface
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See upstreamDuplicates property.
      *
-     * @return array An array of ComActivitiesActivityObjectInterface objects.
+     * @return array An array of {@link ComActivitiesActivityObjectInterface} objects.
      */
     public function getUpstreamDuplicates();
 
@@ -260,7 +260,7 @@ interface ComActivitiesActivityObjectInterface
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See upstreamDuplicates property.
      *
-     * @param array $duplicates An array of ComActivitiesActivityObjectInterface objects.
+     * @param array $duplicates An array of {@link ComActivitiesActivityObjectInterface} objects.
      * @param bool $merge Tells if upstream duplicates should be replaced or merged with current existing
      *                    upstream duplicates.
      * @return ComActivitiesActivityObjectInterface
@@ -272,7 +272,7 @@ interface ComActivitiesActivityObjectInterface
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See url property.
      *
-     * @return KHttpUrl|null The url, null if the object does not have a url property.
+     * @return KHttpUrlInterface|null The url, null if the object does not have a url property.
      */
     public function getUrl();
 
@@ -281,8 +281,8 @@ interface ComActivitiesActivityObjectInterface
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See url property.
      *
-     * @param KHttpUrl|null $url
-     * @return KHttpUrl
+     * @param KHttpUrlInterface|null $url
+     * @return ComActivitiesActivityObjectInterface
      */
     public function setUrl($url);
 
@@ -311,19 +311,19 @@ interface ComActivitiesActivityObjectInterface
     public function setDeleted($state);
 
     /**
+     * Tells if the object has been deleted, i.e. no longer reachable or persisted.
+     *
+     * @return bool True if the object has been deleted, false otherwise.
+     */
+    public function isDeleted();
+
+    /**
      * Set the internal state
      *
      * @param bool $state The internal state.
      * @return ComActivitiesActivityObjectInterface
      */
     public function setInternal($state);
-
-    /**
-     * Tells if the object has been deleted, i.e. no longer reachable or persisted.
-     *
-     * @return bool True if the object has been deleted, false otherwise.
-     */
-    public function isDeleted();
 
     /**
      * Tells if the object is internal, i.e. used internally by an activity containing it. Internal objects are not
