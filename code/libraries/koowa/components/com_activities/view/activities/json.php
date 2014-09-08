@@ -128,14 +128,14 @@ class ComActivitiesViewActivitiesJson extends KViewJson
 
             $this->_renderer = $this->getObject($this->_renderer);
 
-            $this->_renderer->getTemplate()->registerFunction('url', array($this, 'getUrl'));
-
             if(!$this->_renderer instanceof ComActivitiesActivityRendererInterface)
             {
                 throw new UnexpectedValueException(
                     'Renderer: '.get_class($this->_renderer).' does not implement ComActivitiesActivityRendererInterface'
                 );
             }
+
+            $this->_renderer->getTemplate()->registerFunction('url', array($this, 'getUrl'));
         }
 
         return $this->_renderer;
