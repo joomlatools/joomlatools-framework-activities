@@ -47,7 +47,7 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * Identifies the object using a human-readable and plain-text string. HTML markup MUST NOT be included.
      *
      * @param string|null $name The activity object name
-     * @return ComActivitiesActivityObjectInterface
+     * @return ComActivitiesActivityObject
      */
     public function setObjectName($name)
     {
@@ -77,7 +77,7 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See displayName property.
      *
      * @param string|null $name The display name.
-     * @return ComActivitiesActivityObjectInterface
+     * @return ComActivitiesActivityObject
      */
     public function setDisplayName($name)
     {
@@ -92,7 +92,7 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
     /**
      * Get the attachments
      *
-     * @return array An array of ComActivitiesActivityObjectInterface objects.
+     * @return array An array of {@link ComActivitiesActivityObjectInterface} objects.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See attachments property.
      */
@@ -106,9 +106,9 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      *
      *  @link http://activitystrea.ms/specs/json/1.0/#object See attachments property.
      *
-     * @param array $attachments An array of ComActivitiesActivityObjectInterface objects.
+     * @param array $attachments An array of {@link ComActivitiesActivityObjectInterface} objects.
      * @param bool  $merge Tells if attachments should be replaced or merged with current existing attachments.
-     * @return ComActivitiesActivityObjectInterface
+     * @return ComActivitiesActivityObject
      */
     public function setAttachments(array $attachments, $merge = true)
     {
@@ -139,7 +139,7 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See author property.
      *
      * @param ComActivitiesActivityObjectInterface|null $author The author.
-     * @return ComActivitiesActivityObjectInterface
+     * @return ComActivitiesActivityObject
      */
     public function setAuthor($author)
     {
@@ -169,7 +169,7 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See content property.
      *
      * @param string $content The content.
-     * @return ComActivitiesActivityObjectInterface
+     * @return ComActivitiesActivityObject
      */
     public function setContent($content)
     {
@@ -186,7 +186,7 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See downstreamDuplicates property.
      *
-     * @return array An array of ComActivitiesActivityObjectInterface objects.
+     * @return array An array of {@link ComActivitiesActivityObjectInterface} objects.
      */
     public function getDownstreamDuplicates()
     {
@@ -198,10 +198,10 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See downstreamDuplicates property.
      *
-     * @param array $duplicates An array of ComActivitiesActivityObjectInterface objects.
+     * @param array $duplicates An array of {@link ComActivitiesActivityObjectInterface} objects.
      * @param bool $merge Tells if downstream duplicates should be replaced or merged with current existing
      *                    downstream duplicates.
-     * @return ComActivitiesActivityObjectInterface
+     * @return ComActivitiesActivityObject
      */
     public function setDownstreamDuplicates(array $duplicates, $merge = true)
     {
@@ -232,7 +232,7 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See id property.
      *
      * @param string|null $id
-     * @return ComActivitiesActivityObjectInterface
+     * @return ComActivitiesActivityObject
      */
     public function setId($id)
     {
@@ -262,7 +262,7 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See image property.
      *
      * @param ComActivitiesActivityMedialinkInterface|null $image The image.
-     * @return ComActivitiesActivityObjectInterface
+     * @return ComActivitiesActivityObject
      */
     public function setImage($image)
     {
@@ -292,7 +292,7 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See objectType property.
      *
      * @param string|null $type The object type.
-     * @return ComActivitiesActivityObjectInterface
+     * @return ComActivitiesActivityObject
      */
     public function setObjectType($type)
     {
@@ -322,7 +322,7 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See published property.
      *
      * @param KDate $date The published date.
-     * @return ComActivitiesActivityObjectInterface
+     * @return ComActivitiesActivityObject
      */
     public function setPublished($date)
     {
@@ -352,7 +352,7 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See summary property.
      *
      * @param mixed $summary The summary.
-     * @return ComActivitiesActivityObjectInterface
+     * @return ComActivitiesActivityObject
      */
     public function setSummary($summary)
     {
@@ -382,7 +382,7 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See updated property.
      *
      * @param KDate|null $date The updated date.
-     * @return ComActivitiesActivityObjectInterface
+     * @return ComActivitiesActivityObject
      */
     public function setUpdated($date)
     {
@@ -399,7 +399,7 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See upstreamDuplicates property.
      *
-     * @return array An array of ComActivitiesActivityObjectInterface objects.
+     * @return array An array of {@link ComActivitiesActivityObjectInterface} objects.
      */
     public function getUpstreamDuplicates()
     {
@@ -411,10 +411,10 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See upstreamDuplicates property.
      *
-     * @param array $duplicates An array of ComActivitiesActivityObjectInterface objects.
+     * @param array $duplicates An array of {@link ComActivitiesActivityObjectInterface} objects.
      * @param bool $merge Tells if upstream duplicates should be replaced or merged with current existing
      *                    upstream duplicates.
-     * @return ComActivitiesActivityObjectInterface
+     * @return ComActivitiesActivityObject
      */
     public function setUpstreamDuplicates(array $duplicates, $merge = true)
     {
@@ -445,7 +445,7 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See url property.
      *
      * @param KHttpUrl|null $url
-     * @return KHttpUrl
+     * @return ComActivitiesActivityObject
      */
     public function setUrl($url)
     {
@@ -472,7 +472,7 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      *
      * @param array $attributes The attributes.
      * @param bool  $merge      Tells if attributes should be replaced or merged with current existing attributes.
-     * @return ComActivitiesActivityObjectInterface
+     * @return ComActivitiesActivityObject
      */
     public function setAttributes(array $attribs = array(), $merge = true)
     {
@@ -489,23 +489,11 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * Set the deleted state
      *
      * @param bool $state The deleted state
-     * @return ComActivitiesActivityObjectInterface
+     * @return ComActivitiesActivityObject
      */
     public function setDeleted($state)
     {
         $this->deleted = (bool) $state;
-        return $this;
-    }
-
-    /**
-     * Set the internal state
-     *
-     * @param bool $state The internal state.
-     * @return ComActivitiesActivityObjectInterface
-     */
-    public function setInternal($state)
-    {
-        $this->internal = (bool) $state;
         return $this;
     }
 
@@ -517,6 +505,18 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
     public function isDeleted()
     {
         return $this->deleted;
+    }
+
+    /**
+     * Set the internal state
+     *
+     * @param bool $state The internal state.
+     * @return ComActivitiesActivityObject
+     */
+    public function setInternal($state)
+    {
+        $this->internal = (bool) $state;
+        return $this;
     }
 
     /**
