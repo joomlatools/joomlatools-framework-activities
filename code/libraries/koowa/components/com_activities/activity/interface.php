@@ -53,7 +53,7 @@ interface ComActivitiesActivityInterface
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See published property.
      *
-     * @return KDate The published date.
+     * @return KDateInterface The published date.
      */
     public function getActivityPublished();
 
