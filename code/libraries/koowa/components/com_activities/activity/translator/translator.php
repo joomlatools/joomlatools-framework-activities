@@ -16,55 +16,52 @@
 class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KObjectSingleton
 {
     /**
-     * Translates an activity and handles parameter replacements
+     * Translates an activity format (see {@link ComActivitiesActivityInterface::getActivityFormat}).
      *
-     * Activity parameters are wrapped in curly braces. So {foo} would be replaced with bar given that
-     * $parameters['foo'] = 'bar'
-     *
-     * @param string $string String to translate
-     * @param array  $tokens An array of parameters
+     * @param string $format The activity format to translate
+     * @param array  $tokens An array of {@link ComActivitiesActivityObjectInterface} objects.
      * @return string Translated string
      */
-    public function translate($string, array $tokens = array())
+    public function translate($format, array $tokens = array())
     {
-        $override = $this->_getOverride($string, $tokens);
+        $format = $this->_getFormat($format, $tokens);
 
-        return parent::translate($override, array());
+        return parent::translate($format, array());
     }
 
     /**
-     * Get an activity override based on an activity format
+     * Get the activity format.
+     *
+     * The method looks for activity format overrides based on the provided format tokens.
      *
      * @param  string $format The activity format.
-     * @param  array $tokens An array of ComActivitiesActivityObjectInterface objects representing format tokens.
+     * @param  array $tokens An array of {@link ComActivitiesActivityObjectInterface} objects.
      *
-     * @return array A list of override strings.
+     * @return string The activity format.
      */
-    protected function _getOverride($format, $tokens = array())
+    protected function _getFormat($format, $tokens = array())
     {
-        $override = $format;
-
         if ($tokens)
         {
-            foreach ($this->_getOverrides($format, $tokens) as $candidate)
+            foreach ($this->_getOverrides($format, $tokens) as $override)
             {
                 // Check if the override is translatable.
-                if ($this->isTranslatable($candidate))
+                if ($this->isTranslatable($override))
                 {
-                    $override = $candidate;
+                    $format = $override;
                     break;
                 }
             }
         }
 
-        return $override;
+        return $format;
     }
 
     /**
      * Returns a list of activity format overrides.
      *
      * @param  string $format The activity format.
-     * @param  array $tokens An array of ComActivitiesActivityObjectInterface objects representing format tokens.
+     * @param  array $tokens An array of {@link ComActivitiesActivityObjectInterface} objects.
      *
      * @return array A list of override strings.
      */
