@@ -1,0 +1,11 @@
+{
+    "name": "nooku/activities-component",
+    "type": "nooku-component",
+    "license": "GPLv3",
+    "require": {
+        "nooku/installer": "*"
+    },
+    "autoload": {
+        "files": ["autoload.php"]
+    }
+}
