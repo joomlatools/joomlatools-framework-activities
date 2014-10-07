@@ -16,79 +16,104 @@
 class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KObjectSingleton
 {
     /**
-     * Translates an activity format (see {@link ComActivitiesActivityInterface::getActivityFormat}).
+     * Associative array containing previously calculated overrides.
      *
-     * @param string $format The activity format to translate
-     * @param array  $tokens An array of {@link ComActivitiesActivityObjectInterface} objects.
-     * @return string Translated string
+     * @var array
+     */
+    protected $_overrides = array();
+
+    /**
+     * Translates an activity format.
+     *
+     * @param string $string The activity format to translate.
+     * @param array $tokens An array of format tokens.
+     * @return string The translated activity format.
      */
     public function translate($format, array $tokens = array())
     {
-        $format = $this->_getFormat($format, $tokens);
+        $parameters = array();
 
-        return parent::translate($format, array());
+        foreach ($tokens as $key => $value)
+        {
+            if ($value instanceof ComActivitiesActivityObjectInterface && $value->getObjectName()) {
+                $value = $value->getObjectName();
+            }
+
+            $parameters[$key] = $value;
+        }
+
+        $override = $this->_getOverride($format, $parameters);
+
+        return parent::translate($override, array());
     }
 
     /**
-     * Get the activity format.
-     *
-     * The method looks for activity format overrides based on the provided format tokens.
+     * Get an activity format override.
      *
      * @param  string $format The activity format.
-     * @param  array $tokens An array of {@link ComActivitiesActivityObjectInterface} objects.
+     * @param  array $parameters Associative array containing format replacements to look for overrides.
      *
-     * @return string The activity format.
+     * @return string The activity format override. The original activity format if no overrides where found.
      */
-    protected function _getFormat($format, $tokens = array())
+    protected function _getOverride($format, $parameters = array())
     {
-        if ($tokens)
+        $override = $format;
+
+        if ($parameters)
         {
-            foreach ($this->_getOverrides($format, $tokens) as $override)
+            $key = $this->_getOverrideKey($format, $parameters);
+
+            if (!isset($this->_overrides[$key]))
             {
-                // Check if the override is translatable.
-                if ($this->isTranslatable($override))
+                foreach ($this->_getOverrides($format, $parameters) as $candidate)
                 {
-                    $format = $override;
-                    break;
+                    // Check if the override is translatable.
+                    if ($this->isTranslatable($candidate))
+                    {
+                        $override = $candidate;
+                        break;
+                    }
                 }
-            }
+
+                $this->_overrides[$key] = $override;
+            } else $override = $this->_overrides[$key];
         }
 
-        return $format;
+        return $override;
+    }
+
+    protected function _getOverrideKey($format, $parameters = array())
+    {
+        $result = $format;
+
+        foreach ($parameters as $key => $value) {
+            $result = str_replace(sprintf('{%s}', $key), $value, $result);
+        }
+
+        return $result;
     }
 
     /**
      * Returns a list of activity format overrides.
      *
      * @param  string $format The activity format.
-     * @param  array $tokens An array of {@link ComActivitiesActivityObjectInterface} objects.
+     * @param  array $parameters Associative array containing format replacements to look for overrides.
      *
      * @return array A list of override strings.
      */
-    protected function _getOverrides($format, $tokens = array())
+    protected function _getOverrides($format, $parameters = array())
     {
         $overrides = array();
-        $set       = array();
 
-        // Construct a set of non-empty tokens.
-        foreach ((array) $tokens as $label => $object)
-        {
-            if ($object instanceof ComActivitiesActivityObjectInterface && $object->getObjectName()) {
-                $set[] = $label;
-            }
-        }
-
-        if (count($set))
+        if (!empty($parameters))
         {
             // Get the power set of the set of parameters and construct a list of string overrides from it.
-            foreach ($this->_getPowerSet($set) as $subset)
+            foreach ($this->_getPowerSet(array_keys($parameters)) as $subset)
             {
                 $override = $format;
 
-                foreach ($subset as $label)
-                {
-                    $object   = $tokens[$label];
-                    $override = str_replace('{' . $label . '}', $object->getObjectName(), $override);
+                foreach ($subset as $key) {
+                    $override = str_replace(sprintf('{%s}', $key), $parameters[$key], $override);
                 }
 
                 $overrides[] = $override;
