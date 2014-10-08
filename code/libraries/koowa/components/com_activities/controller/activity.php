@@ -8,7 +8,7 @@
  */
 
 /**
- * Activity Controller
+ * Activity Controller.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
@@ -18,7 +18,7 @@ class ComActivitiesControllerActivity extends KControllerModel
     /**
      * Constructor.
      *
-     * @param   KObjectConfig $config Configuration options
+     * @param KObjectConfig $config Configuration options.
      */
     public function __construct(KObjectConfig $config)
     {
@@ -37,10 +37,11 @@ class ComActivitiesControllerActivity extends KControllerModel
     }
 
     /**
-     * Set the ip address if we are adding a new activity
+     * Set the ip address if we are adding a new activity.
      *
-     * @param	KControllerContextInterface	$context A command context object
-     * @return  KModelEntityInterface
+     * @param KControllerContextInterface $context A command context object.
+     *
+     * @return KModelEntityInterface
      */
     protected function _beforeAdd(KControllerContextInterface $context)
     {

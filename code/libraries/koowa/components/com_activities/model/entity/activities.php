@@ -8,7 +8,7 @@
  */
 
 /**
- * Activities Entity
+ * Activities Entity.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
@@ -16,12 +16,11 @@
 class ComActivitiesModelEntityActivities extends KModelEntityRowset
 {
     /**
-     * Initializes the options for the object
+     * Initializes the options for the object.
      *
      * Called from {@link __construct()} as a first step of object instantiation.
      *
-     * @param   KObjectConfig $config An optional ObjectConfig object with configuration options
-     * @return  void
+     * @param KObjectConfig $config An optional ObjectConfig object with configuration options.
      */
     protected function _initialize(KObjectConfig $config)
     {

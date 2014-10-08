@@ -8,9 +8,9 @@
  */
 
 /**
- * Purgeable Controller Behavior
+ * Purgeable Controller Behavior.
  *
- * Adds purge action to the controller
+ * Adds purge action to the controller.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
@@ -20,9 +20,10 @@ class ComActivitiesControllerBehaviorPurgeable extends KControllerBehaviorAbstra
     /**
      * Purge action. Deletes all activities between start and and date.
      *
-     * @param	KControllerContextInterface	$context A command context object
-     * @throws  KControllerExceptionActionFailed   If the activities cannot be purged
-     * @return  KModelEntityInterface
+     * @param KControllerContextInterface $context A command context object.
+     *
+     * @throws KControllerExceptionActionFailed If the activities cannot be purged.
+     * @return KModelEntityInterface
      */
     protected function _actionPurge(KControllerContextInterface $context)
     {

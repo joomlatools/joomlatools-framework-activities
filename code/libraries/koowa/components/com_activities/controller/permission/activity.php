@@ -8,7 +8,7 @@
  */
 
 /**
- * Executable Controller Behavior
+ * Executable Controller Behavior.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities

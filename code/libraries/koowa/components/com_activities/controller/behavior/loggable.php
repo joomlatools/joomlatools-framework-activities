@@ -8,7 +8,7 @@
  */
 
 /**
- * Loggable Controller Behavior
+ * Loggable Controller Behavior.
  *
  * This behavior will delegate controller action logging to one or more loggers.
  *
@@ -18,16 +18,16 @@
 class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstract
 {
     /**
-     * Logger queue
+     * Logger queue.
      *
-     * @var	KObjectQueue
+     * @var KObjectQueue
      */
     private $__queue;
 
     /**
      * Constructor.
      *
-     * @param   KObjectConfig $config Configuration options
+     * @param KObjectConfig $config Configuration options.
      */
     public function __construct(KObjectConfig $config)
     {
@@ -50,12 +50,11 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     }
 
     /**
-     * Initializes the options for the object
+     * Initializes the options for the object.
      *
      * Called from {@link __construct()} as a first step of object instantiation.
      *
-     * @param   KObjectConfig $config Configuration options.
-     * @return  void
+     * @param KObjectConfig $config Configuration options.
      */
     protected function _initialize(KObjectConfig $config)
     {
@@ -68,10 +67,11 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     }
 
     /**
-     * Command handler
+     * Command handler.
      *
-     * @param KCommandInterface         $command    The command
-     * @param KCommandChainInterface    $chain      The chain executing the command
+     * @param KCommandInterface      $command The command.
+     * @param KCommandChainInterface $chain   The chain executing the command.
+     *
      * @return mixed If a handler breaks, returns the break condition. Returns the result of the handler otherwise.
      */
     final public function execute(KCommandInterface $command, KCommandChainInterface $chain)
@@ -97,11 +97,12 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     }
 
     /**
-     * Attach a logger
+     * Attach a logger.
      *
-     * @param   mixed  $logger An object that implements ObjectInterface, ObjectIdentifier object
-     *                         or valid identifier string
-     * @param   array $config  An optional associative array of configuration settings
+     * @param mixed $logger An object that implements ObjectInterface, ObjectIdentifier object or valid identifier
+     *                      string.
+     * @param array $config An optional associative array of configuration settings.
+     *
      * @throws UnexpectedValueException
      * @return ComActivitiesControllerBehaviorLoggable
      */
@@ -127,7 +128,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     }
 
     /**
-     * Get the behavior name
+     * Get the behavior name.
      *
      * Hardcode the name to 'loggable'.
      *
@@ -139,12 +140,13 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     }
 
     /**
-     * Get an object handle
+     * Get an object handle.
      *
      * Force the object to be enqueue in the command chain.
      *
-     * @return string A string that is unique, or NULL
      * @see execute()
+     *
+     * @return string A string that is unique, or NULL.
      */
     final public function getHandle()
     {

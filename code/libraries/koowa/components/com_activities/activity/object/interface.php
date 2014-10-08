@@ -8,9 +8,9 @@
  */
 
 /**
- * Activity Object Interface
+ * Activity Object Interface.
  *
- * @link http://activitystrea.ms/specs/json/1.0/#object
+ * @link    http://activitystrea.ms/specs/json/1.0/#object
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
@@ -18,24 +18,25 @@
 interface ComActivitiesActivityObjectInterface
 {
     /**
-     * Get the activity object name
+     * Get the activity object name.
      *
      * @return string|null The activity object name, null if the object does not have a name.
      */
     public function getObjectName();
 
     /**
-     * Set the activity object name
+     * Set the activity object name.
      *
      * Identifies the object using a human-readable and plain-text string. HTML markup MUST NOT be included.
      *
-     * @param string|null $name The activity object name
+     * @param string|null $name The activity object name.
+     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setObjectName($name);
 
     /**
-     * Get the display name
+     * Get the display name.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See displayName property.
      *
@@ -44,17 +45,18 @@ interface ComActivitiesActivityObjectInterface
     public function getDisplayName();
 
     /**
-     * Set the display name
+     * Set the display name.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See displayName property.
      *
      * @param string|null $name The display name.
+     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setDisplayName($name);
 
     /**
-     * Get the attachments
+     * Get the attachments.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See attachments property.
      *
@@ -63,18 +65,19 @@ interface ComActivitiesActivityObjectInterface
     public function getAttachments();
 
     /**
-     * Set the attachments
+     * Set the attachments.
      *
-     *  @link http://activitystrea.ms/specs/json/1.0/#object See attachments property.
+     * @link http://activitystrea.ms/specs/json/1.0/#object See attachments property.
      *
      * @param array $attachments An array of {@link ComActivitiesActivityObjectInterface} objects.
-     * @param bool  $merge Tells if attachments should be replaced or merged with current existing attachments.
+     * @param bool  $merge       Tells if attachments should be replaced or merged with current existing attachments.
+     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setAttachments(array $attachments, $merge = true);
 
     /**
-     * Get the author
+     * Get the author.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See author property.
      *
@@ -83,17 +86,18 @@ interface ComActivitiesActivityObjectInterface
     public function getAuthor();
 
     /**
-     * Set the author
+     * Set the author.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See author property.
      *
      * @param ComActivitiesActivityObjectInterface|null $author The author.
+     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setAuthor($author);
 
     /**
-     * Get the content
+     * Get the content.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See content property.
      *
@@ -102,17 +106,18 @@ interface ComActivitiesActivityObjectInterface
     public function getContent();
 
     /**
-     * Set the content
+     * Set the content.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See content property.
      *
      * @param string|null $content The content.
+     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setContent($content);
 
     /**
-     * Get the downstream duplicates
+     * Get the downstream duplicates.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See downstreamDuplicates property.
      *
@@ -121,19 +126,20 @@ interface ComActivitiesActivityObjectInterface
     public function getDownstreamDuplicates();
 
     /**
-     * Set the downstream duplicates
+     * Set the downstream duplicates.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See downstreamDuplicates property.
      *
      * @param array $duplicates An array of {@link ComActivitiesActivityObjectInterface} objects.
-     * @param bool $merge Tells if downstream duplicates should be replaced or merged with current existing
-     *                    downstream duplicates.
+     * @param bool  $merge      Tells if downstream duplicates should be replaced or merged with current existing
+     *                          downstream duplicates.
+     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setDownstreamDuplicates(array $duplicates, $merge = true);
 
     /**
-     * Get the Id
+     * Get the Id.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See id property.
      *
@@ -142,36 +148,39 @@ interface ComActivitiesActivityObjectInterface
     public function getId();
 
     /**
-     * Set the Id
+     * Set the Id.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See id property.
      *
-     * @param string|null $id
+     * @param string|null $id The Id.
+     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setId($id);
 
     /**
-     * Get the image
+     * Get the image.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See image property.
      *
-     * @return ComActivitiesActivityMedialinkInterface|null The image, null if the object does not have an image property.
+     * @return ComActivitiesActivityMedialinkInterface|null The image, null if the object does not have an image
+     *                                                      property.
      */
     public function getImage();
 
     /**
-     * Set the image
+     * Set the image.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See image property.
      *
      * @param ComActivitiesActivityMedialinkInterface|null $image The image.
+     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setImage($image);
 
     /**
-     * Get the object type
+     * Get the object type.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See objectType property.
      *
@@ -180,17 +189,18 @@ interface ComActivitiesActivityObjectInterface
     public function getObjectType();
 
     /**
-     * Set the object type
+     * Set the object type.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See objectType property.
      *
      * @param string|null $type The object type.
+     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setObjectType($type);
 
     /**
-     * Get the published date
+     * Get the published date.
      *
      * @return KDateInterface|null The published date, null if the object does not have a published property.
      *
@@ -199,36 +209,38 @@ interface ComActivitiesActivityObjectInterface
     public function getPublished();
 
     /**
-     * Set the published date
+     * Set the published date.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See published property.
      *
      * @param KDateInterface|null $date The published date.
+     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setPublished($date);
 
     /**
-     * Get the summary
+     * Get the summary.
      *
-     *  @link http://activitystrea.ms/specs/json/1.0/#object See summary property.
+     * @link http://activitystrea.ms/specs/json/1.0/#object See summary property.
      *
      * @return string|null The summary, null if the object does not have a summary property.
      */
     public function getSummary();
 
     /**
-     * Set the summary
+     * Set the summary.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See summary property.
      *
      * @param mixed $summary The summary.
+     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setSummary($summary);
 
     /**
-     * Get the updated date
+     * Get the updated date.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See updated property.
      *
@@ -237,17 +249,18 @@ interface ComActivitiesActivityObjectInterface
     public function getUpdated();
 
     /**
-     * Set the updated date
+     * Set the updated date.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See updated property.
      *
      * @param KDateInterface|null $date The updated date.
+     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setUpdated($date);
 
     /**
-     * Get the upstream duplicates
+     * Get the upstream duplicates.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See upstreamDuplicates property.
      *
@@ -256,19 +269,20 @@ interface ComActivitiesActivityObjectInterface
     public function getUpstreamDuplicates();
 
     /**
-     * Set the upstream duplicates
+     * Set the upstream duplicates.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See upstreamDuplicates property.
      *
      * @param array $duplicates An array of {@link ComActivitiesActivityObjectInterface} objects.
-     * @param bool $merge Tells if upstream duplicates should be replaced or merged with current existing
-     *                    upstream duplicates.
+     * @param bool $merge Tells if upstream duplicates should be replaced or merged with current existing upstream
+     *                    duplicates.
+     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setUpstreamDuplicates(array $duplicates, $merge = true);
 
     /**
-     * Get the url
+     * Get the url.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See url property.
      *
@@ -277,35 +291,38 @@ interface ComActivitiesActivityObjectInterface
     public function getUrl();
 
     /**
-     * Set the url
+     * Set the url.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See url property.
      *
-     * @param KHttpUrlInterface|null $url
+     * @param KHttpUrlInterface|null $url The url.
+     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setUrl($url);
 
     /**
-     * Get the attributes
+     * Get the attributes.
      *
      * @return array The attributes.
      */
     public function getAttributes();
 
     /**
-     * Set the attributes
+     * Set the attributes.
      *
      * @param array $attributes The attributes.
      * @param bool  $merge      Tells if attributes should be replaced or merged with current existing attributes.
+     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setAttributes(array $attribs = array(), $merge = true);
 
     /**
-     * Set the deleted state
+     * Set the deleted state.
      *
-     * @param bool $state The deleted state
+     * @param bool $state The deleted state.
+     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setDeleted($state);
@@ -318,9 +335,10 @@ interface ComActivitiesActivityObjectInterface
     public function isDeleted();
 
     /**
-     * Set the internal state
+     * Set the internal state.
      *
      * @param bool $state The internal state.
+     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setInternal($state);

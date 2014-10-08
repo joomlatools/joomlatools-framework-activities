@@ -8,9 +8,9 @@
  */
 
 /**
- * Activity Stream Media Link Interface
+ * Activity Stream Media Link Interface.
  *
- * @see http://activitystrea.ms/specs/json/1.0/#media-link
+ * @see     http://activitystrea.ms/specs/json/1.0/#media-link
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
@@ -18,61 +18,65 @@
 interface ComActivitiesActivityMedialinkInterface
 {
     /**
-     * Get Duration
+     * Get Duration.
      *
      * @return int|null The duration, null if the media link does not have a duration property.
      */
     public function getDuration();
 
     /**
-     * Set Duration
+     * Set Duration.
      *
      * @param int $duration The duration.
+     *
      * @return ComActivitiesActivityMedialinkInterface
      */
     public function setDuration($duration);
 
     /**
-     * Get Height
+     * Get Height.
      *
      * @return int|null The height, null if the media link does not have a height property.
      */
     public function getHeight();
 
     /**
-     * Set Height
+     * Set Height.
      *
      * @param int $height The height.
+     *
      * @return ComActivitiesActivityMedialinkInterface
      */
     public function setHeight($height);
 
     /**
-     * Get Url
+     * Get Url.
      *
      * @return KHttpUrl The url.
      */
     public function getUrl();
 
     /**
-     * Set Url
+     * Set Url.
      *
      * @param KHttpUrl $url The url.
+     *
      * @return ComActivitiesActivityMedialinkInterface
      */
     public function setUrl(KHttpUrl $url);
 
     /**
-     * Get Width
+     * Get Width.
      *
      * @return int|null The width, null if the media link does not have a width property.
      */
     public function getWidth();
 
     /**
-     * Set Width
+     * Set Width.
      *
      * @param int $width The width.
+     *
      * @return ComActivitiesActivityMedialinkInterface
      */
     public function setWidth($width);

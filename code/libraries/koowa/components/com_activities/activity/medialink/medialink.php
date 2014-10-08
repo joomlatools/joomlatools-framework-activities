@@ -8,9 +8,9 @@
  */
 
 /**
- * Activity Stream Media Link
+ * Activity Stream Media Link.
  *
- * @see http://activitystrea.ms/specs/json/1.0/#media-link
+ * @see     http://activitystrea.ms/specs/json/1.0/#media-link
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
@@ -18,7 +18,7 @@
 class ComActivitiesActivityMedialink extends KObjectArray implements ComActivitiesActivityMedialinkInterface
 {
     /**
-     * Get Duration
+     * Get Duration.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#media-link See duration property.
      *
@@ -30,11 +30,12 @@ class ComActivitiesActivityMedialink extends KObjectArray implements ComActiviti
     }
 
     /**
-     * Set Duration
+     * Set Duration.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#media-link See duration property.
      *
-     * @param int $duration The duration
+     * @param int $duration The duration.
+     *
      * @return ComActivitiesActivityMedialink
      */
     public function setDuration($duration)
@@ -44,7 +45,7 @@ class ComActivitiesActivityMedialink extends KObjectArray implements ComActiviti
     }
 
     /**
-     * Get Height
+     * Get Height.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#media-link See height property.
      *
@@ -56,11 +57,12 @@ class ComActivitiesActivityMedialink extends KObjectArray implements ComActiviti
     }
 
     /**
-     * Set Height
+     * Set Height.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#media-link See height property.
      *
      * @param int $height The height.
+     *
      * @return ComActivitiesActivityMedialink
      */
     public function setHeight($height)
@@ -70,7 +72,7 @@ class ComActivitiesActivityMedialink extends KObjectArray implements ComActiviti
     }
 
     /**
-     * Get Url
+     * Get Url.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#media-link See Url property.
      *
@@ -82,11 +84,12 @@ class ComActivitiesActivityMedialink extends KObjectArray implements ComActiviti
     }
 
     /**
-     * Set Url
+     * Set Url.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#media-link See Url property.
      *
      * @param KHttpUrlInterface $url The url.
+     *
      * @return ComActivitiesActivityMedialink
      */
     public function setUrl(KHttpUrl $url)
@@ -96,7 +99,7 @@ class ComActivitiesActivityMedialink extends KObjectArray implements ComActiviti
     }
 
     /**
-     * Get Width
+     * Get Width.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#media-link See width property.
      *
@@ -108,11 +111,12 @@ class ComActivitiesActivityMedialink extends KObjectArray implements ComActiviti
     }
 
     /**
-     * Set Width
+     * Set Width.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#media-link See width property.
      *
      * @param int $width The width.
+     *
      * @return ComActivitiesActivityMedialink
      */
     public function setWidth($width)

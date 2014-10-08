@@ -8,7 +8,7 @@
  */
 
 /**
- * Activity Template Helper
+ * Activity Template Helper.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
@@ -21,6 +21,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
      * Wraps around {@link render()} for easy use on layouts.
      *
      * @param array $config An optional configuration array.
+     *
      * @return string The rendered activity.
      */
     public function activity($config = array())
@@ -40,7 +41,8 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
      * Renders an activity.
      *
      * @param ComActivitiesActivityInterface $activity The activity object.
-     * @param  array                         $config   An optional configuration array.
+     * @param array                          $config   An optional configuration array.
+     *
      * @return string The rendered activity.
      */
     public function render(ComActivitiesActivityInterface $activity, $config = array())
@@ -81,7 +83,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
      * Renders an activity object.
      *
      * @param ComActivitiesActivityObjectInterface $object The activity object.
-     * @param KObjectConfig The configuration object.
+     * @param KObjectConfig                        $config The configuration object.
      *
      * @return string The rendered object.
      */

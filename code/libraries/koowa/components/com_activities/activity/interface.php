@@ -14,7 +14,7 @@
  * story of a person performing an action on or with an object -- "Geraldine posted a photo to her album" or "John
  * shared a video". In most cases these components will be explicit, but they may also be implied.
  *
- * @link http://activitystrea.ms/specs/json/1.0/#activity
+ * @link    http://activitystrea.ms/specs/json/1.0/#activity
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
@@ -22,7 +22,7 @@
 interface ComActivitiesActivityInterface
 {
     /**
-     * Get the activity format
+     * Get the activity format.
      *
      * An activity format consist on a template for rendering activity messages.
      *
@@ -31,16 +31,17 @@ interface ComActivitiesActivityInterface
     public function getActivityFormat();
 
     /**
-     * Get the activity icon
+     * Get the activity icon.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See icon property.
      *
-     * @return ComActivitiesActivityMedialinkInterface|null The activity icon, null if the activity does not have an icon.
+     * @return ComActivitiesActivityMedialinkInterface|null The activity icon, null if the activity does not have an
+     *                                                      icon.
      */
     public function getActivityIcon();
 
     /**
-     * Get the activity id
+     * Get the activity id.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See id property.
      *
@@ -49,7 +50,7 @@ interface ComActivitiesActivityInterface
     public function getActivityId();
 
     /**
-     * Get the activity published date
+     * Get the activity published date.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See published property.
      *
@@ -58,7 +59,7 @@ interface ComActivitiesActivityInterface
     public function getActivityPublished();
 
     /**
-     * Get the activity actor
+     * Get the activity actor.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See actor property.
      *
@@ -67,20 +68,22 @@ interface ComActivitiesActivityInterface
     public function getActivityActor();
 
     /**
-     * Get the activity object
+     * Get the activity object.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See object property.
      *
-     * @return ComActivitiesActivityObjectInterface|null The activity object, null if the activity does not have an object.
+     * @return ComActivitiesActivityObjectInterface|null The activity object, null if the activity does not have an
+     *                                                   object.
      */
     public function getActivityObject();
 
     /**
-     * Get the activity target
+     * Get the activity target.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See target property.
      *
-     * @return ComActivitiesActivityObjectInterface|null The activity target object, null if the activity does no have a target.
+     * @return ComActivitiesActivityObjectInterface|null The activity target object, null if the activity does no have
+     *                                                   a target.
      */
     public function getActivityTarget();
 
@@ -89,7 +92,8 @@ interface ComActivitiesActivityInterface
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See generator property.
      *
-     * @return ComActivitiesActivityObjectInterface|null The activity generator object, null if the activity does not have a generator.
+     * @return ComActivitiesActivityObjectInterface|null The activity generator object, null if the activity does not
+     *                                                   have a generator.
      */
     public function getActivityGenerator();
 
@@ -98,12 +102,13 @@ interface ComActivitiesActivityInterface
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See provider property.
      *
-     * @return ComActivitiesActivityObjectInterface|null The activity provider object, null if the activity does not have a provider.
+     * @return ComActivitiesActivityObjectInterface|null The activity provider object, null if the activity does not
+     *                                                   have a provider.
      */
     public function getActivityProvider();
 
     /**
-     * Get the activity verb
+     * Get the activity verb.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See verb property.
      *

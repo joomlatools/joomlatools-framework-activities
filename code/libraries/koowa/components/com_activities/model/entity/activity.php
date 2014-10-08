@@ -8,7 +8,7 @@
  */
 
 /**
- * Activity Entity
+ * Activity Entity.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
@@ -60,7 +60,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     /**
      * Constructor.
      *
-     * @param   KObjectConfig $config Configuration options
+     * @param KObjectConfig $config Configuration options.
      */
     public function __construct(KObjectConfig $config)
     {
@@ -73,12 +73,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Initializes the options for the object
+     * Initializes the options for the object.
      *
      * Called from {@link __construct()} as a first step of object instantiation.
      *
-     * @param   KObjectConfig $config Configuration options.
-     * @return  void
+     * @param KObjectConfig $config Configuration options.
      */
     protected function _initialize(KObjectConfig $config)
     {
@@ -95,11 +94,12 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Instantiates the object
+     * Instantiates the object.
      *
-     * @param   KObjectConfigInterface $config      Configuration options
-     * @param 	KObjectManagerInterface $manager	A KObjectManagerInterface object
-     * @return  KObjectInterface
+     * @param KObjectConfigInterface  $config  Configuration options.
+     * @param KObjectManagerInterface $manager A KObjectManagerInterface object.
+     *
+     * @return KObjectInterface
      */
     public static function getInstance(KObjectConfigInterface $config, KObjectManagerInterface $manager)
     {
@@ -162,7 +162,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the activity format
+     * Get the activity format.
      *
      * An activity format consist on a template for rendering activity messages.
      *
@@ -174,11 +174,12 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the activity icon
+     * Get the activity icon.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See icon property.
      *
-     * @return ComActivitiesActivityMedialinkInterface|null The activity icon, null if the activity does not have an icon.
+     * @return ComActivitiesActivityMedialinkInterface|null The activity icon, null if the activity does not have an
+     *                                                      icon.
      */
     public function getActivityIcon()
     {
@@ -186,7 +187,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the activity id
+     * Get the activity id.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See id property.
      *
@@ -198,7 +199,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the activity published date
+     * Get the activity published date.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See published property.
      *
@@ -210,7 +211,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the activity verb
+     * Get the activity verb.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See verb property.
      *
@@ -222,7 +223,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the activity actor
+     * Get the activity actor.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See actor property.
      *
@@ -234,11 +235,12 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the activity object
+     * Get the activity object.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See object property.
      *
-     * @return ComActivitiesActivityObjectInterface|null The activity object, null if the activity does not have an object.
+     * @return ComActivitiesActivityObjectInterface|null The activity object, null if the activity does not have an
+     *                                                   object.
      */
     public function getActivityObject()
     {
@@ -246,11 +248,12 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the activity target
+     * Get the activity target.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See target property.
      *
-     * @return ComActivitiesActivityObjectInterface|null The activity target object, null if the activity does no have a target.
+     * @return ComActivitiesActivityObjectInterface|null The activity target object, null if the activity does no have
+     *                                                   a target.
      */
     public function getActivityTarget()
     {
@@ -262,7 +265,8 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See generator property.
      *
-     * @return ComActivitiesActivityObjectInterface|null The activity generator object, null if the activity does not have a generator.
+     * @return ComActivitiesActivityObjectInterface|null The activity generator object, null if the activity does not
+     *                                                   have a generator.
      */
     public function getActivityGenerator()
     {
@@ -274,7 +278,8 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      *
      * @link http://activitystrea.ms/specs/json/1.0/#activity See provider property.
      *
-     * @return ComActivitiesActivityObjectInterface|null The activity provider object, null if the activity does not have a provider.
+     * @return ComActivitiesActivityObjectInterface|null The activity provider object, null if the activity does not
+     *                                                   have a provider.
      */
     public function getActivityProvider()
     {
@@ -292,7 +297,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the format property
+     * Get the format property.
      *
      * @return string
      */
@@ -302,7 +307,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the verb property
+     * Get the verb property.
      *
      * @return string
      */
@@ -312,7 +317,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the icon property
+     * Get the icon property.
      *
      * @return null
      */
@@ -322,7 +327,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the actor property
+     * Get the actor property.
      *
      * @return null
      */
@@ -332,7 +337,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the target property
+     * Get the target property.
      *
      * @return null
      */
@@ -342,7 +347,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the object property
+     * Get the object property.
      *
      * @return ComActivitiesActivityObject
      */
@@ -352,7 +357,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the generator property
+     * Get the generator property.
      *
      * @return ComActivitiesActivityObject
      */
@@ -362,7 +367,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the provider property
+     * Get the provider property.
      *
      * @return ComActivitiesActivityObject
      */
@@ -372,7 +377,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the activity objects
+     * Get the activity objects.
      *
      * @return array An array containing ComActivitiesActivityObjectInterface objects.
      */
@@ -382,7 +387,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the activity tokens
+     * Get the activity tokens.
      *
      * @return array An array containing ComActivitiesActivityObjectInterface objects.
      */
@@ -403,7 +408,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Prevent setting the package property
+     * Prevent setting the package property.
      *
      * @return array An array containing ComActivitiesActivityObjectInterface objects.
      */
@@ -417,10 +422,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Prevent removing the package property
+     * Prevent removing the package property.
      *
-     * @param string $name
-     * @throws RuntimeException
+     * @param string $name The property name.
+     *
+     * @throws RuntimeException When attempting to remove the package property.
      * @return KDatabaseRowAbstract
      */
     public function removeProperty($name)
@@ -436,6 +442,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      * Returns a list of activity objects provided their labels.
      *
      * @param array $labels The object labels.
+     *
      * @return array An array containing ComActivitiesActivityObjectInterface objects.
      */
     protected function _getObjects(array $labels = array())
@@ -486,17 +493,18 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     /**
      * Get an activity object
      *
-     * @param array $config An optional configuration array. The configuration array may contain
-     * activity object data as defined by ComActivitiesActivityObjectInterface. Additionally the
-     * following parameters may be passed in the configuration array:
-     * <br><br>
-     * - find (string): the label of an object to look for. If not found the object being created
-     * is set as deleted (with its deleted property set to true) and non-linkable (with its url
-     * property set to null). A call to a _findObjectLabel method will be attempted for determining if an
-     * object with label as defined by Label exists. See {@link _findObjectActor()} as an example.
-     *  <br><br>
-     * - translate (array): a list of property names to be translated. By default all properties containing
-     * the display prefix are set as translatables.
+     * @param array $config An optional configuration array. The configuration array may contain activity object data as
+     *                      defined by ComActivitiesActivityObjectInterface. Additionally the following parameters may
+     *                      be passed in the configuration array:
+     *                      <br><br>
+     *                      - find (string): the label of an object to look for. If not found the object being created
+     *                      is set as deleted (with its deleted property set to true) and non-linkable (with its url
+     *                      property set to null). A call to a _findObjectLabel method will be attempted for determining
+     *                      if an object with label as defined by Label exists. See {@link _findObjectActor()} as an
+     *                      example.
+     *                      <br><br>
+     *                      - translate (array): a list of property names to be translated. By default all properties
+     *                      containing the display prefix are set as translatables.
      *
      * @return ComActivitiesActivityObject The activity object.
      */
@@ -570,9 +578,10 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get an activity object config
+     * Get an activity object config.
      *
-     * @param string $object The object name
+     * @param string $object The object name.
+     *
      * @return KObjectConfig
      */
     protected function _getConfig($object)
@@ -589,9 +598,10 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the actor config
+     * Get the actor config.
      *
-     * @param KObjectConfig $config The actor config
+     * @param KObjectConfig $config The actor config.
+     *
      * @return KObjectConfig
      */
     protected function _actorConfig(KObjectConfig $config)
@@ -618,9 +628,10 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the object config
+     * Get the object config.
      *
-     * @param KObjectConfig $config The object config
+     * @param KObjectConfig $config The object config.
+     *
      * @return KObjectConfig
      */
     protected function _objectConfig(KObjectConfig $config)
@@ -638,9 +649,10 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the generator config
+     * Get the generator config.
      *
-     * @param KObjectConfig $config The generator config
+     * @param KObjectConfig $config The generator config.
+     *
      * @return KObjectConfig
      */
     protected function _generatorConfig(KObjectConfig $config)
@@ -649,9 +661,10 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the generator config
+     * Get the generator config.
      *
-     * @param KObjectConfig $config The generator config
+     * @param KObjectConfig $config The generator config.
+     *
      * @return KObjectConfig
      */
     protected function _providerConfig(KObjectConfig $config)
@@ -660,9 +673,10 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the action config
+     * Get the action config.
      *
-     * @param KObjectConfig $config The action config
+     * @param KObjectConfig $config The action config.
+     *
      * @return KObjectConfig
      */
     protected function _actionConfig(KObjectConfig $config)
@@ -671,7 +685,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the activity object signature
+     * Get the activity object signature.
      *
      * @return string The signature.
      */
@@ -681,7 +695,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Get the activity actor signature
+     * Get the activity actor signature.
      *
      * @return string The signature.
      */
@@ -691,9 +705,10 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Find an activity object
+     * Find an activity object.
      *
      * @param string $label The object label.
+     *
      * @return bool True if found, false otherwise.
      */
     protected function _findObject($label)
@@ -710,10 +725,10 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Find the activity object object
+     * Find the activity object object.
      *
-     * This method may be overridden for activities persisting objects on storage systems other than local
-     * database tables.
+     * This method may be overridden for activities persisting objects on storage systems other than local database
+     * tables.
      *
      * @return boolean True if found, false otherwise.
      */
@@ -745,7 +760,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
     }
 
     /**
-     * Find the activity actor object
+     * Find the activity actor object.
      *
      * @return boolean True if found, false otherwise.
      */

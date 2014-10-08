@@ -8,7 +8,7 @@
  */
 
 /**
- * Activity Logger
+ * Activity Logger.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
@@ -16,14 +16,14 @@
 class ComActivitiesActivityLogger extends KObject implements ComActivitiesActivityLoggerInterface
 {
     /**
-     * List of actions to log
+     * List of actions to log.
      *
      * @var array
      */
     protected $_actions;
 
     /**
-     * The name of the column to use as the title column in the log entry
+     * The name of the column to use as the title column in the log entry.
      *
      * @var string
      */
@@ -39,7 +39,7 @@ class ComActivitiesActivityLogger extends KObject implements ComActivitiesActivi
     /**
      * Constructor.
      *
-     * @param   KObjectConfig $config Configuration options
+     * @param KObjectConfig $config Configuration options.
      */
     public function __construct(KObjectConfig $config)
     {
@@ -52,12 +52,11 @@ class ComActivitiesActivityLogger extends KObject implements ComActivitiesActivi
     }
 
     /**
-     * Initializes the options for the object
+     * Initializes the options for the object.
      *
      * Called from {@link __construct()} as a first step of object instantiation.
      *
-     * @param   KObjectConfig $config Configuration options.
-     * @return  void
+     * @param KObjectConfig $config Configuration options.
      */
     protected function _initialize(KObjectConfig $config)
     {
@@ -71,11 +70,12 @@ class ComActivitiesActivityLogger extends KObject implements ComActivitiesActivi
     }
 
     /**
-     * Log an activity
+     * Log an activity.
      *
-     * @param string $action                       The action to log
-     * @param KModelEntityInterface $object        The activity object on which the action is performed
-     * @param KObjectIdentifierInterface $subject  The activity subject who is performing the action
+     * @param string                     $action  The action to log.
+     * @param KModelEntityInterface      $object  The activity object on which the action is performed.
+     * @param KObjectIdentifierInterface $subject The activity subject who is performing the action.
+     *
      * @return mixed|null If the logger breaks, returns the break condition. NULL otherwise.
      */
     public function log($action, KModelEntityInterface $object, KObjectIdentifierInterface $subject)
@@ -113,9 +113,9 @@ class ComActivitiesActivityLogger extends KObject implements ComActivitiesActivi
     }
 
     /**
-     * Return a list of actions the logger should log
+     * Return a list of actions the logger should log.
      *
-     * @return array List of actions
+     * @return array List of actions.
      */
     public function getActions()
     {
@@ -123,9 +123,10 @@ class ComActivitiesActivityLogger extends KObject implements ComActivitiesActivi
     }
 
     /**
-     * Return a list of actions the logger should log
+     * Return a list of actions the logger should log.
      *
-     * @param array $actions List of actions
+     * @param array $actions List of actions.
+     *
      * @return ComActivitiesActivityLoggerInterface
      */
     public function setActions($actions)
@@ -135,11 +136,12 @@ class ComActivitiesActivityLogger extends KObject implements ComActivitiesActivi
     }
 
     /**
-     * Get the activity object
+     * Get the activity object.
      *
      * The activity object is the entity on which the action is executed.
      *
      * @param KCommandInterface $command The command.
+     *
      * @return KModelEntityInterface The entity.
      */
     public function getActivityObject(KCommandInterface $command)
@@ -157,13 +159,14 @@ class ComActivitiesActivityLogger extends KObject implements ComActivitiesActivi
     }
 
     /**
-     * Get the activity status
+     * Get the activity status.
      *
-     * The activity state is the status of the entity at the time the action happened
+     * The activity state is the status of the entity at the time the action happened.
      *
-     * @param KModelEntityInterface $object The activity object on which the action is performed
+     * @param KModelEntityInterface $object The activity object on which the action is performed.
      * @param string                $action The command action being executed.
-     * @return string
+     *
+     * @return string The activity status.
      */
     public function getActivityStatus(KModelEntityInterface $object, $action = null)
     {
@@ -178,11 +181,12 @@ class ComActivitiesActivityLogger extends KObject implements ComActivitiesActivi
     }
 
     /**
-     * Get the activity subject
+     * Get the activity subject.
      *
      * The activity subject is the identifier of the entity that generates the event.
      *
      * @param KCommandInterface $context The command context object.
+     *
      * @return KObjectIdentifier The activity identifier.
      */
     public function getActivitySubject(KCommandInterface $command)
@@ -191,10 +195,11 @@ class ComActivitiesActivityLogger extends KObject implements ComActivitiesActivi
     }
 
     /**
-     * Get the activity data
+     * Get the activity data.
      *
-     * @param KModelEntityInterface $object        The activity object on which the action is performed
-     * @param KObjectIdentifierInterface $subject  The activity subject who is performing the action
+     * @param KModelEntityInterface      $object  The activity object on which the action is performed.
+     * @param KObjectIdentifierInterface $subject The activity subject who is performing the action.
+     *
      * @return array Activity data.
      */
     public function getActivityData(KModelEntityInterface $object, KObjectIdentifierInterface $subject)

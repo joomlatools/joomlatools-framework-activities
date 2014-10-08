@@ -8,7 +8,7 @@
  */
 
 /**
- * Activities Model
+ * Activities Model.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
@@ -18,7 +18,7 @@ class ComActivitiesModelActivities extends KModelDatabase
     /**
      * Constructor.
      *
-     * @param   KObjectConfig $config Configuration options
+     * @param KObjectConfig $config Configuration options.
      */
     public function __construct(KObjectConfig $config)
     {
@@ -47,7 +47,7 @@ class ComActivitiesModelActivities extends KModelDatabase
     }
 
     /**
-     * Builds SELECT columns list for the query
+     * Builds SELECT columns list for the query.
      *
      * @param KDatabaseQueryInterface $query
      */
@@ -65,7 +65,7 @@ class ComActivitiesModelActivities extends KModelDatabase
     }
 
     /**
-     * Builds WHERE clause for the query
+     * Builds WHERE clause for the query.
      *
      * @param KDatabaseQueryInterface $query
      */
@@ -131,7 +131,7 @@ class ComActivitiesModelActivities extends KModelDatabase
     }
 
     /**
-     * Builds GROUP BY clause for the query
+     * Builds GROUP BY clause for the query.
      *
      * @param KDatabaseQueryInterface $query
      */

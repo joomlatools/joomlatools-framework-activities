@@ -8,10 +8,10 @@
  */
 
 /**
- * Activities Json View
+ * Activities JSON View.
  *
- * JSON view has support for the 'stream' layout. If layout is stream the output will be rendered according to
- * the activitystreams standard.
+ * JSON view has support for the 'stream' layout. If layout is stream the output will be rendered according to the
+ * Activity Streams Specification.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
@@ -20,7 +20,7 @@
 class ComActivitiesViewActivitiesJson extends KViewJson
 {
     /**
-     * JSON layout [stream]
+     * JSON layout [stream].
      *
      * @var mixed
      */
@@ -36,7 +36,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
     /**
      * Constructor.
      *
-     * @param   KObjectConfig $config Configuration options
+     * @param KObjectConfig $config Configuration options.
      */
     public function __construct(KObjectConfig $config)
     {
@@ -48,12 +48,11 @@ class ComActivitiesViewActivitiesJson extends KViewJson
     }
 
     /**
-     * Initializes the options for the object
+     * Initializes the options for the object.
      *
      * Called from {@link __construct()} as a first step of object instantiation.
      *
-     * @param   KObjectConfig $config Configuration options.
-     * @return  void
+     * @param KObjectConfig $config Configuration options.
      */
     protected function _initialize(KObjectConfig $config)
     {
@@ -68,12 +67,13 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      * Get the entity data
      *
      * Method adds support for the 'stream' layout. If layout is stream the json output will be rendered according to
-     * the activitystreams standard.
+     * the Activity Streams Specification.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#json See JSON serialization.
      *
-     * @param KModelEntityInterface  $entity   Document row
-     * @return array The array with data to be encoded to json
+     * @param KModelEntityInterface $entity The model entity.
+     *
+     * @return array The array with data to be encoded to JSON.
      */
     protected function _getEntity(KModelEntityInterface $entity)
     {
@@ -114,7 +114,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
     }
 
     /**
-     * Get the activity renderer
+     * Get the activity renderer.
      *
      * @throws UnexpectedValueException if renderer has the wrong type.
      * @return ComActivitiesActivityRendererInterface The activity renderer.
@@ -147,6 +147,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      * Set the activity renderer.
      *
      * @param mixed $renderer An activity renderer instance, identifier object or string.
+     *
      * @return ComActivitiesViewActivitiesJson
      */
     public function setRenderer($renderer)
@@ -175,6 +176,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      * Activity object data getter.
      *
      * @param ComActivitiesActivityObjectInterface $object The activity object.
+     *
      * @return array The object data.
      */
     protected function _getObjectData(ComActivitiesActivityObjectInterface $object)
@@ -220,6 +222,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      * Activity medialink data getter.
      *
      * @param ComActivitiesActivityMedialinkInterface $medialink The medialink object.
+     *
      * @return array The object data.
      */
     protected function _getMedialinkData(ComActivitiesActivityMedialinkInterface $medialink)
@@ -235,6 +238,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      * Removes entries with empty values.
      *
      * @param array $data The data to cleanup.
+     *
      * @return array The cleaned up data.
      */
     protected function _cleanupData(array $data = array())
@@ -257,6 +261,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      * Provides a fully qualified and un-escaped URL provided a URL object.
      *
      * @param KHttpUrlInterface $url The URL.
+     *
      * @return string The fully qualified un-escaped URL.
      */
     protected function _getUrl(KHttpUrlInterface $url)

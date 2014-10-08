@@ -8,7 +8,7 @@
  */
 
 /**
- * Activities Database Table
+ * Activities Database Table.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
@@ -16,12 +16,11 @@
 class ComActivitiesDatabaseTableActivities extends KDatabaseTableAbstract
 {
     /**
-     * Initializes the options for the object
+     * Initializes the options for the object.
      *
      * Called from {@link __construct()} as a first step of object instantiation.
      *
-     * @param   KObjectConfig $config Configuration options.
-     * @return  void
+     * @param KObjectConfig $config Configuration options.
      */
     protected function _initialize(KObjectConfig $config)
     {

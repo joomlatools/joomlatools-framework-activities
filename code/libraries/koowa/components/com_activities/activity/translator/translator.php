@@ -8,7 +8,7 @@
  */
 
 /**
- * Activity Translator
+ * Activity Translator.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
@@ -26,7 +26,8 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KOb
      * Translates an activity format.
      *
      * @param string $string The activity format to translate.
-     * @param array $tokens An array of format tokens.
+     * @param array  $tokens An array of format tokens.
+     *
      * @return string The translated activity format.
      */
     public function translate($format, array $tokens = array())
@@ -50,8 +51,8 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KOb
     /**
      * Get an activity format override.
      *
-     * @param  string $format The activity format.
-     * @param  array $parameters Associative array containing format replacements to look for overrides.
+     * @param  string $format     The activity format.
+     * @param  array  $parameters Associative array containing format replacements to look for overrides.
      *
      * @return string The activity format override. The original activity format if no overrides where found.
      */
@@ -82,6 +83,14 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KOb
         return $override;
     }
 
+    /**
+     * Get an activity format override key.
+     *
+     * @param  string $format     The activity format.
+     * @param  array  $parameters Associative array containing format replacements to look for overrides.
+     *
+     * @return string The override key.
+     */
     protected function _getOverrideKey($format, $parameters = array())
     {
         $result = $format;
@@ -96,8 +105,8 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KOb
     /**
      * Returns a list of activity format overrides.
      *
-     * @param  string $format The activity format.
-     * @param  array $parameters Associative array containing format replacements to look for overrides.
+     * @param  string $format     The activity format.
+     * @param  array  $parameters Associative array containing format replacements to look for overrides.
      *
      * @return array A list of override strings.
      */

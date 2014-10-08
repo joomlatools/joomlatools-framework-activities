@@ -20,6 +20,7 @@ interface ComActivitiesActivityRendererInterface
      *
      * @param ComActivitiesActivityInterface $activity The activity object.
      * @param array                          $config   An optional configuration array.
+     *
      * @return string The rendered activity.
      */
     public function render(ComActivitiesActivityInterface $activity, $config = array());
