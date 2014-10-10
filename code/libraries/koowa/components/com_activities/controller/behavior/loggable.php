@@ -88,9 +88,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                 {
                     $subject = $logger->getActivitySubject($command);
 
-                    if ($logger->log($action, $object, $subject) === $this->getBreakCondition()) {
-                        break; // Breaking condition.
-                    }
+                    $logger->log($action, $object, $subject);
                 }
             }
         }
