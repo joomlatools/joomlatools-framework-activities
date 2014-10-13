@@ -103,17 +103,25 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
      */
     public static function getInstance(KObjectConfigInterface $config, KObjectManagerInterface $manager)
     {
-        $class = $manager->getClass($config->object_identifier);
+        $identifier            = $config->object_identifier->toArray();
+        $identifier['path']    = array('model', 'entity', 'activity');
+        $identifier['package'] = $config->data->package;
+        $identifier['name']    = $config->data->name;
 
-        if ($class == get_class())
+        $identifiers = array($identifier);
+
+        $identifier['name'] = $identifier['package'];
+
+        array_push($identifiers, $identifier);
+
+        foreach ($identifiers as $identifier)
         {
-            $identifier            = $config->object_identifier->toArray();
-            $identifier['package'] = $config->data->package;
-
-            if ($class = $manager->getClass($identifier, false)) {
+            if ($manager->getClass($identifier, false)) {
                 return $manager->getObject($identifier, $config->toArray());
             }
         }
+
+        $class = $manager->getClass($config->object_identifier);
 
         return new $class($config);
     }
