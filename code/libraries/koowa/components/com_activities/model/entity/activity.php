@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjectInstantiable, ComActivitiesActivityInterface
+class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComActivitiesActivityInterface
 {
     /**
      * An associative list of found and not found activity objects.
@@ -91,39 +91,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements KObjec
         ));
 
         parent::_initialize($config);
-    }
-
-    /**
-     * Instantiates the object.
-     *
-     * @param KObjectConfigInterface  $config  Configuration options.
-     * @param KObjectManagerInterface $manager A KObjectManagerInterface object.
-     *
-     * @return KObjectInterface
-     */
-    public static function getInstance(KObjectConfigInterface $config, KObjectManagerInterface $manager)
-    {
-        $identifier            = $config->object_identifier->toArray();
-        $identifier['path']    = array('model', 'entity', 'activity');
-        $identifier['package'] = $config->data->package;
-        $identifier['name']    = $config->data->name;
-
-        $identifiers = array($identifier);
-
-        $identifier['name'] = $identifier['package'];
-
-        array_push($identifiers, $identifier);
-
-        foreach ($identifiers as $identifier)
-        {
-            if ($manager->getClass($identifier, false)) {
-                return $manager->getObject($identifier, $config->toArray());
-            }
-        }
-
-        $class = $manager->getClass($config->object_identifier);
-
-        return new $class($config);
     }
 
     public function save()
