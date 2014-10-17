@@ -71,7 +71,9 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
                         $object->setDisplayName($parts[1]);
                     }
 
-                    $output = str_replace('{' . $label . '}', $this->_renderObject($object, $config), $output);
+                    if ($object = $this->_renderObject($object, $config)) {
+                        $output = str_replace('{' . $label . '}', $object, $output);
+                    }
                 }
             }
         }
@@ -91,23 +93,27 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
     {
         $config->append(array('html' => true, 'escaped_urls' => true, 'fqr' => false));
 
-        if ($config->html)
+        if ($output = $object->getDisplayName())
         {
-            $output  = $object->getDisplayName();
-            $attribs = $object->getAttributes() ? $this->buildAttributes($object->getAttributes()) : '';
-
-            if ($url = $object->getUrl())
+            if ($config->html)
             {
-                // Make sure we have a fully qualified route.
-                if ($config->fqr && !$url->getHost()) {
-                    $url->setUrl($this->getTemplate()->url()->toString(KHttpUrl::AUTHORITY));
+                $output  = $object->getDisplayName();
+                $attribs = $object->getAttributes() ? $this->buildAttributes($object->getAttributes()) : '';
+
+                if ($url = $object->getUrl())
+                {
+                    // Make sure we have a fully qualified route.
+                    if ($config->fqr && !$url->getHost()) {
+                        $url->setUrl($this->getTemplate()->url()->toString(KHttpUrl::AUTHORITY));
+                    }
+
+                    $url    = $url->toString(KHttpUrl::FULL, $config->escaped_urls);
+                    $output = "<a {$attribs} href=\"{$url}\">{$output}</a>";
                 }
-
-                $url    = $url->toString(KHttpUrl::FULL, $config->escaped_urls);
-                $output = "<a {$attribs} href=\"{$url}\">{$output}</a>";
-            } else $output = "<span {$attribs}>{$output}</span>";
-
-        } else $output = $object->getDisplayName();
+                else $output = "<span {$attribs}>{$output}</span>";
+            }
+        }
+        else $output = '';
 
         return $output;
     }
