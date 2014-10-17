@@ -34,7 +34,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      *
      * @var array
      */
-    protected $_required = array('package', 'name', 'action', 'title', 'status');
+    protected $_required = array('package', 'name', 'action', 'status');
 
     /**
      * The activity object database table name.
