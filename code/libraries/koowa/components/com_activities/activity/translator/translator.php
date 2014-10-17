@@ -40,7 +40,9 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KOb
                 $value = $value->getObjectName();
             }
 
-            $parameters[$key] = $value;
+            if (is_scalar($value)) {
+                $parameters[$key] = $value;
+            }
         }
 
         $override = $this->_getOverride($format, $parameters);
