@@ -442,13 +442,13 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
 
                         if ($value = $object->{ 'object' . ucfirst($property)})
                         {
-                            $config = array('objectName' => $value, 'internal' => true);
+                            $config = $this->_getConfig($parts[0].ucfirst($parts[1]));
+
+                            $config->append(array('objectName' => $value, 'internal' => true));
 
                             // If display property is set use it and disable properties translations.
-                            if ($value = $object->{'display' . ucfirst($property)})
-                            {
-                                $config['displayName'] = $value;
-                                $config['translate']   = false;
+                            if ($value = $object->{'display' . ucfirst($property)}) {
+                                $config->append(array('displayName' => $value, 'translate' => false));
                             }
 
                             // Create a new basic and minimal format token object.
