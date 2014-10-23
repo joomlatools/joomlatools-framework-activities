@@ -565,15 +565,16 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
 
         $method = '_' . strtolower($object) . 'Config';
 
+        // Call config setter if any.
         if (method_exists($this, $method)) {
-            $config = $this->$method($config);
+            $this->$method($config);
         }
 
         return $config;
     }
 
     /**
-     * Get the actor config.
+     * Set the actor config.
      *
      * @param KObjectConfig $config The actor config.
      *
@@ -598,16 +599,12 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
             'translate'  => $translate,
             'find'       => 'actor'
         ));
-
-        return $config;
     }
 
     /**
-     * Get the object config.
+     * Set the object config.
      *
      * @param KObjectConfig $config The object config.
-     *
-     * @return KObjectConfig
      */
     protected function _objectConfig(KObjectConfig $config)
     {
@@ -619,44 +616,36 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
             'attributes' => array('class' => array('object')),
             'find'       => 'object'
         ));
-
-        return $config;
     }
 
     /**
-     * Get the generator config.
+     * Set the generator config.
      *
      * @param KObjectConfig $config The generator config.
-     *
-     * @return KObjectConfig
      */
     protected function _generatorConfig(KObjectConfig $config)
     {
-        return $config->append(array('objectName' => 'com_activities', 'objectType' => 'component'));
+        $config->append(array('objectName' => 'com_activities', 'objectType' => 'component'));
     }
 
     /**
-     * Get the generator config.
+     * Set the generator config.
      *
      * @param KObjectConfig $config The generator config.
-     *
-     * @return KObjectConfig
      */
     protected function _providerConfig(KObjectConfig $config)
     {
-        return $config->append(array('objectName' => 'com_activities', 'objectType' => 'component'));
+        $config->append(array('objectName' => 'com_activities', 'objectType' => 'component'));
     }
 
     /**
-     * Get the action config.
+     * Set the action config.
      *
      * @param KObjectConfig $config The action config.
-     *
-     * @return KObjectConfig
      */
     protected function _actionConfig(KObjectConfig $config)
     {
-        return $config->append(array('objectName' => $this->status));
+        $config->append(array('objectName' => $this->status));
     }
 
     /**
