@@ -666,7 +666,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     protected function _getObjectSignature()
     {
-        return 'object' . $this->package . '.' . $this->name . '.' . $this->row;
+        return 'object.' . $this->package . '.' . $this->name . '.' . $this->row;
     }
 
     /**
