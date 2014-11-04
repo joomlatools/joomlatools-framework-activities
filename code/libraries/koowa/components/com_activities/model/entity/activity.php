@@ -553,7 +553,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         }
 
         // Cleanup config.
-        foreach (array('translate', 'find') as $property) {
+        foreach (array('translate', 'find', 'object') as $property) {
             unset($config->$property);
         }
 
