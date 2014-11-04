@@ -95,11 +95,8 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                 $item['icon'] = $this->_getMediaLinkData($icon);
             }
 
-            foreach ($activity->objects as $name => $object)
-            {
-                if (!$object->isInternal()) {
-                    $item[$name] = $this->_getObjectData($object);
-                }
+            foreach ($activity->objects as $name => $object) {
+                $item[$name] = $this->_getObjectData($object);
             }
         }
         else
