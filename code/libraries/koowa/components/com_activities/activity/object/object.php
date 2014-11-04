@@ -523,28 +523,4 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
     {
         return $this->deleted;
     }
-
-    /**
-     * Set the internal state.
-     *
-     * @param bool $state The internal state.
-     *
-     * @return ComActivitiesActivityObject
-     */
-    public function setInternal($state)
-    {
-        $this->internal = (bool) $state;
-        return $this;
-    }
-
-    /**
-     * Tells if the object is internal, i.e. used internally by an activity containing it. Internal objects are not
-     * meant to be exposed on streams or messages.
-     *
-     * @return bool True if the object is internal, false otherwise.
-     */
-    public function isInternal()
-    {
-        return $this->internal;
-    }
 }
