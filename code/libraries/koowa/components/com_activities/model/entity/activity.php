@@ -87,7 +87,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
             'format'        => '{actor} {action} {object.type} title {object}',
             'object_table'  => $data->package . '_' . KStringInflector::pluralize($data->name),
             'object_column' => $data->package . '_' . $data->name . '_id',
-            'objects'       => array('actor', 'object', 'generator', 'provider')
+            'objects'       => array('actor', 'action', 'object', 'target', 'generator', 'provider')
         ));
 
         parent::_initialize($config);
