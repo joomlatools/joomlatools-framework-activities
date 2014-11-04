@@ -458,47 +458,23 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     protected function _getObjects(array $labels = array())
     {
-        $result = array();
+        $objects = array();
 
         foreach ($labels as $label)
         {
-            $parts  = explode('.', $label);
-            $method = 'getActivity' . ucfirst($parts[0]);
+            $method = 'getActivity' . ucfirst($label);
 
             if (method_exists($this, $method))
             {
                 $object = $this->$method();
 
-                if ($object instanceof ComActivitiesActivityObjectInterface)
-                {
-                    // Deal with dot notation syntax.
-                    if (count($parts) === 2)
-                    {
-                        $property = $parts[1];
-
-                        if ($value = $object->{ 'object' . ucfirst($property)})
-                        {
-                            $config = $this->_getConfig($parts[0].ucfirst($parts[1]));
-
-                            $config->append(array('objectName' => $value, 'internal' => true));
-
-                            // If display property is set use it and disable properties translations.
-                            if ($value = $object->{'display' . ucfirst($property)}) {
-                                $config->append(array('displayName' => $value, 'translate' => false));
-                            }
-
-                            // Create a new basic and minimal format token object.
-                            $object = $this->_getObject($config);
-                        }
-                        else continue;
-                    }
-
-                    $result[$label] = $object;
+                if ($object instanceof ComActivitiesActivityObjectInterface) {
+                    $objects[$label] = $object;
                 }
             }
         }
 
-        return $result;
+        return $objects;
     }
 
     /**
