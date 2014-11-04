@@ -486,29 +486,25 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     protected function _getObject($config = array())
     {
         $config = new KObjectConfig($config);
+
         $config->append(array(
             'attributes' => array()
         ));
 
-        $defaults = array();
+        if (!$config->translate && $config->translate !== false) {
+            $config->translate = 'displayName';
+        }
 
-        // Determine default properties and their values.
+        // Process all object sub-properties.
         foreach ($config as $key => $value)
         {
-            if (strpos($key, 'object') === 0 && isset($value)) {
-                $defaults['display' . ucfirst(substr($key, 6))] = $value;
+            if ($value instanceof KObjectConfig && $value->object) {
+                $config->{$key} = $this->_getObject($value);
             }
         }
 
-        if ($defaults)
-        {
-            // Append default properties.
-            $config->append($defaults);
-
-            // Set default translatable properties.
-            if (!$config->translate && $config->translate !== false) {
-                $config->translate = array_keys($defaults);
-            }
+        if ($config->objectName && !$config->displayName) {
+            $config->displayName = $config->objectName;
         }
 
         if (is_string($config->url)) {
