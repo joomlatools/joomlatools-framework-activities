@@ -16,11 +16,11 @@
 class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComActivitiesActivityInterface
 {
     /**
-     * An associative list of found and not found activity objects.
+     * An associative list containing the find call results.
      *
      * @var array
      */
-    static protected $_found_objects = array();
+    static protected $_find_results = array();
 
     /**
      * The activity format.
@@ -486,9 +486,9 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      *                      <br><br>
      *                      - find (string): the label of an object to look for. If not found the object being created
      *                      is set as deleted (with its deleted property set to true) and non-linkable (with its url
-     *                      property set to null). A call to a _findObjectLabel method will be attempted for determining
-     *                      if an object with label as defined by Label exists. See {@link _findObjectActor()} as an
-     *                      example.
+     *                      property set to null). A call to a _findActivity{Label} method will be attempted for
+     *                      determining if an object with label as defined by {Label} exists. See
+     *                      {@link _findActivityActor()} as an example.
      *                      <br><br>
      *                      - translate (array): a list of property names to be translated. By default all properties
      *                      containing the display prefix are set as translatables.
@@ -593,7 +593,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         $objectName = $this->getAuthor()->getName();
         $translate  = array('displayType');
 
-        if (!$this->_findObjectActor())
+        if (!$this->_findActivityActor())
         {
             $objectName = 'Deleted user';
             $translate[]  = 'displayName';
@@ -663,7 +663,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     protected function _getObjectSignature()
     {
-        return 'object.' . $this->package . '.' . $this->name . '.' . $this->row;
+        return sprintf('%s.%s.%s', $this->package, $this->name, $this->row);
     }
 
     /**
@@ -673,7 +673,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     protected function _getActorSignature()
     {
-        return 'actor.' . $this->created_by;
+        return sprintf('users.user.%s', $this->created_by);
     }
 
     /**
@@ -685,68 +685,70 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     protected function _findObject($label)
     {
-        $result = false;
+        $result    = false;
+        $signature = null;
 
-        $method = '_findObject' . ucfirst($label);
+        $method = sprintf('_get%sSignature', ucfirst($label));
 
         if (method_exists($this, $method)) {
-            $result = (bool) $this->$method();
+            $signature = $this->$method();
         }
+
+        if (is_null($signature) || !isset(self::$_find_results[$signature]))
+        {
+            $method = '_findActivity' . ucfirst($label);
+
+            if (method_exists($this, $method)) {
+                $result = (bool) $this->$method();
+            }
+
+            if ($signature) {
+                self::$_find_results[$signature] = $result;
+            }
+        }
+        else $result = self::$_find_results[$signature];
 
         return $result;
     }
 
     /**
-     * Find the activity object object.
+     * Finds the activity object.
      *
      * This method may be overridden for activities persisting objects on storage systems other than local database
      * tables.
      *
      * @return boolean True if found, false otherwise.
      */
-    protected function _findObjectObject()
+    protected function _findActivityObject()
     {
-        $signature = $this->_getObjectSignature();
+        $db     = $this->getTable()->getAdapter();
+        $table  = $this->_object_table;
+        $column = $this->_object_column;
 
-        if (!isset(self::$_found_objects[$signature]))
-        {
-            $db     = $this->getTable()->getAdapter();
-            $table  = $this->_object_table;
-            $column = $this->_object_column;
+        $query = $this->getObject('lib:database.query.select');
+        $query->columns('COUNT(*)')->table($table)->where($column . ' = :value')
+              ->bind(array('value' => $this->row));
 
-            $query = $this->getObject('lib:database.query.select');
-            $query->columns('COUNT(*)')->table($table)->where($column . ' = :value')
-                  ->bind(array('value' => $this->row));
-
-            // Need to catch exceptions here as table may not longer exist.
-            try {
-                $result = $db->select($query, KDatabase::FETCH_FIELD);
-            } catch (Exception $e) {
-                $result = 0;
-            }
-
-            self::$_found_objects[$signature] = (bool) $result;
+        // Need to catch exceptions here as table may not longer exist.
+        try {
+            $result = $db->select($query, KDatabase::FETCH_FIELD);
+        } catch (Exception $e) {
+            $result = 0;
         }
 
-        return self::$_found_objects[$signature];
+        return $result;
     }
 
     /**
-     * Find the activity actor object.
+     * Finds the activity actor.
      *
      * @return boolean True if found, false otherwise.
      */
-    protected function _findObjectActor()
+    protected function _findActivityActor()
     {
-        $signature = $this->_getActorSignature();
+        $user = $this->getObject('user.provider')->fetch($this->created_by);
 
-        if (!isset(self::$_found_objects[$signature]))
-        {
-            $user                             = $this->getObject('user.provider')->fetch($this->created_by);
-            self::$_found_objects[$signature] = is_null($user) ? false : true;
-        }
-
-        return self::$_found_objects[$signature];
+        return is_null($user) ? false : true;
     }
 
     /**
