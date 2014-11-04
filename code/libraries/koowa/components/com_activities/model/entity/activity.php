@@ -358,28 +358,64 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     public function getPropertyObjects()
     {
-        return array_merge($this->_getObjects($this->_objects), $this->tokens);
+        return $this->_getObjects($this->_objects);
     }
 
     /**
-     * Get the activity tokens.
+     * Get the activity format tokens.
      *
-     * @return array An array containing ComActivitiesActivityObjectInterface objects.
+     * Tokens are activity objects being referenced in the activity format.
+     *
+     * @return array An array containing ComActivitiesActivityObjectInterface objects
      */
     public function getPropertyTokens()
     {
-        $labels = array();
+        $tokens = array();
 
-        // Try generating the actual activity format. This is where computed short formats are calculated.
+        // Issue a format get call if format isn't yet set. Activity overrides that dynamically set this property
+        // usually do that at the time format is calculated.
         if (!$this->_format) {
-            $this->format;
+            $this->getActivityFormat();
         }
 
-        if (preg_match_all('/\{(.*?)\}/', $this->_format, $matches)) {
-            $labels = $matches[1];
+        if (preg_match_all('/\{(.+?)\}/',$this->_format, $labels))
+        {
+            $objects = $this->objects;
+
+            foreach ($labels[1] as $label)
+            {
+                $object = null;
+                $parts  = explode('.', $label);
+
+                if (count($parts) > 1)
+                {
+                    $name = array_shift($parts);
+
+                    if (isset($objects[$name]))
+                    {
+                        $object = $objects[$name];
+
+                        foreach ($parts as $property)
+                        {
+                            $object = $object->{$property};
+                            if (is_null($object)) break;
+                        }
+                    }
+                }
+                else
+                {
+                    if (isset($objects[$label])) {
+                        $object = $objects[$label];
+                    }
+                }
+
+                if ($object instanceof ComActivitiesActivityObjectInterface) {
+                    $tokens[$label] = $object;
+                }
+            }
         }
 
-        return $this->_getObjects(array_unique($labels));
+        return $tokens;
     }
 
     /**
