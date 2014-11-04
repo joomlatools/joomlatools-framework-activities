@@ -600,7 +600,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         }
 
         $config->append(array(
-            'objectType' => 'user',
+            'type' => array('objectName' => 'user', 'object' => true),
             'id'         => $this->created_by,
             'url'        => 'option=com_users&task=user.edit&id=' . $this->created_by,
             'objectName' => $objectName,
@@ -619,7 +619,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         $config->append(array(
             'id'         => $this->row,
             'objectName' => $this->title,
-            'objectType' => $this->name,
+            'type' => array('objectName' => $this->name, 'object' => true),
             'url'        => 'option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row,
             'attributes' => array('class' => array('object')),
             'find'       => 'object'
@@ -633,7 +633,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     protected function _generatorConfig(KObjectConfig $config)
     {
-        $config->append(array('objectName' => 'com_activities', 'objectType' => 'component'));
+        $config->append(array('objectName' => 'com_activities', 'type' => array('objectName' =>'component', 'object' => true)));
     }
 
     /**
@@ -643,7 +643,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     protected function _providerConfig(KObjectConfig $config)
     {
-        $config->append(array('objectName' => 'com_activities', 'objectType' => 'component'));
+        $config->append(array('objectName' => 'com_activities', 'type' => array('objectName' => 'component', 'object' => true)));
     }
 
     /**
