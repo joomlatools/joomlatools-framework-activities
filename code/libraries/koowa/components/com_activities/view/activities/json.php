@@ -204,12 +204,15 @@ class ComActivitiesViewActivitiesJson extends KViewJson
             }
         }
 
-        if ($image = $object->getImage()) {
-            $data['image'] = $this->_getMedialinkData($image);
-        }
+        foreach ($object as $key => $value)
+        {
+            if ($value instanceof ComActivitiesActivityObjectInterface) {
+                $data[$key] = $this->_getObjectData($value);
+            }
 
-        if ($author = $object->getAuthor()) {
-            $data['author'] = $this->_getObjectData($object);
+            if ($value instanceof ComActivitiesActivityMedialinkInterface) {
+                $data[$key] = $this->_getMedialinkData($value);
+            }
         }
 
         return $this->_cleanupData($data);
