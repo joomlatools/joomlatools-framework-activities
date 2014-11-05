@@ -29,7 +29,9 @@ class ComActivitiesControllerToolbarActivity extends KControllerToolbarActionbar
         $command->append(array(
             'attribs' => array(
                 'data-action'     => 'purge',
-                'data-novalidate' => 'novalidate'
+                'data-novalidate' => 'novalidate',
+                'data-prompt'     => $this->getObject('translator')
+                                          ->translate('Deleted items will be lost forever. Would you like to continue?')
             )
         ));
     }
