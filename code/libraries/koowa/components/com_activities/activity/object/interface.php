@@ -333,21 +333,4 @@ interface ComActivitiesActivityObjectInterface
      * @return bool True if the object has been deleted, false otherwise.
      */
     public function isDeleted();
-
-    /**
-     * Set the internal state.
-     *
-     * @param bool $state The internal state.
-     *
-     * @return ComActivitiesActivityObjectInterface
-     */
-    public function setInternal($state);
-
-    /**
-     * Tells if the object is internal, i.e. used internally by an activity containing it. Internal objects are not
-     * meant to be exposed on streams or messages.
-     *
-     * @return bool True if the object is internal, false otherwise.
-     */
-    public function isInternal();
 }

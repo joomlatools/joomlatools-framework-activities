@@ -58,11 +58,10 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
             foreach ($labels[1] as $label)
             {
                 $parts = explode(':', $label);
-                $label = $parts[0];
 
-                if (isset($tokens[$label]))
+                if (isset($tokens[$parts[0]]))
                 {
-                    $object = $tokens[$label];
+                    $object = $tokens[$parts[0]];
 
                     // Deal with context translations.
                     if (isset($parts[1]))

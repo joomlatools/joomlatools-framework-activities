@@ -16,11 +16,11 @@
 class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComActivitiesActivityInterface
 {
     /**
-     * An associative list of found and not found activity objects.
+     * An associative list containing the find call results.
      *
      * @var array
      */
-    static protected $_found_objects = array();
+    static protected $_find_results = array();
 
     /**
      * The activity format.
@@ -87,7 +87,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
             'format'        => '{actor} {action} {object.type} title {object}',
             'object_table'  => $data->package . '_' . KStringInflector::pluralize($data->name),
             'object_column' => $data->package . '_' . $data->name . '_id',
-            'objects'       => array('actor', 'object', 'generator', 'provider')
+            'objects'       => array('actor', 'action', 'object', 'target', 'generator', 'provider')
         ));
 
         parent::_initialize($config);
@@ -358,28 +358,64 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     public function getPropertyObjects()
     {
-        return array_merge($this->_getObjects($this->_objects), $this->tokens);
+        return $this->_getObjects($this->_objects);
     }
 
     /**
-     * Get the activity tokens.
+     * Get the activity format tokens.
      *
-     * @return array An array containing ComActivitiesActivityObjectInterface objects.
+     * Tokens are activity objects being referenced in the activity format.
+     *
+     * @return array An array containing ComActivitiesActivityObjectInterface objects
      */
     public function getPropertyTokens()
     {
-        $labels = array();
+        $tokens = array();
 
-        // Try generating the actual activity format. This is where computed short formats are calculated.
+        // Issue a format get call if format isn't yet set. Activity overrides that dynamically set this property
+        // usually do that at the time format is calculated.
         if (!$this->_format) {
-            $this->format;
+            $this->getActivityFormat();
         }
 
-        if (preg_match_all('/\{(.*?)\}/', $this->_format, $matches)) {
-            $labels = $matches[1];
+        if (preg_match_all('/\{(.+?)\}/',$this->_format, $labels))
+        {
+            $objects = $this->objects;
+
+            foreach ($labels[1] as $label)
+            {
+                $object = null;
+                $parts  = explode('.', $label);
+
+                if (count($parts) > 1)
+                {
+                    $name = array_shift($parts);
+
+                    if (isset($objects[$name]))
+                    {
+                        $object = $objects[$name];
+
+                        foreach ($parts as $property)
+                        {
+                            $object = $object->{$property};
+                            if (is_null($object)) break;
+                        }
+                    }
+                }
+                else
+                {
+                    if (isset($objects[$label])) {
+                        $object = $objects[$label];
+                    }
+                }
+
+                if ($object instanceof ComActivitiesActivityObjectInterface) {
+                    $tokens[$label] = $object;
+                }
+            }
         }
 
-        return $this->_getObjects(array_unique($labels));
+        return $tokens;
     }
 
     /**
@@ -422,47 +458,23 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     protected function _getObjects(array $labels = array())
     {
-        $result = array();
+        $objects = array();
 
         foreach ($labels as $label)
         {
-            $parts  = explode('.', $label);
-            $method = 'getActivity' . ucfirst($parts[0]);
+            $method = 'getActivity' . ucfirst($label);
 
             if (method_exists($this, $method))
             {
                 $object = $this->$method();
 
-                if ($object instanceof ComActivitiesActivityObjectInterface)
-                {
-                    // Deal with dot notation syntax.
-                    if (count($parts) === 2)
-                    {
-                        $property = $parts[1];
-
-                        if ($value = $object->{ 'object' . ucfirst($property)})
-                        {
-                            $config = $this->_getConfig($parts[0].ucfirst($parts[1]));
-
-                            $config->append(array('objectName' => $value, 'internal' => true));
-
-                            // If display property is set use it and disable properties translations.
-                            if ($value = $object->{'display' . ucfirst($property)}) {
-                                $config->append(array('displayName' => $value, 'translate' => false));
-                            }
-
-                            // Create a new basic and minimal format token object.
-                            $object = $this->_getObject($config);
-                        }
-                        else continue;
-                    }
-
-                    $result[$label] = $object;
+                if ($object instanceof ComActivitiesActivityObjectInterface) {
+                    $objects[$label] = $object;
                 }
             }
         }
 
-        return $result;
+        return $objects;
     }
 
     /**
@@ -474,9 +486,9 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      *                      <br><br>
      *                      - find (string): the label of an object to look for. If not found the object being created
      *                      is set as deleted (with its deleted property set to true) and non-linkable (with its url
-     *                      property set to null). A call to a _findObjectLabel method will be attempted for determining
-     *                      if an object with label as defined by Label exists. See {@link _findObjectActor()} as an
-     *                      example.
+     *                      property set to null). A call to a _findActivity{Label} method will be attempted for
+     *                      determining if an object with label as defined by {Label} exists. See
+     *                      {@link _findActivityActor()} as an example.
      *                      <br><br>
      *                      - translate (array): a list of property names to be translated. By default all properties
      *                      containing the display prefix are set as translatables.
@@ -486,29 +498,25 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     protected function _getObject($config = array())
     {
         $config = new KObjectConfig($config);
+
         $config->append(array(
             'attributes' => array()
         ));
 
-        $defaults = array();
+        if (!$config->translate && $config->translate !== false) {
+            $config->translate = 'displayName';
+        }
 
-        // Determine default properties and their values.
+        // Process all object sub-properties.
         foreach ($config as $key => $value)
         {
-            if (strpos($key, 'object') === 0 && isset($value)) {
-                $defaults['display' . ucfirst(substr($key, 6))] = $value;
+            if ($value instanceof KObjectConfig && $value->object) {
+                $config->{$key} = $this->_getObject($value);
             }
         }
 
-        if ($defaults)
-        {
-            // Append default properties.
-            $config->append($defaults);
-
-            // Set default translatable properties.
-            if (!$config->translate && $config->translate !== false) {
-                $config->translate = array_keys($defaults);
-            }
+        if ($config->objectName && !$config->displayName) {
+            $config->displayName = $config->objectName;
         }
 
         if (is_string($config->url)) {
@@ -545,7 +553,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         }
 
         // Cleanup config.
-        foreach (array('translate', 'find') as $property) {
+        foreach (array('translate', 'find', 'object') as $property) {
             unset($config->$property);
         }
 
@@ -585,14 +593,14 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         $objectName = $this->getAuthor()->getName();
         $translate  = array('displayType');
 
-        if (!$this->_findObjectActor())
+        if (!$this->_findActivityActor())
         {
             $objectName = 'Deleted user';
             $translate[]  = 'displayName';
         }
 
         $config->append(array(
-            'objectType' => 'user',
+            'type' => array('objectName' => 'user', 'object' => true),
             'id'         => $this->created_by,
             'url'        => 'option=com_users&task=user.edit&id=' . $this->created_by,
             'objectName' => $objectName,
@@ -611,7 +619,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         $config->append(array(
             'id'         => $this->row,
             'objectName' => $this->title,
-            'objectType' => $this->name,
+            'type' => array('objectName' => $this->name, 'object' => true),
             'url'        => 'option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row,
             'attributes' => array('class' => array('object')),
             'find'       => 'object'
@@ -625,7 +633,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     protected function _generatorConfig(KObjectConfig $config)
     {
-        $config->append(array('objectName' => 'com_activities', 'objectType' => 'component'));
+        $config->append(array('objectName' => 'com_activities', 'type' => array('objectName' =>'component', 'object' => true)));
     }
 
     /**
@@ -635,7 +643,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     protected function _providerConfig(KObjectConfig $config)
     {
-        $config->append(array('objectName' => 'com_activities', 'objectType' => 'component'));
+        $config->append(array('objectName' => 'com_activities', 'type' => array('objectName' => 'component', 'object' => true)));
     }
 
     /**
@@ -655,7 +663,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     protected function _getObjectSignature()
     {
-        return 'object.' . $this->package . '.' . $this->name . '.' . $this->row;
+        return sprintf('%s.%s.%s', $this->package, $this->name, $this->row);
     }
 
     /**
@@ -665,7 +673,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     protected function _getActorSignature()
     {
-        return 'actor.' . $this->created_by;
+        return sprintf('users.user.%s', $this->created_by);
     }
 
     /**
@@ -677,68 +685,70 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     protected function _findObject($label)
     {
-        $result = false;
+        $result    = false;
+        $signature = null;
 
-        $method = '_findObject' . ucfirst($label);
+        $method = sprintf('_get%sSignature', ucfirst($label));
 
         if (method_exists($this, $method)) {
-            $result = (bool) $this->$method();
+            $signature = $this->$method();
         }
+
+        if (is_null($signature) || !isset(self::$_find_results[$signature]))
+        {
+            $method = '_findActivity' . ucfirst($label);
+
+            if (method_exists($this, $method)) {
+                $result = (bool) $this->$method();
+            }
+
+            if ($signature) {
+                self::$_find_results[$signature] = $result;
+            }
+        }
+        else $result = self::$_find_results[$signature];
 
         return $result;
     }
 
     /**
-     * Find the activity object object.
+     * Finds the activity object.
      *
      * This method may be overridden for activities persisting objects on storage systems other than local database
      * tables.
      *
      * @return boolean True if found, false otherwise.
      */
-    protected function _findObjectObject()
+    protected function _findActivityObject()
     {
-        $signature = $this->_getObjectSignature();
+        $db     = $this->getTable()->getAdapter();
+        $table  = $this->_object_table;
+        $column = $this->_object_column;
 
-        if (!isset(self::$_found_objects[$signature]))
-        {
-            $db     = $this->getTable()->getAdapter();
-            $table  = $this->_object_table;
-            $column = $this->_object_column;
+        $query = $this->getObject('lib:database.query.select');
+        $query->columns('COUNT(*)')->table($table)->where($column . ' = :value')
+              ->bind(array('value' => $this->row));
 
-            $query = $this->getObject('lib:database.query.select');
-            $query->columns('COUNT(*)')->table($table)->where($column . ' = :value')
-                  ->bind(array('value' => $this->row));
-
-            // Need to catch exceptions here as table may not longer exist.
-            try {
-                $result = $db->select($query, KDatabase::FETCH_FIELD);
-            } catch (Exception $e) {
-                $result = 0;
-            }
-
-            self::$_found_objects[$signature] = (bool) $result;
+        // Need to catch exceptions here as table may not longer exist.
+        try {
+            $result = $db->select($query, KDatabase::FETCH_FIELD);
+        } catch (Exception $e) {
+            $result = 0;
         }
 
-        return self::$_found_objects[$signature];
+        return $result;
     }
 
     /**
-     * Find the activity actor object.
+     * Finds the activity actor.
      *
      * @return boolean True if found, false otherwise.
      */
-    protected function _findObjectActor()
+    protected function _findActivityActor()
     {
-        $signature = $this->_getActorSignature();
+        $user = $this->getObject('user.provider')->fetch($this->created_by);
 
-        if (!isset(self::$_found_objects[$signature]))
-        {
-            $user                             = $this->getObject('user.provider')->fetch($this->created_by);
-            self::$_found_objects[$signature] = is_null($user) ? false : true;
-        }
-
-        return self::$_found_objects[$signature];
+        return is_null($user) ? false : true;
     }
 
     /**
