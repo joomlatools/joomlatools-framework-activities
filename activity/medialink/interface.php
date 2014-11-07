@@ -10,7 +10,7 @@
 /**
  * Activity Stream Media Link Interface.
  *
- * @link    http://activitystrea.ms/specs/json/1.0/#media-link
+ * @see     http://activitystrea.ms/specs/json/1.0/#media-link
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities

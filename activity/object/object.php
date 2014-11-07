@@ -10,6 +10,8 @@
 /**
  * Activity Stream Object
  *
+ * @link    http://activitystrea.ms/specs/json/1.0/#object
+ *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */

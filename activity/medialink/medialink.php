@@ -10,10 +10,10 @@
 /**
  * Activity Stream Media Link.
  *
- * @see     http://activitystrea.ms/specs/json/1.0/#media-link
+ * @link     http://activitystrea.ms/specs/json/1.0/#media-link
  *
- * @author  Arunas Mazeika <https://github.com/amazeika>
- * @package Koowa\Component\Activities
+ * @author   Arunas Mazeika <https://github.com/amazeika>
+ * @package  Koowa\Component\Activities
  */
 class ComActivitiesActivityMedialink extends KObjectArray implements ComActivitiesActivityMedialinkInterface
 {
