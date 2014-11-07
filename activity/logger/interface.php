@@ -21,22 +21,20 @@ interface ComActivitiesActivityLoggerInterface
      * @param string                     $action  The action to log.
      * @param KModelEntityInterface      $object  The activity object on which the action is performed.
      * @param KObjectIdentifierInterface $subject The activity subject who is performing the action.
-     *
-     * @return mixed|null If the logger breaks, returns the break condition. NULL otherwise.
      */
     public function log($action, KModelEntityInterface $object, KObjectIdentifierInterface $subject);
 
     /**
-     * Return a list of actions the logger should log.
+     * Return the list of actions the logger should listen to for logging.
      *
-     * @return array List of actions.
+     * @return array The list of actions.
      */
     public function getActions();
 
     /**
-     * Return a list of actions the logger should log.
+     * Set the list of actions the logger should listen to for logging.
      *
-     * @param array $actions List of actions.
+     * @param array $actions The list of actions.
      *
      * @return ComActivitiesActivityLoggerInterface
      */
@@ -49,38 +47,38 @@ interface ComActivitiesActivityLoggerInterface
      *
      * @param KCommandInterface $command The command.
      *
-     * @return KModelEntityInterface The entity.
+     * @return KModelEntityInterface The activity object.
      */
     public function getActivityObject(KCommandInterface $command);
 
     /**
-     * Get the activity identifier.
+     * Get the activity subject.
      *
-     * The activity subject is the identifier of the entity that generates the event.
+     * The activity subject is the identifier of the object that executes the action.
      *
-     * @param KCommandInterface $context The command context object.
+     * @param KCommandInterface $command The command.
      *
-     * @return KObjectIdentifier The activity identifier.
+     * @return KObjectIdentifier The activity subject.
      */
     public function getActivitySubject(KCommandInterface $command);
 
     /**
      * Get the activity status.
      *
-     * The activity state is the status of the entity at the time the action happened.
+     * The activity status is the current status of the activity object.
      *
-     * @param KModelEntityInterface $object The activity object on which the action is performed.
-     * @param string                $action The command action being executed.
+     * @param KModelEntityInterface $object The activity object.
+     * @param string                $action The action being executed.
      *
-     * @return string
+     * @return string The activity status.
      */
     public function getActivityStatus(KModelEntityInterface $object, $action = null);
 
     /**
      * Get the activity data.
      *
-     * @param KModelEntityInterface      $object  The activity object on which the action is performed.
-     * @param KObjectIdentifierInterface $subject The activity subject who is performing the action.
+     * @param KModelEntityInterface      $object  The activity object.
+     * @param KObjectIdentifierInterface $subject The activity subject.
      *
      * @return array Activity data.
      */
