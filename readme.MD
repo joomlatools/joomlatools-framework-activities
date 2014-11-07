@@ -56,7 +56,7 @@ there are several guides and tutorials online to learn about it.
 
 There are a few things you must know before submitting a pull request:
 
-- All changes need to be made against the `develop` branch. However, it is very well appreciated and highly suggested to start a new feature branch from `develop` and make your changes in this new branch. This way we can just checkout your feature branch and test it before merging it into `develop`.
+- All changes need to be made against the `develop` branch. However, it is very well appreciated and highly suggested to start a new feature branch from `develop` and make your changes in this new branch. This way we can just checkout your feature branch for testing before merging it into `develop`.
 - We will not consider pull requests made directly to the `master` branch.
 
 ## License 
