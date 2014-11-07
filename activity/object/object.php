@@ -34,6 +34,9 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
     /**
      * Get the activity object name.
      *
+     * The object name identifies the object using a human-readable and plain-text string. HTML markup MUST NOT be
+     * included.
+     *
      * @return string|null The activity object name, null if the object does not have a name.
      */
     public function getObjectName()
@@ -44,7 +47,7 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
     /**
      * Set the activity object name.
      *
-     * Identifies the object using a human-readable and plain-text string. HTML markup MUST NOT be included.
+     * @see ComActivitiesActivityObject::getObjectName
      *
      * @param string|null $name The activity object name.
      *

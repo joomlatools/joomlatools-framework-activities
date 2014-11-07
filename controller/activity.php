@@ -37,7 +37,7 @@ class ComActivitiesControllerActivity extends KControllerModel
     }
 
     /**
-     * Set the ip address if we are adding a new activity.
+     * Set the IP address if we are adding a new activity.
      *
      * @param KControllerContextInterface $context A command context object.
      *

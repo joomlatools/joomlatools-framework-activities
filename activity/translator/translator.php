@@ -54,9 +54,10 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KOb
      * Get an activity format override.
      *
      * @param  string $format     The activity format.
-     * @param  array  $parameters Associative array containing format replacements to look for overrides.
+     * @param  array  $parameters Associative array containing parameters.
      *
-     * @return string The activity format override. The original activity format if no overrides where found.
+     * @return string The activity format override. If an override was not found, the original activity format is
+     *                returned instead.
      */
     protected function _getOverride($format, $parameters = array())
     {
@@ -89,9 +90,9 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KOb
      * Get an activity format override key.
      *
      * @param  string $format     The activity format.
-     * @param  array  $parameters Associative array containing format replacements to look for overrides.
+     * @param  array  $parameters Associative array containing parameters.
      *
-     * @return string The override key.
+     * @return string The activity format override key.
      */
     protected function _getOverrideKey($format, $parameters = array())
     {
@@ -108,9 +109,9 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KOb
      * Returns a list of activity format overrides.
      *
      * @param  string $format     The activity format.
-     * @param  array  $parameters Associative array containing format replacements to look for overrides.
+     * @param  array  $parameters Associative array containing parameters.
      *
-     * @return array A list of override strings.
+     * @return array A list of activity format overrides.
      */
     protected function _getOverrides($format, $parameters = array())
     {
@@ -137,7 +138,7 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KOb
     /**
      * Returns the power set of a set represented by the elements contained in an array.
      *
-     * The elements are ordered from size (subsets with more elements first) for convenience.
+     * For convenience, the elements are ordered from size (subsets with more elements first).
      *
      * @param     array $set        The set to get the power set from.
      * @param     int   $min_length The minimum amount of elements that a subset from the power set may contain.

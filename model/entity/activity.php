@@ -490,8 +490,12 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      *                      determining if an object with label as defined by {Label} exists. See
      *                      {@link _findActivityActor()} as an example.
      *                      <br><br>
-     *                      - translate (array): a list of property names to be translated. By default all properties
-     *                      containing the display prefix are set as translatables.
+     *                      - translate (array): a list of property names to be translated. By default the displayName
+     *                      property will be set as translatable unless the translate is set. If translate is set to
+     *                      false, no property will get translated.
+     *                      - object (bool): the configuration array may contain arrays which represent configurations
+     *                      for stacked activity objects. For them to be considered as object configurations, an object
+     *                      property with its value set to true must be included in the configuration array.
      *
      * @return ComActivitiesActivityObject The activity object.
      */
@@ -510,7 +514,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         // Process all object sub-properties.
         foreach ($config as $key => $value)
         {
-            if ($value instanceof KObjectConfig && $value->object) {
+            if ($value instanceof KObjectConfig && $value->object === true) {
                 $config->{$key} = $this->_getObject($value);
             }
         }

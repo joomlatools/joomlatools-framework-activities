@@ -33,10 +33,10 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     {
         parent::__construct($config);
 
-        //Create the logger queue
+        // Create the logger queue
         $this->__queue = $this->getObject('lib:object.queue');
 
-        //Attach the loggers
+        // Attach the loggers
         $loggers = KObjectConfig::unbox($config->loggers);
 
         foreach ($loggers as $key => $value)
@@ -101,7 +101,8 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
      *                      string.
      * @param array $config An optional associative array of configuration settings.
      *
-     * @throws UnexpectedValueException
+     * @throws UnexpectedValueException if the logger does not implement ComActivitiesActivityLoggerInterface.
+     *
      * @return ComActivitiesControllerBehaviorLoggable
      */
     public function attachLogger($logger, $config = array())
@@ -140,7 +141,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     /**
      * Get an object handle.
      *
-     * Force the object to be enqueue in the command chain.
+     * Force the object to be enqueued in the command chain.
      *
      * @see execute()
      *

@@ -18,11 +18,14 @@
 class ComActivitiesControllerBehaviorPurgeable extends KControllerBehaviorAbstract
 {
     /**
-     * Purge action. Deletes all activities between start and and date.
+     * Purge action.
+     *
+     * Deletes activities given a date range.
      *
      * @param KControllerContextInterface $context A command context object.
      *
      * @throws KControllerExceptionActionFailed If the activities cannot be purged.
+     *
      * @return KModelEntityInterface
      */
     protected function _actionPurge(KControllerContextInterface $context)

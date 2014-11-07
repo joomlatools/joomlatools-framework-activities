@@ -26,7 +26,7 @@ interface ComActivitiesActivityInterface
      *
      * An activity format consist on a template for rendering activity messages.
      *
-     * @return string The activity string format.
+     * @return string The activity format.
      */
     public function getActivityFormat();
 

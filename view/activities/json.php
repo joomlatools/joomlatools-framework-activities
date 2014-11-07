@@ -10,12 +10,13 @@
 /**
  * Activities JSON View.
  *
- * JSON view has support for the 'stream' layout. If layout is stream the output will be rendered according to the
- * Activity Streams Specification.
+ * JSON view has support for the 'stream' layout. If layout is stream (...&layout=stream) the output will be rendered
+ * according to the Activity Streams Specification.
  *
- * @author  Arunas Mazeika <https://github.com/amazeika>
- * @package Koowa\Component\Activities
- * @see     http://activitystrea.ms/specs/json/1.0/
+ * @link     http://activitystrea.ms/specs/json/1.0/#json
+ *
+ * @author   Arunas Mazeika <https://github.com/amazeika>
+ * @package  Koowa\Component\Activities
  */
 class ComActivitiesViewActivitiesJson extends KViewJson
 {
@@ -66,9 +67,6 @@ class ComActivitiesViewActivitiesJson extends KViewJson
     /**
      * Get the entity data
      *
-     * Method adds support for the 'stream' layout. If layout is stream the json output will be rendered according to
-     * the Activity Streams Specification.
-     *
      * @link http://activitystrea.ms/specs/json/1.0/#json See JSON serialization.
      *
      * @param KModelEntityInterface $entity The model entity.
@@ -114,6 +112,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      * Get the activity renderer.
      *
      * @throws UnexpectedValueException if renderer has the wrong type.
+     *
      * @return ComActivitiesActivityRendererInterface The activity renderer.
      */
     public function getRenderer()
