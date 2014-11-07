@@ -6,7 +6,7 @@ Nooku activities is a re-usable component for logging and exposing activity stre
 
 ## Activities API
 
-The component includes an API for working with activities. This API fully adheres and extends the [Activity Streams specification v1.0](http://activitystrea.ms/specs/json/1.0/). JSON activity streams provided by the component are also fully compliant with the standard.  
+The component includes an API for working with activities. This API fully adheres to and extends the [Activity Streams specification v1.0](http://activitystrea.ms/specs/json/1.0/). JSON activity streams provided by the component are also fully compliant with the standard.  
 
 ## Requirements
 
@@ -56,9 +56,8 @@ there are several guides and tutorials online to learn about it.
 
 There are a few things you must know before submitting a pull request:
 
-- If you are submitting a bug-fix, please create a new branch from `master`, make your changes in that new branch and submit your pull request against it.
-- If you are submitting a breaking change or an entirely new feature, please branch the `develop` branch, make your changes in that new branch and submit your pull request against it.
-- We will not consider pull requests made directly to the `master` and/or `develop`branch.
+- All changes need to be made against the `develop` branch. However, it is very well appreciated and highly suggested to start a new feature branch from `develop` and make your changes in this new branch. This way we can just checkout your feature branch and test it before merging it into `develop`.
+- We will not consider pull requests made directly to the `master` branch.
 
 ## License 
 
