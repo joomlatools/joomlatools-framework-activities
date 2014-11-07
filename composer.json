@@ -18,7 +18,9 @@
         }
     ],
     "require": {
-        "nooku/installer": "*"
+        "nooku/installer": "*",
+        "nooku/nooku-framework": "dev-develop"
+
     },
     "autoload": {
         "files": ["autoload.php"]
