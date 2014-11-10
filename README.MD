@@ -10,10 +10,9 @@ The component includes an API for working with activities. This API fully adhere
 
 ## Requirements
 
-- Joomla! 2.5 or newer.
+- Nooku Framework 2 or newer.
 - PHP 5.2 or newer.
 - MySQL 5.
-- Nooku Framework 2 or newer.
 
 ## Installation
 
