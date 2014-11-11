@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `#__activities_activities` (
+CREATE TABLE IF NOT EXISTS `activities_activities` (
 	`activities_activity_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 	`uuid` VARCHAR(36) NOT NULL DEFAULT '' UNIQUE,
 	`application` VARCHAR(10) NOT NULL DEFAULT '',
