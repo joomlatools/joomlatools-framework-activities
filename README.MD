@@ -45,6 +45,8 @@ Nooku Activities can and should be installed by using [composer](https://getcomp
 
 The component will get installed in the `vendor` folder of the root directory of your Joomla site. Nooku will make sure that the component is bootstrapped from that location and made available to other components extending it or just making use of it.
 
+Out of the box, Nooku Activities will attempt to store activities in a database table named activities_activities. An SQL dump file may be found under the `/resources/install` directory for creating this database table. This database needs to be manually created for the component to function properly. At the moment we only support MySQL.
+
 ## Contributing
 
 We appreciate any contribution to Nooku Activities, whether it is related to bugs, grammar, or simply a suggestion or
