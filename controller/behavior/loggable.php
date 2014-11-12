@@ -2,9 +2,9 @@
 /**
  * Nooku Framework - http://nooku.org/framework
  *
- * @copyright	Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		http://github.com/nooku/nooku-activities for the canonical source repository
+ * @copyright   Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license     GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link        http://github.com/nooku/nooku-activities for the canonical source repository
  */
 
 /**
@@ -71,7 +71,6 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
      *
      * @param KCommandInterface      $command The command.
      * @param KCommandChainInterface $chain   The chain executing the command.
-     *
      * @return mixed If a handler breaks, returns the break condition. Returns the result of the handler otherwise.
      */
     final public function execute(KCommandInterface $command, KCommandChainInterface $chain)
@@ -87,7 +86,6 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
                 if ($object instanceof KModelEntityInterface)
                 {
                     $subject = $logger->getActivitySubject($command);
-
                     $logger->log($action, $object, $subject);
                 }
             }
@@ -100,9 +98,7 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
      * @param mixed $logger An object that implements ObjectInterface, ObjectIdentifier object or valid identifier
      *                      string.
      * @param array $config An optional associative array of configuration settings.
-     *
      * @throws UnexpectedValueException if the logger does not implement ComActivitiesActivityLoggerInterface.
-     *
      * @return ComActivitiesControllerBehaviorLoggable
      */
     public function attachLogger($logger, $config = array())

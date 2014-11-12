@@ -2,9 +2,9 @@
 /**
  * Nooku Framework - http://nooku.org/framework
  *
- * @copyright	Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		http://github.com/nooku/nooku-activities for the canonical source repository
+ * @copyright   Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license     GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link        http://github.com/nooku/nooku-activities for the canonical source repository
  */
 
 /**
@@ -33,7 +33,6 @@ interface ComActivitiesActivityObjectInterface
      * @see ComActivitiesActivityObjectInterface::getObjectName
      *
      * @param string|null $name The activity object name.
-     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setObjectName($name);
@@ -53,7 +52,6 @@ interface ComActivitiesActivityObjectInterface
      * @link http://activitystrea.ms/specs/json/1.0/#object See displayName property.
      *
      * @param string|null $name The display name.
-     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setDisplayName($name);
@@ -62,7 +60,6 @@ interface ComActivitiesActivityObjectInterface
      * Get the attachments.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See attachments property.
-     *
      * @return array An array of {@link ComActivitiesActivityObjectInterface} objects.
      */
     public function getAttachments();
@@ -74,7 +71,6 @@ interface ComActivitiesActivityObjectInterface
      *
      * @param array $attachments An array of {@link ComActivitiesActivityObjectInterface} objects.
      * @param bool  $merge       Tells if attachments should be replaced or merged with current existing attachments.
-     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setAttachments(array $attachments, $merge = true);
@@ -94,7 +90,6 @@ interface ComActivitiesActivityObjectInterface
      * @link http://activitystrea.ms/specs/json/1.0/#object See author property.
      *
      * @param ComActivitiesActivityObjectInterface|null $author The author.
-     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setAuthor($author);
@@ -114,7 +109,6 @@ interface ComActivitiesActivityObjectInterface
      * @link http://activitystrea.ms/specs/json/1.0/#object See content property.
      *
      * @param string|null $content The content.
-     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setContent($content);
@@ -156,7 +150,6 @@ interface ComActivitiesActivityObjectInterface
      * @link http://activitystrea.ms/specs/json/1.0/#object See id property.
      *
      * @param string|null $id The Id.
-     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setId($id);
@@ -177,7 +170,6 @@ interface ComActivitiesActivityObjectInterface
      * @link http://activitystrea.ms/specs/json/1.0/#object See image property.
      *
      * @param ComActivitiesActivityMedialinkInterface|null $image The image.
-     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setImage($image);
@@ -197,7 +189,6 @@ interface ComActivitiesActivityObjectInterface
      * @link http://activitystrea.ms/specs/json/1.0/#object See objectType property.
      *
      * @param string|null $type The object type.
-     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setObjectType($type);
@@ -217,7 +208,6 @@ interface ComActivitiesActivityObjectInterface
      * @link http://activitystrea.ms/specs/json/1.0/#object See published property.
      *
      * @param KDateInterface|null $date The published date.
-     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setPublished($date);
@@ -237,7 +227,6 @@ interface ComActivitiesActivityObjectInterface
      * @link http://activitystrea.ms/specs/json/1.0/#object See summary property.
      *
      * @param mixed $summary The summary.
-     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setSummary($summary);
@@ -257,7 +246,6 @@ interface ComActivitiesActivityObjectInterface
      * @link http://activitystrea.ms/specs/json/1.0/#object See updated property.
      *
      * @param KDateInterface|null $date The updated date.
-     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setUpdated($date);
@@ -279,7 +267,6 @@ interface ComActivitiesActivityObjectInterface
      * @param array $duplicates An array of {@link ComActivitiesActivityObjectInterface} objects.
      * @param bool $merge Tells if upstream duplicates should be replaced or merged with current existing upstream
      *                    duplicates.
-     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setUpstreamDuplicates(array $duplicates, $merge = true);
@@ -299,7 +286,6 @@ interface ComActivitiesActivityObjectInterface
      * @link http://activitystrea.ms/specs/json/1.0/#object See url property.
      *
      * @param KHttpUrlInterface|null $url The url.
-     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setUrl($url);
@@ -316,7 +302,6 @@ interface ComActivitiesActivityObjectInterface
      *
      * @param array $attributes The attributes.
      * @param bool  $merge      Tells if attributes should be replaced or merged with current existing attributes.
-     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setAttributes(array $attribs = array(), $merge = true);
@@ -325,7 +310,6 @@ interface ComActivitiesActivityObjectInterface
      * Set the deleted state.
      *
      * @param bool $state The deleted state.
-     *
      * @return ComActivitiesActivityObjectInterface
      */
     public function setDeleted($state);

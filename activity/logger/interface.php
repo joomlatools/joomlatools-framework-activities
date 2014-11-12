@@ -2,9 +2,9 @@
 /**
  * Nooku Framework - http://nooku.org/framework
  *
- * @copyright	Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		http://github.com/nooku/nooku-activities for the canonical source repository
+ * @copyright   Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license     GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link        http://github.com/nooku/nooku-activities for the canonical source repository
  */
 
 /**
@@ -46,7 +46,6 @@ interface ComActivitiesActivityLoggerInterface
      * The activity object is the entity on which the action is executed.
      *
      * @param KCommandInterface $command The command.
-     *
      * @return KModelEntityInterface The activity object.
      */
     public function getActivityObject(KCommandInterface $command);
@@ -57,7 +56,6 @@ interface ComActivitiesActivityLoggerInterface
      * The activity subject is the identifier of the object that executes the action.
      *
      * @param KCommandInterface $command The command.
-     *
      * @return KObjectIdentifier The activity subject.
      */
     public function getActivitySubject(KCommandInterface $command);
@@ -69,7 +67,6 @@ interface ComActivitiesActivityLoggerInterface
      *
      * @param KModelEntityInterface $object The activity object.
      * @param string                $action The action being executed.
-     *
      * @return string The activity status.
      */
     public function getActivityStatus(KModelEntityInterface $object, $action = null);
@@ -79,7 +76,6 @@ interface ComActivitiesActivityLoggerInterface
      *
      * @param KModelEntityInterface      $object  The activity object.
      * @param KObjectIdentifierInterface $subject The activity subject.
-     *
      * @return array Activity data.
      */
     public function getActivityData(KModelEntityInterface $object, KObjectIdentifierInterface $subject);

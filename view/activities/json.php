@@ -2,9 +2,9 @@
 /**
  * Nooku Framework - http://nooku.org/framework
  *
- * @copyright	Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		http://github.com/nooku/nooku-activities for the canonical source repository
+ * @copyright   Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license     GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link        http://github.com/nooku/nooku-activities for the canonical source repository
  */
 
 /**
@@ -70,7 +70,6 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      * @link http://activitystrea.ms/specs/json/1.0/#json See JSON serialization.
      *
      * @param KModelEntityInterface $entity The model entity.
-     *
      * @return array The array with data to be encoded to JSON.
      */
     protected function _getEntity(KModelEntityInterface $entity)
@@ -112,7 +111,6 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      * Get the activity renderer.
      *
      * @throws UnexpectedValueException if renderer has the wrong type.
-     *
      * @return ComActivitiesActivityRendererInterface The activity renderer.
      */
     public function getRenderer()
@@ -143,7 +141,6 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      * Set the activity renderer.
      *
      * @param mixed $renderer An activity renderer instance, identifier object or string.
-     *
      * @return ComActivitiesViewActivitiesJson
      */
     public function setRenderer($renderer)
@@ -152,9 +149,9 @@ class ComActivitiesViewActivitiesJson extends KViewJson
         {
             if(is_string($renderer) && strpos($renderer, '.') === false )
             {
-                $identifier			= $this->getIdentifier()->toArray();
-                $identifier['path']	= array('template', 'helper');
-                $identifier['name']	= $renderer;
+                $identifier         = $this->getIdentifier()->toArray();
+                $identifier['path'] = array('template', 'helper');
+                $identifier['name'] = $renderer;
 
                 $identifier = $this->getIdentifier($identifier);
             }
@@ -172,7 +169,6 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      * Activity object data getter.
      *
      * @param ComActivitiesActivityObjectInterface $object The activity object.
-     *
      * @return array The object data.
      */
     protected function _getObjectData(ComActivitiesActivityObjectInterface $object)
@@ -221,7 +217,6 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      * Activity medialink data getter.
      *
      * @param ComActivitiesActivityMedialinkInterface $medialink The medialink object.
-     *
      * @return array The object data.
      */
     protected function _getMedialinkData(ComActivitiesActivityMedialinkInterface $medialink)
@@ -237,7 +232,6 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      * Removes entries with empty values.
      *
      * @param array $data The data to cleanup.
-     *
      * @return array The cleaned up data.
      */
     protected function _cleanupData(array $data = array())
@@ -260,7 +254,6 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      * Provides a fully qualified and un-escaped URL provided a URL object.
      *
      * @param KHttpUrlInterface $url The URL.
-     *
      * @return string The fully qualified un-escaped URL.
      */
     protected function _getUrl(KHttpUrlInterface $url)

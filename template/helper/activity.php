@@ -2,9 +2,9 @@
 /**
  * Nooku Framework - http://nooku.org/framework
  *
- * @copyright      Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license        GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link           http://github.com/nooku/nooku-activities for the canonical source repository
+ * @copyright   Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license     GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link        http://github.com/nooku/nooku-activities for the canonical source repository
  */
 
 /**
@@ -21,7 +21,6 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
      * Wraps around {@link render()} to easily render activities on layouts.
      *
      * @param array $config An optional configuration array.
-     *
      * @return string The rendered activity.
      */
     public function activity($config = array())
@@ -42,7 +41,6 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
      *
      * @param ComActivitiesActivityInterface $activity The activity object.
      * @param array                          $config   An optional configuration array.
-     *
      * @return string The rendered activity.
      */
     public function render(ComActivitiesActivityInterface $activity, $config = array())
@@ -85,7 +83,6 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
      *
      * @param ComActivitiesActivityObjectInterface $object The activity object.
      * @param KObjectConfig                        $config The configuration object.
-     *
      * @return string The rendered object.
      */
     protected function _renderObject(ComActivitiesActivityObjectInterface $object, KObjectConfig $config)

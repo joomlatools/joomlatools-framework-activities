@@ -2,9 +2,9 @@
 /**
  * Nooku Framework - http://nooku.org/framework
  *
- * @copyright	Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		http://github.com/nooku/nooku-activities for the canonical source repository
+ * @copyright   Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license     GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link        http://github.com/nooku/nooku-activities for the canonical source repository
  */
 
 /**
@@ -35,7 +35,6 @@ class ComActivitiesActivityMedialink extends KObjectArray implements ComActiviti
      * @link http://activitystrea.ms/specs/json/1.0/#media-link See duration property.
      *
      * @param int $duration The duration.
-     *
      * @return ComActivitiesActivityMedialink
      */
     public function setDuration($duration)
@@ -62,7 +61,6 @@ class ComActivitiesActivityMedialink extends KObjectArray implements ComActiviti
      * @link http://activitystrea.ms/specs/json/1.0/#media-link See height property.
      *
      * @param int $height The height.
-     *
      * @return ComActivitiesActivityMedialink
      */
     public function setHeight($height)
@@ -89,7 +87,6 @@ class ComActivitiesActivityMedialink extends KObjectArray implements ComActiviti
      * @link http://activitystrea.ms/specs/json/1.0/#media-link See Url property.
      *
      * @param KHttpUrlInterface $url The url.
-     *
      * @return ComActivitiesActivityMedialink
      */
     public function setUrl(KHttpUrl $url)
@@ -116,7 +113,6 @@ class ComActivitiesActivityMedialink extends KObjectArray implements ComActiviti
      * @link http://activitystrea.ms/specs/json/1.0/#media-link See width property.
      *
      * @param int $width The width.
-     *
      * @return ComActivitiesActivityMedialink
      */
     public function setWidth($width)
