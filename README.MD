@@ -52,7 +52,7 @@ Out of the box, Nooku Activities will attempt to store activities in a database 
 We appreciate any contribution to Nooku Activities, whether it is related to bugs, grammar, or simply a suggestion or
 improvement. We ask that any contribution follows a few simple guidelines in order to be properly received.
 
-We follow the [GitFlow](gitflow-model) branching model, from development to release. If you are not familiar with it,
+We follow the [GitFlow][gitflow-model] branching model, from development to release. If you are not familiar with it,
 there are several guides and tutorials online to learn about it.
 
 There are a few things you must know before submitting a pull request:
@@ -63,3 +63,5 @@ There are a few things you must know before submitting a pull request:
 ## License 
 
 Nooku Activities is open-source software licensed under the [GPLv3 license](https://github.com/nooku/nooku-framework/blob/master/LICENSE.txt).
+
+[gitflow-model]: http://nvie.com/posts/a-successful-git-branching-model/
