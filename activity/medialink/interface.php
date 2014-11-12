@@ -2,9 +2,9 @@
 /**
  * Nooku Framework - http://nooku.org/framework
  *
- * @copyright	Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		http://github.com/nooku/nooku-activities for the canonical source repository
+ * @copyright   Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license     GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link        http://github.com/nooku/nooku-activities for the canonical source repository
  */
 
 /**
@@ -28,7 +28,6 @@ interface ComActivitiesActivityMedialinkInterface
      * Set Duration.
      *
      * @param int $duration The duration.
-     *
      * @return ComActivitiesActivityMedialinkInterface
      */
     public function setDuration($duration);
@@ -44,7 +43,6 @@ interface ComActivitiesActivityMedialinkInterface
      * Set Height.
      *
      * @param int $height The height.
-     *
      * @return ComActivitiesActivityMedialinkInterface
      */
     public function setHeight($height);
@@ -60,7 +58,6 @@ interface ComActivitiesActivityMedialinkInterface
      * Set Url.
      *
      * @param KHttpUrl $url The url.
-     *
      * @return ComActivitiesActivityMedialinkInterface
      */
     public function setUrl(KHttpUrl $url);
@@ -76,7 +73,6 @@ interface ComActivitiesActivityMedialinkInterface
      * Set Width.
      *
      * @param int $width The width.
-     *
      * @return ComActivitiesActivityMedialinkInterface
      */
     public function setWidth($width);

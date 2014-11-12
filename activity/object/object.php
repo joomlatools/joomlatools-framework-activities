@@ -2,9 +2,9 @@
 /**
  * Nooku Framework - http://nooku.org/framework
  *
- * @copyright	Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		http://github.com/nooku/nooku-activities for the canonical source repository
+ * @copyright   Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license     GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link        http://github.com/nooku/nooku-activities for the canonical source repository
  */
 
 /**
@@ -52,7 +52,6 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @see ComActivitiesActivityObject::getObjectName
      *
      * @param string|null $name The activity object name.
-     *
      * @return ComActivitiesActivityObject
      */
     public function setObjectName($name)
@@ -83,7 +82,6 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See displayName property.
      *
      * @param string|null $name The display name.
-     *
      * @return ComActivitiesActivityObject
      */
     public function setDisplayName($name)
@@ -147,7 +145,6 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See author property.
      *
      * @param ComActivitiesActivityObjectInterface|null $author The author.
-     *
      * @return ComActivitiesActivityObject
      */
     public function setAuthor($author)
@@ -178,7 +175,6 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See content property.
      *
      * @param string $content The content.
-     *
      * @return ComActivitiesActivityObject
      */
     public function setContent($content)
@@ -211,7 +207,6 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @param array $duplicates An array of {@link ComActivitiesActivityObjectInterface} objects.
      * @param bool  $merge      Tells if downstream duplicates should be replaced or merged with current existing
      *                          downstream duplicates.
-     *
      * @return ComActivitiesActivityObject
      */
     public function setDownstreamDuplicates(array $duplicates, $merge = true)
@@ -243,7 +238,6 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See id property.
      *
      * @param string|null $id The Id.
-     *
      * @return ComActivitiesActivityObject
      */
     public function setId($id)
@@ -275,7 +269,6 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See image property.
      *
      * @param ComActivitiesActivityMedialinkInterface|null $image The image.
-     *
      * @return ComActivitiesActivityObject
      */
     public function setImage($image)
@@ -306,7 +299,6 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See objectType property.
      *
      * @param string|null $type The object type.
-     *
      * @return ComActivitiesActivityObject
      */
     public function setObjectType($type)
@@ -322,9 +314,9 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
     /**
      * Get the published date.
      *
-     * @return KDate|null The published date, null if the object does not have a published property.
-     *
      * @link http://activitystrea.ms/specs/json/1.0/#object See published property.
+     *
+     * @return KDate|null The published date, null if the object does not have a published property.
      */
     public function getPublished()
     {
@@ -337,7 +329,6 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See published property.
      *
      * @param KDate $date The published date.
-     *
      * @return ComActivitiesActivityObject
      */
     public function setPublished($date)
@@ -368,7 +359,6 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See summary property.
      *
      * @param mixed $summary The summary.
-     *
      * @return ComActivitiesActivityObject
      */
     public function setSummary($summary)
@@ -399,7 +389,6 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See updated property.
      *
      * @param KDate|null $date The updated date.
-     *
      * @return ComActivitiesActivityObject
      */
     public function setUpdated($date)
@@ -432,7 +421,6 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @param array $duplicates An array of {@link ComActivitiesActivityObjectInterface} objects.
      * @param bool  $merge      Tells if upstream duplicates should be replaced or merged with current existing upstream
      *                          duplicates.
-     *
      * @return ComActivitiesActivityObject
      */
     public function setUpstreamDuplicates(array $duplicates, $merge = true)
@@ -464,7 +452,6 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * @link http://activitystrea.ms/specs/json/1.0/#object See url property.
      *
      * @param KHttpUrl|null $url The url.
-     *
      * @return ComActivitiesActivityObject
      */
     public function setUrl($url)
@@ -492,7 +479,6 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      *
      * @param array $attributes The attributes.
      * @param bool  $merge      Tells if attributes should be replaced or merged with current existing attributes.
-     *
      * @return ComActivitiesActivityObject
      */
     public function setAttributes(array $attribs = array(), $merge = true)
@@ -510,7 +496,6 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
      * Set the deleted state.
      *
      * @param bool $state The deleted state.
-     *
      * @return ComActivitiesActivityObject
      */
     public function setDeleted($state)

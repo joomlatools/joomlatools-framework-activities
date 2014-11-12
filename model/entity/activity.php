@@ -2,9 +2,9 @@
 /**
  * Nooku Framework - http://nooku.org/framework
  *
- * @copyright      Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license        GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link           http://github.com/nooku/nooku-activities for the canonical source repository
+ * @copyright   Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license     GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link        http://github.com/nooku/nooku-activities for the canonical source repository
  */
 
 /**
@@ -568,7 +568,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      * Get an activity object config.
      *
      * @param string $object The object name.
-     *
      * @return KObjectConfig
      */
     protected function _getConfig($object)
@@ -589,7 +588,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      * Set the actor config.
      *
      * @param KObjectConfig $config The actor config.
-     *
      * @return KObjectConfig
      */
     protected function _actorConfig(KObjectConfig $config)
@@ -684,7 +682,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      * Find an activity object.
      *
      * @param string $label The object label.
-     *
      * @return bool True if found, false otherwise.
      */
     protected function _findObject($label)
@@ -759,7 +756,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      * Route getter.
      *
      * @param string $url The URL to route.
-     *
      * @return KHttpUrl The routed URL object.
      */
     protected function _getRoute($url)

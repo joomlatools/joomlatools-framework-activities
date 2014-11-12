@@ -2,9 +2,9 @@
 /**
  * Nooku Framework - http://nooku.org/framework
  *
- * @copyright	Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
- * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
- * @link		http://github.com/nooku/nooku-activities for the canonical source repository
+ * @copyright   Copyright (C) 2011 - 2014 Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @license     GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
+ * @link        http://github.com/nooku/nooku-activities for the canonical source repository
  */
 
 /**
@@ -27,7 +27,6 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KOb
      *
      * @param string $string The activity format to translate.
      * @param array  $tokens An array of format tokens.
-     *
      * @return string The translated activity format.
      */
     public function translate($format, array $tokens = array())
@@ -55,7 +54,6 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KOb
      *
      * @param  string $format     The activity format.
      * @param  array  $parameters Associative array containing parameters.
-     *
      * @return string The activity format override. If an override was not found, the original activity format is
      *                returned instead.
      */
@@ -80,7 +78,8 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KOb
                 }
 
                 $this->_overrides[$key] = $override;
-            } else $override = $this->_overrides[$key];
+            }
+            else $override = $this->_overrides[$key];
         }
 
         return $override;
@@ -91,7 +90,6 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KOb
      *
      * @param  string $format     The activity format.
      * @param  array  $parameters Associative array containing parameters.
-     *
      * @return string The activity format override key.
      */
     protected function _getOverrideKey($format, $parameters = array())
@@ -110,7 +108,6 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KOb
      *
      * @param  string $format     The activity format.
      * @param  array  $parameters Associative array containing parameters.
-     *
      * @return array A list of activity format overrides.
      */
     protected function _getOverrides($format, $parameters = array())
@@ -142,7 +139,6 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KOb
      *
      * @param     array $set        The set to get the power set from.
      * @param     int   $min_length The minimum amount of elements that a subset from the power set may contain.
-     *
      * @return array The power set represented by an array of arrays containing elements from the provided set.
      */
     protected function _getPowerSet(array $set = array(), $min_length = 1)
