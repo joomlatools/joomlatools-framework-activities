@@ -16,34 +16,15 @@ The component includes an API for working with activities. This API fully adhere
 
 ## Installation
 
-Nooku Activities can and should be installed by using [composer](https://getcomposer.org/). For installing the component please complete the following steps:
+Nooku Activities can and should be installed by using [Composer](https://getcomposer.org/). 
 
-- Create a `composer.json` file in the root directory of your Joomla site containing the following code:
+Go to the root directory of your Joomla installation in command line and execute this command:
 
-### Development:
-
-```json
-{
-    "require": {
-        "nooku/activities-component": "dev-develop"
-    },
-    "minimum-stability": "dev"
-}
+```
+composer require nooku/activities-component:2.*
 ```
 
-### Stable:
-
-```json
-{
-    "require": {
-        "nooku/activities-component": "2.*"
-    }
-}
-```
-
-- Run `composer install` to install the component.
-
-The component will get installed in the `vendor` folder of the root directory of your Joomla site. Nooku will make sure that the component is bootstrapped from that location and made available to other components extending it or just making use of it.
+The component will be installed in the `vendor` folder of the root directory of your Joomla site. Nooku will make sure that the component is bootstrapped from that location and made available to other components extending it or just making use of it.
 
 Out of the box, Nooku Activities will attempt to store activities in a database table named activities_activities. An SQL dump file may be found under the `/resources/install` directory for creating this database table. This database needs to be manually created for the component to function properly. At the moment we only support MySQL.
 
