@@ -174,6 +174,11 @@ class ComActivitiesActivityLogger extends KObject implements ComActivitiesActivi
             $status = KModelEntityInterface::STATUS_CREATED;
         }
 
+        // Ignore non-changing edits.
+        if ($action == 'after.edit' && $status == KModelEntityInterface::STATUS_FETCHED) {
+            $status = null;
+        }
+
         return $status;
     }
 

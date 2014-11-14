@@ -63,6 +63,11 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
             'loggers'  => array(),
         ));
 
+        // Append the default logger if none is set.
+        if (!count($config->loggers)) {
+            $config->append(array('loggers' => array('com:activities.activity.logger')));
+        }
+
         parent::_initialize($config);
     }
 
