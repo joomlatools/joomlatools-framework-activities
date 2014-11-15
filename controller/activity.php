@@ -30,10 +30,68 @@ class ComActivitiesControllerActivity extends KControllerModel
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'behaviors' => array('purgeable')
+            'model'     => 'com:activities.model.activities',
+            'behaviors' => array('com:activities.controller.behavior.purgeable')
         ));
 
+        $aliases = array(
+            array('path' => array('controller', 'permission')),
+            array('path' => array('controller', 'toolbar'))
+        );
+
+        $manager = $this->getObject('manager');
+
+        $identifier = $this->getIdentifier()->toArray();
+
+        $alias = $identifier;
+
+        $identifier['package'] = 'activities';
+        unset($identifier['domain']);
+
+        foreach ($aliases as $parts)
+        {
+            foreach ($parts as $key => $value)
+            {
+                $alias[$key]      = $value;
+                $identifier[$key] = $value;
+            }
+
+            // Register the alias if a class for it cannot be found.
+            if (!$manager->getClass($alias, false)) {
+                $manager->registerAlias($identifier, $alias);
+            }
+        }
+
         parent::_initialize($config);
+    }
+
+    /**
+     * Method to set a view object attached to the controller
+     *
+     * @param   mixed   $view An object that implements KObjectInterface, KObjectIdentifier object
+     *                  or valid identifier string
+     * @return  object  A KViewInterface object or a KObjectIdentifier object
+     */
+    public function setView($view)
+    {
+        $view = parent::setView($view);
+
+        if ($view instanceof KObjectIdentifier && $this->getRequest()->getFormat() == 'json')
+        {
+            $manager = $this->getObject('manager');
+
+            // Set the view identifier as an alias of the component view.
+            if (!$manager->getClass($view, false))
+            {
+                $identifier = $view->toArray();
+                $identifier['package'] = 'activities';
+                unset($identifier['domain']);
+
+                $manager->registerAlias($identifier, $view);
+            }
+        }
+
+        return $view;
     }
 
     /**
