@@ -76,7 +76,7 @@ class ComActivitiesControllerActivity extends KControllerModel
     {
         $view = parent::setView($view);
 
-        if ($view instanceof KObjectIdentifier && $this->getRequest()->getFormat() == 'json')
+        if ($view instanceof KObjectIdentifier && $this->getRequest()->getFormat() !== 'html')
         {
             $manager = $this->getObject('manager');
 
