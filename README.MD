@@ -21,7 +21,7 @@ Nooku Activities can and should be installed by using [Composer](https://getcomp
 Go to the root directory of your Joomla installation in command line and execute this command:
 
 ```
-composer require nooku/activities-component:2.*
+composer require nooku/nooku-activities:2.*
 ```
 
 The component will be installed in the `vendor` folder of the root directory of your Joomla site. Nooku will make sure that the component is bootstrapped from that location and made available to other components extending it or just making use of it.
