@@ -95,6 +95,19 @@ class ComActivitiesControllerActivity extends KControllerModel
     }
 
     /**
+     * Overridden for forcing the package model state.
+     */
+    public function getRequest()
+    {
+        $request = parent::getRequest();
+
+        // Force set the 'package' in the request
+        $request->query->package = $this->getIdentifier()->package;
+
+        return $request;
+    }
+
+    /**
      * Set the IP address if we are adding a new activity.
      *
      * @param KControllerContextInterface $context A command context object.
