@@ -30,31 +30,27 @@ class ComActivitiesControllerActivity extends KControllerModel
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'model'     => 'com:activities.model.activities',
-            'behaviors' => array('com:activities.controller.behavior.purgeable')
+            'behaviors' => array('purgeable')
         ));
 
         $aliases = array(
-            array('path' => array('controller', 'permission')),
-            array('path' => array('controller', 'toolbar'))
+            'com:activities.model.activities'               => array(
+                'path' => array('model'),
+                'name' => KStringInflector::pluralize($this->getIdentifier()->getName())
+            ),
+            'com:activities.controller.behavior.purgeable'  => array(
+                'path' => array('controller', 'behavior'),
+                'name' => 'purgeable'
+            ),
+            'com:activities.controller.permission.activity' => array('path' => array('controller', 'permission')),
+            'com:activities.controller.toolbar.activity'    => array('path' => array('controller', 'toolbar'))
         );
 
-        $manager = $this->getObject('manager');
-
-        $identifier = $this->getIdentifier()->toArray();
-
-        $alias = $identifier;
-
-        $identifier['package'] = 'activities';
-        unset($identifier['domain']);
-
-        foreach ($aliases as $parts)
+        foreach ($aliases as $identifier => $alias)
         {
-            foreach ($parts as $key => $value)
-            {
-                $alias[$key]      = $value;
-                $identifier[$key] = $value;
-            }
+            $alias = array_merge($this->getIdentifier()->toArray(), $alias);
+
+            $manager = $this->getObject('manager');
 
             // Register the alias if a class for it cannot be found.
             if (!$manager->getClass($alias, false)) {
