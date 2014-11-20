@@ -33,28 +33,31 @@ class ComActivitiesControllerActivity extends KControllerModel
             'behaviors' => array('purgeable')
         ));
 
-        $aliases = array(
-            'com:activities.model.activities'               => array(
-                'path' => array('model'),
-                'name' => KStringInflector::pluralize($this->getIdentifier()->getName())
-            ),
-            'com:activities.controller.behavior.purgeable'  => array(
-                'path' => array('controller', 'behavior'),
-                'name' => 'purgeable'
-            ),
-            'com:activities.controller.permission.activity' => array('path' => array('controller', 'permission')),
-            'com:activities.controller.toolbar.activity'    => array('path' => array('controller', 'toolbar'))
-        );
-
-        foreach ($aliases as $identifier => $alias)
+        if ($this->getIdentifier()->getPackage() != 'activities')
         {
-            $alias = array_merge($this->getIdentifier()->toArray(), $alias);
+            $aliases = array(
+                'com:activities.model.activities'               => array(
+                    'path' => array('model'),
+                    'name' => KStringInflector::pluralize($this->getIdentifier()->getName())
+                ),
+                'com:activities.controller.behavior.purgeable'  => array(
+                    'path' => array('controller', 'behavior'),
+                    'name' => 'purgeable'
+                ),
+                'com:activities.controller.permission.activity' => array('path' => array('controller', 'permission')),
+                'com:activities.controller.toolbar.activity'    => array('path' => array('controller', 'toolbar'))
+            );
 
-            $manager = $this->getObject('manager');
+            foreach ($aliases as $identifier => $alias)
+            {
+                $alias = array_merge($this->getIdentifier()->toArray(), $alias);
 
-            // Register the alias if a class for it cannot be found.
-            if (!$manager->getClass($alias, false)) {
-                $manager->registerAlias($identifier, $alias);
+                $manager = $this->getObject('manager');
+
+                // Register the alias if a class for it cannot be found.
+                if (!$manager->getClass($alias, false)) {
+                    $manager->registerAlias($identifier, $alias);
+                }
             }
         }
 
@@ -70,9 +73,10 @@ class ComActivitiesControllerActivity extends KControllerModel
      */
     public function setView($view)
     {
-        $view = parent::setView($view);
+        $view   = parent::setView($view);
+        $format = $this->getRequest()->getFormat();
 
-        if ($view instanceof KObjectIdentifier && $this->getRequest()->getFormat() !== 'html')
+        if ($view instanceof KObjectIdentifier && $view->getPackage() != 'activities' && $format  !== 'html')
         {
             $manager = $this->getObject('manager');
 
