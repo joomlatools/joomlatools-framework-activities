@@ -23,20 +23,6 @@ class ComActivitiesActivityTranslator extends KObject implements ComActivitiesAc
     protected $_overrides = array();
 
     /**
-     * Initializes the options for the object
-     *
-     * Called from {@link __construct()} as a first step of object instantiation.
-     *
-     * @param   KObjectConfig $config Configuration options.
-     * @return  void
-     */
-    protected function _initialize(KObjectConfig $config)
-    {
-        $config->append(array('catalogue' => 'activities'));
-        parent::_initialize($config);
-    }
-
-    /**
      * Translates an activity format.
      *
      * @param string $string The activity format to translate.
