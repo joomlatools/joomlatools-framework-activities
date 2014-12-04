@@ -24,7 +24,18 @@ class ComActivitiesControllerActivity extends KControllerModel
     {
         parent::__construct($config);
 
-        $this->getObject('translator')->load('com:activities');
+        $translator = $this->getObject('translator');
+        $catalogue = $translator->getCatalogue();
+
+        if ($length = $catalogue->getConfig()->key_length) {
+            $catalogue->getConfig()->key_length = false;
+        }
+
+        $translator->load('com:activities');
+
+        if ($length) {
+            $catalogue->getConfig()->key_length = $length;
+        }
     }
 
     protected function _initialize(KObjectConfig $config)

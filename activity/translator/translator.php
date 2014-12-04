@@ -46,7 +46,20 @@ class ComActivitiesActivityTranslator extends KObject implements ComActivitiesAc
 
         $override = $this->_getOverride($format, $parameters);
 
-        return parent::translate($override, array());
+        $translator = $this->getObject('translator');
+        $catalogue = $translator->getCatalogue();
+
+        if ($length = $catalogue->getConfig()->key_length) {
+            $catalogue->getConfig()->key_length = false;
+        }
+
+        $result = $translator->translate($override, array());
+
+        if ($length) {
+            $catalogue->getConfig()->key_length = $length;
+        }
+
+        return $result;
     }
 
     /**
@@ -70,7 +83,7 @@ class ComActivitiesActivityTranslator extends KObject implements ComActivitiesAc
                 foreach ($this->_getOverrides($format, $parameters) as $candidate)
                 {
                     // Check if the override is translatable.
-                    if ($this->isTranslatable($candidate))
+                    if ($this->getObject('translator')->isTranslatable($candidate))
                     {
                         $override = $candidate;
                         break;
