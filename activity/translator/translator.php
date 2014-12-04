@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KObjectSingleton
+class ComActivitiesActivityTranslator extends KObject implements ComActivitiesActivityTranslatorInterface, KObjectMultiton
 {
     /**
      * Associative array containing previously calculated overrides.
