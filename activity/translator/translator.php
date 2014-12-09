@@ -44,8 +44,6 @@ class ComActivitiesActivityTranslator extends KObject implements ComActivitiesAc
             }
         }
 
-        $override = $this->_getOverride($format, $parameters);
-
         $translator = $this->getObject('translator');
         $catalogue = $translator->getCatalogue();
 
@@ -53,7 +51,7 @@ class ComActivitiesActivityTranslator extends KObject implements ComActivitiesAc
             $catalogue->getConfig()->key_length = false;
         }
 
-        $result = $translator->translate($override, array());
+        $result = $translator->translate($this->_getOverride($format, $parameters), array());
 
         if ($length) {
             $catalogue->getConfig()->key_length = $length;
