@@ -8,22 +8,19 @@
  */
 
 /**
- * Version.
+ * Activity Translator Interface.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesVersion extends KObject
+interface ComActivitiesActivityTranslatorInterface
 {
-    const VERSION = '2.0.3';
-
     /**
-     * Get the version.
+     * Translates an activity format.
      *
-     * @return string
+     * @param string $string The activity format to translate.
+     * @param array  $tokens An array of format tokens.
+     * @return string The translated activity format.
      */
-    public function getVersion()
-    {
-        return self::VERSION;
-    }
+    public function translate($format, array $tokens = array());
 }

@@ -58,6 +58,13 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     protected $_objects;
 
     /**
+     * The activities translator identifier.
+     *
+     * @var mixed
+     */
+    protected $_translator;
+
+    /**
      * Constructor.
      *
      * @param KObjectConfig $config Configuration options.
@@ -70,6 +77,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         $this->_objects       = KObjectConfig::unbox($config->objects);
         $this->_object_table  = $config->object_table;
         $this->_object_column = $config->object_column;
+        $this->_translator    = $config->translator;
     }
 
     /**
@@ -87,6 +95,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
             'format'        => '{actor} {action} {object.type} title {object}',
             'object_table'  => $data->package . '_' . KStringInflector::pluralize($data->name),
             'object_column' => $data->package . '_' . $data->name . '_id',
+            'translator'    => 'com:activities.activity.translator',
             'objects'       => array('actor', 'action', 'object', 'target', 'generator', 'provider')
         ));
 
@@ -278,7 +287,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     public function getPropertyFormat()
     {
-        return $this->getObject('com:activities.activity.translator')->translate($this->_format, $this->tokens);
+        return $this->getObject($this->_translator)->translate($this->_format, $this->tokens);
     }
 
     /**

@@ -13,7 +13,7 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KObjectSingleton
+class ComActivitiesActivityTranslator extends KObject implements ComActivitiesActivityTranslatorInterface, KObjectMultiton
 {
     /**
      * Associative array containing previously calculated overrides.
@@ -21,20 +21,6 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KOb
      * @var array
      */
     protected $_overrides = array();
-
-    /**
-     * Initializes the options for the object
-     *
-     * Called from {@link __construct()} as a first step of object instantiation.
-     *
-     * @param   KObjectConfig $config Configuration options.
-     * @return  void
-     */
-    protected function _initialize(KObjectConfig $config)
-    {
-        $config->append(array('catalogue' => 'activities'));
-        parent::_initialize($config);
-    }
 
     /**
      * Translates an activity format.
@@ -58,9 +44,20 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KOb
             }
         }
 
-        $override = $this->_getOverride($format, $parameters);
+        $translator = $this->getObject('translator');
+        $catalogue = $translator->getCatalogue();
 
-        return parent::translate($override, array());
+        if ($length = $catalogue->getConfig()->key_length) {
+            $catalogue->getConfig()->key_length = false;
+        }
+
+        $result = $translator->translate($this->_getOverride($format, $parameters), array());
+
+        if ($length) {
+            $catalogue->getConfig()->key_length = $length;
+        }
+
+        return $result;
     }
 
     /**
@@ -84,7 +81,7 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements KOb
                 foreach ($this->_getOverrides($format, $parameters) as $candidate)
                 {
                     // Check if the override is translatable.
-                    if ($this->isTranslatable($candidate))
+                    if ($this->getObject('translator')->isTranslatable($candidate))
                     {
                         $override = $candidate;
                         break;

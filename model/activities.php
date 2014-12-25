@@ -33,8 +33,6 @@ class ComActivitiesModelActivities extends KModelDatabase
               ->insert('action', 'cmd')
               ->insert('row', 'int')
               ->insert('user', 'cmd')
-              ->insert('distinct', 'boolean', false)
-              ->insert('column', 'cmd')
               ->insert('start_date', 'date')
               ->insert('end_date', 'date')
               ->insert('day_range', 'int')
@@ -44,24 +42,6 @@ class ComActivitiesModelActivities extends KModelDatabase
 
         // Force ordering by created_on
         $state->sort = 'created_on';
-    }
-
-    /**
-     * Builds SELECT columns list for the query.
-     *
-     * @param KDatabaseQueryInterface $query
-     */
-    protected function _buildQueryColumns(KDatabaseQueryInterface $query)
-    {
-        $state = $this->getState();
-
-        if($state->distinct && !empty($state->column))
-        {
-            $query->distinct()
-                ->columns($state->column)
-                ->columns(array('activities_activity_id' => $state->column));
-        }
-        else parent::_buildQueryColumns($query);
     }
 
     /**
@@ -127,22 +107,6 @@ class ComActivitiesModelActivities extends KModelDatabase
 
         if ($ip = $state->ip) {
             $query->where('tbl.ip IN (:ip)')->bind(array('ip' => $state->ip));
-        }
-    }
-
-    /**
-     * Builds GROUP BY clause for the query.
-     *
-     * @param KDatabaseQueryInterface $query
-     */
-    protected function _buildQueryOrder(KDatabaseQueryInterface $query)
-    {
-        $state = $this->getState();
-
-        if($state->distinct && !empty($state->column)) {
-            $query->order('package', 'asc');
-        } else {
-            parent::_buildQueryOrder($query);
         }
     }
 }
