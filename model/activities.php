@@ -64,7 +64,7 @@ class ComActivitiesModelActivities extends KModelDatabase
         }
 
         if ($state->package) {
-            $query->where('tbl.package = :package')->bind(array('package' => $state->package));
+            $query->where('tbl.package IN :package')->bind(array('package' => (array) $state->package));
         }
 
         if ($state->name) {
