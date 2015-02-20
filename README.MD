@@ -2,11 +2,15 @@
 
 ## What is Nooku Activities?
 
-Nooku activities is a re-usable component for logging and exposing activity streams. This component is built on top of the [Nooku Framework](https://github.com/nooku/nooku-framework) and may be used standalone or as the backbone of a more advanced activities application.
+Nooku activities is a re-usable component for logging and exposing activity streams. This component is built on top of
+[Nooku Framework](https://github.com/nooku/nooku-framework) and may be used standalone or as the backbone of a more
+advanced activities application.
 
 ## Activities API
 
-The component includes an API for working with activities. This API fully adheres to and extends the [Activity Streams specification v1.0](http://activitystrea.ms/specs/json/1.0/). JSON activity streams provided by the component are also fully compliant with the standard.  
+The component includes an API for working with activities. This API fully adheres to and extends the [Activity Streams
+specification v1.0](http://activitystrea.ms/specs/json/1.0/). JSON activity streams provided by the component are also
+fully compliant with the standard.
 
 ## Requirements
 
@@ -16,7 +20,7 @@ The component includes an API for working with activities. This API fully adhere
 
 ## Installation
 
-Nooku Activities can and should be installed by using [Composer](https://getcomposer.org/). 
+Nooku Activities can and should be installed by using [Composer](https://getcomposer.org/).
 
 Go to the root directory of your Joomla installation in command line and execute this command:
 
@@ -24,9 +28,13 @@ Go to the root directory of your Joomla installation in command line and execute
 composer require nooku/nooku-activities:2.*
 ```
 
-The component will be installed in the `vendor` folder of the root directory of your Joomla site. Nooku will make sure that the component is bootstrapped from that location and made available to other components extending it or just making use of it.
+The component will be installed in the `vendor` folder of the root directory of your Joomla site. Nooku will make sure
+that the component is bootstrapped from that location and made available to other components extending it or just making
+use of it.
 
-Out of the box, Nooku Activities will attempt to store activities in a database table named activities_activities. An SQL dump file may be found under the `/resources/install` directory for creating this database table. This database needs to be manually created for the component to function properly. At the moment we only support MySQL.
+Out of the box, Nooku Activities will attempt to store activities in a database table named `activities`. An
+SQL dump file may be found under the `/resources/install` directory for creating this database table. This database
+needs to be manually created for the component to function properly. At the moment we only support MySQL.
 
 ## Contributing
 
@@ -38,11 +46,18 @@ there are several guides and tutorials online to learn about it.
 
 There are a few things you must know before submitting a pull request:
 
-- All changes need to be made against the `develop` branch. However, it is very well appreciated and highly suggested to start a new feature branch from `develop` and make your changes in this new branch. This way we can just checkout your feature branch for testing before merging it into `develop`.
+- All changes need to be made against the `develop` branch. However, it is very well appreciated and highly suggested to
+start a new feature branch from `develop` and make your changes in this new branch. This way we can just checkout your
+feature branch for testing before merging it into `develop`.
 - We will not consider pull requests made directly to the `master` branch.
 
-## License 
+## Authors
 
-Nooku Activities is open-source software licensed under the [GPLv3 license](https://github.com/nooku/nooku-framework/blob/master/LICENSE.txt).
+See the list of [contributors](https://github.com/nooku/nooku-activities/contributors).
+
+## License
+
+The `nooku-activities` component is free and open-source software licensed under the [GPLv3 license](gplv3-license).
 
 [gitflow-model]: http://nvie.com/posts/a-successful-git-branching-model/
+[gplv3-license]: https://github.com/nooku/nooku-framework/blob/master/LICENSE.txt
