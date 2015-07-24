@@ -604,10 +604,15 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         $objectName = $this->getAuthor()->getName();
         $translate  = array('displayType');
 
-        if (!$this->_findActivityActor())
+        if (!$this->created_by)
         {
-            $objectName = 'Deleted user';
-            $translate[]  = 'displayName';
+            $objectName  = 'Guest user';
+            $translate[] = 'displayName';
+        }
+        elseif (!$this->_findActivityActor())
+        {
+            $objectName  = 'Deleted user';
+            $translate[] = 'displayName';
         }
 
         $config->append(array(
