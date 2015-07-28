@@ -87,7 +87,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
      */
     protected function _renderObject(ComActivitiesActivityObjectInterface $object, KObjectConfig $config)
     {
-        $config->append(array('html' => true, 'escaped_urls' => true, 'fqr' => false));
+        $config->append(array('html' => true, 'escaped_urls' => true, 'fqr' => false, 'links' => true));
 
         if ($output = $object->getDisplayName())
         {
@@ -96,7 +96,7 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
                 $output  = $object->getDisplayName();
                 $attribs = $object->getAttributes() ? $this->buildAttributes($object->getAttributes()) : '';
 
-                if ($url = $object->getUrl())
+                if ($config->links && $url = $object->getUrl())
                 {
                     // Make sure we have a fully qualified route.
                     if ($config->fqr && !$url->getHost()) {
