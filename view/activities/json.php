@@ -72,7 +72,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      * @param KModelEntityInterface $entity The model entity.
      * @return array The array with data to be encoded to JSON.
      */
-    protected function _getEntity(KModelEntityInterface $entity)
+    protected function _createResource(KModelEntityInterface $entity)
     {
         if ($this->_layout == 'stream')
         {
@@ -95,16 +95,33 @@ class ComActivitiesViewActivitiesJson extends KViewJson
             foreach ($activity->objects as $name => $object) {
                 $item[$name] = $this->_getObjectData($object);
             }
-        }
-        else
-        {
-            $item = $entity->toArray();
-            if (!empty($this->_fields)) {
-                $item = array_intersect_key($item, array_flip($this->_fields));
-            }
-        }
 
-        return $item;
+            return $item;
+        }
+        else return parent::_createResource($entity);
+    }
+
+    protected function _getActivityType(KModelEntityInterface $entity)
+    {
+        return 'activities';
+    }
+
+    /**
+     * Overridden here since the entity names in Logman differ from "activity"
+     *
+     *
+     * @param KModelEntityInterface $entity
+     * @param string                $method
+     * @return bool
+     */
+    protected function _callCustomMethod(KModelEntityInterface $entity, $method)
+    {
+        $method = '_getActivity'.ucfirst($method);
+
+        if ($method !== '_getEntity'.ucfirst($method) && method_exists($this, $method)) {
+            return $this->$method($entity);
+        }
+        else return false;
     }
 
     /**
