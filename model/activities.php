@@ -101,7 +101,7 @@ class ComActivitiesModelActivities extends KModelDatabase
             }
         }
 
-        if ($state->user) {
+        if (is_numeric($state->user)) {
             $query->where('tbl.created_by = :created_by')->bind(array('created_by' => $state->user));
         }
 
