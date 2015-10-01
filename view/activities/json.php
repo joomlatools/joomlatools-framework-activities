@@ -70,35 +70,35 @@ class ComActivitiesViewActivitiesJson extends KViewJson
      * @link http://activitystrea.ms/specs/json/1.0/#json See JSON serialization.
      *
      * @param KModelEntityInterface $entity The model entity.
+     * @param array $config Resource configuration.
      * @return array The array with data to be encoded to JSON.
      */
-    protected function _createResource(KModelEntityInterface $entity)
+    protected function _createResource(KModelEntityInterface $entity, array $config = array())
     {
         if ($this->_layout == 'stream')
         {
-            $activity = $entity;
             $renderer = $this->getRenderer();
 
             $item = array(
-                'id'        => $activity->getActivityId(),
-                'title'     => $renderer->render($activity, array('escaped_urls' => false, 'fqr' => true)),
-                'story'     => $renderer->render($activity, array('html' => false)),
-                'published' => $activity->getActivityPublished()->format('c'),
-                'verb'      => $activity->getActivityVerb(),
-                'format'    => $activity->getActivityFormat()
+                'id'        => $entity->getActivityId(),
+                'title'     => $renderer->render($entity, array('escaped_urls' => false, 'fqr' => true)),
+                'story'     => $renderer->render($entity, array('html' => false)),
+                'published' => $entity->getActivityPublished()->format('c'),
+                'verb'      => $entity->getActivityVerb(),
+                'format'    => $entity->getActivityFormat()
             );
 
-            if ($icon = $activity->getActivityIcon()) {
+            if ($icon = $entity->getActivityIcon()) {
                 $item['icon'] = $this->_getMediaLinkData($icon);
             }
 
-            foreach ($activity->objects as $name => $object) {
+            foreach ($entity->objects as $name => $object) {
                 $item[$name] = $this->_getObjectData($object);
             }
 
             return $item;
         }
-        else return parent::_createResource($entity);
+        else return parent::_createResource($entity, $config);
     }
 
     protected function _getActivityType(KModelEntityInterface $entity)
