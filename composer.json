@@ -22,5 +22,10 @@
     },
     "autoload": {
         "files": ["autoload.php"]
+    },
+    "nooku-component": {
+        "identifier": "com:activities",
+        "name": "activities",
+        "version": "3.0-beta1"
     }
 }
