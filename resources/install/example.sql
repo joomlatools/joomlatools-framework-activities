@@ -18,4 +18,4 @@ CREATE TABLE IF NOT EXISTS `activities_activities` (
     KEY `name` (`name`),
     KEY `row` (`row`),
     KEY `ip` (`ip`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
