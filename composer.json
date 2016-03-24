@@ -1,5 +1,5 @@
 {
-    "name": "nooku/nooku-activities",
+    "name": "joomlatools/framework-activities",
     "type": "nooku-component",
     "license": "GPLv3",
     "description": "A reusable component for logging and exposing activity streams",
@@ -9,7 +9,7 @@
         "activities",
         "streams"
     ],
-    "homepage": "https://github.com/nooku/nooku-activities",
+    "homepage": "https://github.com/joomlatools/joomlatools-framework-activities",
     "authors": [
         {
             "name": "Timble",
