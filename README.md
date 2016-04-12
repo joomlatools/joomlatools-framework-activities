@@ -1,7 +1,6 @@
 # Activities Component for Joomlatools Framework
 
-This is a re-usable component for logging and exposing activity streams. This component is built on top of
-[Joomlatools Framework](https://github.com/joomlatools/joomlatools-framework) and may be used standalone or as the backbone of a more advanced activities application.
+This is a re-usable component for logging and exposing activity streams for [Joomlatools Framework].
 
 ## Activities API
 
@@ -11,9 +10,9 @@ fully compliant with the standard.
 
 ## Requirements
 
-- Joomlatools Framework 2 or newer.
-- PHP 5.2 or newer.
-- MySQL 5.
+- Joomlatools Framework 2 or newer
+- PHP 5.3 or newer
+- MySQL 5
 
 ## Installation
 
@@ -42,3 +41,14 @@ See the list of [contributors](https://github.com/joomlatools/joomlatools-framew
 ## License
 
 Activities for Joomlatools Framework is free and open-source software licensed under the [GPLv3 license](LICENSE.txt).
+
+## Community
+
+Keep track of development and community news.
+
+* Follow [@joomlatoolsdev on Twitter](https://twitter.com/joomlatoolsdev)
+* Join [joomlatools/dev on Gitter](http://gitter.im/joomlatools/dev)
+* Read the [Joomlatools Developer Blog](https://www.joomlatools.com/developer/blog/)
+* Subscribe to the [Joomlatools Developer Newsletter](https://www.joomlatools.com/developer/newsletter/)
+
+[Joomlatools Framework]: http://www.joomlatools.com/developer/framework/
