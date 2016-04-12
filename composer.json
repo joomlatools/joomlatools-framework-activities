@@ -4,8 +4,8 @@
     "license": "GPLv3",
     "description": "A reusable component for logging and exposing activity streams",
     "keywords": [
-        "nooku",
-        "components",
+        "joomla",
+        "component",
         "activities",
         "streams"
     ],
@@ -23,7 +23,7 @@
         }
     ],
     "require": {
-        "nooku/nooku-framework": "~2.1"
+        "joomla/framework": "~2.1"
     },
     "autoload": {
         "files": ["autoload.php"]
