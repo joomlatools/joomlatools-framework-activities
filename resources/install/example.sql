@@ -19,3 +19,14 @@ CREATE TABLE IF NOT EXISTS `activities_activities` (
     KEY `row` (`row`),
     KEY `ip` (`ip`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `activities_resources` (
+  `activities_resource_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `package` varchar(255) NOT NULL DEFAULT '',
+  `name` varchar(255) NOT NULL,
+  `row` varchar(2048) NOT NULL DEFAULT '',
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `created_on` datetime NOT NULL,
+  `metadata` text NOT NULL,
+  PRIMARY KEY (`activities_resource_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
