@@ -8,24 +8,31 @@
  */
 
 /**
- * Activities Entity.
+ * Resources Database Table.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesModelEntityActivities extends KModelEntityRowset
+class ComActivitiesDatabaseTableResources extends KDatabaseTableAbstract
 {
     /**
      * Initializes the options for the object.
      *
      * Called from {@link __construct()} as a first step of object instantiation.
      *
-     * @param KObjectConfig $config An optional ObjectConfig object with configuration options.
+     * @param KObjectConfig $config Configuration options.
      */
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'prototypable' => false
+            'name'      => 'resources',
+            'behaviors' => array(
+                'com:activities.database.behavior.resources.creatable',
+                'parameterizable' => array('column' => 'metadata')
+            ),
+            'filters'   => array(
+                'metadata' => 'json'
+            )
         ));
 
         parent::_initialize($config);

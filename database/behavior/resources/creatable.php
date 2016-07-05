@@ -8,22 +8,11 @@
  */
 
 /**
- * Version.
+ * Activities Database Table.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesVersion extends KObject
+class ComActivitiesDatabaseBehaviorResourcesCreatable extends KDatabaseBehaviorCreatable
 {
-    const VERSION = '3.0-beta1';
-
-    /**
-     * Get the version.
-     *
-     * @return string
-     */
-    public function getVersion()
-    {
-        return self::VERSION;
-    }
 }

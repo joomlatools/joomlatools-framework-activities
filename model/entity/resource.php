@@ -8,22 +8,22 @@
  */
 
 /**
- * Version.
+ * Resource Model Entity.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesVersion extends KObject
+class ComActivitiesModelEntityResource extends KModelEntityRow
 {
-    const VERSION = '3.0-beta1';
-
-    /**
-     * Get the version.
-     *
-     * @return string
-     */
-    public function getVersion()
+    public function save()
     {
-        return self::VERSION;
+        // Edits are not allowed.
+        if (!$this->isNew()) {
+            $result = false;
+        } else {
+            $result = parent::save();
+        }
+
+        return $result;
     }
 }
