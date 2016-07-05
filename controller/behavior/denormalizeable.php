@@ -73,7 +73,7 @@ class ComActivitiesControllerBehaviorDenormalizeable extends KControllerBehavior
 
             $this->denormalize($context);
         }
-        else $this->_getEntities($this->_getData($context->entity))->delete();
+        else $this->_getEntities($this->_getData($entity))->delete();
     }
 
     protected function _beforeDenormalize(KControllerContextInterface $context)
