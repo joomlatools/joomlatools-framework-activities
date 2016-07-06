@@ -23,17 +23,26 @@ class ComActivitiesControllerBehaviorDenormalizeable extends KControllerBehavior
      */
     protected $_controller;
 
+    /**
+     * A list of actions for cleaning up resources
+     *
+     * @var array
+     */
+    protected $_actions;
+
     public function __construct(KObjectConfig $config)
     {
         parent::__construct($config);
 
         $this->_controller = $config->controller;
+        $this->_actions    = KObjectConfig::unbox($config->actions);
     }
 
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'controller' => 'resource'
+            'controller' => 'resource',
+            'actions'    => array('delete')
         ));
 
         if ($this->getIdentifier()->getPackage() != 'activities')
@@ -65,7 +74,7 @@ class ComActivitiesControllerBehaviorDenormalizeable extends KControllerBehavior
     {
         $entity = $context->result;
 
-        if ($entity->action != 'delete')
+        if (!in_array($entity->action, $this->_actions))
         {
             $context = $this->getMixer()->getContext();
 
