@@ -31,7 +31,7 @@ class ComActivitiesModelActivities extends KModelDatabase
               ->insert('package', 'cmd')
               ->insert('name', 'cmd')
               ->insert('action', 'cmd')
-              ->insert('row', 'int')
+              ->insert('row', 'string')
               ->insert('user', 'cmd')
               ->insert('start_date', 'date')
               ->insert('end_date', 'date')
