@@ -23,7 +23,7 @@ class ComActivitiesModelResources extends KModelDatabase
              ->insert('uuid', 'string')
              ->insert('package', 'cmd')
              ->insert('name', 'cmd')
-             ->insert('row', 'string')
+             ->insert('resource_id', 'string')
              ->insert('title', 'string')
              ->insert('last', 'int');
     }
@@ -32,13 +32,12 @@ class ComActivitiesModelResources extends KModelDatabase
     {
         parent::_buildQueryJoins($query);
 
-        $state = $this->getState();
+        if ($this->getState()->last)
+        {
+            $table = $this->getTable();
 
-        $table = $this->getTable();
+            $condition = sprintf('tbl.package = j.package AND tbl.name = j.name AND tbl.resource_id = j.resource_id AND tbl.%1$s < j.%1$s', $table->getIdentityColumn());
 
-        $condition = sprintf('tbl.package = j.package AND tbl.name = j.name AND tbl.row = j.row AND tbl.%1$s < j.%1$s', $table->getIdentityColumn());
-
-        if ($state->last) {
             $query->join(sprintf('%s AS j', $table->getBase()), $condition, 'LEFT');
         }
     }
@@ -61,8 +60,8 @@ class ComActivitiesModelResources extends KModelDatabase
             $query->where('tbl.name = :name')->bind(array('name' => $name));
         }
 
-        if ($row = $state->row) {
-            $query->where('tbl.row = :row')->bind(array('row' => $row));
+        if ($resource_id = $state->resource_id) {
+            $query->where('tbl.resource_id = :resource_id')->bind(array('resource_id' => $resource_id));
         }
 
         if ($title = $state->title) {
