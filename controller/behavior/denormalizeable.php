@@ -101,9 +101,9 @@ class ComActivitiesControllerBehaviorDenormalizeable extends KControllerBehavior
         $model = $this->_getController()->getModel();
 
         $values = array_merge(array(
-            'package' => $entity->package,
-            'name'    => $entity->name,
-            'row'     => $entity->row
+            'package'     => $entity->package,
+            'name'        => $entity->name,
+            'resource_id' => $entity->row
         ), $conditions);
 
         $model->reset()->getState()->setValues($values);
@@ -120,11 +120,26 @@ class ComActivitiesControllerBehaviorDenormalizeable extends KControllerBehavior
      */
     protected function _getData(KModelEntityInterface $entity)
     {
+        $uuid = $entity->row_uuid;
+
+        if (!$uuid)
+        {
+            // Check if the resource already exists and grab its UUID.
+            $entities = $this->_getEntities($entity, array('limit' => 1));
+
+            if (!$entities->isNew()) {
+                $uuid = $entities->uuid;
+            } else {
+                $uuid = $this->_uuid();
+            }
+        }
+
         return array(
-            'package' => $entity->package,
-            'name'    => $entity->name,
-            'row'     => $entity->row,
-            'title'   => $entity->title
+            'package'     => $entity->package,
+            'name'        => $entity->name,
+            'resource_id' => $entity->row,
+            'title'       => $entity->title,
+            'uuid'        => $uuid
         );
     }
 
