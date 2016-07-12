@@ -45,28 +45,6 @@ class ComActivitiesControllerBehaviorDenormalizeable extends KControllerBehavior
             'actions'    => array('delete')
         ));
 
-        if ($this->getIdentifier()->getPackage() != 'activities')
-        {
-            $aliases = array(
-                'com:activities.controller.resource' => array(
-                    'path' => array('controller'),
-                    'name' => 'resource'
-                )
-            );
-
-            foreach ($aliases as $identifier => $alias)
-            {
-                $alias = array_merge($this->getMixer()->getIdentifier()->toArray(), $alias);
-
-                $manager = $this->getObject('manager');
-
-                // Register the alias if a class for it cannot be found.
-                if (!$manager->getClass($alias, false)) {
-                    $manager->registerAlias($identifier, $alias);
-                }
-            }
-        }
-
         parent::_initialize($config);
     }
 
@@ -132,9 +110,9 @@ class ComActivitiesControllerBehaviorDenormalizeable extends KControllerBehavior
         $model = $this->_getController()->getModel();
 
         $values = array_merge(array(
-            'package' => $entity->package,
-            'name'    => $entity->name,
-            'row'     => $entity->row
+            'package'     => $entity->package,
+            'name'        => $entity->name,
+            'resource_id' => $entity->row
         ), $conditions);
 
         $model->reset()->getState()->setValues($values);
@@ -151,11 +129,26 @@ class ComActivitiesControllerBehaviorDenormalizeable extends KControllerBehavior
      */
     protected function _getData(KModelEntityInterface $entity)
     {
+        $uuid = $entity->row_uuid;
+
+        if (!$uuid)
+        {
+            // Check if the resource already exists and grab its UUID.
+            $entities = $this->_getEntities($entity, array('limit' => 1));
+
+            if (!$entities->isNew()) {
+                $uuid = $entities->uuid;
+            } else {
+                $uuid = $this->_uuid();
+            }
+        }
+
         return array(
-            'package' => $entity->package,
-            'name'    => $entity->name,
-            'row'     => $entity->row,
-            'title'   => $entity->title
+            'package'     => $entity->package,
+            'name'        => $entity->name,
+            'resource_id' => $entity->row,
+            'title'       => $entity->title,
+            'uuid'        => $uuid
         );
     }
 
@@ -193,5 +186,65 @@ class ComActivitiesControllerBehaviorDenormalizeable extends KControllerBehavior
         }
 
         return $this->_controller;
+    }
+
+    /**
+     * Generates a Universally Unique Identifier, version 4.
+     *
+     * This function generates a truly random UUID.
+     *
+     * @param boolean   $hex If TRUE return the uuid in hex format, otherwise as a string
+     * @see http://tools.ietf.org/html/rfc4122#section-4.4
+     * @see http://en.wikipedia.org/wiki/UUID
+     * @return string A UUID, made up of 36 characters or 16 hex digits.
+     */
+    protected function _uuid($hex = false)
+    {
+        $pr_bits = false;
+
+        $fp = @fopen ( '/dev/urandom', 'rb' );
+        if ($fp !== false)
+        {
+            $pr_bits = @fread ( $fp, 16 );
+            @fclose ( $fp );
+        }
+
+        // If /dev/urandom isn't available (eg: in non-unix systems), use mt_rand().
+        if(empty($pr_bits))
+        {
+            $pr_bits = "";
+            for($cnt = 0; $cnt < 16; $cnt ++) {
+                $pr_bits .= chr ( mt_rand ( 0, 255 ) );
+            }
+        }
+
+        $time_low = bin2hex ( substr ( $pr_bits, 0, 4 ) );
+        $time_mid = bin2hex ( substr ( $pr_bits, 4, 2 ) );
+        $time_hi_and_version = bin2hex ( substr ( $pr_bits, 6, 2 ) );
+        $clock_seq_hi_and_reserved = bin2hex ( substr ( $pr_bits, 8, 2 ) );
+        $node = bin2hex ( substr ( $pr_bits, 10, 6 ) );
+
+        /**
+         * Set the four most significant bits (bits 12 through 15) of the
+         * time_hi_and_version field to the 4-bit version number from
+         * Section 4.1.3.
+         * @see http://tools.ietf.org/html/rfc4122#section-4.1.3
+         */
+        $time_hi_and_version = hexdec ( $time_hi_and_version );
+        $time_hi_and_version = $time_hi_and_version >> 4;
+        $time_hi_and_version = $time_hi_and_version | 0x4000;
+
+        /**
+         * Set the two most significant bits (bits 6 and 7) of the
+         * clock_seq_hi_and_reserved to zero and one, respectively.
+         */
+        $clock_seq_hi_and_reserved = hexdec ( $clock_seq_hi_and_reserved );
+        $clock_seq_hi_and_reserved = $clock_seq_hi_and_reserved >> 2;
+        $clock_seq_hi_and_reserved = $clock_seq_hi_and_reserved | 0x8000;
+
+        //Either return as hex or as string
+        $format = $hex ? '%08s%04s%04x%04x%012s' : '%08s-%04s-%04x-%04x-%012s';
+
+        return sprintf ( $format, $time_low, $time_mid, $time_hi_and_version, $clock_seq_hi_and_reserved, $node );
     }
 }
