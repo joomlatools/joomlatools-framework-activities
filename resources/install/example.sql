@@ -29,5 +29,8 @@ CREATE TABLE IF NOT EXISTS `activities_resources` (
   `title` varchar(255) NOT NULL DEFAULT '',
   `created_on` datetime NOT NULL,
   `data` longtext NOT NULL COMMENT '@Filter("json")',
-  PRIMARY KEY (`activities_resource_id`)
+  PRIMARY KEY (`activities_resource_id`),
+  KEY `idx_package` (`package`),
+  KEY `idx_name` (`name`),
+  KEY `idx_package-name` (`package`,`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
