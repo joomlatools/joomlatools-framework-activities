@@ -28,10 +28,10 @@ class ComActivitiesDatabaseTableResources extends KDatabaseTableAbstract
             'name'      => 'resources',
             'behaviors' => array(
                 'com:activities.database.behavior.resources.creatable',
-                'parameterizable' => array('column' => 'metadata')
+                'parameterizable' => array('column' => 'data')
             ),
             'filters'   => array(
-                'metadata' => 'json'
+                'data' => 'json'
             )
         ));
 
