@@ -36,28 +36,6 @@ class ComActivitiesControllerBehaviorDenormalizeable extends KControllerBehavior
             'controller' => 'resource'
         ));
 
-        if ($this->getIdentifier()->getPackage() != 'activities')
-        {
-            $aliases = array(
-                'com:activities.controller.resource' => array(
-                    'path' => array('controller'),
-                    'name' => 'resource'
-                )
-            );
-
-            foreach ($aliases as $identifier => $alias)
-            {
-                $alias = array_merge($this->getMixer()->getIdentifier()->toArray(), $alias);
-
-                $manager = $this->getObject('manager');
-
-                // Register the alias if a class for it cannot be found.
-                if (!$manager->getClass($alias, false)) {
-                    $manager->registerAlias($identifier, $alias);
-                }
-            }
-        }
-
         parent::_initialize($config);
     }
 
