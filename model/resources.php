@@ -20,6 +20,7 @@ class ComActivitiesModelResources extends KModelDatabase
         parent::__construct($config);
 
         $this->getState()
+             ->insert('uuid', 'string')
              ->insert('package', 'cmd')
              ->insert('name', 'cmd')
              ->insert('row', 'string')
@@ -47,6 +48,10 @@ class ComActivitiesModelResources extends KModelDatabase
         parent::_buildQueryWhere($query);
 
         $state = $this->getState();
+
+        if ($uuid = $state->uuid) {
+            $query->where('tbl.uuid = :uuid')->bind(array('uuid' => $uuid));
+        }
 
         if ($package = $state->package) {
             $query->where('tbl.package = :package')->bind(array('package' => $package));
