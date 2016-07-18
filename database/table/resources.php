@@ -25,7 +25,7 @@ class ComActivitiesDatabaseTableResources extends KDatabaseTableAbstract
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'name'      => 'resources',
+            'name'      => 'activities_resources',
             'behaviors' => array(
                 'com:activities.database.behavior.resources.creatable',
                 'identifiable',
