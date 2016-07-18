@@ -24,22 +24,7 @@ class ComActivitiesModelResources extends KModelDatabase
              ->insert('package', 'cmd')
              ->insert('name', 'cmd')
              ->insert('resource_id', 'string')
-             ->insert('title', 'string')
-             ->insert('last', 'int');
-    }
-
-    protected function _buildQueryJoins(KDatabaseQueryInterface $query)
-    {
-        parent::_buildQueryJoins($query);
-
-        if ($this->getState()->last)
-        {
-            $table = $this->getTable();
-
-            $condition = sprintf('tbl.package = j.package AND tbl.name = j.name AND tbl.resource_id = j.resource_id AND tbl.%1$s < j.%1$s', $table->getIdentityColumn());
-
-            $query->join(sprintf('%s AS j', $table->getBase()), $condition, 'LEFT');
-        }
+             ->insert('title', 'string');
     }
 
     protected function _buildQueryWhere(KDatabaseQueryInterface $query)
@@ -66,10 +51,6 @@ class ComActivitiesModelResources extends KModelDatabase
 
         if ($title = $state->title) {
             $query->where('tbl.title LIKE :title')->bind(array('title' => '%' . $title . '%'));
-        }
-
-        if ($state->last) {
-            $query->where(sprintf('j.%s IS NULL', $this->getTable()->getIdentityColumn()));
         }
     }
 }
