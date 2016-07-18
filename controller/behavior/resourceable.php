@@ -26,7 +26,7 @@ class ComActivitiesControllerBehaviorResourceable extends KControllerBehaviorAbs
      *
      * @var KControllerInterface
      */
-    protected $_controller;
+    protected $_controller = 'com:activities.controller.resource';
 
     public function __construct(KObjectConfig $config)
     {
@@ -115,15 +115,8 @@ class ComActivitiesControllerBehaviorResourceable extends KControllerBehaviorAbs
      */
     protected function _getController()
     {
-        if (!$this->_controller instanceof KControllerInterface)
-        {
-            $parts         = $this->getIdentifier()->toArray();
-            $parts['path'] = array('controller');
-            $parts['name'] = 'resource';
-
-            $identifier = $this->getIdentifier($parts);
-
-            $this->_controller = $this->getObject($identifier);
+        if (!$this->_controller instanceof KControllerInterface) {
+            $this->_controller = $this->getObject($this->_controller);
         }
 
         return $this->_controller;
