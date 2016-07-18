@@ -28,6 +28,7 @@ class ComActivitiesDatabaseTableResources extends KDatabaseTableAbstract
             'name'      => 'resources',
             'behaviors' => array(
                 'com:activities.database.behavior.resources.creatable',
+                'identifiable',
                 'parameterizable' => array('column' => 'data')
             ),
             'filters'   => array(
