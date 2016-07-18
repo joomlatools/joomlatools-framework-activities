@@ -15,15 +15,4 @@
  */
 class ComActivitiesModelEntityResource extends KModelEntityRow
 {
-    public function save()
-    {
-        // Edits are not allowed.
-        if (!$this->isNew()) {
-            $result = false;
-        } else {
-            $result = parent::save();
-        }
-
-        return $result;
-    }
 }
