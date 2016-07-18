@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS `activities_activities` (
 	`name` VARCHAR(50) NOT NULL DEFAULT '',
 	`action` VARCHAR(50) NOT NULL DEFAULT '',
 	`row` varchar(2048) NOT NULL DEFAULT '',
-  `row_uuid` varchar(36) DEFAULT NULL,
 	`title` VARCHAR(255) NOT NULL DEFAULT '',
 	`status` varchar(100) NOT NULL,
 	`created_on` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',

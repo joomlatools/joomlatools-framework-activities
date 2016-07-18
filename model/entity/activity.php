@@ -634,9 +634,8 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     {
         $config->append(array(
             'id'         => $this->row,
-            'uuid'       => $this->row_uuid,
             'objectName' => $this->title,
-            'type'       => array('objectName' => $this->name, 'object' => true),
+            'type' => array('objectName' => $this->name, 'object' => true),
             'url'        => 'option=com_' . $this->package . '&view=' . $this->name . '&id=' . $this->row,
             'attributes' => array('class' => array('object')),
             'find'       => 'object'
