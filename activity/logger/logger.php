@@ -232,10 +232,6 @@ class ComActivitiesActivityLogger extends KObject implements ComActivitiesActivi
 
         $data['row'] = $object->id;
 
-        if ($object->isIdentifiable()) {
-            $data['row_uuid'] = $object->uuid;
-        }
-
         return $data;
     }
 }

@@ -155,22 +155,6 @@ interface ComActivitiesActivityObjectInterface
     public function setId($id);
 
     /**
-     * Get the Universally Unique Identifier.
-     *
-     * @see http://en.wikipedia.org/wiki/UUID
-     * @return string|null The UUID, null if the object does not have a uuid property.
-     */
-    public function getUUID();
-
-    /**
-     * Set the Universally Unique Identifier.
-     *
-     * @param string|null $uuid The UUID.
-     * @return ComActivitiesActivityObjectInterface
-     */
-    public function setUUID($uuid);
-
-    /**
      * Get the image.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See image property.
