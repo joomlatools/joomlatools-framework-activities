@@ -105,6 +105,7 @@ class ComActivitiesControllerBehaviorResourceable extends KControllerBehaviorAbs
             'name'        => $entity->name,
             'resource_id' => $entity->row,
             'title'       => $entity->title,
+            'uuid'        => $entity->getActivityObject()->getUuid()
         );
     }
 
