@@ -251,6 +251,34 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
     }
 
     /**
+     * Get the Universally Unique Identifier.
+     *
+     * @see http://en.wikipedia.org/wiki/UUID
+     * @return string|null The Universally Unique Identifier, null if the object does not have one.
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * Set the Universally Unique Identifier.
+     *
+     * @param string|null $uuid The Universally Unique Identifier.
+     * @return ComActivitiesActivityObjectInterface
+     */
+    public function setUuid($uuid)
+    {
+        if (!is_null($uuid)) {
+            $uuid = (string) $uuid;
+        }
+
+        $this->uuid = $uuid;
+        return $this;
+    }
+
+
+    /**
      * Get the image.
      *
      * @link http://activitystrea.ms/specs/json/1.0/#object See image property.
