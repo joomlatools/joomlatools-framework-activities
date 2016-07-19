@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `activities_activities` (
 
 CREATE TABLE IF NOT EXISTS `activities_resources` (
   `activities_resource_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `uuid` varchar(36) NOT NULL,
+  `uuid` char(36) NOT NULL,
   `package` varchar(255) NOT NULL DEFAULT '',
   `name` varchar(255) NOT NULL,
   `resource_id` varchar(2048) NOT NULL DEFAULT '',
