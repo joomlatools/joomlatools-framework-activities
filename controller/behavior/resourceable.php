@@ -67,7 +67,7 @@ class ComActivitiesControllerBehaviorResourceable extends KControllerBehaviorAbs
                 }
                 else $controller->add($data);
             }
-            else $controller->id($resource->id)->delete();
+            else if (!$resource->isNew()) $controller->id($resource->id)->delete();
         }
     }
 
