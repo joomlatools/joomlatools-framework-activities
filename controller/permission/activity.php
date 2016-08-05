@@ -8,7 +8,7 @@
  */
 
 /**
- * Executable Controller Behavior.
+ * Activity Controller Permission.
  *
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
@@ -17,7 +17,7 @@ class ComActivitiesControllerPermissionActivity extends KControllerPermissionAbs
 {
     public function canAdd()
     {
-        return !$this->isDispatched(); // Do not allow activities to be added if the controller is not dispatched.
+        return !$this->isDispatched(); // Do not allow activities to be added if the controller is dispatched.
     }
 
     public function canEdit()
