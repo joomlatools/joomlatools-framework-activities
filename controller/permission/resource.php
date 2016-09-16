@@ -13,13 +13,8 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesControllerPermissionResource extends KControllerPermissionAbstract
+class ComActivitiesControllerPermissionResource extends ComActivitiesControllerPermissionActivity
 {
-    public function canAdd()
-    {
-        return !$this->isDispatched(); // Do not allow resource to be added if the controller is dispatched.
-    }
-
     public function canEdit()
     {
         return $this->canAdd();
