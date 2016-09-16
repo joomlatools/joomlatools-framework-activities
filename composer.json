@@ -23,7 +23,7 @@
         }
     ],
     "require": {
-        "joomla/framework": "~2.1"
+        "joomla/framework": "~3.0"
     },
     "autoload": {
         "files": ["autoload.php"]
@@ -31,6 +31,6 @@
     "nooku-component": {
         "identifier": "com:activities",
         "name": "activities",
-        "version": "2.1.2"
+        "version": "3.0.0"
     }
 }
