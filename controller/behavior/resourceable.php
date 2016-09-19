@@ -100,13 +100,18 @@ class ComActivitiesControllerBehaviorResourceable extends KControllerBehaviorAbs
      */
     protected function _getData(KModelEntityInterface $entity)
     {
-        return array(
+        $data = array(
             'package'     => $entity->package,
             'name'        => $entity->name,
             'resource_id' => $entity->row,
-            'title'       => $entity->title,
-            'uuid'        => $entity->getActivityObject()->getUuid()
+            'title'       => $entity->title
         );
+
+        if ($uuid = $entity->getActivityObject()->getUuid()) {
+            $data['uuid'] = $uuid;
+        }
+
+        return $data;
     }
 
     /**
