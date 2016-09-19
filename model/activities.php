@@ -75,7 +75,7 @@ class ComActivitiesModelActivities extends KModelDatabase
             $query->where('tbl.action IN (:action)')->bind(array('action' => $state->action));
         }
 
-        if (is_numeric($state->row)) {
+        if ($state->row) {
             $query->where('tbl.row IN (:row)')->bind(array('row' => $state->row));
         }
 
