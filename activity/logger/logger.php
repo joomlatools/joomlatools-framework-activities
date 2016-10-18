@@ -90,7 +90,7 @@ class ComActivitiesActivityLogger extends KObject implements ComActivitiesActivi
                 if (!empty($status) && $status !== KModelEntityInterface::STATUS_FAILED)
                 {
                     // Get the activity data
-                    $data = $this->getActivityData($entity, $subject);
+                    $data = $this->getActivityData($entity, $subject, $action);
 
                     // Set the status
                     if(!isset($data['status'] )) {
@@ -200,9 +200,10 @@ class ComActivitiesActivityLogger extends KObject implements ComActivitiesActivi
      *
      * @param KModelEntityInterface      $object  The activity object.
      * @param KObjectIdentifierInterface $subject The activity subject.
+     * @param string                     $action  The action being executed
      * @return array Activity data.
      */
-    public function getActivityData(KModelEntityInterface $object, KObjectIdentifierInterface $subject)
+    public function getActivityData(KModelEntityInterface $object, KObjectIdentifierInterface $subject, $action = null)
     {
         $data = array(
             'application' => $subject->domain,
