@@ -76,7 +76,8 @@ interface ComActivitiesActivityLoggerInterface
      *
      * @param KModelEntityInterface      $object  The activity object.
      * @param KObjectIdentifierInterface $subject The activity subject.
+     * @param string                     $action  The action being executed
      * @return array Activity data.
      */
-    public function getActivityData(KModelEntityInterface $object, KObjectIdentifierInterface $subject);
+    public function getActivityData(KModelEntityInterface $object, KObjectIdentifierInterface $subject, $action = null);
 }
