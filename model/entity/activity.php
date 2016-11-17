@@ -371,63 +371,6 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     }
 
     /**
-     * Get the activity format tokens.
-     *
-     * Tokens are activity objects being referenced in the activity format.
-     *
-     * @return array An array containing ComActivitiesActivityObjectInterface objects
-     */
-    public function getPropertyTokens()
-    {
-        $tokens = array();
-
-        // Issue a format get call if format isn't yet set. Activity overrides that dynamically set this property
-        // usually do that at the time format is calculated.
-        if (!$this->_format) {
-            $this->getActivityFormat();
-        }
-
-        if (preg_match_all('/\{(.+?)\}/',$this->_format, $labels))
-        {
-            $objects = $this->objects;
-
-            foreach ($labels[1] as $label)
-            {
-                $object = null;
-                $parts  = explode('.', $label);
-
-                if (count($parts) > 1)
-                {
-                    $name = array_shift($parts);
-
-                    if (isset($objects[$name]))
-                    {
-                        $object = $objects[$name];
-
-                        foreach ($parts as $property)
-                        {
-                            $object = $object->{$property};
-                            if (is_null($object)) break;
-                        }
-                    }
-                }
-                else
-                {
-                    if (isset($objects[$label])) {
-                        $object = $objects[$label];
-                    }
-                }
-
-                if ($object instanceof ComActivitiesActivityObjectInterface) {
-                    $tokens[$label] = $object;
-                }
-            }
-        }
-
-        return $tokens;
-    }
-
-    /**
      * Prevent setting the package property.
      *
      * @return array An array containing ComActivitiesActivityObjectInterface objects.
