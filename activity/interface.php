@@ -115,4 +115,35 @@ interface ComActivitiesActivityInterface
      * @return string The activity verb.
      */
     public function getActivityVerb();
+
+    /**
+     * Get the activity language.
+     *
+     * The activity language corresponds to the language on which the format of the activity is written on.
+     *
+     * @return string The activity language.
+     */
+    public function getActivityLanguage();
+
+    /**
+     * Get the activity objects
+     *
+     * @return array An array containing ComActivitiesActivityObjectInterface objects.
+     */
+    public function getActivityObjects();
+
+    /**
+     * Set the activity translator.
+     *
+     * @param ComActivitiesActivityTranslatorInterface $translator
+     * @return ComActivitiesActivityInterface
+     */
+    public function setTranslator(ComActivitiesActivityTranslatorInterface $translator);
+
+    /**
+     * Get the activity translator.
+     *
+     * @return ComActivitiesActivityTranslatorInterface
+     */
+    public function getTranslator();
 }
