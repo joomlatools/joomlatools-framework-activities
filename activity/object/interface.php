@@ -336,4 +336,19 @@ interface ComActivitiesActivityObjectInterface
      * @return bool True if the object has been deleted, false otherwise.
      */
     public function isDeleted();
+
+    /**
+     * Set the translateable state.
+     *
+     * @param bool $state The translateable state.
+     * @return ComActivitiesActivityObjectInterface
+     */
+    public function setTranslatable($state);
+
+    /**
+     * Tells if the object should be translated when rendered.
+     *
+     * @return bool True if the object is translatable, false otherwise.
+     */
+    public function isTranslatable();
 }
