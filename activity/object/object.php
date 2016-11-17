@@ -21,6 +21,7 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
     {
         $config->append(array(
             'data' => array(
+                'translate'            => false,
                 'deleted'              => false,
                 'internal'             => false,
                 'attachments'          => array(),
@@ -540,5 +541,27 @@ class ComActivitiesActivityObject extends KObjectArray implements ComActivitiesA
     public function isDeleted()
     {
         return $this->deleted;
+    }
+
+    /**
+     * Set the translateable state.
+     *
+     * @param bool $state The translateable state.
+     * @return ComActivitiesActivityObjectInterface
+     */
+    public function setTranslatable($state)
+    {
+        $this->translate = (bool) $state;
+        return $this;
+    }
+
+    /**
+     * Tells if the object should be translated when rendered.
+     *
+     * @return bool True if the object is translatable, false otherwise.
+     */
+    public function isTranslatable()
+    {
+        return $this->translate;
     }
 }
