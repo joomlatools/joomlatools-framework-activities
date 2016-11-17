@@ -19,8 +19,52 @@ interface ComActivitiesActivityTranslatorInterface
      * Translates an activity format.
      *
      * @param string $string The activity format to translate.
-     * @param array  $tokens An array of format tokens.
      * @return string The translated activity format.
      */
-    public function translate($format, array $tokens = array());
+    public function format(ComActivitiesActivityInterface $activity);
+
+    /**
+     * Translates an activity object.
+     *
+     * @param ComActivitiesActivityObjectInterface $object   The activity object.
+     * @param string|null                          $language The language to translate the object to.
+     * @return string The translated object.
+     */
+    public function object(ComActivitiesActivityObjectInterface $object, $language = null);
+
+    /**
+     * Fallback catalogue setter.
+     *
+     * @param KTranslatorCatalogueInterface $catalogue The fallback catalogue.
+     * @return ComActivitiesActivityTranslatorInterface
+     */
+    public function setFallbackCatalogue(KTranslatorCatalogueInterface $catalogue);
+
+    /**
+     * Fallback catalogue getter.
+     *
+     * @return KTranslatorCatalogueInterface The fallback catalogue.
+     */
+    public function getFallbackCatalogue();
+
+    /**
+     * Activities token
+     *
+     * Tokens are activity objects being referenced in the activity format. They represent variables contained
+     * in an activity message.
+     *
+     * @param ComActivitiesActivityInterface $activity
+     * @return array A list containing ComActivitiesActivityObjectInterface objects.
+     */
+    public function getTokens(ComActivitiesActivityInterface $activity);
+
+    /**
+     * Activity language getter.
+     *
+     * Determines the language of a given activity.
+     *
+     * @param ComActivitiesActivityInterface $activity The activity.
+     * @return string The language locale.
+     */
+    public function getLanguage(ComActivitiesActivityInterface $activity);
 }
