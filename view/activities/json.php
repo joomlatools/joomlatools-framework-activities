@@ -86,7 +86,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                 'published' => $activity->getActivityPublished()->format('c'),
                 'verb'      => $activity->getActivityVerb(),
                 'format'    => $activity->getActivityFormat(),
-                'language'  => $activity->getActivityLanguage()
+                'locale'  => $activity->getLocale()
             );
 
             if ($icon = $activity->getActivityIcon()) {
@@ -100,7 +100,7 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                 if ($object->isTranslatable())
                 {
                     $translator = $activity->getTranslator();
-                    $clone->setDisplayName($translator->object($clone->getDisplayName(), $translator->getLanguage($activity)));
+                    $clone->setDisplayName($translator->translateActivityToken($clone, $activity));
                 }
 
                 $item[$name] = $this->_getObjectData($clone);
