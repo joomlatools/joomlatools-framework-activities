@@ -65,11 +65,11 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     protected $_translator;
 
     /**
-     * The activity language locale.
+     * The activity locale.
      *
      * @var string
      */
-    protected $_language;
+    protected $_locale;
 
     /**
      * Constructor.
@@ -312,23 +312,33 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         // Make un-translated format available for recursive calls.
         KObjectArray::offsetSet('format', $this->_format);
 
-        return $this->getTranslator()->format($this);
+        return $this->getTranslator()->translateActivityFormat($this);
     }
 
     /**
-     * Get the activity language.
+     * Locale setter.
      *
-     *  The activity language corresponds to the language on which the format of the activity is written on.
-     *
-     * @return string The activity language.
+     * @param string $locale The activity locale.
+     * @return ComActivitiesActivityInterface
      */
-    public function getActivityLanguage()
+    public function setLocale($locale)
     {
-        if (!$this->_language) {
-            $this->_language = $this->getTranslator()->getLanguage($this);
+        $this->_locale = $locale;
+        return $this;
+    }
+
+    /**
+     * Locale getter.
+     *
+     * @return string The activity locale.
+     */
+    public function getLocale()
+    {
+        if (!$this->_locale) {
+            $this->getActivityFormat(); // Locale gets calculated and set when translating format
         }
 
-        return $this->_language;
+        return $this->_locale;
     }
 
     /**
@@ -350,8 +360,16 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
      */
     public function getTranslator()
     {
-        if (!$this->_translator instanceof ComActivitiesActivityTranslatorInterface) {
-            $this->setTranslator($this->getObject($this->_translator));
+        if (!$this->_translator instanceof ComActivitiesActivityTranslatorInterface)
+        {
+            $translator = $this->getObject('translator');
+
+            if (!$translator instanceof ComActivitiesActivityTranslatorInterface) {
+                $translator = $translator->decorate($this->_translator);
+                $this->getObject('manager')->setObject('translator', $translator);
+            }
+
+            $this->setTranslator($translator);
         }
 
         return $this->_translator;
