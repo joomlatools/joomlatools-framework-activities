@@ -13,14 +13,14 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesActivityTranslator extends KTranslatorAbstract implements ComActivitiesActivityTranslatorInterface, KObjectMultiton
+class ComActivitiesActivityTranslator extends KObjectDecorator implements ComActivitiesActivityTranslatorInterface, KTranslatorInterface
 {
     /**
      * Associative array containing previously calculated overrides.
      *
      * @var array
      */
-    protected $_overrides;
+    protected $_overrides = array();
 
     /**
      * Fallback catalogue.
@@ -34,26 +34,220 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements Com
      *
      * @var array
      */
-    protected $_tokens;
+    protected $_tokens = array();
 
     /**
-     * Holds de language of each activity format that has been translated.
+     * Holds de locale of each activity format that has been translated.
      *
      * @var array
      */
-    protected $_languages;
+    protected $_locales = array();
 
     public function __construct(KObjectConfig $config)
     {
-        $this->_fallback_catalogue = $config->fallback_catalogue;
-
         parent::__construct($config);
+
+        $this->_fallback_catalogue = $config->fallback_catalogue;
     }
 
     protected function _initialize(KObjectConfig $config)
     {
-        $config->append(array('fallback_catalogue' => 'com:activities.translator.catalogue.default'));
+        $config->append(array('fallback_catalogue' => 'com:activities.activity.translator.catalogue'));
         parent::_initialize($config);
+    }
+
+    public function onDecorate($delegate)
+    {
+        parent::onDecorate($delegate);
+
+        $urls = $delegate->getLoaded();
+
+        // Load previosly loaded files on decorator catalogue.
+        if ($urls)
+        {
+            $this->_switchCatalogues();
+
+            foreach ($urls as $url)
+            {
+                $translations = array();
+
+                foreach($this->find($url) as $file)
+                {
+                    try {
+                        $loaded = $this->getObject('object.config.factory')->fromFile($file)->toArray();
+                    } catch (Exception $e) {
+                        return false;
+                        break;
+                    }
+
+                    $translations = array_merge($translations, $loaded);
+                }
+
+                $this->getCatalogue()->add($translations);
+
+                $this->setLoaded($url);
+            }
+
+            $this->_switchCatalogues();
+        }
+    }
+
+    /**
+     * Translates a string and handles parameter replacements
+     *
+     * Parameters are wrapped in curly braces. So {foo} would be replaced with bar given that $parameters['foo'] = 'bar'
+     *
+     * @param string $string String to translate
+     * @param array  $parameters An array of parameters
+     * @return string Translated string
+     */
+    public function translate($string, array $parameters = array())
+    {
+        return $this->getDelegate()->translate($string, $parameters);
+    }
+
+    /**
+     * Translates a string based on the number parameter passed
+     *
+     * @param array   $strings Strings to choose from
+     * @param integer $number The umber of items
+     * @param array   $parameters An array of parameters
+     * @throws InvalidArgumentException
+     * @return string Translated string
+     */
+    public function choose(array $strings, $number, array $parameters = array())
+    {
+        return $this->getDelegate()->choose($strings, $number, $parameters);
+    }
+
+    /**
+     * Find translations from a url
+     *
+     * @param string $url      The translation url
+     * @return array An array with physical file paths
+     */
+    public function find($url)
+    {
+        $catalogue = $this->getCatalogue();
+
+        if ($catalogue instanceof ComActivitiesActivityTranslatorCatalogueInterface)
+        {
+            // Locate files using fallback locale
+            $locale  = $this->getLocaleFallback();
+            $locator = $this->getObject('translator.locator.factory')->createLocator($url);
+            $result  = $locator->setLocale($locale)->locate($url, $locale);
+        }
+        else $result = $this->getDelegate()->find($url);
+
+        return $result;
+    }
+
+    /**
+     * Sets the locale
+     *
+     * @param string $locale
+     * @return KTranslatorInterface
+     */
+    public function setLocale($locale)
+    {
+        return $this->getDelegate()->setLocale($locale);
+    }
+
+    /**
+     * Gets the locale
+     *
+     * @return string|null
+     */
+    public function getLocale()
+    {
+        return $this->getDelegate()->getLocale();
+    }
+
+    /**
+     * Set the fallback locale
+     *
+     * @param string $locale The fallback locale.
+     * @return KTranslatorInterface
+     */
+    public function setLocaleFallback($locale)
+    {
+        return $this->getDelegate()->setLocaleFallback($locale);
+    }
+
+    /**
+     * Get the fallback locale
+     *
+     * @return string The fallback locale.
+     */
+    public function getLocaleFallback()
+    {
+        return $this->getDelegate()->getLocaleFallback();
+    }
+
+    /**
+     * Get a catalogue
+     *
+     * @throws  UnexpectedValueException    If the catalogue doesn't implement the TranslatorCatalogueInterface
+     * @return KTranslatorCatalogueInterface The translator catalogue.
+     */
+    public function getCatalogue()
+    {
+        return $this->getDelegate()->getCatalogue();
+    }
+
+    /**
+     * Set a catalogue
+     *
+     * @param   mixed   $catalogue An object that implements KObjectInterface, KObjectIdentifier object
+     *                             or valid identifier string
+     * @return KTranslatorInterface
+     */
+    public function setCatalogue($catalogue)
+    {
+        return $this->getDelegate()->setCatalogue($catalogue);
+    }
+
+    /**
+     * Checks if the translator can translate a string
+     *
+     * @param $string String to check
+     * @return bool
+     */
+    public function isTranslatable($string)
+    {
+        return $this->getDelegate()->isTranslatable($string);
+    }
+
+    /**
+     * Checks if translations from a given url are already loaded.
+     *
+     * @param mixed $url The url to check
+     * @return bool TRUE if loaded, FALSE otherwise.
+     */
+    public function isLoaded($url)
+    {
+        return $this->getDelegate()->isLoaded($url);
+    }
+
+    /**
+     * Sets a url as loaded.
+     *
+     * @param mixed $url The url.
+     * @return KTranslatorInterface
+     */
+    public function setLoaded($url)
+    {
+        return $this->getDelegate()->setLoaded($url);
+    }
+
+    /**
+     * Returns a list of loaded urls.
+     *
+     * @return array The loaded urls.
+     */
+    public function getLoaded()
+    {
+        return $this->getDelegate()->getLoaded();
     }
 
     /**
@@ -62,9 +256,9 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements Com
      * @param string $string The activity format to translate.
      * @return string The translated activity format.
      */
-    public function format(ComActivitiesActivityInterface $activity)
+    public function translateActivityFormat(ComActivitiesActivityInterface $activity)
     {
-        $tokens = $this->getTokens($activity);
+        $tokens = $this->getActivityTokens($activity);
         $format = $activity->getActivityFormat();
 
         $parameters = array();
@@ -96,67 +290,59 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements Com
                 $catalogue->getConfig()->key_length = $length;
             }
 
-            $this->_switchLanguage();
-        }
-
-        list($main_format, $fallback_format) = $formats;
-
-        // Determine the translation language and keep track of it
-        if (!isset($this->_languages[$main_format]))
-        {
-            $language = ($main_format == $fallback_format) ? $this->getLocaleFallback() : $this->getLocale();
-
-            $this->_languages[$main_format] = $language;
-        }
-
-        return $main_format;
-    }
-
-    /**
-     * Translates an activity object.
-     *
-     * @param ComActivitiesActivityObjectInterface $object   The activity object.
-     * @param string|null                          $language The language to translate the object to.
-     * @return string The translated object.
-     */
-    public function getLanguage(ComActivitiesActivityInterface $activity)
-    {
-        $language = null;
-
-        $format = $activity->getActivityFormat();
-
-        if (isset($this->_languages[$format])) {
-            $language = $this->_languages[$format];
-        }
-
-        return $language;
-    }
-
-    /**
-     * Translates an activity object.
-     *
-     * @param ComActivitiesActivityObjectInterface $object   The activity object.
-     * @param string|null                          $language The language to translate the object to.
-     * @return string The translated object.
-     */
-    public function object(ComActivitiesActivityObjectInterface $object, $language = null)
-    {
-        $result = null;
-
-        $result = $object->getDisplayName();
-
-        if ($object->isTranslatable())
-        {
-            $language = is_null($language) ? $this->getLocale() : $language;
-
-            if ($language != $this->getLocale())
-            {
-                // Use fallback catalogue instead
-                $this->_switchLanguage();
-                $result = $this->translate($result);
-                $this->_switchLanguage();
+            if ($i == 0 && isset($this->_locales[$formats[0]])) {
+                break; // Format already localized, no need to compare
+            } else {
+                $this->_switchCatalogues();
             }
-            else $result = $this->translate($result);
+        }
+
+        if (count($formats) > 1)
+        {
+            list($format, $decorator_format) = $formats;
+            $this->_locales[$format] = ($format == $decorator_format) ? $this->getLocaleFallback() : $this->getLocale();
+        }
+        else $format = $formats[0];
+
+        // Set the activity locale.
+        $activity->setLocale($this->_locales[$format]);
+
+        return $format;
+    }
+
+    /**
+     * Translates an activity token.
+     *
+     * @param string|ComActivitiesActivityObjectInterface $token    The activity token.
+     * @param ComActivitiesActivityInterface              $activity The activity object.
+     * @return string The translated token.
+     */
+    public function translateActivityToken($token, ComActivitiesActivityInterface $activity)
+    {
+        if (is_string($token))
+        {
+            $tokens = $this->getActivityTokens($activity);
+
+            if (isset($tokens[$token])) {
+                $token = $tokens[$token];
+            }
+        }
+
+        if (!$token instanceof ComActivitiesActivityObjectInterface) {
+            throw new RuntimeException('Invalid token');
+        }
+
+        $result = $token->getDisplayName();
+
+        if ($token->isTranslatable())
+        {
+            if ($activity->getLocale() == $this->getLocaleFallback())
+            {
+                // Use decorator catalogue instead
+                $this->_switchCatalogues();
+                $result = $this->translate($result);
+                $this->_switchCatalogues();
+            } else $result = $this->translate($result);
         }
 
         return $result;
@@ -165,24 +351,24 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements Com
     /**
      * Fallback catalogue setter.
      *
-     * @param KTranslatorCatalogueInterface $catalogue The fallback catalogue.
+     * @param KTranslatorCatalogueInterface $catalogue The decorator catalogue.
      * @return ComActivitiesActivityTranslatorInterface
      */
-    public function setFallbackCatalogue(KTranslatorCatalogueInterface $catalogue)
+    protected function _setFallbackCatalogue(KTranslatorCatalogueInterface $catalogue)
     {
         $this->_fallback_catalogue = $catalogue;
         return $this;
     }
 
     /**
-     * Fallback catalogue getter.
+     * Decorator catalogue getter.
      *
-     * @return KTranslatorCatalogueInterface The fallback catalogue.
+     * @return KTranslatorCatalogueInterface The decorator catalogue.
      */
-    public function getFallbackCatalogue()
+    protected function _getFallbackCatalogue()
     {
         if (!$this->_fallback_catalogue instanceof KTranslatorCatalogueInterface) {
-            $this->setFallbackCatalogue($this->getObject($this->getConfig()->fallback_catalogue));
+            $this->_setFallbackCatalogue($this->getObject($this->_fallback_catalogue));
         }
 
         return $this->_fallback_catalogue;
@@ -353,50 +539,47 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements Com
 
                 $this->getCatalogue()->add($translations, $override);
 
-                // Switch catalogue and locale for loading translations on fallback locale.
-                $this->_switchLanguage();
+                // Switch catalogue for loading translations on fallback locale.
+                $this->_switchCatalogues();
             }
 
-            $this->_loaded[] = $url;
+            $this->setLoaded($url);
         }
 
         return true;
     }
 
     /**
-     * Switches the translator language.
+     * Switch translator catalogues.
      *
-     * The main catalogue and locale are switched by the fallback catalogue and locale.
+     * The translator and fallback catalogues are switched.
      *
      * @return ComActivitiesActivityTranslatorInterface
      */
-    protected function _switchLanguage()
+    protected function _switchCatalogues()
     {
         // Switch Catalogues
-        $catalogue = $this->getFallbackCatalogue();
-        $this->setFallbackCatalogue($this->getCatalogue());
+        $catalogue = $this->_getFallbackCatalogue();
+        $this->_setFallbackCatalogue($this->getCatalogue());
         $this->setCatalogue($catalogue);
-
-        // Switch Locales
-        $locale = $this->getLocaleFallback();
-        $this->setLocaleFallback($this->getLocale());
-        $this->_locale = $locale; // Do not use setter for avoiding clearing the catalogue and re-loading files
 
         return $this;
     }
 
     /**
-     * Get the activity format tokens.
+     * Activities token
      *
-     * Tokens are activity objects being referenced in the activity format.
+     * Tokens are activity objects being referenced in the activity format. They represent variables contained
+     * in an activity message. A token is represented in an activity format with a label.
      *
-     * @return array An array containing ComActivitiesActivityObjectInterface objects
+     * @param ComActivitiesActivityInterface $activity
+     * @return array A list containing ComActivitiesActivityObjectInterface objects.
      */
-    public function getTokens(ComActivitiesActivityInterface $activity)
+    public function getActivityTokens(ComActivitiesActivityInterface $activity)
     {
         $format = $activity->getActivityFormat();
 
-        if (!$this->_tokens[$format])
+        if (!isset($this->_tokens[$format]))
         {
             $tokens = array();
 
@@ -435,6 +618,8 @@ class ComActivitiesActivityTranslator extends KTranslatorAbstract implements Com
                         $tokens[$label] = $object;
                     }
                 }
+
+                $this->_tokens[$format] = $tokens;
             }
         }
         else $tokens = $this->_tokens[$format];
