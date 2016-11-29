@@ -48,13 +48,12 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
         $config = new KObjectConfig($config);
 
         $translator = $activity->getTranslator();
-        $language   = $activity->getActivityLanguage();
 
         $output = $activity->getActivityFormat();
 
         if (preg_match_all('/{(.*?)}/', $output, $labels))
         {
-            $tokens = $translator->getTokens($activity);
+            $tokens = $translator->getActivityTokens($activity);
 
             foreach ($labels[1] as $label)
             {
@@ -62,15 +61,15 @@ class ComActivitiesTemplateHelperActivity extends KTemplateHelperAbstract implem
 
                 if (isset($tokens[$parts[0]]))
                 {
-                    $object = $tokens[$parts[0]];
+                    $token = $tokens[$parts[0]];
 
-                    $object = clone $object;
+                    $object = clone $token;
 
                     // Deal with context translations.
                     if (!isset($parts[1]))
                     {
                         if ($object->isTranslatable()) {
-                            $object->setDisplayName($translator->object($object, $language));
+                            $object->setDisplayName($translator->translateActivityToken($object, $activity));
                         }
                     }
                     else $object->setDisplayName($parts[1]);
