@@ -21,31 +21,16 @@ interface ComActivitiesActivityTranslatorInterface
      * @param string $string The activity format to translate.
      * @return string The translated activity format.
      */
-    public function format(ComActivitiesActivityInterface $activity);
+    public function translateActivityFormat(ComActivitiesActivityInterface $activity);
 
     /**
-     * Translates an activity object.
+     * Translates an activity token.
      *
-     * @param ComActivitiesActivityObjectInterface $object   The activity object.
-     * @param string|null                          $language The language to translate the object to.
-     * @return string The translated object.
+     * @param string|ComActivitiesActivityObjectInterface $token    The activity token.
+     * @param ComActivitiesActivityInterface              $activity The activity object.
+     * @return string The translated token.
      */
-    public function object(ComActivitiesActivityObjectInterface $object, $language = null);
-
-    /**
-     * Fallback catalogue setter.
-     *
-     * @param KTranslatorCatalogueInterface $catalogue The fallback catalogue.
-     * @return ComActivitiesActivityTranslatorInterface
-     */
-    public function setFallbackCatalogue(KTranslatorCatalogueInterface $catalogue);
-
-    /**
-     * Fallback catalogue getter.
-     *
-     * @return KTranslatorCatalogueInterface The fallback catalogue.
-     */
-    public function getFallbackCatalogue();
+    public function translateActivityToken($token, ComActivitiesActivityInterface $activity);
 
     /**
      * Activities token
@@ -56,15 +41,5 @@ interface ComActivitiesActivityTranslatorInterface
      * @param ComActivitiesActivityInterface $activity
      * @return array A list containing ComActivitiesActivityObjectInterface objects.
      */
-    public function getTokens(ComActivitiesActivityInterface $activity);
-
-    /**
-     * Activity language getter.
-     *
-     * Determines the language of a given activity.
-     *
-     * @param ComActivitiesActivityInterface $activity The activity.
-     * @return string The language locale.
-     */
-    public function getLanguage(ComActivitiesActivityInterface $activity);
+    public function getActivityTokens(ComActivitiesActivityInterface $activity);
 }
