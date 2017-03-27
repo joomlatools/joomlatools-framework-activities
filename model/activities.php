@@ -44,6 +44,12 @@ class ComActivitiesModelActivities extends KModelDatabase
         $state->sort = 'created_on';
     }
 
+    protected function _initialize(KObjectConfig $config)
+    {
+        $config->append(array('behaviors' => array('searchable')));
+        parent::_initialize($config);
+    }
+
     /**
      * Builds WHERE clause for the query.
      *
