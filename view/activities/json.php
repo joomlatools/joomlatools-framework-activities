@@ -85,15 +85,25 @@ class ComActivitiesViewActivitiesJson extends KViewJson
                 'story'     => $renderer->render($activity, array('html' => false)),
                 'published' => $activity->getActivityPublished()->format('c'),
                 'verb'      => $activity->getActivityVerb(),
-                'format'    => $activity->getActivityFormat()
+                'format'    => $activity->getActivityFormat(),
+                'locale'  => $activity->getLocale()
             );
 
             if ($icon = $activity->getActivityIcon()) {
                 $item['icon'] = $this->_getMediaLinkData($icon);
             }
 
-            foreach ($activity->objects as $name => $object) {
-                $item[$name] = $this->_getObjectData($object);
+            foreach ($activity->objects as $name => $object)
+            {
+                $clone = clone $object;
+
+                if ($object->isTranslatable())
+                {
+                    $translator = $activity->getTranslator();
+                    $clone->setDisplayName($translator->translateActivityToken($clone, $activity));
+                }
+
+                $item[$name] = $this->_getObjectData($clone);
             }
         }
         else
