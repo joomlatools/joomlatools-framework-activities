@@ -30,13 +30,6 @@ class ComActivitiesActivityTranslator extends KObjectDecorator implements ComAct
     protected $_fallback_catalogue;
 
     /**
-     * Activity tokens.
-     *
-     * @var array
-     */
-    protected $_tokens = array();
-
-    /**
      * Holds de locale of each activity format that has been translated.
      *
      * @var array
@@ -579,50 +572,44 @@ class ComActivitiesActivityTranslator extends KObjectDecorator implements ComAct
     {
         $format = $activity->getActivityFormat();
 
-        if (!isset($this->_tokens[$format]))
+        $tokens = array();
+
+        if (preg_match_all('/\{(.+?)\}/',$format, $labels))
         {
-            $tokens = array();
+            $objects = $activity->getActivityObjects();
 
-            if (preg_match_all('/\{(.+?)\}/',$format, $labels))
+            foreach ($labels[1] as $label)
             {
-                $objects = $activity->getActivityObjects();
+                $object = null;
+                $parts  = explode('.', $label);
 
-                foreach ($labels[1] as $label)
+                if (count($parts) > 1)
                 {
-                    $object = null;
-                    $parts  = explode('.', $label);
+                    $name = array_shift($parts);
 
-                    if (count($parts) > 1)
+                    if (isset($objects[$name]))
                     {
-                        $name = array_shift($parts);
+                        $object = $objects[$name];
 
-                        if (isset($objects[$name]))
+                        foreach ($parts as $property)
                         {
-                            $object = $objects[$name];
-
-                            foreach ($parts as $property)
-                            {
-                                $object = $object->{$property};
-                                if (is_null($object)) break;
-                            }
+                            $object = $object->{$property};
+                            if (is_null($object)) break;
                         }
                     }
-                    else
-                    {
-                        if (isset($objects[$label])) {
-                            $object = $objects[$label];
-                        }
-                    }
-
-                    if ($object instanceof ComActivitiesActivityObjectInterface) {
-                        $tokens[$label] = $object;
+                }
+                else
+                {
+                    if (isset($objects[$label])) {
+                        $object = $objects[$label];
                     }
                 }
 
-                $this->_tokens[$format] = $tokens;
+                if ($object instanceof ComActivitiesActivityObjectInterface) {
+                    $tokens[$label] = $object;
+                }
             }
         }
-        else $tokens = $this->_tokens[$format];
 
         return $tokens;
     }
