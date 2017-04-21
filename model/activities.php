@@ -46,7 +46,7 @@ class ComActivitiesModelActivities extends KModelDatabase
 
     protected function _initialize(KObjectConfig $config)
     {
-        $config->append(array('behaviors' => array('searchable')));
+        $config->append(array('behaviors' => array('searchable' => array('columns' => array('title', 'ip')))));
         parent::_initialize($config);
     }
 
