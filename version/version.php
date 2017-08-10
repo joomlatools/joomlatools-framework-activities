@@ -15,7 +15,7 @@
  */
 class ComActivitiesVersion extends KObject
 {
-    const VERSION = '3.1.0-rc.1';
+    const VERSION = '3.1.0';
 
     /**
      * Get the version.
