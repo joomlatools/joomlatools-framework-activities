@@ -2,7 +2,7 @@
 /**
  * Joomlatools Framework - https://www.joomlatools.com/developer/framework/
  *
- * @copyright   Copyright (C) 2011Johan Janssens and Timble CVBA. (http://www.timble.net)
+ * @copyright   Copyright (C) 2011 Johan Janssens and Timble CVBA. (http://www.timble.net)
  * @license     GNU GPLv3 <http://www.gnu.org/licenses/gpl.html>
  * @link        http://github.com/joomlatools/joomlatools-framework-activities for the canonical source repository
  */
@@ -115,4 +115,41 @@ interface ComActivitiesActivityInterface
      * @return string The activity verb.
      */
     public function getActivityVerb();
+
+    /**
+     * Get the activity objects
+     *
+     * @return array An array containing ComActivitiesActivityObjectInterface objects.
+     */
+    public function getActivityObjects();
+
+    /**
+     * Set the activity translator.
+     *
+     * @param ComActivitiesActivityTranslatorInterface $translator
+     * @return ComActivitiesActivityInterface
+     */
+    public function setTranslator(ComActivitiesActivityTranslatorInterface $translator);
+
+    /**
+     * Get the activity translator.
+     *
+     * @return ComActivitiesActivityTranslatorInterface
+     */
+    public function getTranslator();
+
+    /**
+     * Locale setter.
+     *
+     * @param string $locale The activity locale.
+     * @return ComActivitiesActivityInterface
+     */
+    public function setLocale($locale);
+
+    /**
+     * Locale getter.
+     *
+     * @return string The activity locale.
+     */
+    public function getLocale();
 }
