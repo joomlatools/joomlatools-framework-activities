@@ -111,22 +111,22 @@ class ComActivitiesControllerBehaviorLoggable extends KControllerBehaviorAbstrac
     }
 
     /**
-     * Enables loggers
+     * Enables logging
      *
      * @return ComActivitiesControllerBehaviorLoggable
      */
-    public function enableLoggers()
+    public function enableLogging()
     {
         $this->_enabled = true;
         return $this;
     }
 
     /**
-     * Disables loggers
+     * Disables logging
      *
      * @return ComActivitiesControllerBehaviorLoggable
      */
-    public function disableLoggers()
+    public function disableLogging()
     {
         $this->_enabled = false;
         return $this;
