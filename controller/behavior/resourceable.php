@@ -32,13 +32,13 @@ class ComActivitiesControllerBehaviorResourceable extends KControllerBehaviorAbs
     {
         parent::__construct($config);
 
-        $this->_actions = KObjectConfig::unbox($config->actions);
+        $this->_actions    = KObjectConfig::unbox($config->actions);
     }
 
     protected function _initialize(KObjectConfig $config)
     {
         $config->append(array(
-            'actions' => array('delete')
+            'actions'    => array('delete')
         ));
 
         parent::_initialize($config);
@@ -50,17 +50,68 @@ class ComActivitiesControllerBehaviorResourceable extends KControllerBehaviorAbs
 
         if ($entity instanceof ComActivitiesActivityInterface && $entity->getActivityObject())
         {
-            if ($resource = $entity->getResource())
+            $resource = $this->_getResource($entity);
+
+            $controller = $this->_getController();
+
+            if (!in_array($entity->action, $this->_actions))
             {
-                if (!in_array($entity->action, $this->_actions))
+                $data = $this->_getData($entity);
+
+                if (!$resource->isNew())
                 {
-                    if ($resource->isNew() || $resource->isModified()) {
-                        $resource->save();
+                    // Update resource if title changed.
+                    if ($resource->title != $entity->title) {
+                        $controller->id($resource->id)->edit($data);
                     }
                 }
-                else if (!$resource->isNew()) $resource->delete();
+                else $controller->add($data);
             }
+            else if (!$resource->isNew()) $controller->id($resource->id)->delete();
         }
+    }
+
+    /**
+     * Resource getter.
+     *
+     * @param KModelEntityInterface $entity The entity to get the resource from
+     *
+     * @return KModelEntityInterface|null The resource
+     */
+    protected function _getResource($entity)
+    {
+        $model = $this->_getController()->getModel();
+
+        $model->reset()->getState()->setValues(array(
+            'package'     => $entity->package,
+            'name'        => $entity->name,
+            'resource_id' => $entity->row
+        ));
+
+        return $model->fetch();
+    }
+
+    /**
+     * Entity data getter
+     *
+     * @param KModelEntityInterface $entity The entity to get data from
+     *
+     * @return array The entity data
+     */
+    protected function _getData(KModelEntityInterface $entity)
+    {
+        $data = array(
+            'package'     => $entity->package,
+            'name'        => $entity->name,
+            'resource_id' => $entity->row,
+            'title'       => $entity->title
+        );
+
+        if ($uuid = $entity->getActivityObject()->getUuid()) {
+            $data['uuid'] = $uuid;
+        }
+
+        return $data;
     }
 
     /**
