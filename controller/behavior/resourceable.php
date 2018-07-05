@@ -50,15 +50,16 @@ class ComActivitiesControllerBehaviorResourceable extends KControllerBehaviorAbs
 
         if ($entity instanceof ComActivitiesActivityInterface && $entity->getActivityObject())
         {
-            $resource = $entity->getResource();
-
-            if (!in_array($entity->action, $this->_actions))
+            if ($resource = $entity->getResource())
             {
-                if ($resource->isNew() || $resource->isModified()) {
-                    $resource->save();
+                if (!in_array($entity->action, $this->_actions))
+                {
+                    if ($resource->isNew() || $resource->isModified()) {
+                        $resource->save();
+                    }
                 }
+                else if (!$resource->isNew()) $resource->delete();
             }
-            else if (!$resource->isNew()) $resource->delete();
         }
     }
 
