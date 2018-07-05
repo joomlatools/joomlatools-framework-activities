@@ -152,4 +152,11 @@ interface ComActivitiesActivityInterface
      * @return string The activity locale.
      */
     public function getLocale();
+
+    /**
+     * Resource getter.
+     *
+     * @return ComActivitiesActivityResourceInterface|null
+     */
+    public function getResource();
 }
