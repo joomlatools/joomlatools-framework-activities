@@ -72,6 +72,13 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     protected $_locale;
 
     /**
+     * Resources model
+     *
+     * @var string|KObjectIdentifierInterface|KModelInterface
+     */
+    protected $_resources_model;
+
+    /**
      * Constructor.
      *
      * @param KObjectConfig $config Configuration options.
@@ -80,11 +87,12 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     {
         parent::__construct($config);
 
-        $this->_format        = $config->format;
-        $this->_objects       = KObjectConfig::unbox($config->objects);
-        $this->_object_table  = $config->object_table;
-        $this->_object_column = $config->object_column;
-        $this->_translator    = $config->translator;
+        $this->_format          = $config->format;
+        $this->_objects         = KObjectConfig::unbox($config->objects);
+        $this->_object_table    = $config->object_table;
+        $this->_object_column   = $config->object_column;
+        $this->_translator      = $config->translator;
+        $this->_resources_model = $config->resources_model;
     }
 
     /**
@@ -99,11 +107,12 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         $data = $config->data;
 
         $config->append(array(
-            'format'        => '{actor} {action} {object.type} title {object}',
-            'object_table'  => $data->package . '_' . KStringInflector::pluralize($data->name),
-            'object_column' => $data->package . '_' . $data->name . '_id',
-            'translator'    => 'com:activities.activity.translator',
-            'objects'       => array('actor', 'action', 'object', 'target', 'generator', 'provider')
+            'format'          => '{actor} {action} {object.type} title {object}',
+            'object_table'    => $data->package . '_' . KStringInflector::pluralize($data->name),
+            'object_column'   => $data->package . '_' . $data->name . '_id',
+            'translator'      => 'com:activities.activity.translator',
+            'objects'         => array('actor', 'action', 'object', 'target', 'generator', 'provider'),
+            'resources_model' => 'com:activities.model.resources'
         ));
 
         parent::_initialize($config);
@@ -145,6 +154,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
             {
                 $this->setStatus(KDatabase::STATUS_FAILED);
                 $this->setStatusMessage($this->getObject('translator')->translate('Missing required data'));
+
                 return false;
             }
         }
@@ -324,6 +334,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     public function setLocale($locale)
     {
         $this->_locale = $locale;
+
         return $this;
     }
 
@@ -349,6 +360,7 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
     public function setTranslator(ComActivitiesActivityTranslatorInterface $translator)
     {
         $this->_translator = $translator;
+
         return $this;
     }
 
@@ -788,5 +800,62 @@ class ComActivitiesModelEntityActivity extends KModelEntityRow implements ComAct
         if (!is_string($url)) throw new InvalidArgumentException('The URL must be a query string');
 
         return $this->getObject('lib:dispatcher.router.route', array('url' => array('query' => $url)));
+    }
+
+    /**
+     * Resource getter.
+     *
+     * @return ComActivitiesModelEntityResource
+     */
+    public function getResource()
+    {
+        $model = $this->_getResourcesModel();
+
+        $resource = $model->package($this->package)->name($this->name)->resource_id($this->row)->fetch();
+
+        if ($resource->isNew())
+        {
+            $data = array(
+                'package'     => $this->package,
+                'name'        => $this->name,
+                'resource_id' => $this->row,
+                'title'       => $this->title
+            );
+
+            if ($uuid = $this->getActivityObject()->getUuid()) {
+                $data['uuid'] = $uuid;
+            }
+
+            $resource = $model->create($data);
+        }
+        else
+        {
+            if ($this->title != $resource->title) {
+                $resource->title = $this->title;
+            }
+        }
+
+        return $resource;
+    }
+
+    /**
+     * Resource model getter.
+     *
+     * @return KModelInterface
+     */
+    protected function _getResourcesModel()
+    {
+        if (!$this->_resources_model instanceof KModelInterface)
+        {
+            $model = $this->getObject($this->_resources_model);
+
+            if (!$model instanceof KModelInterface) {
+                throw new RuntimeException(sprintf('%s is not a valid model identifier', (string) $this->_resources_model));
+            } else {
+                $this->_resources_model = $model;
+            }
+        }
+
+        return $this->_resources_model;
     }
 }
