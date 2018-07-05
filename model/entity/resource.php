@@ -13,6 +13,45 @@
  * @author  Arunas Mazeika <https://github.com/amazeika>
  * @package Koowa\Component\Activities
  */
-class ComActivitiesModelEntityResource extends KModelEntityRow
+class ComActivitiesModelEntityResource extends KModelEntityRow implements ComActivitiesActivityResourceInterface
 {
+    /**
+     * Resource package getter.
+     *
+     * @return string
+     */
+    public function getPackage()
+    {
+        return $this->package;
+    }
+
+    /**
+     * Resource name getter.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Resource ID getter.
+     *
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Resource UUID getter.
+     *
+     * @return string
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
 }
