@@ -23,7 +23,7 @@
         }
     ],
     "require": {
-        "joomla/framework": "~3.0"
+        "joomlatools/framework": "~3.0"
     },
     "extra": {
         "joomlatools-component": "activities"
