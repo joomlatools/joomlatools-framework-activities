@@ -116,10 +116,15 @@ class ComActivitiesActivityLogger extends KObject implements ComActivitiesActivi
      * @param array $activity_data An optional array containing activity data which might be used to change the controller's configuration
      *
      * @return KControllerInterface The activity controller
+     * @param array $config An optional configuration object for the controller.
+     *
+     *  @return KControllerInterface The activity controller
      */
-    protected function _getController($activity_data = array())
+    protected function _getController($activity_data = array(), KObjectConfig $config = null)
     {
-        return $this->getObject($this->_controller);
+        if (is_null($config)) $config = new KObjectConfig();
+
+        return $this->getObject($this->_controller, $config);
     }
 
     /**
