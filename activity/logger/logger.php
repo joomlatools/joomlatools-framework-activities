@@ -78,7 +78,7 @@ class ComActivitiesActivityLogger extends KObject implements ComActivitiesActivi
      */
     public function log($action, KModelEntityInterface $object, KObjectIdentifierInterface $subject)
     {
-        $controller = $this->_getController(array(), array('action'  => $action, 'object'  => $object, 'subject' => $subject));
+        $controller = $this->_getController();
 
         if($controller instanceof KControllerModellable)
         {
@@ -114,11 +114,10 @@ class ComActivitiesActivityLogger extends KObject implements ComActivitiesActivi
      * Activity controller getter
      *
      * @param array $config An optional configuration array for the controller.
-     * @param array $activity_data An optional array containing activity data.
      *
      *  @return KControllerInterface The activity controller
      */
-    protected function _getController($config = array(), $activity_data = array())
+    protected function _getController($config = array())
     {
         return $this->getObject($this->_controller, $config);
     }
